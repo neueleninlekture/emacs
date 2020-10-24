@@ -587,6 +587,32 @@ windows.
 For =buffers=, we change keybindings and configure a few useful
 utilities for managing them, such as =ibuffer=.
 
+** Windows
+
+The first thing we do here is change the window split behavior. We
+replace the default functions with functions that automatically switch
+to the new window.
+
+#+begin_src emacs-lisp :tangle init.el
+  (defun aabm/split-follow-window-below ()
+    "Creates a window below and automatically switches to it. Meant to be used as a replacement for split-window-below."
+    (interactive)
+    (split-window-below)
+    (balance-windows)
+    (other-window 1))
+
+  (defun aabm/split-follow-window-right ()
+    "Creates a window to the right and automatically switches to it. Meant to be used as a replacement for split-window-right."
+    (interactive)
+    (split-window-right)
+    (balance-windows)
+    (other-window 1))
+
+  (general-define-key
+   "C-x 2" 'aabm/split-follow-window-below
+   "C-x 3" 'aabm/split-follow-window-right)
+#+end_src
+
 ** Buffers
 
 *** Generating scratch buffers
