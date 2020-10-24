@@ -422,7 +422,7 @@ configuration itself, or other packages.
   (use-package diminish
     :straight t
     :after use-package
-    :diminish eldoc-mode global-visual-line-mode visual-line-mode)
+    :diminish eldoc-mode global-visual-line-mode visual-line-mode org-indent-mode)
 #+end_src
 
 ** General
@@ -447,6 +447,7 @@ of bindings.
   (use-package which-key
     :straight t
     :defer nil
+    :diminish
     :init
     (which-key-mode)
     :custom
@@ -774,7 +775,6 @@ some basic options. These are:
     (org-html-postamble nil)  
     :hook
     (org-mode-hook . org-indent-mode)
-    :diminish org-indent-mode
     :bind
     (:map org-mode-map
           ("M-n" . org-forward-element)
@@ -1082,9 +1082,9 @@ that it does not load these files.
     (let ((prog-mode-hook nil))
       (save-buffer "emacs.org")
       (org-babel-tangle-file (concat user-emacs-directory "emacs.org"))
-      (delete-file (concat user-emacs-directory "early-init.elc"))
+      ;; (delete-file (concat user-emacs-directory "early-init.elc"))
       ;; (byte-compile-file (concat user-emacs-directory "early-init.el"))
-      (delete-file (concat user-emacs-directory "init.elc"))	
+      ;; (delete-file (concat user-emacs-directory "init.elc"))	
       ;; (byte-compile-file (concat user-emacs-directory "init.el"))
       (message "Emacs configuration succesfully rebuilt!")))
 
