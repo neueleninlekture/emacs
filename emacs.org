@@ -1181,7 +1181,7 @@ distribution of this configuration does not contain any personal
 information that I'd rather not leak to the public.
 
 #+begin_src emacs-lisp :tangle init.el
-  (aabm/load-file-if (concat user-emacs-directory "creds.el"))
+  (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
 #+end_src
 
 If you wish to use the above setting, simply create a file in your
