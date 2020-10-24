@@ -1,4 +1,1 @@
-#+TITLE: Aabm's literate Emacs configuration
-#+AUTHOR: Aabm <aabm@disroot.org>
-
-All the documentation you need is in the [[https://gitlab.com/aabm/emacs/-/blob/master/emacs.org][emacs.org]] file. This is a literate configuration, meaning the documentation is in the same place as the code.
+emacs.org
