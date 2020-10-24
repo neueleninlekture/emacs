@@ -1,0 +1,13 @@
+/.mc-lists.el
+/auto-save-list/
+/bookmarks
+/eshell/
+/ido.last
+/nov-places
+/org-roam.db
+/smex-items
+/straight/
+/transient/
+/url/
+/init.el
+/early-init.el
