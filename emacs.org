@@ -1183,7 +1183,7 @@ information that I'd rather not leak to the public.
 #+end_src
 
 If you wish to use the above setting, simply create a file in your
-user-emacs-directory with the name "creds.el" containing something
+user-emacs-directory with the name "creds.el.gpg" containing something
 like the example below:
 
 #+begin_src emacs-lisp 
