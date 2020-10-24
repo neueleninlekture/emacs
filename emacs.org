@@ -211,11 +211,9 @@ for configuring packages, and lazy loading those configurations.
 #+begin_src emacs-lisp :tangle init.el
   (straight-use-package 'use-package)
 
-  (use-package use-package
-    :custom
-    (use-package-always-ensure nil)
-    (use-package-always-defer t)
-    (use-package-hook-name-suffix nil))
+  (setq use-package-always-ensure nil)
+  (setq use-package-always-defer t)
+  (setq use-package-hook-name-suffix nil))
 #+end_src
 
 ** Ensuring auto-compilation of all elisp
