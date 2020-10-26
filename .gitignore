@@ -11,3 +11,7 @@
 /url/
 /init.el
 /early-init.el
+/early-init.elc
+/init.elc
+/recentf
+/tramp

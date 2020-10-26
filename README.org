@@ -213,7 +213,9 @@ for configuring packages, and lazy loading those configurations.
 
   (setq use-package-always-ensure nil)
   (setq use-package-always-defer t)
-  (setq use-package-hook-name-suffix nil))
+  (setq use-package-hook-name-suffix nil)
+
+  (require 'bind-key)
 #+end_src
 
 ** Ensuring auto-compilation of all elisp
@@ -384,7 +386,7 @@ mouse points to.
         mouse-autoselect-window t)
 #+end_src
 
-** Fuzzy matching
+** LEGACY Fuzzy matching
 
 In this section we add some =fuzzy completion= to all minibuffer
 prompts. For now we use =Ido= for simplicity, but a later upgrade would
@@ -425,6 +427,21 @@ configuration itself, or other packages.
     :diminish eldoc-mode global-visual-line-mode visual-line-mode org-indent-mode)
 #+end_src
 
+** Async
+
+Async is a library for asynchronous processing for Emacs. By itself it
+does not do much, but is actually required by some packages. Here we
+use it mostly for enabling asynchronous operations on files when using
+Dired and also for compilation of Elisp.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package async
+    :straight t
+    :init
+    (dired-async-mode t)
+    (async-bytecomp-package-mode t))
+#+end_src
+
 ** General
 
 =general.el= is a tool for simplifying the definition of custom
@@ -443,11 +460,9 @@ default or not, simply by displaying a list of active bindings as the
 user types. Very useful for the times you can't remember long series
 of bindings.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle init.el
   (use-package which-key
     :straight t
-    :defer nil
-    :diminish
     :init
     (which-key-mode)
     :custom
@@ -472,26 +487,27 @@ these are later bound to keys.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package ivy
-    :straight ivy swiper counsel swiper avy ivy-rich
+    :straight ivy swiper counsel swiper avy ivy-rich all-the-icons-ivy-rich
+    :after all-the-icons
     :diminish ivy-mode counsel-mode
     :init
     (ivy-mode)
     (counsel-mode)
+    (all-the-icons-ivy-rich-mode)
     (ivy-rich-mode)
     :custom
-    (enable-recursive-minibuffers t))
-
-  (general-define-key
-     "C-s" 'swiper
-     "C-r" 'swiper-backward
-     "M-s" 'avy-goto-char-2
-     "C-x C-f" 'counsel-find-file
-     "C-x b" 'counsel-switch-buffer
-     "C-x r b" 'counsel-bookmark
-     "M-x" 'counsel-M-x
-     "C-h f" 'counsel-describe-function
-     "C-h v" 'counsel-describe-variable
-     "C-h o" 'counsel-describe-symbol)
+    (enable-recursive-minibuffers t)
+    :bind
+    (("C-s" . swiper)
+     ("C-r" . swiper-backward)
+     ("M-s" . avy-goto-char-2)
+     ("C-x C-f" . counsel-find-file)
+     ("C-x b" . counsel-switch-buffer)
+     ("C-x r b" . counsel-bookmark)
+     ("M-x" . counsel-M-x)
+     ("C-h f" . counsel-describe-function)
+     ("C-h v" . counsel-describe-variable)
+     ("C-h o" . counsel-describe-symbol)))
 #+end_src
 
 * Text editing
@@ -532,7 +548,7 @@ region is bound to the C-= keychord.
   (use-package expand-region
     :straight t
     :bind
-    ("C-=" . er/expand-region))
+    (("C-=" . er/expand-region)))
 #+end_src
 
 ** Hungry delete
@@ -561,7 +577,7 @@ press C-c m, the keybinding defined here.
     :straight t
     :commands mc/edit-lines
     :bind
-    ("C-c m" . mc/edit-lines))
+    (("C-c m" . mc/edit-lines)))
 #+end_src
 
 ** Writable grep
@@ -577,7 +593,7 @@ output of grep, then write it into the files.
   (wgrep-auto-save-buffer t)
   (wgrep-change-readonly-file t)
   :bind (:map grep-mode-map
-              ("C-x C-q" . wgrep-change-to-wgrep-mode)))
+              (("C-x C-q" . wgrep-change-to-wgrep-mode))))
 #+end_src
 
 * Buffer, file and window management
@@ -588,6 +604,53 @@ windows.
 
 For =buffers=, we change keybindings and configure a few useful
 utilities for managing them, such as =ibuffer=.
+
+** Buffers
+
+*** Ibuffer
+
+=Ibuffer= is a general utility for managing buffers, in a similar
+manner to the way =dired= handles files and directories. The
+customizations here involve adding icons and keybindings to
+=ibuffer-mode=.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package ibuffer
+    :straight all-the-icons-ibuffer
+    :after all-the-icons
+    :hook
+    ((ibuffer-mode-hook . all-the-icons-ibuffer-mode))
+    :bind
+    (("C-x C-b" . ibuffer)))
+#+end_src
+
+*** Generating scratch buffers
+
+These are functions for easily generating =scratch buffers=, whether
+they be in =org-mode= or in =lisp-interaction-mode=.
+
+#+begin_src emacs-lisp :tangle init.el
+  (defun aabm/generate-org-buffer ()
+    "Create and switch to a temporary org mode buffer with a random name."
+    (interactive)
+    (switch-to-buffer (make-temp-name "org-"))
+    (org-mode))
+
+  (defun aabm/generate-scratch-buffer ()
+    "Create and switch to a temporary scratch buffer with a random name."
+    (interactive)
+    (switch-to-buffer (make-temp-name "scratch-"))
+    (lisp-interaction-mode))
+#+end_src
+
+*** Keybindings
+
+#+begin_src emacs-lisp :tangle init.el
+  (general-define-key
+   "C-x k" 'kill-this-buffer
+   "C-c b o" 'aabm/generate-org-buffer
+   "C-c b s" 'aabm/generate-scratch-buffer)
+#+end_src
 
 ** Windows
 
@@ -632,54 +695,26 @@ configurations, similar to the workspaces in tiling window managers.
     (eyebrowse-mode))
 #+end_src
 
-** Buffers
-
-*** Generating scratch buffers
-
-These are functions for easily generating =scratch buffers=, whether
-they be in =org-mode= or in =lisp-interaction-mode=.
-
-#+begin_src emacs-lisp :tangle init.el
-  (defun aabm/generate-org-buffer ()
-    "Create and switch to a temporary org mode buffer with a random name."
-    (interactive)
-    (switch-to-buffer (make-temp-name "org-"))
-    (org-mode))
-
-  (defun aabm/generate-scratch-buffer ()
-    "Create and switch to a temporary scratch buffer with a random name."
-    (interactive)
-    (switch-to-buffer (make-temp-name "scratch-"))
-    (lisp-interaction-mode))
-#+end_src
-
-*** Keybindings
-
-#+begin_src emacs-lisp :tangle init.el
-  (general-define-key
-   "C-x k" 'kill-this-buffer
-   "C-x C-b" 'ibuffer
-   "C-c b o" 'aabm/generate-org-buffer
-   "C-c b s" 'aabm/generate-scratch-buffer)
-#+end_src
-
 ** Dired
 
 =dired=, or the =directory editor= is Emacs' built in file manager.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package dired
-    :straight peep-dired dired-subtree dired-hide-dotfiles
+    :straight peep-dired dired-subtree dired-hide-dotfiles all-the-icons-dired
+    :after all-the-icons
     :commands dired
-  
+
     :custom
     (dired-dwim-target t)
+    (dired-recursive-copies 'always)
+    (dired-recursive-deletes 'always)  
     (dired-listing-switches "-alhNF --group-directories-first")
     (peep-dired-cleanup-on-disable t)
     (peep-dired-ignored-extensions '("mkv" "iso" "mp4"))
 
     :config
-  
+
     (defun aabm/dired-xdg-open ()
       "Open the marked files using xdg-open"
       (interactive)
@@ -690,20 +725,29 @@ they be in =org-mode= or in =lisp-interaction-mode=.
              (start-process "" nil "xdg-open" file-path)))
          file-list)))
 
-    (dired-hide-dotfiles-mode t)
-  
+    (defun aabm/dired-up-alternate-directory ()
+      "Move up a directory, reusing the current buffer, instead of creating a new one."
+      (interactive)
+      (find-alternate-file ".."))
+
+    :hook
+    ((dired-mode-hook . dired-hide-details-mode)
+     (dired-mode-hook . dired-hide-dotfiles-mode)
+     (dired-mode-hook . all-the-icons-dired-mode))
+
     :bind
     (:map dired-mode-map
-          ("RET" . dired-find-alternate-file)
-          ("M-RET" . dired-find-file)
-          ("DEL" . dired-up-directory)
-          ("TAB" . dired-subtree-insert)
-          ("C-c d m" . mkdir)
-          ("C-c d c" . chmod)
-          ("h" . dired-hide-dotfiles-mode)
-          ("i" . 'peep-dired)
-          ("I" . 'image-dired)
-          ("v" . aabm/dired-xdg-open)))
+          (("RET" . dired-find-alternate-file)
+           ("M-RET" . dired-find-file)
+           ("DEL" . aabm/dired-up-alternate-directory)
+           ("TAB" . dired-subtree-insert)
+           ("C-c d m" . mkdir)
+           ("C-c d c" . chmod)
+           ("h" . dired-hide-dotfiles-mode)
+           ("H" . dired-hide-details-mode)
+           ("i" . 'peep-dired)
+           ("I" . 'image-dired)
+           ("v" . aabm/dired-xdg-open))))
 #+end_src
 
 ** Magit
@@ -717,7 +761,7 @@ commands you barely understand.
     :straight t
     :commands magit-status
     :bind
-    ("C-x g" . magit-status))
+    (("C-x g" . magit-status)))
 #+end_src
 
 * Writing, notetaking and reading
@@ -777,8 +821,10 @@ some basic options. These are:
     (org-mode-hook . org-indent-mode)
     :bind
     (:map org-mode-map
-          ("M-n" . org-forward-element)
-          ("M-p" . org-backward-element)))
+          (("M-n" . org-forward-element)
+           ("M-p" . org-backward-element)
+           ("C-M-n" . org-metadown)
+           ("C-M-p" . org-metaup))))
 #+end_src
 
 *** Agenda, Tasks and TODOs
@@ -795,7 +841,7 @@ First, we:
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
     :custom
-    (org-agenda-files "~/org/agenda.org")
+    ;; (org-agenda-files (concat org-directory "/agenda.org"))
     (org-archive-location (concat org-directory "/archive.org::"))
     (org-enforce-todo-dependencies t)
     (org-enforce-todo-checkbox-dependencies t)
@@ -941,6 +987,15 @@ headings with nice looking Unicode characters.
     (org-mode-hook . org-superstar-mode))
 #+end_src
 
+** Markdown
+
+I don't really use =Markdown=, since org is a much superior markup language, but occasionally I need to open a .md file, and for that I would like to have syntax highlighting. So here we install =markdown-mode=.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package markdown-mode
+    :straight t)
+#+end_src
+
 ** Reading PDFs and EPUBs
 
 Emacs can serve as a great tool for reading books. In this section we
@@ -1047,8 +1102,8 @@ hooking nov.el to olivetti-mode.
     (nov-mode . olivetti-mode)
     :bind
     (:map nov-mode-map
-            ("M-n" . scroll-up-line)
-            ("M-p" . scroll-down-line)))
+            (("M-n" . scroll-up-line)
+            ("M-p" . scroll-down-line))))
 #+end_src
 
 * Programming
@@ -1074,18 +1129,15 @@ that it does not load these files.
 
 #+begin_src emacs-lisp :tangle init.el
   (defun aabm/build-emacs ()
-    "This function is used for completely rebuilding the Emacs
-  configuration file after changes are made to it. First, the buffer
-  visiting that file is saved, then all code blocks are tangled from
-  the file, and finally all resulting files are byte-compiled."
+    "This function is used for completely rebuilding the Emacs configuration file after changes are made to it. First, the buffer visiting that file is saved, then all code blocks are tangled from the file, and finally all resulting files are byte-compiled."
     (interactive)
     (let ((prog-mode-hook nil))
       (save-buffer "emacs.org")
       (org-babel-tangle-file (concat user-emacs-directory "emacs.org"))
-      ;; (delete-file (concat user-emacs-directory "early-init.elc"))
-      ;; (byte-compile-file (concat user-emacs-directory "early-init.el"))
-      ;; (delete-file (concat user-emacs-directory "init.elc"))	
-      ;; (byte-compile-file (concat user-emacs-directory "init.el"))
+      (delete-file (concat user-emacs-directory "early-init.elc"))
+      (byte-compile-file (concat user-emacs-directory "early-init.el"))
+      (delete-file (concat user-emacs-directory "init.elc"))	
+      (byte-compile-file (concat user-emacs-directory "init.el"))
       (message "Emacs configuration succesfully rebuilt!")))
 
   (general-define-key
@@ -1096,8 +1148,8 @@ that it does not load these files.
 
 This is a simple function for loading files conditionally (that is,
 only if they exist). Simply put, it makes the process of loading
-external files (such as those containing personal information not
-included in this config) a lot easier.
+external files such as those containing personal information not
+included in this config, a lot easier.
 
 #+begin_src emacs-lisp :tangle init.el
 (defun aabm/load-file-if (file)
@@ -1121,17 +1173,11 @@ other than that.
 ** Eshell
 
 #+begin_src emacs-lisp :tangle init.el
-  (use-package eshell
-    :bind
-    ("C-x s" . eshell)
+  (use-package esh-mode
+    :commands eshell
     :config
-    (defalias 'open 'find-file-other-window)
-    (defalias 'clean 'eshell/clear-scrollback)
-    (defalias 'mkcd 'aabm/eshell-mkcd)
-    (defalias 'su-open 'aabm/eshell-sudo-open)
-
     (defun aabm/eshell-sudo-open (filename)
-      "Open a file as root in Eshell."
+      "Open a file as root in Eshell, using TRAMP."
       (let ((qual-filename (if (string-match "^/" filename)
                                filename
                              (concat (expand-file-name (eshell/pwd)) "/" filename))))
@@ -1139,7 +1185,7 @@ other than that.
          (find-file-noselect
           (concat "/sudo::" qual-filename)))))
 
-    (defun aabm/eshell-kill-save-file-at-point ()
+    (defun aabm/eshell-copy-file-path-at-point ()
       "Copies path to file at point to the kill ring"
       (interactive)
       (let ((file (ffap-file-at-point)))
@@ -1180,6 +1226,13 @@ other than that.
           (erase-buffer)
           (yank)
           (switch-to-buffer-other-window (current-buffer)))))
+
+    (defalias 'open 'find-file-other-window)
+    (defalias 'clean 'eshell/clear-scrollback)
+    (defalias 'mkcd 'aabm/eshell-mkcd)
+    (defalias 'sopen 'aabm/eshell-sudo-open)
+
+
     :custom
     (eshell-prompt-regexp "^[^αλ\n]*[αλ] ")
     (eshell-prompt-function
@@ -1198,8 +1251,14 @@ other than that.
     (eshell-banner-message "")
     (eshell-highlight-prompt nil)
 
-
-    )
+    :bind
+    (("C-x s" . eshell)
+    (:map eshell-mode-map
+          ("C-c w" . aabm/eshell-copy-file-path-at-point)
+          ("C-c f" . aabm/eshell-find-file-at-point)
+          ("C-c o" . aabm/eshell-cat-file-at-point))
+    (:map eshell-command-map
+          ("C-c C-b" . aabm/eshell-put-last-output-to-buffer))))
 #+end_src
 
 ** Vterm
@@ -1208,7 +1267,7 @@ other than that.
   (use-package vterm
     :straight t
     :bind
-    ("C-x v" . vterm))
+    (("C-x v" . vterm)))
 #+end_src
 
 * News, email and web browsing
@@ -1254,32 +1313,31 @@ external video player, namely =mpv=, which is bound to the v key.
       :straight t
       :config
       (aabm/load-file-if (concat user-emacs-directory "feeds.el.gpg"))
+	
+      (defun aabm/elfeed-play-with-mpv ()
+        "Play entry link with mpv."
+        (interactive)
+        (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
+              (quality-arg "")
+              (quality-val (completing-read "Max height resolution (0 for unlimited): " '("0" "480" "720") nil nil)))
+          (setq quality-val (string-to-number quality-val))
+          (message "Opening %s with height≤%s with mpv..." (elfeed-entry-link entry) quality-val)
+          (when (< 0 quality-val)
+            (setq quality-arg (format "--ytdl-format=[height<=?%s]" quality-val)))
+          (start-process "elfeed-mpv" nil "mpv" quality-arg (elfeed-entry-link entry))))
+	
       :bind
-      ("C-c e" . elfeed)
+      (("C-c e" . elfeed)
       (:map elfeed-show-mode-map
             ("M-n" . scroll-up-line)
             ("M-p" . scroll-down-line)
             ("v" . aabm/elfeed-play-with-mpv))
-	
+
       (:map elfeed-search-mode-map
-            ("v" . aabm/elfeed-play-with-mpv))
-	
+            ("v" . aabm/elfeed-play-with-mpv)))
+
       :hook
       (elfeed-show-mode . olivetti-mode))
-
-  (add-hook 'elfeed-show-mode 'olivetti-mode)
-
-    (defun aabm/elfeed-play-with-mpv ()
-      "Play entry link with mpv."
-      (interactive)
-      (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
-            (quality-arg "")
-            (quality-val (completing-read "Max height resolution (0 for unlimited): " '("0" "480" "720") nil nil)))
-        (setq quality-val (string-to-number quality-val))
-        (message "Opening %s with height≤%s with mpv..." (elfeed-entry-link entry) quality-val)
-        (when (< 0 quality-val)
-          (setq quality-arg (format "--ytdl-format=[height<=?%s]" quality-val)))
-        (start-process "elfeed-mpv" nil "mpv" quality-arg (elfeed-entry-link entry))))
 #+end_src
 
 ** mu4e
@@ -1313,8 +1371,8 @@ of those tools.
     (mu4e-compose-signature
      '(user-full-name))
     :bind
-    ("H-x m" . mu4e)
-    ("C-x m" . mu4e-compose-new))
+    (("H-x m" . mu4e)
+    ("C-x m" . mu4e-compose-new)))
 #+end_src
 
 ** eww
@@ -1329,9 +1387,9 @@ better readability in web pages.
     :hook
     (eww-mode . olivetti-mode)
     :bind
-    (:map eww-mode-map
+    ((:map eww-mode-map
           ("M-n" . scroll-up-line)
-          ("M-p" . scroll-down-line)))
+          ("M-p" . scroll-down-line))))
 #+end_src
 
 * Media management
@@ -1377,7 +1435,7 @@ it.
                            ("lewd" "l" "~/vid/lewd" nil)
                            ("other" "o" "~/vid/" nil)))
     :bind
-    ("C-c d" . ytdl-download))
+    (("C-c d" . ytdl-download)))
 #+end_src
 
 *** ytel
@@ -1403,15 +1461,130 @@ elfeed.
         "--ytdl-format=bestvideo[height<=?720]+bestaudio/best")
       (message "Starting stream..."))
     :bind
-    ("C-c y" . ytel)
+    (("C-c y" . ytel)
     (:map ytel-mode-map
-          ("RET" . ytel-watch-mpv)))
+          ("RET" . ytel-watch-mpv))))
 #+end_src
 
 * Theming and appearance
 
-Finally, ricing. In this section we install color themes and customize
-them, customize face attributes, and set frame options.
+Finally, ricing. In this section we install all cosmetic packages,
+such as color themes, =dashboard= and modelines, and customize them,
+including face attributes and frame options.
+
+** All The Icons
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package all-the-icons
+    :straight t
+    :defer nil)
+#+end_src
+
+** Dashboard
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package dashboard
+    :straight t
+    :defer nil
+    :config
+    (dashboard-setup-startup-hook)
+    :custom
+    (dashboard-set-heading-icons t)
+    (dashboard-set-file-icons t)
+    (dashboard-items
+          '((bookmarks . 5)
+            (recents . 5)
+            (agenda . 10)))
+    (dashboard-banner-logo-title "Welcome to GNU Emacs!")
+    (dashboard-startup-banner 'official)
+    (dashboard-center-content t)
+    (dashboard-show-shortcuts t)
+    (dashboard-set-init-info t)
+    (dashboard-set-footer t)
+    (dashboard-footer-messages 
+          '("We conjure the spirits of the computer with our spells..."
+            "Free as in freedom!"
+            "Happy hacking!"
+            "The One True Editor, Emacs."
+            "Vi Vi Vi, the editor of the beast."
+            "Violence begins with Vi."
+            "There is no system but GNU, and Linux is one of its kernels."))
+    (dashboard-set-navigator t)
+    (dashboard-navigator-buttons
+          `(;; line1
+            ((,nil
+              "Config"
+              "Open config file for easy editing"
+              (lambda (&rest _) (find-file "~/.emacs.d/config.org"))
+              'default)
+           (nil
+            "Magit"
+            "Open this config's local git repository"
+            (lambda (&rest _) (magit "~/.emacs.d"))
+            'default)
+             (nil
+              "Gitea"
+              "Open this config's Gitea page in your web browser"
+              (lambda (&rest _) (browse-url "https://git.snopyta.org/aabm/emacs"))
+              'default)
+             )
+            ;; line 2
+            ((,nil
+              "Email"
+              "Read email with mu4e"
+              (lambda (&rest _) (mu4e))
+              'default)
+             (nil
+              "Elfeed"
+              "Read RSS/Atom feeds with Elfeed"
+              (lambda (&rest _) (elfeed))
+              'default)
+             (nil
+              "Novel"
+              "Read ebooks with nov.el"
+              (lambda (&rest _) (nov-previous-document))
+              'default)
+             )
+            ;; line 3
+            ((,nil
+              "Terminal"
+              "Open vterm"
+              (lambda (&rest _) (vterm))
+              'default)
+             (nil
+              "Dired"
+              "Manage files with dired"
+              (lambda (&rest _) (dired "~/"))
+              'default)))))
+
+  ;; Load dashboard only if Emacs does not get a file as an argument
+  (if (< (length command-line-args) 2)
+    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
+#+end_src
+
+** Doom Modeline
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package doom-modeline
+    :straight t
+    :defer nil
+    :custom
+    (doom-modeline-height 25)
+    (doom-modeline-bar-width 5)
+    (doom-modeline-icon (display-graphic-p))
+    (doom-modeline-major-mode-icon t)
+    (doom-modeline-major-mode-color-icon t)
+    (doom-modeline-buffer-state-icon t)
+    (doom-modeline-buffer-modification-icon t)
+    (doom-modeline-minor-modes nil)
+    (doom-modeline-enable-word-count t)
+    (doom-modeline-buffer-encoding t)
+    (doom-modeline-persp-name t)
+    :config
+    (doom-modeline-mode))
+
+  ;; (setq-default mode-line-format (list "%b %m"))
+#+end_src
 
 ** Color theme
 
@@ -1471,13 +1644,24 @@ Now we set the options to be used by default by the Emacs frame. These
 include fonts, frame name (to be used by the window manager's
 titlebar), frame size and transparency.
 
-   #+begin_src emacs-lisp :tangle init.el
-     (set-frame-font "Iosevka 12" nil t)
-     (setq frame-title-format "%b")
+#+begin_src emacs-lisp :tangle init.el
+  (set-frame-font "Iosevka 12" nil t)
+  (setq frame-title-format "%b")
 
-     (add-to-list 'default-frame-alist '(font . "Iosevka 12"))
+  (add-to-list 'default-frame-alist '(font . "Iosevka 12"))
 
-     (set-frame-parameter (selected-frame) 'alpha '(97 95))
-     (add-to-list 'default-frame-alist '(alpha 97 95))
-   #+end_src
+  (set-frame-parameter (selected-frame) 'alpha '(97 95))
+  (add-to-list 'default-frame-alist '(alpha 97 95))
+#+end_src
    
+* Start server
+
+It is preferable to use Emacs as daemon in the background. Here we
+start the Emacs server. We also define a keybinding for killing Emacs.
+
+#+begin_src emacs-lisp :tangle init.el
+  (server-start)
+
+  (general-define-key
+   "H-c k" 'kill-emacs)
+#+end_src
