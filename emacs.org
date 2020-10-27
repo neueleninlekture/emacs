@@ -1,6 +1,8 @@
+
 #+title: Aabm's literate configuration for GNU Emacs
 #+author: aabm
 #+email: aabm@disroot.org
+#+seq_todo: TODO(t) | LEGACY(l)
 #+startup: overview
 
 * About this configuration
@@ -221,11 +223,15 @@ for configuring packages, and lazy loading those configurations.
 ** Ensuring auto-compilation of all elisp
 
 Here we make sure that Emacs always has access to byte-compiled elisp
-instead of simple source files. We ensure that outdated byte code
-files do not get loaded.
+instead of simple source files. The first setting here ensures that
+outdated byte code files do not get loaded.
+
+The second variable here forces the byte-compiler to ignore all the
+warnings relating to the deprecation of the =cl= library.
 
 #+begin_src emacs-lisp :tangle init.el
-  (setq load-prefer-newer t)
+  (setq load-prefer-newer t
+        byte-compile-warnings '(cl-functions))
 #+end_src
 
 * Quality of life changes
@@ -446,10 +452,13 @@ Dired and also for compilation of Elisp.
 
 =general.el= is a tool for simplifying the definition of custom
 keybindings. It is frequently used over the length of this
-configuration, so we install it here.
+configuration, so we install it here. We also make creation of
+keybindings under prefix keys a lot easier by running
+=general-auto-unbind-keys=.
 
 #+begin_src emacs-lisp :tangle init.el
   (straight-use-package 'general)
+  (general-auto-unbind-keys)
 #+end_src
 
 ** Which Key
@@ -596,6 +605,14 @@ output of grep, then write it into the files.
               (("C-x C-q" . wgrep-change-to-wgrep-mode))))
 #+end_src
 
+** Wrapping and auto-filling text
+
+#+begin_src emacs-lisp :tangle init.el
+  (general-define-key
+   "C-c f a" 'auto-fill-mode
+   "C-c f f" 'fill-region)
+#+end_src
+
 * Buffer, file and window management
 
 In this section we deal with all packages relating to the fundamental
@@ -643,11 +660,26 @@ they be in =org-mode= or in =lisp-interaction-mode=.
     (lisp-interaction-mode))
 #+end_src
 
+*** Kill buffer and window
+
+This function kills the current buffer, along with the window in which
+it is being displayed.
+
+#+begin_src emacs-lisp :tangle init.el
+  (defun aabm/kill-this-buffer-and-window ()
+    "Kill the current buffer and its corresponding window."
+    (interactive)
+    (progn
+      (kill-buffer)
+      (delete-window)))
+#+end_src
+
 *** Keybindings
 
 #+begin_src emacs-lisp :tangle init.el
   (general-define-key
    "C-x k" 'kill-this-buffer
+   "C-x C-k" 'aabm/kill-this-buffer-and-window
    "C-c b o" 'aabm/generate-org-buffer
    "C-c b s" 'aabm/generate-scratch-buffer)
 #+end_src
@@ -747,7 +779,8 @@ configurations, similar to the workspaces in tiling window managers.
            ("H" . dired-hide-details-mode)
            ("i" . 'peep-dired)
            ("I" . 'image-dired)
-           ("v" . aabm/dired-xdg-open))))
+           ("v" . aabm/dired-xdg-open)
+           ("q" . kill-this-buffer))))
 #+end_src
 
 ** Magit
@@ -907,6 +940,26 @@ structure templates for creating blocks.
             ("v" . "verse\n"))))
 #+end_src
 
+*** Export
+
+Org includes a series of utilities for exporting org files into other formats, including LaTeX, HTML, and Markdown. In this section we configure templates for export, and load related packages.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package ox
+    :straight ox-epub
+    :demand
+    (ox-ascii
+     ox-beamer
+     ox-html
+     ox-icalendar
+     ox-latex
+     ox-md
+     ox-odt
+     ox-org
+     ox-texinfo
+     ox-man))
+#+end_src
+
 *** Org Roam
 
 =org-roam= is a very powerful extension to org-mode. Essentially, it
@@ -927,6 +980,8 @@ files. All these packages can be acessed under the C-c n map.
     :straight t
     :diminish
     :config
+    (require 'org-protocol)
+    (require 'org-roam-protocol)
     (org-roam-mode)
     :custom
     (org-roam-directory "~/org/roam/")
@@ -940,7 +995,13 @@ files. All these packages can be acessed under the C-c n map.
         "#+date:%T\n#+startup: overview\n#+roam_tags: %?\n#+roam_alias:"
         :file-name "%<%Y%m%d%H%M%S>-${slug}"
         :head "#+title: ${title}\n"
-        :unnarrowed t))))
+        :unnarrowed t)))
+
+    :bind
+    (("C-c n f" . org-roam-find-file)
+     ("C-c n l" . org-roam-insert)
+     ("C-c n c" . org-roam-random-note)
+     ("C-c n d" . org-roam-dailies-date)))
 
   (use-package org-roam-server
     :straight t
@@ -955,7 +1016,9 @@ files. All these packages can be acessed under the C-c n map.
     (org-roam-server-network-arrows nil)
     (org-roam-server-network-label-truncate t)
     (org-roam-server-network-label-truncate-length 60)
-    (org-roam-server-network-label-wrap-length 20))
+    (org-roam-server-network-label-wrap-length 20)
+    :bind
+    (("C-c n g" . org-roam-server-mode)))
 
   (use-package deft
     :straight t
@@ -963,16 +1026,9 @@ files. All these packages can be acessed under the C-c n map.
     (deft-recursive t)
     (deft-use-filter-string-for-filename t)
     (deft-default-extension "org")
-    (deft-directory "~/docs/roam/"))
-
-  (general-define-key
-   "C-c n z" 'org-roam
-   "C-c n f" 'org-roam-find-file
-   "C-c n l" 'org-roam-insert
-   "C-c n c" 'org-roam-random-note
-   "C-c n g" 'org-roam-server-mode
-   "C-c n d" 'org-roam-dailies-date
-   "C-c n s" 'deft)
+    (deft-directory "~/org/roam")
+    :bind
+    (("C-c n s" . deft)))
 #+end_src
 
 *** Org Superstar
@@ -1161,7 +1217,8 @@ included in this config, a lot easier.
 ** Haskell
 
 I started using =Haskell= due to =Xmonad=. Don't use it for anything
-other than that.
+other than that. A simple declaration like this is enough for my
+usage.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package haskell-mode
@@ -1170,11 +1227,34 @@ other than that.
 
 * Shell and terminal emulation
 
+Emacs comes with a few different solutions for shell and terminal
+emulation built in. First and foremost, there is =M-x shell=, which is
+a simple utility for running an external shell within Emacs, with the
+advantage that it can be treated as a normal text buffer. =shell= can
+also be used to power a REPL in other languages.
+
+There is also =eshell= which on the surface is similar to shell, but
+is, on the contrary, a much more powerful utility. =eshell= is a full
+reimplementation of a /mostly/ POSIX-compliant shell, meaning it uses
+its own version of programs like =ls=. This in turn means it is
+system-agnostic, and can provide shell utilities even in system that
+do not have them. Besides that, it can also read normal expressions in
+=emacs lisp=, giving it a lot more flexibility. It is, as expected,
+highly customizable, and we take advantage of that here, writing a lot
+of custom functions to leverage eshell's power.
+
+There are also /terminal/ emulation programs built into Emacs, namely
+=term= and =ansi-term=, which are honestly not very good. As a
+replacement, we install =vterm=, which fixes most of the flaws with
+the built-in ones, while also allowing use of TUI programs.
+
 ** Eshell
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package esh-mode
     :commands eshell
+    :functions make-variable-buffer-local
+    :defines make-variable-buffer-local
     :config
     (defun aabm/eshell-sudo-open (filename)
       "Open a file as root in Eshell, using TRAMP."
@@ -1232,6 +1312,19 @@ other than that.
     (defalias 'mkcd 'aabm/eshell-mkcd)
     (defalias 'sopen 'aabm/eshell-sudo-open)
 
+    (defvar aabm/eshell-minor-mode-map
+      (let ((map (make-sparse-keymap))) map)
+      "Key map with custom commands for `eshell'.")
+
+    (define-minor-mode aabm/eshell-minor-mode
+      "Special minor mode to enable custom keys in `eshell'.
+
+  \\{aabm/eshell-minor-mode-map}"
+      :init-value nil
+      :keymap aabm/eshell-minor-mode-map)
+
+    :hook
+    ((eshell-mode-hook . aabm/eshell-minor-mode))
 
     :custom
     (eshell-prompt-regexp "^[^αλ\n]*[αλ] ")
@@ -1247,18 +1340,18 @@ other than that.
         (if (= (user-uid) 0)
             (propertize " α " 'face `(:foreground "#CC241D"))
           (propertize " λ " 'face `(:foreground "#98971A"))))))
-
     (eshell-banner-message "")
     (eshell-highlight-prompt nil)
 
+    (eshell-cd-on-directory t)
+
     :bind
     (("C-x s" . eshell)
-    (:map eshell-mode-map
-          ("C-c w" . aabm/eshell-copy-file-path-at-point)
-          ("C-c f" . aabm/eshell-find-file-at-point)
-          ("C-c o" . aabm/eshell-cat-file-at-point))
-    (:map eshell-command-map
-          ("C-c C-b" . aabm/eshell-put-last-output-to-buffer))))
+     (:map aabm/eshell-minor-mode-map
+           ("C-c w" . aabm/eshell-copy-file-path-at-point)
+           ("C-c f" . aabm/eshell-find-file-at-point)
+           ("C-c o" . aabm/eshell-cat-file-at-point)
+           ("C-c C-b" . aabm/eshell-put-last-output-to-buffer))))
 #+end_src
 
 ** Vterm
@@ -1270,11 +1363,12 @@ other than that.
     (("C-x v" . vterm)))
 #+end_src
 
-* News, email and web browsing
+* Security, news, email and web browsing
 
 This section includes all customization necessary for using Emacs as a
 mail client with =mu4e=, mailing list reader with =Gnus=, RSS news
-reader =Elfeed= and text-based web browser, with =eww=.
+reader =Elfeed= and text-based web browser, with =eww=. Many of these
+settings are somehow security related.
 
 ** User credentials
 
@@ -1300,6 +1394,30 @@ like the example below:
   ;;       calendar-location-name "City, State")
 #+end_src
 
+** Password management
+
+Here we set up a convenient interface for =pass=, the standard Unix
+password manager. This interface allows for completion using the
+standard completion mechanism, which for this configuration is Ivy.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package password-store
+    :straight pass
+    :defines pass-mode-map
+    :commands
+    (password-store-insert
+     password-store-copy
+     password-store-edit
+     pass)
+    :bind
+    (("C-c p i" . password-store-insert)
+     ("C-c p w" . password-store-copy)
+     ("C-c p e" . password-store-edit)
+     ("C-c p p" . pass)
+     (:map pass-mode-map
+           ("q" . kill-buffer-and-window))))
+#+end_src
+
 ** Elfeed
 
 =Elfeed= is a complete RSS/Atom feed reader for Emacs. The
@@ -1309,35 +1427,35 @@ definition for opening video feed links (youtube, invidious) in an
 external video player, namely =mpv=, which is bound to the v key.
 
 #+begin_src emacs-lisp :tangle init.el
-    (use-package elfeed
-      :straight t
-      :config
-      (aabm/load-file-if (concat user-emacs-directory "feeds.el.gpg"))
-	
-      (defun aabm/elfeed-play-with-mpv ()
-        "Play entry link with mpv."
-        (interactive)
-        (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
-              (quality-arg "")
-              (quality-val (completing-read "Max height resolution (0 for unlimited): " '("0" "480" "720") nil nil)))
-          (setq quality-val (string-to-number quality-val))
-          (message "Opening %s with height≤%s with mpv..." (elfeed-entry-link entry) quality-val)
-          (when (< 0 quality-val)
-            (setq quality-arg (format "--ytdl-format=[height<=?%s]" quality-val)))
-          (start-process "elfeed-mpv" nil "mpv" quality-arg (elfeed-entry-link entry))))
-	
-      :bind
-      (("C-c e" . elfeed)
-      (:map elfeed-show-mode-map
-            ("M-n" . scroll-up-line)
-            ("M-p" . scroll-down-line)
-            ("v" . aabm/elfeed-play-with-mpv))
+  (use-package elfeed
+    :straight t
+    :config
+    (aabm/load-file-if (concat user-emacs-directory "feeds.el.gpg"))
 
-      (:map elfeed-search-mode-map
-            ("v" . aabm/elfeed-play-with-mpv)))
+    (defun aabm/elfeed-play-with-mpv ()
+      "Play entry link with mpv."
+      (interactive)
+      (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
+            (quality-arg "")
+            (quality-val (completing-read "Max height resolution (0 for unlimited): " '("0" "480" "720") nil nil)))
+        (setq quality-val (string-to-number quality-val))
+        (message "Opening %s with height≤%s with mpv..." (elfeed-entry-link entry) quality-val)
+        (when (< 0 quality-val)
+          (setq quality-arg (format "--ytdl-format=[height<=?%s]" quality-val)))
+        (start-process "elfeed-mpv" nil "mpv" quality-arg (elfeed-entry-link entry))))
 
-      :hook
-      (elfeed-show-mode . olivetti-mode))
+    :bind
+    (("C-c e" . elfeed)
+     (:map elfeed-show-mode-map
+           ("M-n" . scroll-up-line)
+           ("M-p" . scroll-down-line)
+           ("v" . aabm/elfeed-play-with-mpv))
+
+     (:map elfeed-search-mode-map
+           ("v" . aabm/elfeed-play-with-mpv)))
+
+    :hook
+    (elfeed-show-mode . olivetti-mode))
 #+end_src
 
 ** mu4e
@@ -1426,6 +1544,10 @@ it.
 #+begin_src emacs-lisp :tangle init.el
   (use-package ytdl
     :straight t
+    :init
+    (general-define-key
+     "C-c y d" 'ytdl-download)
+
     :custom
     (ytdl-download-folder "~/vids")
     (ytdl-video-folder "~/vids")
@@ -1433,9 +1555,7 @@ it.
                            ("documentaries" "d" "~/vid/documentaries" nil)
                            ("memes" "m" "~/vid/memes" nil)
                            ("lewd" "l" "~/vid/lewd" nil)
-                           ("other" "o" "~/vid/" nil)))
-    :bind
-    (("C-c d" . ytdl-download)))
+                           ("other" "o" "~/vid/" nil))))
 #+end_src
 
 *** ytel
@@ -1447,8 +1567,14 @@ elfeed.
 #+begin_src emacs-lisp :tangle init.el
   (use-package ytel
     :straight t
+    :functions ytel-get-current-video
     :custom
-    (ytel-invidious-api-url "https://invidious.snopyta.org")  
+    (ytel-invidious-api-url "https://invidious.tube")
+  
+    :init
+    (general-define-key
+     "C-c y y" 'ytel)
+  
     :config
     (defun ytel-watch-mpv ()
       "Stream video at point in mpv."
@@ -1461,8 +1587,7 @@ elfeed.
         "--ytdl-format=bestvideo[height<=?720]+bestaudio/best")
       (message "Starting stream..."))
     :bind
-    (("C-c y" . ytel)
-    (:map ytel-mode-map
+    ((:map ytel-mode-map
           ("RET" . ytel-watch-mpv))))
 #+end_src
 
@@ -1557,12 +1682,12 @@ including face attributes and frame options.
               (lambda (&rest _) (dired "~/"))
               'default)))))
 
-  ;; Load dashboard only if Emacs does not get a file as an argument
-  (if (< (length command-line-args) 2)
-    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
+  ;; ;; Load dashboard only if Emacs does not get a file as an argument
+  ;; (if (< (length command-line-args) 2)
+  ;;   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
 #+end_src
 
-** Doom Modeline
+** Modeline
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package doom-modeline
@@ -1584,6 +1709,12 @@ including face attributes and frame options.
     (doom-modeline-mode))
 
   ;; (setq-default mode-line-format (list "%b %m"))
+#+end_src
+
+** Cursor and mouse
+
+#+begin_src emacs-lisp :tangle init.el
+  (blink-cursor-mode -1)
 #+end_src
 
 ** Color theme
