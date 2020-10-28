@@ -217,6 +217,14 @@ for configuring packages, and lazy loading those configurations.
   (setq use-package-hook-name-suffix nil)
 
   (require 'bind-key)
+
+  (use-package benchmark-init
+    :straight t
+    :defer nil
+    :init
+    (benchmark-init/activate)
+    :hook
+    ((after-init-hook . benchmark-init/deactivate)))
 #+end_src
 
 ** Ensuring auto-compilation of all elisp
@@ -496,7 +504,7 @@ these are later bound to keys.
 #+begin_src emacs-lisp :tangle init.el
   (use-package ivy
     :straight ivy swiper counsel swiper avy ivy-rich all-the-icons-ivy-rich
-    :after all-the-icons
+    :demand all-the-icons
     :diminish ivy-mode counsel-mode
     :init
     (ivy-mode)
@@ -838,7 +846,9 @@ reading and writing.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package olivetti
-    :straight t)
+    :straight t
+    :bind
+    (("C-c o" . olivetti-mode)))
 
   (straight-use-package 'writeroom-mode)
 #+end_src
@@ -861,6 +871,7 @@ some basic options. These are:
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
     :straight t
+    :defer t
     :custom
     (org-directory "~/org/")
     (org-ellipsis "⬎")
@@ -963,7 +974,7 @@ Org includes a series of utilities for exporting org files into other formats, i
 #+begin_src emacs-lisp :tangle init.el
   (use-package ox
     :straight ox-epub
-    :demand
+    :after org
     (ox-ascii
      ox-beamer
      ox-html
@@ -1386,7 +1397,9 @@ mail client with =mu4e=, mailing list reader with =Gnus=, RSS news
 reader =Elfeed= and text-based web browser, with =eww=. Many of these
 settings are somehow security related.
 
-** User credentials
+** LEGACY User credentials
+
+*code moved to [[*mu4e][mu4e]] for performance, documentation kept here*
 
 This section loads my personal credentials file. The contents of the
 file are minimal, but are kept separate from this file so that
@@ -1394,7 +1407,7 @@ distribution of this configuration does not contain any personal
 information that I'd rather not leak to the public.
 
 #+begin_src emacs-lisp :tangle init.el
-  (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
+  ;; (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
 #+end_src
 
 If you wish to use the above setting, simply create a file in your
@@ -1504,9 +1517,11 @@ of those tools.
     (mu4e-confirm-quit nil)
     (mu4e-compose-signature
      '(user-full-name))
+    :config
+    (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
     :bind
     (("H-x m" . mu4e)
-    ("C-x m" . mu4e-compose-new)))
+     ("C-x m" . mu4e-compose-new)))
 #+end_src
 
 ** eww
@@ -1705,7 +1720,7 @@ including face attributes and frame options.
 
 ** Modeline
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src 
   (use-package doom-modeline
     :straight t
     :defer nil
