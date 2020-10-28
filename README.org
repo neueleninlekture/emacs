@@ -518,6 +518,14 @@ these are later bound to keys.
      ("C-h o" . counsel-describe-symbol)))
 #+end_src
 
+** ESUP
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package esup
+    :straight t
+    :commands (esup))
+#+end_src
+
 * Text editing
 
 Under this section we put all configurations and packages that expand
@@ -610,6 +618,15 @@ output of grep, then write it into the files.
   (general-define-key
    "C-c f a" 'auto-fill-mode
    "C-c f f" 'fill-region)
+#+end_src
+
+** Undo Tree
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package undo-tree
+    :straight t
+    :init
+    (global-undo-tree-mode))
 #+end_src
 
 * Buffer, file and window management
@@ -1606,7 +1623,7 @@ including face attributes and frame options.
 
 ** Dashboard
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src 
   (use-package dashboard
     :straight t
     :defer nil
@@ -1681,9 +1698,9 @@ including face attributes and frame options.
               (lambda (&rest _) (dired "~/"))
               'default)))))
 
-  ;; ;; Load dashboard only if Emacs does not get a file as an argument
-  ;; (if (< (length command-line-args) 2)
-  ;;   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
+  ;; Load dashboard only if Emacs does not get a file as an argument
+  (if (< (length command-line-args) 2)
+    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
 #+end_src
 
 ** Modeline
@@ -1790,8 +1807,16 @@ It is preferable to use Emacs as daemon in the background. Here we
 start the Emacs server. We also define a keybinding for killing Emacs.
 
 #+begin_src emacs-lisp :tangle init.el
-  (server-start)
+  ;; (server-start)
 
   (general-define-key
    "H-c k" 'kill-emacs)
+
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (message "Emacs ready in %s with %d garbage collections."
+                       (format "%.2f seconds"
+                               (float-time
+                                (time-subtract after-init-time before-init-time)))
+                       gcs-done)))
 #+end_src
