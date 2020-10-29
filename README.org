@@ -297,11 +297,10 @@ major mode:
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+end_src
 
-Then we enable line and parentheses highlighting:
+Then we enable parentheses highlighting:
 
 #+begin_src emacs-lisp :tangle init.el
-  (when window-system (hl-line-mode t))
-  (show-paren-mode 1)
+  (show-paren-mode t)
 #+end_src
 
 Some settings for line truncation (namely disabling it) in favor of
@@ -310,6 +309,7 @@ visual lines:
 #+begin_src emacs-lisp :tangle init.el
   (setq truncate-lines nil
         org-startup-truncated nil)
+
   (global-visual-line-mode t)
 #+end_src
 
@@ -317,7 +317,7 @@ And finally, we enable pretty symbols. Pretty symbols convert lambdas
 and other such elements to their respective symbols.
 
 #+begin_src emacs-lisp :tangle init.el
-  (when window-system (global-prettify-symbols-mode t))
+  (global-prettify-symbols-mode t)
 #+end_src
 
 ** UI settings
@@ -410,7 +410,7 @@ the ido buffer show completions vertically, similar to Ivy and Helm.
 
 We also install =smex=, which provides and ido menu for M-x.
 
-#+begin_src 
+#+begin_src emacs-lisp
   (use-package ido-vertical-mode
 	:straight t
 	:init
@@ -436,7 +436,6 @@ configuration itself, or other packages.
 #+begin_src emacs-lisp :tangle init.el
   (use-package diminish
     :straight t
-    :after use-package
     :diminish eldoc-mode global-visual-line-mode visual-line-mode org-indent-mode)
 #+end_src
 
@@ -479,6 +478,7 @@ of bindings.
 #+begin_src emacs-lisp :tangle init.el
   (use-package which-key
     :straight t
+    :diminish which-key-mode
     :init
     (which-key-mode)
     :custom
@@ -633,6 +633,7 @@ output of grep, then write it into the files.
 #+begin_src emacs-lisp :tangle init.el
   (use-package undo-tree
     :straight t
+    :diminish global-undo-tree-mode undo-tree-mode
     :init
     (global-undo-tree-mode))
 #+end_src
@@ -789,7 +790,8 @@ configurations, similar to the workspaces in tiling window managers.
     :hook
     ((dired-mode-hook . dired-hide-details-mode)
      (dired-mode-hook . dired-hide-dotfiles-mode)
-     (dired-mode-hook . all-the-icons-dired-mode))
+     (dired-mode-hook . all-the-icons-dired-mode)
+     (dired-mode-hook . hl-line-mode))
 
     :bind
     (:map dired-mode-map
@@ -932,7 +934,9 @@ default, as well as the templates to use for capture.
      '(("a" "Assignments"
         entry
         (file+headline "agenda.org" "Assignments")
-        "* TODO %^{prompt|Política|Antropologia|Sociologia|Economia|Filosofia} - %A\n%?\nDEADLINE: %^T"))))
+        "* TODO %^{prompt|Política|Antropologia|Sociologia|Economia|Filosofia} - %A\n%?\nDEADLINE: %^T")))
+    :bind
+    (("C-c a a" . org-agenda)))
 #+end_src
 
 *** Structure blocks
@@ -1432,7 +1436,6 @@ standard completion mechanism, which for this configuration is Ivy.
 #+begin_src emacs-lisp :tangle init.el
   (use-package password-store
     :straight pass
-    :defines pass-mode-map
     :commands
     (password-store-insert
      password-store-copy
@@ -1442,9 +1445,7 @@ standard completion mechanism, which for this configuration is Ivy.
     (("C-c p i" . password-store-insert)
      ("C-c p w" . password-store-copy)
      ("C-c p e" . password-store-edit)
-     ("C-c p p" . pass)
-     (:map pass-mode-map
-           ("q" . kill-buffer-and-window))))
+     ("C-c p p" . pass)))
 #+end_src
 
 ** Elfeed
@@ -1624,9 +1625,8 @@ elfeed.
 
 * Theming and appearance
 
-Finally, ricing. In this section we install all cosmetic packages,
-such as color themes, =dashboard= and modelines, and customize them,
-including face attributes and frame options.
+Finally, ricing. In this section we make all visual customisation,
+install all cosmetic packages and color themes.
 
 ** All The Icons
 
@@ -1720,7 +1720,18 @@ including face attributes and frame options.
 
 ** Modeline
 
-#+begin_src 
+The modeline is a convenient place to display information. Here we
+enable some of that.
+
+*** LEGACY doom-modeline
+
+Section dropped. Doom Modeline slightly impacts load time, and doesn't
+really look all that much better than the standard. I actually dislike
+how tall it is.I guess it has some fancy icons, but that's it. Not
+really worth the tradeoff.
+
+
+#+begin_src emacs-lisp
   (use-package doom-modeline
     :straight t
     :defer nil
@@ -1738,8 +1749,32 @@ including face attributes and frame options.
     (doom-modeline-persp-name t)
     :config
     (doom-modeline-mode))
+#+end_src
 
-  ;; (setq-default mode-line-format (list "%b %m"))
+** Time display
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package time
+    :commands world-clock
+    :custom
+    (display-time-format "%H:%M  %Y-%m-%d")
+    (display-time-interval 60)
+    (display-time-mail-directory nil)
+    (display-time-default-load-average t)
+
+    (zoneinfo-style-world-list
+     '(("America/Los_Angeles" "-8 Seattle")
+       ("America/New_York" "-5 New York")
+       ("America/Sao_Paulo" "-3 Brasília")
+       ("Europe/London" "+0 London")
+       ("Europe/Brussels" "+1 Berlin")
+       ("Europe/Moscow" "+3 Baghdad")
+       ("Asia/Shanghai" "+8 Shanghai")
+       ("Asia/Tokyo" "+9 Tokyo")))
+
+    :hook (after-init-hook . display-time-mode)
+    :bind
+    (("C-c a t" . display-time-world)))
 #+end_src
 
 ** Cursor and mouse
