@@ -1305,6 +1305,24 @@ hooking nov.el to olivetti-mode.
             ("M-p" . scroll-down-line))))
 #+end_src
 
+** CalibreDB
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package calibredb
+    :straight t
+    :defer t
+    :init
+    (autoload 'calibredb "calibredb")
+    :custom
+    (calibredb-root-dir "~/doc/books")
+    (calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
+    (calibredb-library-alist '(("~/doc/books")))
+    (calibredb-format-all-the-icons t)
+    :bind
+    (("C-c s l" . calibredb)
+     ("C-c s s" . calibredb-find-counsel)))
+#+end_src
+
 ** Flyspell
 
 #+begin_src emacs-lisp :tangle init.el
