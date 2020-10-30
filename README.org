@@ -1794,9 +1794,9 @@ databases. =ivy-mpdel= adds Ivy completion to mpdel.
   (use-package mpdel
     :straight ivy-mpdel
     :bind
-    (("C-c m m m" . ivy-mpdel-list)
-     ("C-c m m l" . mpdel-playlist-open)
-     ("C-c m m b" . mpdel-browser-open)))
+    (("C-c m m" . ivy-mpdel-list)
+     ("C-c m l" . mpdel-playlist-open)
+     ("C-c m b" . mpdel-browser-open)))
 #+end_src
 
 ** Videos
