@@ -436,11 +436,35 @@ into this file. Using =general.el= somewhat avoids having to do this,
 but use-package's :bind still requires this for some things.
 
 #+begin_src emacs-lisp :tangle init.el
-  (define-prefix-command 'aabm/search-map)
-  (global-set-key (kbd "M-s") 'aabm/search-map)
+  (define-prefix-command 'search+)
+  (global-set-key (kbd "M-s") 'search+)
 
-  (define-prefix-command 'aabm/music-map)
-  (global-set-key (kbd "C-c m") 'aabm/music-map)
+  (define-prefix-command 'agenda-and-time)
+  (global-set-key (kbd "C-c a") 'agenda-and-time)
+
+  (define-prefix-command 'music)
+  (global-set-key (kbd "C-c m") 'music)
+
+  (define-prefix-command 'youtube)
+  (global-set-key (kbd "C-c y") 'youtube)
+
+  (define-prefix-command 'fill-text)
+  (global-set-key (kbd "C-c f") 'fill-text)
+
+  (define-prefix-command 'text-editing)
+  (global-set-key (kbd "C-c t") 'text-editing)
+
+  (define-prefix-command 'buffers)
+  (global-set-key (kbd "C-c b") 'buffers)
+
+  (define-prefix-command 'password-management)
+  (global-set-key (kbd "C-c p") 'password-management)
+
+  (define-prefix-command 'database)
+  (global-set-key (kbd "C-c s") 'database)
+
+  (define-prefix-command 'notes)
+  (global-set-key (kbd "C-c n") 'notes)
 #+end_src
 
 * Base packages
@@ -631,7 +655,7 @@ press C-c m, the keybinding defined here.
     :straight t
     :commands mc/edit-lines
     :bind
-    (("C-c l" . mc/edit-lines)))
+    (("C-c t m" . mc/edit-lines)))
 #+end_src
 
 ** Writable grep
@@ -1320,7 +1344,8 @@ hooking nov.el to olivetti-mode.
     (calibredb-format-all-the-icons t)
     :bind
     (("C-c s l" . calibredb)
-     ("C-c s s" . calibredb-find-counsel)))
+     ("C-c s s" . calibredb-find-counsel)
+     ("C-c s a" . calibredb-add)))
 #+end_src
 
 ** Flyspell
@@ -1331,7 +1356,7 @@ hooking nov.el to olivetti-mode.
     :custom
     (ispell-program-name "aspell")
     :bind
-    (("C-c f s" . flyspell-mode)))
+    (("C-c t f" . flyspell-mode)))
 #+end_src
 
 * Personal agenda, time and task management
@@ -1769,9 +1794,9 @@ databases. =ivy-mpdel= adds Ivy completion to mpdel.
   (use-package mpdel
     :straight ivy-mpdel
     :bind
-    (("C-c m m" . ivy-mpdel-list)
-     ("C-c m l" . mpdel-playlist-open)
-     ("C-c m b" . mpdel-browser-open)))
+    (("C-c m m m" . ivy-mpdel-list)
+     ("C-c m m l" . mpdel-playlist-open)
+     ("C-c m m b" . mpdel-browser-open)))
 #+end_src
 
 ** Videos
@@ -1787,10 +1812,8 @@ it.
 #+begin_src emacs-lisp :tangle init.el
   (use-package ytdl
     :straight t
-    :init
-    (general-define-key
-     "C-c y d" 'ytdl-download)
-
+    :bind
+    (("C-c y d" . ytdl-download))
     :custom
     (ytdl-download-folder "~/vids")
     (ytdl-video-folder "~/vids")
@@ -1812,12 +1835,7 @@ elfeed.
     :straight t
     :functions ytel-get-current-video
     :custom
-    (ytel-invidious-api-url "https://invidious.tube")
-  
-    :init
-    (general-define-key
-     "C-c y y" 'ytel)
-  
+    (ytel-invidious-api-url "https://invidious.snopyta.org")
     :config
     (defun ytel-watch-mpv ()
       "Stream video at point in mpv."
@@ -1830,7 +1848,8 @@ elfeed.
         "--ytdl-format=bestvideo[height<=?720]+bestaudio/best")
       (message "Starting stream..."))
     :bind
-    ((:map ytel-mode-map
+    (("C-c y y" . ytel)
+     (:map ytel-mode-map
           ("RET" . ytel-watch-mpv))))
 #+end_src
 
