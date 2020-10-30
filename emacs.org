@@ -372,11 +372,13 @@ like those cluttering up my directories.
 
 Now for changing some prompts. First we change all "Yes or No" prompts
 for simple "y or n", then we remove some prompts that appear when
-killing buffers. 
+killing buffers, and finally we disable the "file is too large. Really
+Open?" prompt. 
 
 #+begin_src emacs-lisp :tangle init.el
   (defalias 'yes-or-no-p 'y-or-n-p)
-  (setq kill-buffer-query-functions nil)
+  (setq kill-buffer-query-functions nil
+        large-file-warning-threshold nil)
 #+end_src
 
 Finally, we make sure Emacs automatically reloads any buffers when
@@ -423,6 +425,20 @@ We also install =smex=, which provides and ido menu for M-x.
 	:straight t
 	:bind
 	("M-x" . smex))
+#+end_src
+
+** Defining annoying prefix keys
+
+Here are all the prefix key definitions that might be necessary later
+into this file. Using =general.el= somewhat avoids having to do this,
+but use-package's :bind still requires this for some things.
+
+#+begin_src emacs-lisp :tangle init.el
+  (define-prefix-command 'aabm/search-map)
+  (global-set-key (kbd "M-s") 'aabm/search-map)
+
+  (define-prefix-command 'aabm/music-map)
+  (global-set-key (kbd "C-c m") 'aabm/music-map)
 #+end_src
 
 * Base packages
@@ -516,7 +532,7 @@ these are later bound to keys.
     :bind
     (("C-s" . swiper)
      ("C-r" . swiper-backward)
-     ("M-s" . avy-goto-char-2)
+     ("M-s s" . avy-goto-char-2)
      ("C-x C-f" . counsel-find-file)
      ("C-x b" . counsel-switch-buffer)
      ("C-x r b" . counsel-bookmark)
@@ -575,6 +591,18 @@ region is bound to the C-= keychord.
     (("C-=" . er/expand-region)))
 #+end_src
 
+** Surround
+
+A utility for editing text surrounding other text, like parentheses,
+brackets, quotation marks, etc. Inspired by Vim's =surround= plugin.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package emacs-surround
+    :straight (:host github :repo "ganmacs/emacs-surround")
+    :bind
+    ("C--" . emacs-surround))
+#+end_src
+
 ** Hungry delete
 
 =hungry-delete= is a utility for making deletion of long bits of
@@ -601,7 +629,7 @@ press C-c m, the keybinding defined here.
     :straight t
     :commands mc/edit-lines
     :bind
-    (("C-c m" . mc/edit-lines)))
+    (("C-c l" . mc/edit-lines)))
 #+end_src
 
 ** Writable grep
@@ -636,6 +664,17 @@ output of grep, then write it into the files.
     :diminish global-undo-tree-mode undo-tree-mode
     :init
     (global-undo-tree-mode))
+#+end_src
+
+** Sudo edit
+
+Easily open a file using sudo over =TRAMP=.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package sudo-edit
+    :straight t
+    :bind
+    (("H-x H-f" . sudo-edit-find-file)))
 #+end_src
 
 * Buffer, file and window management
@@ -683,6 +722,12 @@ they be in =org-mode= or in =lisp-interaction-mode=.
     (interactive)
     (switch-to-buffer (make-temp-name "scratch-"))
     (lisp-interaction-mode))
+
+  (defun aabm/generate-text-buffer ()
+    "Create and switch to a temporary text buffer with a random name."
+    (interactive)
+    (switch-to-buffer (make-temp-name "text-"))
+    (fundamental-mode))
 #+end_src
 
 *** Kill buffer and window
@@ -706,7 +751,8 @@ it is being displayed.
    "C-x k" 'kill-this-buffer
    "C-x C-k" 'aabm/kill-this-buffer-and-window
    "C-c b o" 'aabm/generate-org-buffer
-   "C-c b s" 'aabm/generate-scratch-buffer)
+   "C-c b s" 'aabm/generate-scratch-buffer
+   "C-c b t" 'aabm/generate-text-buffer)
 #+end_src
 
 ** Windows
@@ -752,7 +798,27 @@ configurations, similar to the workspaces in tiling window managers.
     (eyebrowse-mode))
 #+end_src
 
-** Dired
+*** Ace Window
+
+=ace-window= is a package that allows for quicker switching between
+multiple windows. Other actions like window deletion and swap are also
+supported.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package ace-window
+    :straight t
+    :init
+    (global-unset-key (kbd "M-o"))
+    :bind
+    (("M-o o" . ace-select-window)
+     ("M-o s" . ace-swap-window)
+     ("M-o 0" . ace-delete-window)
+     ("M-o 1" . ace-delete-other-windows)))
+#+end_src
+
+** Files
+
+*** Dired
 
 =dired=, or the =directory editor= is Emacs' built in file manager.
 
@@ -809,7 +875,7 @@ configurations, similar to the workspaces in tiling window managers.
            ("q" . kill-this-buffer))))
 #+end_src
 
-** Magit
+*** Magit
 
 =Magit= is a complete =git= frontend for Emacs. It makes usage of git
 significantly easier and more intuitive. No more typing esoteric shell
@@ -821,6 +887,26 @@ commands you barely understand.
     :commands magit-status
     :bind
     (("C-x g" . magit-status)))
+#+end_src
+
+*** rg
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package rg
+    :straight t
+    :bind
+    (("M-s r" . rg)))
+#+end_src
+
+** Emacs as an Xorg Window manager
+
+*** dmenu
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package dmenu
+    :straight t
+    :bind
+    (("s-d" . dmenu)))
 #+end_src
 
 * Writing, notetaking and reading
@@ -886,7 +972,9 @@ some basic options. These are:
           (("M-n" . org-forward-element)
            ("M-p" . org-backward-element)
            ("C-M-n" . org-metadown)
-           ("C-M-p" . org-metaup))))
+           ("C-M-p" . org-metaup)
+           ("C-M-f" . org-metaright)
+           ("C-M-b" . org-metaleft))))
 #+end_src
 
 *** Agenda, Tasks and TODOs
@@ -900,25 +988,32 @@ First, we:
 - Ensure tasks cannot be completed if they have unfinished dependencies
 - Add a timestamp to all completed tasks
 
+Finally, we define a few custom functions: one that automatically
+marks the current task as DONE, then sends it to the archive, and
+another for quickly opening up the main agenda file.
+
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
     :custom
-    ;; (org-agenda-files (concat org-directory "/agenda.org"))
+    (org-agenda-files '("~/org/agenda.org"))
     (org-archive-location (concat org-directory "/archive.org::"))
     (org-enforce-todo-dependencies t)
     (org-enforce-todo-checkbox-dependencies t)
     (org-log-done 'time))
-#+end_src
 
-Finally, we define a function that automatically marks the current
-task as DONE, then sends it to the archive.
-
-#+begin_src emacs-lisp :tangle init.el
   (defun aabm/org-todo-done-and-archive ()
     "Sets current org task do DONE and sends it to org-archive-location."
     (interactive)
     (org-todo 'done)
     (org-archive-subtree))
+
+  (defun aabm/find-org-agenda-file ()
+    "Finds the agenda.org file"
+    (interactive)
+    (find-file (car (org-agenda-files))))
+
+  (general-define-key
+   "C-c C-a" 'aabm/find-org-agenda-file)
 #+end_src
 
 *** Capture
@@ -978,7 +1073,7 @@ Org includes a series of utilities for exporting org files into other formats, i
 #+begin_src emacs-lisp :tangle init.el
   (use-package ox
     :straight ox-epub
-    :after org
+    :requires
     (ox-ascii
      ox-beamer
      ox-html
@@ -1074,6 +1169,21 @@ headings with nice looking Unicode characters.
     (org-mode-hook . org-superstar-mode))
 #+end_src
 
+** LaTeX
+
+*** AucTeX
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package auctex
+    :straight t
+    :custom
+    (TeX-PDF-mode t)
+    (TeX-view-program-selection '((output-pdf "PDF Tools")))
+    (TeX-source-correlate-start-server t)
+    :hook
+    (TeX-after-compilation-finished-functions . TeX-revert-document-buffer))
+#+end_src
+
 ** Markdown
 
 I don't really use =Markdown=, since org is a much superior markup language, but occasionally I need to open a .md file, and for that I would like to have syntax highlighting. So here we install =markdown-mode=.
@@ -1144,12 +1254,12 @@ can easily be changed to use any other viewer, like =evince= or
   (message "Sent to Zathura"))
 #+end_src
 
-Finally, the third function, =aabm/pdf-view-show-current-page=, exists
+Finally, the third function, =aabm/pdf-view-print-current-page=, exists
 for printing the current page number to the echo area.
 
 #+begin_src emacs-lisp :tangle init.el
 (defun aabm/pdf-view-show-current-page ()
-  "Show the current page."
+  "Print the current page."
   (interactive)
   (message "Page: %s" (pdf-view-current-page)))
 #+end_src
@@ -1191,6 +1301,96 @@ hooking nov.el to olivetti-mode.
     (:map nov-mode-map
             (("M-n" . scroll-up-line)
             ("M-p" . scroll-down-line))))
+#+end_src
+
+** Flyspell
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package flyspell
+    :straight t
+    :custom
+    (ispell-program-name "aspell")
+    :bind
+    (("C-c f s" . flyspell-mode)))
+#+end_src
+
+* Personal agenda, time and task management
+
+** Time display
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package time
+    :commands world-clock
+    :custom
+    (display-time-format "%a, %b %d %H:%M")
+    (display-time-interval 60)
+    (display-time-mail-directory nil)
+    (display-time-default-load-average t)
+
+    (zoneinfo-style-world-list
+     '(("America/Los_Angeles" "-8 Seattle")
+       ("America/New_York" "-5 New York")
+       ("America/Sao_Paulo" "-3 Brasília")
+       ("Europe/London" "+0 London")
+       ("Europe/Brussels" "+1 Berlin")
+       ("Europe/Moscow" "+3 Baghdad")
+       ("Asia/Shanghai" "+8 Shanghai")
+       ("Asia/Tokyo" "+9 Tokyo")))
+
+    :hook (after-init-hook . display-time-mode)
+    :bind
+    (("C-c a t" . display-time-world)))
+#+end_src
+
+** Calendar
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package calendar
+    :commands calendar
+    :custom
+
+    (calendar-week-start-day 0)
+
+    (calendar-day-name-array ["Domingo" "Segunda" "Terça" "Quarta" 
+                              "Quinta" "Sexta" "Sábado"])
+
+    (calendar-month-name-array ["Janeiro" "Fevereiro" "Março" "Abril"
+                                "Maio" "Junho" "Julho" "Agosto"
+                                "Setembro" "Outubro" "Novembro" "Dezembro"])
+    :config
+    (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
+    :bind
+    (("C-c a c" . calendar)))
+#+end_src
+
+** LEGACY User credentials
+
+:LEGACY:
+The code here has been moved to other places for performance (it now
+gets lazy loaded by a use-package), but the documentation has been
+kept here.
+:END:
+
+This section loads my personal credentials file. The contents of the
+file are minimal, but are kept separate from this file so that
+distribution of this configuration does not contain any personal
+information that I'd rather not leak to the public.
+
+#+begin_src emacs-lisp
+  (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
+#+end_src
+
+If you wish to use the above setting, simply create a file in your
+user-emacs-directory with the name "creds.el.gpg" containing something
+like the example below:
+
+#+begin_src emacs-lisp 
+  Example setting for a credentials file:
+  (setq user-full-name "Your Name Here"
+        user-mail-address "your@email.here"
+        calendar-latitude 00.00
+        calendar-longitude 000.00
+        calendar-location-name "City, State")
 #+end_src
 
 * Programming
@@ -1401,32 +1601,6 @@ mail client with =mu4e=, mailing list reader with =Gnus=, RSS news
 reader =Elfeed= and text-based web browser, with =eww=. Many of these
 settings are somehow security related.
 
-** LEGACY User credentials
-
-*code moved to [[*mu4e][mu4e]] for performance, documentation kept here*
-
-This section loads my personal credentials file. The contents of the
-file are minimal, but are kept separate from this file so that
-distribution of this configuration does not contain any personal
-information that I'd rather not leak to the public.
-
-#+begin_src emacs-lisp :tangle init.el
-  ;; (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
-#+end_src
-
-If you wish to use the above setting, simply create a file in your
-user-emacs-directory with the name "creds.el.gpg" containing something
-like the example below:
-
-#+begin_src emacs-lisp 
-  ;;; Example setting for a credentials file:
-  ;; (setq user-full-name "Your Name Here"
-  ;;       user-mail-address "your@email.here"
-  ;;       calendar-latitude 00.00
-  ;;       calendar-longitude 000.00
-  ;;       calendar-location-name "City, State")
-#+end_src
-
 ** Password management
 
 Here we set up a convenient interface for =pass=, the standard Unix
@@ -1493,7 +1667,7 @@ external video player, namely =mpv=, which is bound to the v key.
 =mu4e= is a full featured mail client for Emacs. It requires use of
 external tools, namely:
 - A tool for pulling mail from the server, like =isync=
-- A tool fore sending mail over SMTP, like =msmtp=
+- A tool for sending mail over SMTP, like =msmtp=
 - =mu=, which is mu4e's own mail indexing and search tool
 
 The settings contained in this block basically set mu4e up for usage
@@ -1506,20 +1680,36 @@ of those tools.
     :custom
     (mu4e-maildir "~/.mail/disroot/")
     (mu4e-get-mail-command "/usr/bin/mbsync -a")
-    (mu4e-html2text-command "/usr/bin/w3m -T text/html")
+
     (mu4e-drafts-folder "/drafts")
     (mu4e-sent-folder "/sent")
     (mu4e-trash-folder "/trash")
+
     (message-send-mail-function 'message-send-mail-with-sendmail)
     (sendmail-program "/usr/bin/msmtp")
     (message-sendmail-extra-arguments '("--read-envelope-from"))
     (message-sendmail-f-is-evil 't)
+
     (mu4e-completing-read-function 'ivy-completing-read)
     (mu4e-confirm-quit nil)
+    (message-kill-buffer-on-exit t)
+
+    (mu4e-html2text-command "/usr/bin/w3m -T text/html")
+    (mu4e-use-fancy-chars t)
+    (mu4e-attachment-dir "~/")
+
     (mu4e-compose-signature
      '(user-full-name))
+
+    :hook
+    (message-send-hook .
+                       (lambda ()
+                         (unless (yes-or-no-p "Sure you want to send this?")
+                           (signal 'quit nil))))
+
     :config
     (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
+
     :bind
     (("H-x m" . mu4e)
      ("C-x m" . mu4e-compose-new)))
@@ -1547,20 +1737,21 @@ better readability in web pages.
 Emacs can be used to manage all sorts of media playback
 utilities. This is usually accomplished by means of packages that
 provide frontends for certain local applications. For instance, we use
-=mingus= to interface with =mpd= for music playback.
+=mpdel= and =ivy-mpdel= to interface with =mpd= for music playback,
+and =ytdl= and =ytel= to watch and download videos.
 
 ** Music
 
+=mpdel= provides a range of functions for managing =mpd= playlists and
+databases. =ivy-mpdel= adds Ivy completion to mpdel.
+
 #+begin_src emacs-lisp :tangle init.el
-  (use-package mingus
-    :straight t
-    :commands mingus
+  (use-package mpdel
+    :straight ivy-mpdel
     :bind
-    ("H-m" . mingus)
-    :config
-    (general-define-key
-     :keymaps '(mingus-browse-map mingus-playlist-map)
-     "q" 'kill-this-buffer))
+    (("C-c m m" . ivy-mpdel-list)
+     ("C-c m l" . mpdel-playlist-open)
+     ("C-c m b" . mpdel-browser-open)))
 #+end_src
 
 ** Videos
@@ -1623,7 +1814,7 @@ elfeed.
           ("RET" . ytel-watch-mpv))))
 #+end_src
 
-* Theming and appearance
+* Theming, cosmetics and appearance
 
 Finally, ricing. In this section we make all visual customisation,
 install all cosmetic packages and color themes.
@@ -1636,9 +1827,117 @@ install all cosmetic packages and color themes.
     :defer nil)
 #+end_src
 
-** Dashboard
+** Initial scratch buffer
 
-#+begin_src 
+Using this configuration, the default start buffer is the *scratch*
+buffer. I used to use a pretty elaborate [[*Dashboard][Dashboard]] setup, but decided
+to scratch that for simplicity. Here we do some basic customizations
+to the default scratch buffer, to make it a little nicer.
+
+#+begin_src emacs-lisp :tangle init.el
+#+end_src
+
+** Cursor and mouse
+
+#+begin_src emacs-lisp :tangle init.el
+  (blink-cursor-mode -1)
+#+end_src
+
+** Beacon
+
+=beacon-mode= highlights the point everytime a significant motion
+happens. It helps the user quickly locate the new position.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package beacon
+    :straight t
+    :diminish beacon-mode
+    :init
+    (beacon-mode))
+#+end_src
+
+** Color theme
+
+Here we install a bunch of themes I like. These involve:
+- Modus Themes by Protesilaos Stavrou
+- The Majapahit theme
+- The entire collection of themes from Doom Emacs, just for Gruvbox
+
+The customizations applied to the doom-themes simply ensure some basic
+features are enabled. We also ensure the Doom Gruvbox theme always
+
+uses the Hard contrast variant, with a #1D2021 background instead of
+the normal #282828.
+
+#+begin_src emacs-lisp :tangle init.el
+  (straight-use-package 'modus-operandi-theme)
+  (straight-use-package 'modus-vivendi-theme)
+
+  (use-package doom-themes
+    :straight t
+    :custom
+    (doom-themes-enable-bold t)
+    (doom-themes-enable-italic t)
+    (doom-gruvbox-dark-variant "hard")
+    (doom-themes-org-config))
+
+  (load-theme 'doom-gruvbox t)
+  ;; (load-theme 'modus-operandi t t)
+  ;; (run-at-time "05:00" (* 60 60 24)
+  ;;              (lambda ()
+  ;;                (enable-theme 'modus-operandi)))
+
+  ;; (load-theme 'modus-vivendi t t)
+  ;; (run-at-time "21:00" (* 60 60 24)
+  ;;              (lambda ()
+  ;;                (enable-theme 'modus-vivendi)))
+#+end_src
+
+** Face customization
+
+This is the face customization section. Here we change any faces that
+do not look good by default. So far, the only faces included here
+relate to fonts.
+
+#+begin_src emacs-lisp :tangle init.el
+  (set-face-attribute 'fixed-pitch-serif t
+                      :inherit 'default)
+
+  (set-face-attribute 'Info-quoted t
+                      :inherit 'default)
+
+  (set-face-attribute 'variable-pitch t
+                      :height 150
+                      :family "Cantarell")
+#+end_src
+
+** Frame options
+
+Now we set the options to be used by default by the Emacs frame. These
+include fonts, frame name (to be used by the window manager's
+titlebar), frame size and transparency.
+
+#+begin_src emacs-lisp :tangle init.el
+  (set-frame-font "Iosevka 12" nil t)
+  (setq frame-title-format "%b")
+
+  (add-to-list 'default-frame-alist '(font . "Iosevka 12"))
+
+  (set-frame-parameter (selected-frame) 'alpha '(97 95))
+  (add-to-list 'default-frame-alist '(alpha 97 95))
+#+end_src
+   
+** LEGACY Dashboard
+
+:LEGACY:
+Dashboard is quite a nice package, I'll be honest. It's nice enough
+that it brought me into writing all this code just so I'd have my own
+custom dash. The problem is I eventually got sick of it. Scratch
+buffers on init are really where it's at. This section has been kept
+just in case I ever decide to come back to it.
+:END:
+
+#+begin_src emacs-lisp
   (use-package dashboard
     :straight t
     :defer nil
@@ -1718,18 +2017,14 @@ install all cosmetic packages and color themes.
     (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
 #+end_src
 
-** Modeline
+** LEGACY Doom Modeline
 
-The modeline is a convenient place to display information. Here we
-enable some of that.
-
-*** LEGACY doom-modeline
-
+:LEGACY:
 Section dropped. Doom Modeline slightly impacts load time, and doesn't
 really look all that much better than the standard. I actually dislike
-how tall it is.I guess it has some fancy icons, but that's it. Not
+how tall it is. I guess it has some fancy icons, but that's it. Not
 really worth the tradeoff.
-
+:END:
 
 #+begin_src emacs-lisp
   (use-package doom-modeline
@@ -1751,106 +2046,6 @@ really worth the tradeoff.
     (doom-modeline-mode))
 #+end_src
 
-** Time display
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package time
-    :commands world-clock
-    :custom
-    (display-time-format "%H:%M  %Y-%m-%d")
-    (display-time-interval 60)
-    (display-time-mail-directory nil)
-    (display-time-default-load-average t)
-
-    (zoneinfo-style-world-list
-     '(("America/Los_Angeles" "-8 Seattle")
-       ("America/New_York" "-5 New York")
-       ("America/Sao_Paulo" "-3 Brasília")
-       ("Europe/London" "+0 London")
-       ("Europe/Brussels" "+1 Berlin")
-       ("Europe/Moscow" "+3 Baghdad")
-       ("Asia/Shanghai" "+8 Shanghai")
-       ("Asia/Tokyo" "+9 Tokyo")))
-
-    :hook (after-init-hook . display-time-mode)
-    :bind
-    (("C-c a t" . display-time-world)))
-#+end_src
-
-** Cursor and mouse
-
-#+begin_src emacs-lisp :tangle init.el
-  (blink-cursor-mode -1)
-#+end_src
-
-** Color theme
-
-Here we install a bunch of themes I like. These involve:
-- Modus Themes by Protesilaos Stavrou
-- The Majapahit theme
-- The entire collection of themes from Doom Emacs, just for Gruvbox
-
-The customizations applied to the doom-themes simply ensure some basic
-features are enabled. We also ensure the Doom Gruvbox theme always
-
-uses the Hard contrast variant, with a #1D2021 background instead of
-the normal #282828.
-
-#+begin_src emacs-lisp :tangle init.el
-  (straight-use-package 'modus-operandi-theme)
-  (straight-use-package 'modus-vivendi-theme)
-
-  (use-package doom-themes
-    :straight t
-    :custom
-    (doom-themes-enable-bold t)
-    (doom-themes-enable-italic t)
-    (doom-gruvbox-dark-variant "hard")
-    (doom-themes-org-config))
-
-  (load-theme 'doom-gruvbox t)
-  ;; (load-theme 'modus-operandi t t)
-  ;; (run-at-time "05:00" (* 60 60 24)
-  ;;              (lambda ()
-  ;;                (enable-theme 'modus-operandi)))
-
-  ;; (load-theme 'modus-vivendi t t)
-  ;; (run-at-time "21:00" (* 60 60 24)
-  ;;              (lambda ()
-  ;;                (enable-theme 'modus-vivendi)))
-#+end_src
-
-** Face customization
-
-This is the face customization section. Here we change any faces that
-do not look good by default. So far, the only faces included here
-relate to fonts.
-
-#+begin_src emacs-lisp :tangle init.el
-  (set-face-attribute 'fixed-pitch-serif t
-                      :inherit 'default)
-
-  (set-face-attribute 'variable-pitch t
-                      :height 150
-                      :family "Cantarell")
-#+end_src
-
-** Frame options
-
-Now we set the options to be used by default by the Emacs frame. These
-include fonts, frame name (to be used by the window manager's
-titlebar), frame size and transparency.
-
-#+begin_src emacs-lisp :tangle init.el
-  (set-frame-font "Iosevka 12" nil t)
-  (setq frame-title-format "%b")
-
-  (add-to-list 'default-frame-alist '(font . "Iosevka 12"))
-
-  (set-frame-parameter (selected-frame) 'alpha '(97 95))
-  (add-to-list 'default-frame-alist '(alpha 97 95))
-#+end_src
-   
 * Start server
 
 It is preferable to use Emacs as daemon in the background. Here we
