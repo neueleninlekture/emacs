@@ -568,14 +568,6 @@ these are later bound to keys.
      ("C-h o" . counsel-describe-symbol)))
 #+end_src
 
-** ESUP
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package esup
-    :straight t
-    :commands (esup))
-#+end_src
-
 * Text editing
 
 Under this section we put all configurations and packages that expand
@@ -878,14 +870,13 @@ supported.
       "Move up a directory, reusing the current buffer, instead of creating a new one."
       (interactive)
       (find-alternate-file ".."))
-
+  
     :hook
     ((dired-mode-hook . dired-hide-details-mode)
      (dired-mode-hook . dired-hide-dotfiles-mode)
      (dired-mode-hook . all-the-icons-dired-mode)
      (dired-mode-hook . hl-line-mode))
 
-    :diminish all-the-icons-dired-mode dired-hide-dotfiles-mode dired-async-mode
     :bind
     (:map dired-mode-map
           (("RET" . dired-find-alternate-file)
@@ -1401,17 +1392,15 @@ hooking nov.el to olivetti-mode.
   (use-package calendar
     :commands calendar
     :custom
-
     (calendar-week-start-day 0)
-
     (calendar-day-name-array ["Domingo" "Segunda" "Terça" "Quarta" 
                               "Quinta" "Sexta" "Sábado"])
-
     (calendar-month-name-array ["Janeiro" "Fevereiro" "Março" "Abril"
                                 "Maio" "Junho" "Julho" "Agosto"
                                 "Setembro" "Outubro" "Novembro" "Dezembro"])
     :config
     (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
+  
     :bind
     (("C-c a c" . calendar)))
 #+end_src
@@ -1874,33 +1863,78 @@ install all cosmetic packages and color themes.
     :defer nil)
 #+end_src
 
-** Initial scratch buffer
+** Powerline
 
-Using this configuration, the default start buffer is the *scratch*
-buffer. I used to use a pretty elaborate [[*Dashboard][Dashboard]] setup, but decided
-to scratch that for simplicity. Here we do some basic customizations
-to the default scratch buffer, to make it a little nicer.
-
-#+begin_src emacs-lisp :tangle init.el
-#+end_src
-
-** Cursor and mouse
+=Powerline= provides a neat custom modeline, which looks closer to the
+default than, for instance, =doom-modeline= does. Here we set a custom
+theme, based on the default. Only difference is that this theme does
+not show =minor modes=, thus making =diminish= pointless.
 
 #+begin_src emacs-lisp :tangle init.el
-  (blink-cursor-mode -1)
-#+end_src
-
-** Beacon
-
-=beacon-mode= highlights the point everytime a significant motion
-happens. It helps the user quickly locate the new position.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package beacon
+  (use-package powerline
     :straight t
-    :diminish beacon-mode
     :init
-    (beacon-mode))
+
+    (defun powerline-aabm-theme ()
+      "Setup the custom mode-line."
+      (interactive)
+      (setq-default mode-line-format
+                    '("%e"
+                      (:eval
+                       (let* ((active (powerline-selected-window-active))
+                              (mode-line-buffer-id (if active 'mode-line-buffer-id 'mode-line-buffer-id-inactive))
+                              (mode-line (if active 'mode-line 'mode-line-inactive))
+                              (face0 (if active 'powerline-active0 'powerline-inactive0))
+                              (face1 (if active 'powerline-active1 'powerline-inactive1))
+                              (face2 (if active 'powerline-active2 'powerline-inactive2))
+                              (separator-left (intern (format "powerline-%s-%s"
+                                                              (powerline-current-separator)
+                                                              (car powerline-default-separator-dir))))
+                              (separator-right (intern (format "powerline-%s-%s"
+                                                               (powerline-current-separator)
+                                                               (cdr powerline-default-separator-dir))))
+                              (lhs (list (powerline-raw "%*" face0 'l)
+                                         (when powerline-display-buffer-size
+                                           (powerline-buffer-size face0 'l))
+                                         (when powerline-display-mule-info
+                                           (powerline-raw mode-line-mule-info face0 'l))
+                                         (powerline-buffer-id `(mode-line-buffer-id ,face0) 'l)
+                                         (when (and (boundp 'which-func-mode) which-func-mode)
+                                           (powerline-raw which-func-format face0 'l))
+                                         (powerline-raw " " face0)
+                                         (funcall separator-left face0 face1)
+                                         (when (and (boundp 'erc-track-minor-mode) erc-track-minor-mode)
+                                           (powerline-raw erc-modified-channels-object face1 'l))
+                                         (powerline-major-mode face1 'l)
+                                         (powerline-process face1)
+                                         (powerline-narrow face1 'l)
+                                         (powerline-raw " " face1)
+                                         (funcall separator-left face1 face2)
+                                         (powerline-vc face2 'r)
+                                         (when (bound-and-true-p nyan-mode)
+                                           (powerline-raw (list (nyan-create)) face2 'l))))
+                              (rhs (list (powerline-raw global-mode-string face2 'r)
+                                         (funcall separator-right face2 face1)
+                                         (unless window-system
+                                           (powerline-raw (char-to-string #xe0a1) face1 'l))
+                                         (powerline-raw "%4l" face1 'l)
+                                         (powerline-raw ":" face1 'l)
+                                         (powerline-raw "%3c" face1 'r)
+                                         (funcall separator-right face1 face0)
+                                         (powerline-raw " " face0)
+                                         (powerline-raw "%6p" face0 'r)
+                                         (when powerline-display-hud
+                                           (powerline-hud face0 face2))
+                                         (powerline-fill face0 0)
+                                         )))
+                         (concat (powerline-render lhs)
+                                 (powerline-fill face2 (powerline-width rhs))
+                                 (powerline-render rhs)))))))
+    :config
+    (powerline-aabm-theme)
+
+    :custom
+    (powerline-default-separator "wave"))
 #+end_src
 
 ** Color theme
@@ -1938,6 +1972,25 @@ the normal #282828.
   ;; (run-at-time "21:00" (* 60 60 24)
   ;;              (lambda ()
   ;;                (enable-theme 'modus-vivendi)))
+#+end_src
+
+** Beacon
+
+=beacon-mode= highlights the point everytime a significant motion
+happens. It helps the user quickly locate the new position.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package beacon
+    :straight t
+    :diminish beacon-mode
+    :init
+    (beacon-mode))
+#+end_src
+
+** Cursor and mouse
+
+#+begin_src emacs-lisp :tangle init.el
+  (blink-cursor-mode -1)
 #+end_src
 
 ** Face customization
