@@ -27,7 +27,7 @@ extracted (tangled) into a few other files, mainly =early-init.el= and
 functional manner, using =straight.el= and =use-package=.
 
 In line with the Emacs philosophy, this configuration is =free
-software=. See the [[*LICENSE][LICENSE]] section for more details.
+software=. See the [[*License][License]] section for more details.
 
 * License
 
@@ -1873,6 +1873,7 @@ not show =minor modes=, thus making =diminish= pointless.
 #+begin_src emacs-lisp :tangle init.el
   (use-package powerline
     :straight t
+    :defer nil
     :init
 
     (defun powerline-aabm-theme ()
