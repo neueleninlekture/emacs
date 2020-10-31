@@ -1349,7 +1349,11 @@ hooking nov.el to olivetti-mode.
      ("C-c s a" . calibredb-add)
      (:map calibredb-search-mode-map
            ("t" . calibredb-set-metadata-dispatch)
-           ("s" . calibredb-search-live-filter))))
+           ("s" . calibredb-search-live-filter)
+           ("n" . calibredb-next-entry)
+           ("p" . calibredb-previous-entry)
+           ("j" . nil)
+           ("k" . nil))))
 #+end_src
 
 ** Flyspell
