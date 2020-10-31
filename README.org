@@ -885,6 +885,7 @@ supported.
      (dired-mode-hook . all-the-icons-dired-mode)
      (dired-mode-hook . hl-line-mode))
 
+    :diminish all-the-icons-dired-mode dired-hide-dotfiles-mode dired-async-mode
     :bind
     (:map dired-mode-map
           (("RET" . dired-find-alternate-file)
