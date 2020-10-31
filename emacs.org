@@ -1346,7 +1346,10 @@ hooking nov.el to olivetti-mode.
     :bind
     (("C-c s l" . calibredb)
      ("C-c s s" . calibredb-find-counsel)
-     ("C-c s a" . calibredb-add)))
+     ("C-c s a" . calibredb-add)
+     (:map calibredb-search-mode-map
+           ("t" . calibredb-set-metadata-dispatch)
+           ("s" . calibredb-search-live-filter))))
 #+end_src
 
 ** Flyspell
