@@ -1364,7 +1364,7 @@ hooking nov.el to olivetti-mode.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package time
-    :commands world-clock
+    :commands world-clock display-time-world
     :custom
     (display-time-format "%a, %b %d %H:%M")
     (display-time-interval 60)
@@ -1381,7 +1381,9 @@ hooking nov.el to olivetti-mode.
        ("Asia/Shanghai" "+8 Shanghai")
        ("Asia/Tokyo" "+9 Tokyo")))
 
-    :hook (after-init-hook . display-time-mode)
+    :hook
+    (after-init-hook . display-time-mode)
+  
     :bind
     (("C-c a t" . display-time-world)))
 #+end_src
@@ -1390,7 +1392,16 @@ hooking nov.el to olivetti-mode.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package calendar
-    :commands calendar
+    :commands calendar aabm/calendar
+  
+    :init
+    (defun aabm/calendar ()
+      "Loads credentials file, then opens the calendar."
+      (interactive)
+      (progn
+        (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
+        (calendar)))
+
     :custom
     (calendar-week-start-day 0)
     (calendar-day-name-array ["Domingo" "Segunda" "Terça" "Quarta" 
@@ -1398,11 +1409,8 @@ hooking nov.el to olivetti-mode.
     (calendar-month-name-array ["Janeiro" "Fevereiro" "Março" "Abril"
                                 "Maio" "Junho" "Julho" "Agosto"
                                 "Setembro" "Outubro" "Novembro" "Dezembro"])
-    :config
-    (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
-  
     :bind
-    (("C-c a c" . calendar)))
+    (("C-c a c" . aabm/calendar)))
 #+end_src
 
 ** LEGACY User credentials
