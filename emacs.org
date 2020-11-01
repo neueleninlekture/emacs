@@ -487,7 +487,9 @@ configuration itself, or other packages.
   (use-package gcmh
     :straight t
     :init
-    (gcmh-mode))
+    (gcmh-mode)
+    :custom
+    (gcmh-verbose t))
 #+end_src
 
 ** Async
