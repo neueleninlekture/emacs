@@ -481,6 +481,15 @@ configuration itself, or other packages.
     :diminish eldoc-mode global-visual-line-mode visual-line-mode org-indent-mode)
 #+end_src
 
+** GCMH
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package gcmh
+    :straight t
+    :init
+    (gcmh-mode))
+#+end_src
+
 ** Async
 
 Async is a library for asynchronous processing for Emacs. By itself it
