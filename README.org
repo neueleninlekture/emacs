@@ -1042,7 +1042,7 @@ another for quickly opening up the main agenda file.
     (find-file (car (org-agenda-files))))
 
   (general-define-key
-   "C-c C-a" 'aabm/find-org-agenda-file)
+   "C-x C-a" 'aabm/find-org-agenda-file)
 #+end_src
 
 *** Capture
