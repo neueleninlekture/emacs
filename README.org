@@ -1055,12 +1055,36 @@ default, as well as the templates to use for capture.
     :custom
     (org-default-notes-file (concat org-directory "agenda.org"))
     (org-capture-templates
-     '(("a" "Assignments"
+     '(
+       ("a" "Assignments"
         entry
         (file+headline "agenda.org" "Assignments")
-        "* TODO %^{prompt|Política|Antropologia|Sociologia|Economia|Filosofia} - %A\n%?\nDEADLINE: %^T")))
+        "* TODO %^{Disciplina|Política|Antropologia|Sociologia|Economia|Filosofia} - %A\n%?\nDEADLINE: %^T")
+
+       ("l" "List of")
+       ("lb" "Books"
+        entry
+        (file "list/books.org")
+        "* %^{Status|PLAN|READING|READ} %^{Title}\n\n** Info\n:TIME: %t\n:AUTHOR: %^{Author}\n:YEAR: %^{Year of publication}\n:SERIES: %^{Series}\n:LANG: %^{Language|Português|English|Español|Deutsch}\n:PUBL: %^{Publisher}\n\n** Thoughts\n%?")
+
+       ("ll" "Library"
+        entry
+        (file "list/library.org")
+        "* %^{Status|HOME|BORROWED|LENT|GONE} %^{Title}\n\n** Info\n\n:AUTHOR: %^{Authors}\n:SORT: %^{Author Sort}\n:SERIES: %^{Series}\n:NUMBER: %^{Number in series}\n:PUBL: %^{Publisher}\n:LANG: %^{Language|Português|English|Español}\n:CONDITION: %^{Condition|New|Good|Medium|Worn|Fucked}\n:SHELF: %^{Shelf|Fiction|Non-fiction|Manga|Other}\n:SOURCE: %^{Source|Gift:|Purchase:} %?\n\n** Log\n\n")
+
+       ("la" "Anime"
+        entry
+        (file "list/anime.org")
+        "* %^{Status|PLAN|WATCHING|SEEN|DROPPED} %^{Title}\n:TIME: %t\n:STUDIO: %^{Studio}\n:DIRECTOR:\n:YEAR: %^{Year}\n:SEASON: %^{Season}\n")
+
+       ("lb" "Books"
+        entry
+        (file "list/books.org")
+        "* %^{Status|PLAN|READING|READ} %^{Title}\n:TIME: %t\n:AUTHOR: %^{Author}\n:YEAR: %^{Year of publication}\n:SERIES: %^{Series}\n:LANG: %^{Language}\n:PUBL: %^{Publisher}\n")
+  ))
     :bind
-    (("C-c a a" . org-agenda)))
+    (("C-c a a" . org-agenda)
+     ("C-c c" . org-capture)))
 #+end_src
 
 *** Structure blocks
