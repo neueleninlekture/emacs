@@ -429,42 +429,36 @@ We also install =smex=, which provides and ido menu for M-x.
 	("M-x" . smex))
 #+end_src
 
-** Defining annoying prefix keys
+** Defining prefix keys
 
-Here are all the prefix key definitions that might be necessary later
-into this file. Using =general.el= somewhat avoids having to do this,
-but use-package's :bind still requires this for some things.
+Here we define all prefix keys. The setup here is similar to the
+leader key system present in =Spacemacs= or =Doom Emacs=, except made
+for use with regular Emacs keys.
 
 #+begin_src emacs-lisp :tangle init.el
+  (define-prefix-command 'leader)
   (define-prefix-command 'search+)
-  (global-set-key (kbd "M-s") 'search+)
-
   (define-prefix-command 'agenda-and-time)
-  (global-set-key (kbd "C-c a") 'agenda-and-time)
-
   (define-prefix-command 'music)
-  (global-set-key (kbd "C-c m") 'music)
-
   (define-prefix-command 'youtube)
-  (global-set-key (kbd "C-c y") 'youtube)
-
   (define-prefix-command 'fill-text)
-  (global-set-key (kbd "C-c f") 'fill-text)
-
   (define-prefix-command 'text-editing)
-  (global-set-key (kbd "C-c t") 'text-editing)
-
   (define-prefix-command 'buffers)
-  (global-set-key (kbd "C-c b") 'buffers)
-
   (define-prefix-command 'password-management)
-  (global-set-key (kbd "C-c p") 'password-management)
-
   (define-prefix-command 'database)
-  (global-set-key (kbd "C-c s") 'database)
-
   (define-prefix-command 'notes)
-  (global-set-key (kbd "C-c n") 'notes)
+
+  (general-define-key
+   :keymaps 'leader
+   "a" 'agenda-and-time
+   "b" 'buffers
+   "f" 'fill-text
+   "m" 'music
+   "n" 'notes
+   "p" 'password-management
+   "s" 'database
+   "t" 'text-editing
+   "y" 'youtube)
 #+end_src
 
 * Base packages
