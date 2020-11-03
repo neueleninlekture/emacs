@@ -219,14 +219,6 @@ for configuring packages, and lazy loading those configurations.
   (setq use-package-hook-name-suffix nil)
 
   (require 'bind-key)
-
-  (use-package benchmark-init
-    :straight t
-    :defer nil
-    :init
-    (benchmark-init/activate)
-    :hook
-    ((after-init-hook . benchmark-init/deactivate)))
 #+end_src
 
 ** Ensuring auto-compilation of all elisp
@@ -241,6 +233,18 @@ warnings relating to the deprecation of the =cl= library.
 #+begin_src emacs-lisp :tangle init.el
   (setq load-prefer-newer t
         byte-compile-warnings '(cl-functions))
+#+end_src
+
+** Benchmark init
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package benchmark-init
+    :straight t
+    :defer nil
+    :init
+    (benchmark-init/activate)
+    :hook
+    ((after-init-hook . benchmark-init/deactivate)))
 #+end_src
 
 * Quality of life changes
@@ -429,7 +433,7 @@ We also install =smex=, which provides and ido menu for M-x.
 	("M-x" . smex))
 #+end_src
 
-** Defining prefix keys
+* Defining prefix keys
 
 Here we define all prefix keys. The setup here is similar to the
 leader key system present in =Spacemacs= or =Doom Emacs=, except made
@@ -437,26 +441,30 @@ for use with regular Emacs keys.
 
 #+begin_src emacs-lisp :tangle init.el
   (define-prefix-command 'leader)
-  (define-prefix-command 'search+)
   (define-prefix-command 'agenda-and-time)
-  (define-prefix-command 'music)
-  (define-prefix-command 'youtube)
-  (define-prefix-command 'fill-text)
-  (define-prefix-command 'text-editing)
   (define-prefix-command 'buffers)
-  (define-prefix-command 'password-management)
   (define-prefix-command 'database)
+  (define-prefix-command 'fill-text)
+  (define-prefix-command 'music)
   (define-prefix-command 'notes)
+  (define-prefix-command 'password-management)
+  (define-prefix-command 'search+)
+  (define-prefix-command 'text-editing)
+  (define-prefix-command 'youtube)
+
+  (global-set-key (kbd "C-c c") 'leader)
+  (global-set-key (kbd "C-c n") 'notes)
 
   (general-define-key
-   :keymaps 'leader
+    :keymaps 'leader
    "a" 'agenda-and-time
    "b" 'buffers
+   "d" 'database
    "f" 'fill-text
    "m" 'music
    "n" 'notes
    "p" 'password-management
-   "s" 'database
+   "s" 'search+
    "t" 'text-editing
    "y" 'youtube)
 #+end_src
@@ -652,7 +660,8 @@ press C-c m, the keybinding defined here.
     :straight t
     :commands mc/edit-lines
     :bind
-    (("C-c t m" . mc/edit-lines)))
+    (:map text-editing
+     ("m" . mc/edit-lines)))
 #+end_src
 
 ** Writable grep
@@ -675,8 +684,9 @@ output of grep, then write it into the files.
 
 #+begin_src emacs-lisp :tangle init.el
   (general-define-key
-   "C-c f a" 'auto-fill-mode
-   "C-c f f" 'fill-region)
+   :keymaps 'fill-text
+   "a" 'auto-fill-mode
+   "f" 'fill-region)
 #+end_src
 
 ** Undo Tree
@@ -772,10 +782,13 @@ it is being displayed.
 #+begin_src emacs-lisp :tangle init.el
   (general-define-key
    "C-x k" 'kill-this-buffer
-   "C-x C-k" 'aabm/kill-this-buffer-and-window
-   "C-c b o" 'aabm/generate-org-buffer
-   "C-c b s" 'aabm/generate-scratch-buffer
-   "C-c b t" 'aabm/generate-text-buffer)
+   "C-x C-k" 'aabm/kill-this-buffer-and-window)
+
+  (general-define-key
+   :keymaps 'buffers
+   "o" 'aabm/generate-org-buffer
+   "s" 'aabm/generate-scratch-buffer
+   "t" 'aabm/generate-text-buffer)
 #+end_src
 
 ** Windows
@@ -875,7 +888,7 @@ supported.
       "Move up a directory, reusing the current buffer, instead of creating a new one."
       (interactive)
       (find-alternate-file ".."))
-  
+
     :hook
     ((dired-mode-hook . dired-hide-details-mode)
      (dired-mode-hook . dired-hide-dotfiles-mode)
@@ -918,7 +931,8 @@ commands you barely understand.
   (use-package rg
     :straight t
     :bind
-    (("M-s r" . rg)))
+    (:map search+
+     ("r" . rg)))
 #+end_src
 
 ** Emacs as an Xorg Window manager
@@ -1036,7 +1050,8 @@ another for quickly opening up the main agenda file.
     (find-file (car (org-agenda-files))))
 
   (general-define-key
-   "C-x C-a" 'aabm/find-org-agenda-file)
+   :keymaps 'agenda-and-time
+   "f" 'aabm/find-org-agenda-file)
 #+end_src
 
 *** Capture
@@ -1077,8 +1092,9 @@ default, as well as the templates to use for capture.
         "* %^{Status|PLAN|READING|READ} %^{Title}\n:TIME: %t\n:AUTHOR: %^{Author}\n:YEAR: %^{Year of publication}\n:SERIES: %^{Series}\n:LANG: %^{Language}\n:PUBL: %^{Publisher}\n")
   ))
     :bind
-    (("C-c a a" . org-agenda)
-     ("C-c c" . org-capture)))
+    (("C-c w" . org-capture)
+    (:map agenda-and-time
+     ("a" . org-agenda))))
 #+end_src
 
 *** Structure blocks
@@ -1171,10 +1187,11 @@ files. All these packages can be acessed under the C-c n map.
         :unnarrowed t)))
 
     :bind
-    (("C-c n f" . org-roam-find-file)
-     ("C-c n l" . org-roam-insert)
-     ("C-c n c" . org-roam-random-note)
-     ("C-c n d" . org-roam-dailies-date)))
+    (:map notes
+     ("f" . org-roam-find-file)
+     ("l" . org-roam-insert)
+     ("c" . org-roam-random-note)
+     ("d" . org-roam-dailies-date)))
 
   (use-package org-roam-server
     :straight t
@@ -1191,7 +1208,8 @@ files. All these packages can be acessed under the C-c n map.
     (org-roam-server-network-label-truncate-length 60)
     (org-roam-server-network-label-wrap-length 20)
     :bind
-    (("C-c n g" . org-roam-server-mode)))
+    (:map notes
+          ("g" . org-roam-server-mode)))
 
   (use-package deft
     :straight t
@@ -1201,7 +1219,8 @@ files. All these packages can be acessed under the C-c n map.
     (deft-default-extension "org")
     (deft-directory "~/org/roam")
     :bind
-    (("C-c n s" . deft)))
+    (:map notes
+     ("s" . deft)))
 #+end_src
 
 *** Org Superstar
@@ -1364,9 +1383,10 @@ hooking nov.el to olivetti-mode.
     (calibredb-library-alist '(("~/doc/books")))
     (calibredb-format-all-the-icons t)
     :bind
-    (("C-c s l" . calibredb)
-     ("C-c s s" . calibredb-find-counsel)
-     ("C-c s a" . calibredb-add)
+    ((:map database
+           ("l" . calibredb)
+           ("s" . calibredb-find-counsel)
+           ("a" . calibredb-add))
      (:map calibredb-search-mode-map
            ("t" . calibredb-set-metadata-dispatch)
            ("s" . calibredb-search-live-filter)
@@ -1384,7 +1404,8 @@ hooking nov.el to olivetti-mode.
     :custom
     (ispell-program-name "aspell")
     :bind
-    (("C-c t f" . flyspell-mode)))
+    (:map text-editing
+          ("f" . flyspell-mode)))
 #+end_src
 
 * Personal agenda, time and task management
@@ -1412,9 +1433,10 @@ hooking nov.el to olivetti-mode.
 
     :hook
     (after-init-hook . display-time-mode)
-  
+
     :bind
-    (("C-c a t" . display-time-world)))
+    (:map agenda-and-time
+     ("t" . display-time-world)))
 #+end_src
 
 ** Calendar
@@ -1422,7 +1444,7 @@ hooking nov.el to olivetti-mode.
 #+begin_src emacs-lisp :tangle init.el
   (use-package calendar
     :commands calendar aabm/calendar
-  
+
     :init
     (defun aabm/calendar ()
       "Loads credentials file, then opens the calendar."
@@ -1439,7 +1461,8 @@ hooking nov.el to olivetti-mode.
                                 "Maio" "Junho" "Julho" "Agosto"
                                 "Setembro" "Outubro" "Novembro" "Dezembro"])
     :bind
-    (("C-c a c" . aabm/calendar)))
+    ((:map agenda-and-time
+           ("c" . aabm/calendar))))
 #+end_src
 
 ** LEGACY User credentials
@@ -1695,10 +1718,11 @@ standard completion mechanism, which for this configuration is Ivy.
      password-store-edit
      pass)
     :bind
-    (("C-c p i" . password-store-insert)
-     ("C-c p w" . password-store-copy)
-     ("C-c p e" . password-store-edit)
-     ("C-c p p" . pass)))
+    (:map password-management
+          ("i" . password-store-insert)
+          ("w" . password-store-copy)
+          ("e" . password-store-edit)
+          ("p" . pass)))
 #+end_src
 
 ** Elfeed
@@ -1828,9 +1852,10 @@ databases. =ivy-mpdel= adds Ivy completion to mpdel.
   (use-package mpdel
     :straight ivy-mpdel
     :bind
-    (("C-c m m" . ivy-mpdel-list)
-     ("C-c m l" . mpdel-playlist-open)
-     ("C-c m b" . mpdel-browser-open)))
+    (:map music
+          ("m" . ivy-mpdel-list)
+          ("l" . mpdel-playlist-open)
+          ("b" . mpdel-browser-open)))
 #+end_src
 
 ** Videos
@@ -1847,7 +1872,8 @@ it.
   (use-package ytdl
     :straight t
     :bind
-    (("C-c y d" . ytdl-download))
+    (:map youtube
+     ("d" . ytdl-download))
     :custom
     (ytdl-download-folder "~/vids")
     (ytdl-video-folder "~/vids")
@@ -1882,7 +1908,8 @@ elfeed.
         "--ytdl-format=bestvideo[height<=?720]+bestaudio/best")
       (message "Starting stream..."))
     :bind
-    (("C-c y y" . ytel)
+    (:map youtube
+          ("y" . ytel)
      (:map ytel-mode-map
           ("RET" . ytel-watch-mpv))))
 #+end_src
