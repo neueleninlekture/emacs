@@ -433,42 +433,6 @@ We also install =smex=, which provides and ido menu for M-x.
 	("M-x" . smex))
 #+end_src
 
-* Defining prefix keys
-
-Here we define all prefix keys. The setup here is similar to the
-leader key system present in =Spacemacs= or =Doom Emacs=, except made
-for use with regular Emacs keys.
-
-#+begin_src emacs-lisp :tangle init.el
-  (define-prefix-command 'leader)
-  (define-prefix-command 'agenda-and-time)
-  (define-prefix-command 'buffers)
-  (define-prefix-command 'database)
-  (define-prefix-command 'fill-text)
-  (define-prefix-command 'music)
-  (define-prefix-command 'notes)
-  (define-prefix-command 'password-management)
-  (define-prefix-command 'search+)
-  (define-prefix-command 'text-editing)
-  (define-prefix-command 'youtube)
-
-  (global-set-key (kbd "C-c c") 'leader)
-  (global-set-key (kbd "C-c n") 'notes)
-
-  (general-define-key
-    :keymaps 'leader
-   "a" 'agenda-and-time
-   "b" 'buffers
-   "d" 'database
-   "f" 'fill-text
-   "m" 'music
-   "n" 'notes
-   "p" 'password-management
-   "s" 'search+
-   "t" 'text-editing
-   "y" 'youtube)
-#+end_src
-
 * Base packages
 
 In this section we install general purpose packages that are
@@ -579,6 +543,42 @@ these are later bound to keys.
      ("C-h f" . counsel-describe-function)
      ("C-h v" . counsel-describe-variable)
      ("C-h o" . counsel-describe-symbol)))
+#+end_src
+
+* Defining prefix keys
+
+Here we define all prefix keys. The setup here is similar to the
+leader key system present in =Spacemacs= or =Doom Emacs=, except made
+for use with regular Emacs keys.
+
+#+begin_src emacs-lisp :tangle init.el
+  (define-prefix-command 'leader)
+  (define-prefix-command 'agenda-and-time)
+  (define-prefix-command 'buffers)
+  (define-prefix-command 'database)
+  (define-prefix-command 'fill-text)
+  (define-prefix-command 'music)
+  (define-prefix-command 'notes)
+  (define-prefix-command 'password-management)
+  (define-prefix-command 'search+)
+  (define-prefix-command 'text-editing)
+  (define-prefix-command 'youtube)
+
+  (global-set-key (kbd "C-c c") 'leader)
+  (global-set-key (kbd "C-c n") 'notes)
+
+  (general-define-key
+    :keymaps 'leader
+   "a" 'agenda-and-time
+   "b" 'buffers
+   "d" 'database
+   "f" 'fill-text
+   "m" 'music
+   "n" 'notes
+   "p" 'password-management
+   "s" 'search+
+   "t" 'text-editing
+   "y" 'youtube)
 #+end_src
 
 * Text editing
@@ -972,6 +972,7 @@ reading and writing.
 #+begin_src emacs-lisp :tangle init.el
   (use-package olivetti
     :straight t
+    :defer nil
     :bind
     (("C-c o" . olivetti-mode)))
 
@@ -1359,10 +1360,6 @@ hooking nov.el to olivetti-mode.
     :straight t
     :init
     (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-    :custom
-    (olivetti-body-width 104)
-    :hook
-    (nov-mode . olivetti-mode)
     :bind
     (:map nov-mode-map
             (("M-n" . scroll-up-line)
@@ -1736,6 +1733,7 @@ external video player, namely =mpv=, which is bound to the v key.
 #+begin_src emacs-lisp :tangle init.el
   (use-package elfeed
     :straight t
+
     :config
     (aabm/load-file-if (concat user-emacs-directory "feeds.el.gpg"))
 
@@ -1751,6 +1749,9 @@ external video player, namely =mpv=, which is bound to the v key.
           (setq quality-arg (format "--ytdl-format=[height<=?%s]" quality-val)))
         (start-process "elfeed-mpv" nil "mpv" quality-arg (elfeed-entry-link entry))))
 
+    :custom
+    (shr-width 100)
+
     :bind
     (("C-c e" . elfeed)
      (:map elfeed-show-mode-map
@@ -1759,10 +1760,7 @@ external video player, namely =mpv=, which is bound to the v key.
            ("v" . aabm/elfeed-play-with-mpv))
 
      (:map elfeed-search-mode-map
-           ("v" . aabm/elfeed-play-with-mpv)))
-
-    :hook
-    (elfeed-show-mode . olivetti-mode))
+           ("v" . aabm/elfeed-play-with-mpv))))
 #+end_src
 
 ** mu4e
@@ -1827,8 +1825,6 @@ better readability in web pages.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package eww
-    :hook
-    (eww-mode . olivetti-mode)
     :bind
     ((:map eww-mode-map
           ("M-n" . scroll-up-line)
