@@ -237,10 +237,14 @@ warnings relating to the deprecation of the =cl= library.
 
 ** Benchmark init
 
+When activated at startup, the package =benchmark-init= records load
+times for all other installed packages, then allows the user to
+visualize these, in order to acquire the information necessary for
+optimizing package declarations.
+
 #+begin_src emacs-lisp :tangle init.el
   (use-package benchmark-init
     :straight t
-    :defer nil
     :init
     (benchmark-init/activate)
     :hook
@@ -973,7 +977,6 @@ reading and writing.
 #+begin_src emacs-lisp :tangle init.el
   (use-package olivetti
     :straight t
-    :defer nil
     :bind
     (("C-c o" . olivetti-mode)))
 
@@ -1278,8 +1281,7 @@ install and configure its external binary on first startup.
 #+begin_src emacs-lisp :tangle init.el
   (use-package pdf-tools
     :straight t
-    :defer nil
-    :config
+    :init
     (pdf-loader-install)
     :custom
     (pdf-view-resize-factor 1.1)
@@ -1934,7 +1936,6 @@ not show =minor modes=, thus making =diminish= pointless.
 #+begin_src emacs-lisp :tangle init.el
   (use-package powerline
     :straight t
-    :defer nil
     :init
 
     (defun powerline-aabm-theme ()
@@ -1992,7 +1993,7 @@ not show =minor modes=, thus making =diminish= pointless.
                          (concat (powerline-render lhs)
                                  (powerline-fill face2 (powerline-width rhs))
                                  (powerline-render rhs)))))))
-    :config
+  
     (powerline-aabm-theme)
 
     :custom
