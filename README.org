@@ -1049,15 +1049,6 @@ another for quickly opening up the main agenda file.
     (interactive)
     (org-todo 'done)
     (org-archive-subtree))
-
-  (defun aabm/find-org-agenda-file ()
-    "Finds the agenda.org file"
-    (interactive)
-    (find-file (car (org-agenda-files))))
-
-  (general-define-key
-   :keymaps 'agenda-and-time
-   "f" 'aabm/find-org-agenda-file)
 #+end_src
 
 *** Capture
@@ -1558,6 +1549,10 @@ usage.
     :straight t)
 #+end_src
 
+** Python
+
+
+
 * Shell and terminal emulation
 
 Emacs comes with a few different solutions for shell and terminal
@@ -1993,7 +1988,7 @@ not show =minor modes=, thus making =diminish= pointless.
                          (concat (powerline-render lhs)
                                  (powerline-fill face2 (powerline-width rhs))
                                  (powerline-render rhs)))))))
-  
+
     (powerline-aabm-theme)
 
     :custom
@@ -2056,11 +2051,12 @@ do not look good by default. So far, the only faces included here
 relate to fonts.
 
 #+begin_src emacs-lisp :tangle init.el
-  (set-face-attribute 'fixed-pitch-serif t
-                      :inherit 'default)
-
   (set-face-attribute 'Info-quoted t
                       :inherit 'default)
+
+  (set-face-attribute 'fixed-pitch-serif t
+                      :height '150
+                      :family "Go Mono")
 
   (set-face-attribute 'variable-pitch t
                       :height 150
