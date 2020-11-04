@@ -566,6 +566,7 @@ for use with regular Emacs keys.
 
   (global-set-key (kbd "C-c c") 'leader)
   (global-set-key (kbd "C-c n") 'notes)
+  (global-set-key (kbd "C-c f") 'fill-text)
 
   (general-define-key
     :keymaps 'leader
