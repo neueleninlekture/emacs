@@ -443,15 +443,14 @@ In this section we install general purpose packages that are
 frequently used later. These packages serve as building blocks for
 configuration itself, or other packages.
 
-** Diminish
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package diminish
-    :straight t
-    :diminish eldoc-mode global-visual-line-mode visual-line-mode org-indent-mode)
-#+end_src
-
 ** GCMH
+
+=gcmh=, or the =garbage collection magical hack= alters the way Emacs'
+garbage collection works. In short, it makes Emacs run better by not
+wasting as much time garbage collecting. Setting the =gcmh-verbose=
+variable to =t= also displays a message everytime any gc happens and
+the time wasted by it. This is helpful in realizing just how much time
+would normally be wasted with gc.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package gcmh
@@ -501,7 +500,6 @@ of bindings.
 #+begin_src emacs-lisp :tangle init.el
   (use-package which-key
     :straight t
-    :diminish which-key-mode
     :init
     (which-key-mode)
     :custom
@@ -528,7 +526,6 @@ these are later bound to keys.
   (use-package ivy
     :straight ivy swiper counsel swiper avy ivy-rich all-the-icons-ivy-rich
     :demand all-the-icons
-    :diminish ivy-mode counsel-mode
     :init
     (ivy-mode)
     (counsel-mode)
@@ -647,7 +644,6 @@ whitespace easier.
 #+begin_src emacs-lisp :tangle init.el
   (use-package hungry-delete
     :straight t
-    :diminish
     :init
     (global-hungry-delete-mode))
 #+end_src
@@ -687,6 +683,9 @@ output of grep, then write it into the files.
 
 ** Wrapping and auto-filling text
 
+A few simple options for filling text to a reasonable character/column
+limit.
+
 #+begin_src emacs-lisp :tangle init.el
   (general-define-key
    :keymaps 'fill-text
@@ -699,14 +698,13 @@ output of grep, then write it into the files.
 #+begin_src emacs-lisp :tangle init.el
   (use-package undo-tree
     :straight t
-    :diminish global-undo-tree-mode undo-tree-mode
     :init
     (global-undo-tree-mode))
 #+end_src
 
 ** Sudo edit
 
-Easily open a file using sudo over =TRAMP=.
+Easily open files over sudo using =TRAMP=.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package sudo-edit
@@ -1172,7 +1170,6 @@ files. All these packages can be acessed under the C-c n map.
 #+begin_src emacs-lisp :tangle init.el
   (use-package org-roam
     :straight t
-    :diminish
     :config
     (require 'org-protocol)
     (require 'org-roam-protocol)
@@ -2045,7 +2042,6 @@ happens. It helps the user quickly locate the new position.
 #+begin_src emacs-lisp :tangle init.el
   (use-package beacon
     :straight t
-    :diminish beacon-mode
     :init
     (beacon-mode))
 #+end_src
