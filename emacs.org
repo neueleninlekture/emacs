@@ -154,7 +154,8 @@ similar methods to the garbage collection settings above.
 
 These settings involve disabling GTK GUI elements like tool, menu and
 scroll bars, since they are not really needed. Disabling them early at
-startup avoids having them loaded.
+startup avoids having them loaded. The final element disabled is the
+cursor blink. This way the cursor is static.
 
 #+begin_src emacs-lisp :tangle early-init.el
   (push '(menu-bar-lines . 0) default-frame-alist)
@@ -163,6 +164,8 @@ startup avoids having them loaded.
 
   (set-window-scroll-bars (minibuffer-window) nil nil)
   (setq frame-inhibit-implied-resize t)
+
+  (blink-cursor-mode -1)
 #+end_src
 
 ** Disabling package.el
@@ -2044,12 +2047,6 @@ happens. It helps the user quickly locate the new position.
     :straight t
     :init
     (beacon-mode))
-#+end_src
-
-** Cursor and mouse
-
-#+begin_src emacs-lisp :tangle init.el
-  (blink-cursor-mode -1)
 #+end_src
 
 ** Face customization
