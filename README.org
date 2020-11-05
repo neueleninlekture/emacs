@@ -1499,7 +1499,19 @@ are configurations for all =Lisp= programming, whether =Emacs Lisp=,
 =Common Lisp= or some variant of =Scheme=. I normally don't use
 anything besides Elisp on a regular basis, but you never know. Also
 included here are the configurations that help in the process of
-configuring Emacs. 
+configuring Emacs.
+
+*** SICP
+
+The famous meme-book =Structure and Interpretation of Computer
+Programs= or more commonly, =SICP=, has a whole Emacs package just for
+itself. The package provides a .info file, which can be comfortably
+read from Emacs using the =info= command, or C-h i.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package sicp
+    :straight t)
+#+end_src
 
 *** Rebuilding Emacs configuration
 
@@ -1551,7 +1563,9 @@ usage.
 
 ** Python
 
+#+begin_src emacs-lisp :tangle init.el
 
+#+end_src
 
 * Shell and terminal emulation
 
