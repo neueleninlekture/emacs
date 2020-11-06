@@ -446,22 +446,12 @@ In this section we install general purpose packages that are
 frequently used later. These packages serve as building blocks for
 configuration itself, or other packages.
 
-** GCMH
-
-=gcmh=, or the =garbage collection magical hack= alters the way Emacs'
-garbage collection works. In short, it makes Emacs run better by not
-wasting as much time garbage collecting. Setting the =gcmh-verbose=
-variable to =t= also displays a message everytime any gc happens and
-the time wasted by it. This is helpful in realizing just how much time
-would normally be wasted with gc.
+** Diminish
 
 #+begin_src emacs-lisp :tangle init.el
-  (use-package gcmh
+  (use-package diminish
     :straight t
-    :init
-    (gcmh-mode)
-    :custom
-    (gcmh-verbose t))
+    :diminish visual-line-mode eldoc-mode)
 #+end_src
 
 ** Async
@@ -476,7 +466,27 @@ Dired and also for compilation of Elisp.
     :straight t
     :init
     (dired-async-mode t)
-    (async-bytecomp-package-mode t))
+    (async-bytecomp-package-mode t)
+    :diminish dired-async-mode)
+#+end_src
+
+** GCMH
+
+=gcmh=, or the =garbage collection magical hack= alters the way Emacs'
+garbage collection works. In short, it makes Emacs run better by not
+wasting as much time garbage collecting. Setting the =gcmh-verbose=
+variable to =t= also displays a message everytime any gc happens and
+the time wasted by it. This is helpful in realizing just how much time
+would normally be wasted with gc.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package gcmh
+    :straight t
+    :init
+    (gcmh-mode)
+    :diminish gcmh-mode
+    :custom
+    (gcmh-verbose t))
 #+end_src
 
 ** General
@@ -505,6 +515,7 @@ of bindings.
     :straight t
     :init
     (which-key-mode)
+    :diminish which-key-mode
     :custom
     (which-key-show-early-on-C-h t))
 #+end_src
@@ -527,13 +538,12 @@ these are later bound to keys.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package ivy
-    :straight ivy swiper counsel swiper avy ivy-rich all-the-icons-ivy-rich
-    :demand all-the-icons
+    :straight ivy swiper counsel swiper avy ivy-rich 
     :init
     (ivy-mode)
     (counsel-mode)
-    (all-the-icons-ivy-rich-mode)
     (ivy-rich-mode)
+    :diminish ivy-mode counsel-mode ivy-rich-mode
     :custom
     (enable-recursive-minibuffers t)
     :bind
@@ -648,7 +658,8 @@ whitespace easier.
   (use-package hungry-delete
     :straight t
     :init
-    (global-hungry-delete-mode))
+    (global-hungry-delete-mode)
+    :diminish hungry-delete-mode)
 #+end_src
 
 ** Multiple cursors
@@ -702,7 +713,8 @@ limit.
   (use-package undo-tree
     :straight t
     :init
-    (global-undo-tree-mode))
+    (global-undo-tree-mode)
+    :diminish undo-tree-mode)
 #+end_src
 
 ** Sudo edit
@@ -866,8 +878,7 @@ supported.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package dired
-    :straight peep-dired dired-subtree dired-hide-dotfiles all-the-icons-dired
-    :after all-the-icons
+    :straight peep-dired dired-subtree dired-hide-dotfiles 
     :commands dired
 
     :custom
@@ -898,8 +909,9 @@ supported.
     :hook
     ((dired-mode-hook . dired-hide-details-mode)
      (dired-mode-hook . dired-hide-dotfiles-mode)
-     (dired-mode-hook . all-the-icons-dired-mode)
      (dired-mode-hook . hl-line-mode))
+
+    :diminish dired-hide-dotfiles-mode
 
     :bind
     (:map dired-mode-map
@@ -2044,12 +2056,12 @@ the normal #282828.
     (doom-themes-org-config))
 
   (load-theme 'modus-operandi t t)
-  (run-at-time "05:00" (* 60 60 24)
+  (run-at-time "06:00" (* 60 60 24)
                (lambda ()
                  (enable-theme 'modus-operandi)))
 
   (load-theme 'modus-vivendi t t)
-  (run-at-time "21:00" (* 60 60 24)
+  (run-at-time "18:00" (* 60 60 24)
                (lambda ()
                  (enable-theme 'modus-vivendi)))
 #+end_src
@@ -2063,7 +2075,8 @@ happens. It helps the user quickly locate the new position.
   (use-package beacon
     :straight t
     :init
-    (beacon-mode))
+    (beacon-mode)
+    :diminish beacon-mode)
 #+end_src
 
 ** Face customization
