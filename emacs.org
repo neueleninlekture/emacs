@@ -2022,15 +2022,18 @@ the normal #282828.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package modus-operandi-theme
-    :straight modus-vivendi-theme
+    :straight t
     :custom
-    (modus-vivendi-theme-no-mixed-fonts nil)
-    (modus-vivendi-theme-proportional-fonts nil)
-    (modus-vivendi-theme-org-blocks 'greyscale)
-
     (modus-operandi-theme-no-mixed-fonts nil)
     (modus-operandi-theme-proportional-fonts nil)
     (modus-operandi-theme-org-blocks 'greyscale))
+
+  (use-package modus-vivendi-theme
+    :straight t
+    :custom
+    (modus-vivendi-theme-no-mixed-fonts nil)
+    (modus-vivendi-theme-proportional-fonts nil)
+    (modus-vivendi-theme-org-blocks 'greyscale))
 
   (use-package doom-themes
     :straight t
@@ -2039,8 +2042,6 @@ the normal #282828.
     (doom-themes-enable-italic t)
     (doom-gruvbox-dark-variant "hard")
     (doom-themes-org-config))
-
-  ;; (load-theme 'modus-vivendi t)
 
   (load-theme 'modus-operandi t t)
   (run-at-time "05:00" (* 60 60 24)
