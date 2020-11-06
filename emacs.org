@@ -1808,7 +1808,6 @@ of those tools.
     (message-kill-buffer-on-exit t)
 
     (mu4e-html2text-command "/usr/bin/w3m -T text/html")
-    (mu4e-use-fancy-chars t)
     (mu4e-attachment-dir "~/")
 
     (mu4e-compose-signature
@@ -1942,7 +1941,7 @@ default than, for instance, =doom-modeline= does. Here we set a custom
 theme, based on the default. Only difference is that this theme does
 not show =minor modes=, thus making =diminish= pointless.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package powerline
     :straight t
     :init
@@ -2018,13 +2017,20 @@ Here we install a bunch of themes I like. These involve:
 
 The customizations applied to the doom-themes simply ensure some basic
 features are enabled. We also ensure the Doom Gruvbox theme always
-
 uses the Hard contrast variant, with a #1D2021 background instead of
 the normal #282828.
 
 #+begin_src emacs-lisp :tangle init.el
-  (straight-use-package 'modus-operandi-theme)
-  (straight-use-package 'modus-vivendi-theme)
+  (use-package modus-operandi-theme
+    :straight modus-vivendi-theme
+    :custom
+    (modus-vivendi-theme-no-mixed-fonts nil)
+    (modus-vivendi-theme-proportional-fonts nil)
+    (modus-vivendi-theme-org-blocks 'greyscale)
+  
+    (modus-operandi-theme-no-mixed-fonts nil)
+    (modus-operandi-theme-proportional-fonts nil)
+    (modus-operandi-theme-org-blocks 'greyscale))
 
   (use-package doom-themes
     :straight t
@@ -2034,7 +2040,7 @@ the normal #282828.
     (doom-gruvbox-dark-variant "hard")
     (doom-themes-org-config))
 
-  (load-theme 'doom-gruvbox t)
+  (load-theme 'modus-vivendi t)
   ;; (load-theme 'modus-operandi t t)
   ;; (run-at-time "05:00" (* 60 60 24)
   ;;              (lambda ()
@@ -2065,16 +2071,15 @@ do not look good by default. So far, the only faces included here
 relate to fonts.
 
 #+begin_src emacs-lisp :tangle init.el
-  (set-face-attribute 'Info-quoted t
-                      :inherit 'default)
-
-  (set-face-attribute 'fixed-pitch-serif t
-                      :height '150
-                      :family "Go Mono")
-
-  (set-face-attribute 'variable-pitch t
-                      :height 150
-                      :family "Cantarell")
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(Info-quoted ((t (:inherit fixed-pitch :foreground "#feacd0"))))
+   '(fixed-pitch ((t (:family "Iosevka"))))
+   '(fixed-pitch-serif ((t (:family "Go Mono"))))
+   '(variable-pitch ((t (:height 150 :family "Cantarell")))))
 #+end_src
 
 ** Frame options
@@ -2218,7 +2223,7 @@ It is preferable to use Emacs as daemon in the background. Here we
 start the Emacs server. We also define a keybinding for killing Emacs.
 
 #+begin_src emacs-lisp :tangle init.el
-  ;; (server-start)
+  (server-start)
 
   (general-define-key
    "H-c k" 'kill-emacs)
