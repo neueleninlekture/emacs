@@ -1013,28 +1013,28 @@ some basic options. These are:
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
-    :straight t
-    :defer t
+	:straight t
+	:defer t
 
-    :custom
-    (org-directory "~/org/")
-    (org-ellipsis "⬎")
-    (org-hide-leading-stars t)
-    (org-html-postamble nil)
+	:custom
+	(org-directory "~/org/")
+	(org-ellipsis "⬎")
+	(org-hide-leading-stars t)
+	(org-html-postamble nil)
 
-    :hook
-    ((org-mode-hook . org-indent-mode))
-    :diminish org-indent-mode
+	:hook
+	(org-mode-hook . org-indent-mode)
+	:diminish org-indent-mode
 
-    :bind
-    (("C-," . org-cycle-agenda-files)
-     (:map org-mode-map
-          (("M-n" . org-forward-element)
-           ("M-p" . org-backward-element)
-           ("C-M-n" . org-metadown)
-           ("C-M-p" . org-metaup)
-           ("C-M-f" . org-metaright)
-           ("C-M-b" . org-metaleft)))))
+	:bind
+	(("C-," . org-cycle-agenda-files)
+	 (:map org-mode-map
+		  (("M-n" . org-forward-element)
+		   ("M-p" . org-backward-element)
+		   ("C-M-n" . org-metadown)
+		   ("C-M-p" . org-metaup)
+		   ("C-M-f" . org-metaright)
+		   ("C-M-b" . org-metaleft)))))
 #+end_src
 
 *** Agenda, Tasks and TODOs
@@ -1892,16 +1892,13 @@ These are tools for downloading and streaming videos from the web.
 
 *** ytdl
 
-=ytdl= is a utility for downloading videos from YouTube using
-=youtube-dl=. Here we configure the standard directories to be used by
-it.
+=youtube-dl=, as the name suggests, is a utility for downloading
+videos from YouTube using the command line tool =youtube-dl=. Here we
+configure the standard directories to be used by it.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package ytdl
     :straight t
-    :bind
-    (:map youtube
-     ("d" . ytdl-download))
     :custom
     (ytdl-download-folder "~/vids")
     (ytdl-video-folder "~/vids")
@@ -1910,6 +1907,15 @@ it.
                            ("memes" "m" "~/vid/memes" nil)
                            ("lewd" "l" "~/vid/lewd" nil)
                            ("other" "o" "~/vid/" nil))))
+
+  (use-package youtube-dl
+    :straight t
+    :custom
+    (youtube-dl-directory "~/vid")
+    :bind
+    (:map youtube
+          ("d" . youtube-dl)
+          ("l" . youtube-dl-list)))
 #+end_src
 
 *** ytel
