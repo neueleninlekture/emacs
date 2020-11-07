@@ -2246,19 +2246,17 @@ really worth the tradeoff.
 * Start server
 
 It is preferable to use Emacs as daemon in the background. Here we
-start the Emacs server. We also define a keybinding for killing Emacs.
+start the Emacs server. We also add a little hook for displaying
+startup time and garbage collection information.
 
 #+begin_src emacs-lisp :tangle init.el
   (server-start)
 
-  (general-define-key
-   "H-c k" 'kill-emacs)
-
   (add-hook 'emacs-startup-hook
-            (lambda ()
-              (message "Emacs ready in %s with %d garbage collections."
-                       (format "%.2f seconds"
-                               (float-time
-                                (time-subtract after-init-time before-init-time)))
-                       gcs-done)))
+			(lambda ()
+			  (message "Emacs ready in %s with %d garbage collections."
+					   (format "%.2f seconds"
+							   (float-time
+								(time-subtract after-init-time before-init-time)))
+					   gcs-done)))
 #+end_src
