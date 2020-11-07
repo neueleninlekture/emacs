@@ -164,8 +164,6 @@ cursor blink. This way the cursor is static.
 
   (set-window-scroll-bars (minibuffer-window) nil nil)
   (setq frame-inhibit-implied-resize t)
-
-  (blink-cursor-mode -1)
 #+end_src
 
 ** Disabling package.el
@@ -451,7 +449,7 @@ configuration itself, or other packages.
 #+begin_src emacs-lisp :tangle init.el
   (use-package diminish
     :straight t
-    :diminish visual-line-mode eldoc-mode)
+    :diminish visual-line-mode eldoc-mode org-indent-mode)
 #+end_src
 
 ** Async
@@ -579,11 +577,13 @@ for use with regular Emacs keys.
   (define-prefix-command 'youtube)
 
   (global-set-key (kbd "C-c c") 'leader)
+  (global-set-key (kbd "C-c b") 'buffers)
+  (global-set-key (kbd "C-c t") 'text-editing)
   (global-set-key (kbd "C-c n") 'notes)
   (global-set-key (kbd "C-c f") 'fill-text)
 
   (general-define-key
-    :keymaps 'leader
+   :keymaps 'leader
    "a" 'agenda-and-time
    "b" 'buffers
    "d" 'database
@@ -734,10 +734,10 @@ In this section we deal with all packages relating to the fundamental
 components of any Emacs workflow, those being buffers, files and
 windows.
 
+** Buffers
+
 For =buffers=, we change keybindings and configure a few useful
 utilities for managing them, such as =ibuffer=.
-
-** Buffers
 
 *** Ibuffer
 
@@ -1015,13 +1015,17 @@ some basic options. These are:
   (use-package org
     :straight t
     :defer t
+
     :custom
     (org-directory "~/org/")
     (org-ellipsis "⬎")
     (org-hide-leading-stars t)
-    (org-html-postamble nil)  
+    (org-html-postamble nil)
+
     :hook
-    (org-mode-hook . org-indent-mode)
+    (org-mode . org-indent-mode)
+    :diminish org-indent-mode
+
     :bind
     (:map org-mode-map
           (("M-n" . org-forward-element)
@@ -1176,10 +1180,14 @@ files. All these packages can be acessed under the C-c n map.
 #+begin_src emacs-lisp :tangle init.el
   (use-package org-roam
     :straight t
+
     :config
     (require 'org-protocol)
     (require 'org-roam-protocol)
     (org-roam-mode)
+  
+    :diminish org-roam-mode
+  
     :custom
     (org-roam-directory "~/org/roam/")
     (org-roam-index-file "~/org/roam/index.org")
@@ -2076,6 +2084,8 @@ happens. It helps the user quickly locate the new position.
     :straight t
     :init
     (beacon-mode)
+    :config
+    (blink-cursor-mode -1)
     :diminish beacon-mode)
 #+end_src
 
