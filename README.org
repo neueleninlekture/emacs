@@ -1013,27 +1013,28 @@ some basic options. These are:
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
-    :straight t
-    :defer t
+	:straight t
+	:defer t
 
-    :custom
-    (org-directory "~/org/")
-    (org-ellipsis "⬎")
-    (org-hide-leading-stars t)
-    (org-html-postamble nil)
+	:custom
+	(org-directory "~/org/")
+	(org-ellipsis "⬎")
+	(org-hide-leading-stars t)
+	(org-html-postamble nil)
 
-    :hook
-    (org-mode . org-indent-mode)
-    :diminish org-indent-mode
+	:hook
+	(org-mode . org-indent-mode)
+	:diminish org-indent-mode
 
-    :bind
-    (:map org-mode-map
-          (("M-n" . org-forward-element)
-           ("M-p" . org-backward-element)
-           ("C-M-n" . org-metadown)
-           ("C-M-p" . org-metaup)
-           ("C-M-f" . org-metaright)
-           ("C-M-b" . org-metaleft))))
+	:bind
+	(("C-," . org-cycle-agenda-files)
+	 (:map org-mode-map
+		  (("M-n" . org-forward-element)
+		   ("M-p" . org-backward-element)
+		   ("C-M-n" . org-metadown)
+		   ("C-M-p" . org-metaup)
+		   ("C-M-f" . org-metaright)
+		   ("C-M-b" . org-metaleft)))))
 #+end_src
 
 *** Agenda, Tasks and TODOs
