@@ -2280,3 +2280,4 @@ startup time and garbage collection information.
 								(time-subtract after-init-time before-init-time)))
 					   gcs-done)))
 #+end_src
+
