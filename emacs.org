@@ -1959,11 +1959,29 @@ elfeed.
           ("RET" . ytel-watch-mpv))))
 #+end_src
 
-** Recording screencasts
+** Screencasts
+
+Occasionally I record short screencasts of my Emacs usage. Sometimes
+to show features to other users, and other times to demonstrate issues
+I might be having. So here we install a few auxilliary packages, and
+configure a simple function to help us in this task.
+
+The packages installed are =gif-screencast=, which, using some
+external tools, allows recording of the Emacs frame into gifs, and
+=keycast=, which displays commands and keypresses in the modeline,
+similar to the popular tool Screenkey. Both of these tools are used
+for the screencasting.
+
+The function defined below simply toggles the screencast on and off,
+using both of the above packages. I've had issues with enabling and
+disabling keycast-mode simply by calling it, so a slightly more
+complex system, using =if= checks, has been implemented for that. The
+function also leverages a toggle function built into gif-screencast,
+which works similarly to the above.
 
 #+begin_src emacs-lisp :tangle init.el
   (defun aabm/toggle-screencasting ()
-    "Toggle screencasting on and off. Using keycast-mode, display all keybindings and commands in the modeline, and using gif-screencast, record a gif of the Emacs frame."
+    "Toggle screencasting using keycast-mode and gif-screencast on and off."
     (interactive)
     (if (eq keycast-mode t)
         (keycast-mode -1)
