@@ -903,7 +903,7 @@ supported.
     :config
 
     (defun aabm/dired-xdg-open ()
-      "Open the marked files using xdg-open"
+      "Open the marked files using xdg-open."
       (interactive)
       (let ((file-list (dired-get-marked-files)))
         (mapc
@@ -1963,7 +1963,7 @@ elfeed.
 
 #+begin_src emacs-lisp :tangle init.el
   (defun aabm/toggle-screencasting ()
-    "Toggle keycast-mode on and off."
+    "Toggle screencasting on and off. Using keycast-mode, display all keybindings and commands in the modeline, and using gif-screencast, record a gif of the Emacs frame."
     (interactive)
     (if (eq keycast-mode t)
         (keycast-mode -1)
