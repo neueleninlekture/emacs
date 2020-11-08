@@ -591,10 +591,9 @@ for use with regular Emacs keys.
 
   (global-set-key (kbd "C-c c") 'leader)
   (global-set-key (kbd "C-c b") 'buffers)
-  (global-set-key (kbd "C-c t") 'text-editing)
-  (global-set-key (kbd "C-c n") 'notes)
   (global-set-key (kbd "C-c f") 'fill-text)
-  (global-set-key (kbd "C-m") 'music)
+  (global-set-key (kbd "C-c n") 'notes)
+  (global-set-key (kbd "C-c t") 'text-editing)
 
   (general-define-key
    :keymaps 'leader
@@ -1958,6 +1957,27 @@ elfeed.
           ("y" . ytel)
      (:map ytel-mode-map
           ("RET" . ytel-watch-mpv))))
+#+end_src
+
+** Recording screencasts
+
+#+begin_src emacs-lisp :tangle init.el
+  (defun aabm/toggle-screencasting ()
+    "Toggle keycast-mode on and off."
+    (interactive)
+    (if (eq keycast-mode t)
+        (keycast-mode -1)
+      (keycast-mode))
+    (gif-screencast-start-or-stop))
+
+  (use-package gif-screencast
+    :straight t
+    :commands gif-screencast-start-or-stop
+    :bind
+    (("C-c c r" . aabm/toggle-screencasting)))
+
+  (use-package keycast
+    :straight t)
 #+end_src
 
 * Theming, cosmetics and appearance
