@@ -1,7 +1,7 @@
 #+title: Aabm's literate configuration for GNU Emacs
 #+author: aabm
 #+email: aabm@disroot.org
-#+seq_todo: TODO(t) | LEGACY(l)
+#+seq_todo: TODO(t) | LEGACY(l) DONE(d)
 #+startup: overview
 
 * About this configuration
