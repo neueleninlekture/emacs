@@ -761,8 +761,6 @@ customizations here involve adding icons and keybindings to
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package ibuffer
-    :hook
-    ((ibuffer-mode-hook . all-the-icons-ibuffer-mode))
     :bind
     (("C-x C-b" . ibuffer)))
 #+end_src
