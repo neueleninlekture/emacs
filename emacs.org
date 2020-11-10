@@ -2179,15 +2179,11 @@ titlebar), frame size and transparency.
   ;; (add-to-list 'default-frame-alist '(alpha 97 95))
 #+end_src
    
-** LEGACY Dashboard
+** Dashboard
 
-:LEGACY:
-Dashboard is quite a nice package, I'll be honest. It's nice enough
-that it brought me into writing all this code just so I'd have my own
-custom dash. The problem is I eventually got sick of it. Scratch
-buffers on init are really where it's at. This section has been kept
-just in case I ever decide to come back to it.
-:END:
+Dashboard is quite a nice package. It provides a startup screen with
+customizable logo, clickable button and a general view of things. For
+a while it was gone from this configuration, but now it's back.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package dashboard
@@ -2249,12 +2245,6 @@ just in case I ever decide to come back to it.
               "Elfeed"
               "Read RSS/Atom feeds with Elfeed"
               (lambda (&rest _) (elfeed))
-              'default))
-            ;; line 3
-            ((,nil
-              "Terminal"
-              "Open vterm"
-              (lambda (&rest _) (vterm))
               'default)
              (nil
               "Dired"
