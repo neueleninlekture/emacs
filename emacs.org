@@ -1023,28 +1023,29 @@ some basic options. These are:
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
-	:straight t
-	:defer t
+    :straight t
+    :defer t
 
-	:custom
-	(org-directory "~/org/")
-	(org-ellipsis "⬎")
-	(org-hide-leading-stars t)
-	(org-html-postamble nil)
+    :custom
+    (org-directory "~/org/")
+    (org-ellipsis "⬎")
+    (org-hide-leading-stars t)
+    (org-html-postamble nil)
 
-	:hook
-	(org-mode-hook . org-indent-mode)
-	:diminish org-indent-mode
+    :hook
+    (org-mode-hook . org-indent-mode)
+    :diminish org-indent-mode
 
-	:bind
-	(("C-," . org-cycle-agenda-files)
-	 (:map org-mode-map
-		  (("M-n" . org-forward-element)
-		   ("M-p" . org-backward-element)
-		   ("C-M-n" . org-metadown)
-		   ("C-M-p" . org-metaup)
-		   ("C-M-f" . org-metaright)
-		   ("C-M-b" . org-metaleft)))))
+    :bind
+    (("C-," . org-cycle-agenda-files)
+     (:map org-mode-map
+          (("M-n" . org-forward-element)
+           ("M-p" . org-backward-element)
+           ("C-M-n" . org-metadown)
+           ("C-M-p" . org-metaup)
+           ("C-M-f" . org-metaright)
+           ("C-M-b" . org-metaleft)
+           ("<mouse-3>" . org-cycle)))))
 #+end_src
 
 *** Agenda, Tasks and TODOs
@@ -2104,6 +2105,12 @@ the normal #282828.
     (modus-operandi-theme-proportional-fonts nil)
     (modus-operandi-theme-org-blocks 'greyscale))
 
+  (load-theme 'modus-operandi t)
+#+end_src
+
+*** LEGACY Old color theme options
+
+#+begin_src emacs-lisp
   (use-package modus-vivendi-theme
     :straight t
     :custom
@@ -2119,7 +2126,7 @@ the normal #282828.
     (doom-gruvbox-dark-variant "hard")
     (doom-themes-org-config))
 
-  (load-theme 'modus-operandi t t)
+  (load-theme 'modus-operandi t)
   (run-at-time "06:00" (* 60 60 24)
                (lambda ()
                  (enable-theme 'modus-operandi)))
@@ -2206,13 +2213,14 @@ a while it was gone from this configuration, but now it's back.
     (dashboard-set-footer t)
     (dashboard-footer-messages 
           '("We conjure the spirits of the computer with our spells..."
-            "Free as in freedom!"
             "Happy hacking!"
             "The One True Editor, Emacs."
             "Vi Vi Vi, the editor of the beast."
             "Violence begins with Vi."
             "There is no system but GNU, and Linux is one of its kernels."
+		  
             "The proof of the pudding is in the eating."
+            "In the beginning was the deed."
             "Vanitas! Vanitatum vanitas!"
             "Workers of the world, unite!"
             "A spectre is haunting Europe..."))
