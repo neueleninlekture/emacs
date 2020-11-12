@@ -2231,22 +2231,14 @@ uses the Hard contrast variant, with a #1D2021 background instead of
 the normal #282828.
 
 #+begin_src emacs-lisp :tangle init.el
-  ;; (use-package modus-operandi-theme
-  ;;   :straight t
-  ;;   :custom
-  ;;   (modus-operandi-theme-no-mixed-fonts nil)
-  ;;   (modus-operandi-theme-proportional-fonts nil)
-  ;;   (modus-operandi-theme-org-blocks 'greyscale))
+  (use-package modus-operandi-theme
+    :straight t
+    :custom
+    (modus-operandi-theme-no-mixed-fonts nil)
+    (modus-operandi-theme-proportional-fonts nil)
+    (modus-operandi-theme-org-blocks 'greyscale))
 
-    (use-package doom-themes
-      :straight t
-      :custom
-      (doom-themes-enable-bold t)
-      (doom-themes-enable-italic t)
-      (doom-gruvbox-dark-variant "hard")
-      (doom-themes-org-config))
-
-  (load-theme 'doom-gruvbox t)
+  (load-theme 'modus-operandi t)
 #+end_src
 
 *** LEGACY Old color theme options
@@ -2327,12 +2319,10 @@ titlebar), frame size and transparency.
   (setq frame-title-format "%b")
 
   (add-to-list 'default-frame-alist '(font . "Iosevka 12"))
-
-  (add-to-list 'default-frame-alist '(alpha 97 95)) 
-  (set-frame-parameter (selected-frame) 'alpha '(97 95))
-
   (add-to-list 'default-frame-alist '(width  . 110))
   (add-to-list 'default-frame-alist '(height . 40))
+  ;; (add-to-list 'default-frame-alist '(alpha 97 95)) 
+  ;; (set-frame-parameter (selected-frame) 'alpha '(97 95))
 #+end_src
    
 ** Dashboard
@@ -2355,7 +2345,7 @@ a while it was gone from this configuration, but now it's back.
             (recents . 5)
             (agenda . 10)))
     (dashboard-banner-logo-title "Welcome to GNU Emacs!")
-    (dashboard-startup-banner 'official)
+    (dashboard-startup-banner (concat user-emacs-directory "emacs-drawn"))
     (dashboard-center-content t)
     (dashboard-show-shortcuts t)
     (dashboard-set-init-info t)
