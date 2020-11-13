@@ -735,10 +735,11 @@ limit.
 Easily open files over sudo using =TRAMP=.
 
 #+begin_src emacs-lisp :tangle init.el
-  (use-package sudo-edit
+  (use-package auto-sudoedit
     :straight t
-    :bind
-    (("H-x H-f" . sudo-edit-find-file)))
+    :diminish
+    :init
+    (auto-sudoedit-mode))
 #+end_src
 
 * Buffer, file and window management
