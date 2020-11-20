@@ -1150,6 +1150,8 @@ some basic options. These are:
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
     :straight t
+    :init
+    (setq org-export-backends '(ascii beamer html latex md))
     :defer t
 
     :custom
@@ -1287,26 +1289,6 @@ structure templates for creating blocks.
             ("ts" . "src fundamental :tangle ~/.config/sxhkd/sxhkdrc\n")
             ("tq" . "src python :tangle ~/.config/qutebrowser/config.py\n")
             ("v" . "verse\n"))))
-#+end_src
-
-*** Export
-
-Org includes a series of utilities for exporting org files into other formats, including LaTeX, HTML, and Markdown. In this section we configure templates for export, and load related packages.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package ox
-    :straight ox-epub
-    :requires
-    (ox-ascii
-     ox-beamer
-     ox-html
-     ox-icalendar
-     ox-latex
-     ox-md
-     ox-odt
-     ox-org
-     ox-texinfo
-     ox-man))
 #+end_src
 
 *** Org Roam
