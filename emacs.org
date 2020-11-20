@@ -937,7 +937,11 @@ supported.
            ("i" . 'peep-dired)
            ("I" . 'image-dired)
            ("v" . aabm/dired-xdg-open)
-           ("q" . kill-this-buffer))))
+           ("q" . kill-this-buffer)))
+  
+    (:map peep-dired-mode-map
+          (("n" . peep-dired-next-file)
+           ("p" . peep-dired-prev-file))))
 #+end_src
 
 *** Magit
