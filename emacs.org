@@ -1157,6 +1157,7 @@ some basic options. These are:
     (org-ellipsis "⬎")
     (org-hide-leading-stars t)
     (org-html-postamble nil)
+    (org-cycle-global-at-bob t)
 
     :hook
     (org-mode-hook . org-indent-mode)
@@ -1727,10 +1728,13 @@ usage.
     :straight t)
 #+end_src
 
-** Python
+** HTML/CSS
+
+All web things go here.
 
 #+begin_src emacs-lisp :tangle init.el
-
+  (use-package impatient-mode
+    :straight t)
 #+end_src
 
 * Shell and terminal emulation
@@ -2442,7 +2446,7 @@ start the Emacs server. We also add a little hook for displaying
 startup time and garbage collection information.
 
 #+begin_src emacs-lisp :tangle init.el
-  ;; (server-start)
+  (server-start)
 
   (add-hook 'emacs-startup-hook
             (lambda ()
