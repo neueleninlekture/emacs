@@ -1315,6 +1315,7 @@ files. All these packages can be acessed under the C-c n map.
     (org-roam-index-file "~/org/roam/index.org")
     (org-roam-encrypt-files nil)
     (org-roam-completion-system 'ivy)
+    (org-roam-db-update-method 'immediate)
     (org-roam-graph-executable "/usr/bin/neato")
     (org-roam-graph-extra-config '(("overlap" . "false")))
     (org-roam-capture-templates
