@@ -559,17 +559,6 @@ these are later bound to keys.
 
 * Custom keybinding system
 
-** GUI-only keys
-
-Emacs, much like a terminal, handles a few keychords as
-representations of other keys. C-m is treated as RET, C-i is treated
-as TAB. Here we disable that sort of behavior.
-
-#+begin_src emacs-lisp :tangle init.el
-  (define-key input-decode-map [?\C-m] [C-m])
-  (define-key input-decode-map [?\C-i] [C-i])
-#+end_src
-
 ** Prefix keys
 
 Here we define all prefix keys. The setup here is similar to the
@@ -1711,15 +1700,6 @@ usage.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package haskell-mode
-    :straight t)
-#+end_src
-
-** HTML/CSS
-
-All web things go here.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package impatient-mode
     :straight t)
 #+end_src
 
