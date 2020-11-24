@@ -926,8 +926,13 @@ supported.
            ("i" . 'peep-dired)
            ("I" . 'image-dired)
            ("v" . aabm/dired-xdg-open)
-           ("q" . kill-this-buffer)))
+           ("q" . kill-this-buffer))))
 
+  (use-package peep-dired
+    :straight t
+    :bind
+    (:map dired-mode-map
+          (("i" . 'peep-dired)))
     (:map peep-dired-mode-map
           (("n" . peep-dired-next-file)
            ("p" . peep-dired-prev-file))))
