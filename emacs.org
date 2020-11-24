@@ -2298,13 +2298,14 @@ titlebar), frame size and transparency.
   (set-frame-parameter (selected-frame) 'alpha '(97 95))
 #+end_src
    
-** Dashboard
+** LEGACY Dashboard
 
 Dashboard is quite a nice package. It provides a startup screen with
-customizable logo, clickable button and a general view of things. For
-a while it was gone from this configuration, but now it's back.
+customizable logo, clickable button and a general view of
+things. However, I do not see it as being particularly useful. So it
+is gone.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package dashboard
     :straight t
     :defer nil
