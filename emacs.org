@@ -1524,16 +1524,7 @@ for printing the current page number to the echo area.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package calendar
-    :commands calendar aabm/calendar
-
-    :init
-    (defun aabm/calendar ()
-      "Loads credentials file, then opens the calendar."
-      (interactive)
-      (progn
-        (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
-        (calendar)))
-
+    :commands calendar
     :custom
     (calendar-week-start-day 0)
     (calendar-day-name-array ["Domingo" "Segunda" "Terça" "Quarta" 
@@ -1546,20 +1537,14 @@ for printing the current page number to the echo area.
            ("c" . aabm/calendar))))
 #+end_src
 
-** LEGACY User credentials
-
-:LEGACY:
-The code here has been moved to other places for performance (it now
-gets lazy loaded by a use-package), but the documentation has been
-kept here.
-:END:
+** User credentials
 
 This section loads my personal credentials file. The contents of the
 file are minimal, but are kept separate from this file so that
 distribution of this configuration does not contain any personal
 information that I'd rather not leak to the public.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle init.el
   (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
 #+end_src
 
@@ -1902,9 +1887,6 @@ of those tools.
                        (lambda ()
                          (unless (yes-or-no-p "Sure you want to send this?")
                            (signal 'quit nil))))
-
-    :config
-    (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
 
     :bind
     (("H-x m" . mu4e)
