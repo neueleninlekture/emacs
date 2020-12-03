@@ -1193,7 +1193,8 @@ another for quickly opening up the main agenda file.
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
     :custom
-    (org-agenda-files '("~/org/agenda.org"))
+    (org-agenda-files '("~/org/agenda/home.org"
+                        "~/org/agenda/uni.org"))
     (org-archive-location (concat org-directory "/archive.org::"))
     (org-enforce-todo-dependencies t)
     (org-enforce-todo-checkbox-dependencies t)
@@ -1227,10 +1228,16 @@ default, as well as the templates to use for capture.
     (org-default-notes-file (concat org-directory "agenda.org"))
     (org-capture-templates
      '(
-       ("a" "Assignments"
+       ("u" "Uni")
+       ("ut" "Uni - Trabalhos"
         entry
-        (file+headline "agenda.org" "Assignments")
-        "* TODO %^{Disciplina|Política|Antropologia|Sociologia|Economia|Filosofia} - %A\n%?\nDEADLINE: %^T")
+        (file+headline "agenda/uni.org" "Trabalhos")
+        "* TODO %^{Disciplina|Política|Antropologia|Sociologia|Demografia|Estatística} - %^{ITEM}\n%?\nDEADLINE: %^T")
+
+       ("ul" "Uni - Leituras"
+        entry
+        (file+headline "agenda/uni.org" "Leituras")
+        "* TODO %^{Disciplina|Política|Antropologia|Sociologia|Demografia|Estatística} - %^{ITEM}\n%?\nDEADLINE: %^T")
 
        ("l" "List of")
        ("lb" "Books"
@@ -1252,7 +1259,7 @@ default, as well as the templates to use for capture.
         entry
         (file "list/books.org")
         "* %^{Status|PLAN|READING|READ} %^{Title}\n:TIME: %t\n:AUTHOR: %^{Author}\n:YEAR: %^{Year of publication}\n:SERIES: %^{Series}\n:LANG: %^{Language}\n:PUBL: %^{Publisher}\n")))
-  
+
     :bind
     (("C-c w" . org-capture)))
 #+end_src
@@ -1436,14 +1443,14 @@ page continuity. With that off, scrolling over a page will not take
 you to the next page, you must do that explicitly.
 
 #+begin_src emacs-lisp :tangle init.el
-(defun aabm/pdf-view-continuous-toggle ()
-  (interactive)
-  (cond ((not pdf-view-continuous)
-         (setq pdf-view-continuous t)
-         (message "Page scrolling: Continous"))
-        (t
-         (setq pdf-view-continuous nil)
-         (message "Page scrolling: Constrained"))))
+  (defun aabm/pdf-view-continuous-toggle ()
+    (interactive)
+    (cond ((not pdf-view-continuous)
+           (setq pdf-view-continuous t)
+           (message "Page scrolling: Continous"))
+          (t
+           (setq pdf-view-continuous nil)
+           (message "Page scrolling: Constrained"))))
 #+end_src
 
 The second function, =aabm/pdf-view-open-in-zathura= allows opening
@@ -1490,6 +1497,7 @@ Now we bind these functions and others to keys in the =pdf-view-mode-map=.
    "C-e" 'image-scroll-left
    "f" 'pdf-view-goto-page)
 #+end_src
+
 
 *** nov.el
 
