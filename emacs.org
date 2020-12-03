@@ -1232,12 +1232,12 @@ default, as well as the templates to use for capture.
        ("ut" "Uni - Trabalhos"
         entry
         (file+headline "agenda/uni.org" "Trabalhos")
-        "* TODO %^{Disciplina|Política|Antropologia|Sociologia|Demografia|Estatística} - %^{ITEM}\n%?\nDEADLINE: %^T")
+        "* TODO Trabalho de %^{Disciplina|Política|Antropologia|Sociologia|Demografia|Estatística} - %^{ITEM}\n%?\nDEADLINE: %^T")
 
        ("ul" "Uni - Leituras"
         entry
         (file+headline "agenda/uni.org" "Leituras")
-        "* TODO %^{Disciplina|Política|Antropologia|Sociologia|Demografia|Estatística} - %^{ITEM}\n%?\nDEADLINE: %^T")
+        "* TODO Leitura de %^{Disciplina|Política|Antropologia|Sociologia|Demografia|Estatística} - %^{ITEM}\n%?\nDEADLINE: %^T")
 
        ("l" "List of")
        ("lb" "Books"
@@ -1258,7 +1258,12 @@ default, as well as the templates to use for capture.
        ("lb" "Books"
         entry
         (file "list/books.org")
-        "* %^{Status|PLAN|READING|READ} %^{Title}\n:TIME: %t\n:AUTHOR: %^{Author}\n:YEAR: %^{Year of publication}\n:SERIES: %^{Series}\n:LANG: %^{Language}\n:PUBL: %^{Publisher}\n")))
+        "* %^{Status|PLAN|READING|READ} %^{Title}\n:TIME: %t\n:AUTHOR: %^{Author}\n:YEAR: %^{Year of publication}\n:SERIES: %^{Series}\n:LANG: %^{Language}\n:PUBL: %^{Publisher}\n")
+
+       ("h" "Home maintenance"
+        entry
+        (file "agenda/home.org")
+        "* TODO %^{ITEM}\n%?\nDEADLINE: %^T"))))
 
     :bind
     (("C-c w" . org-capture)))
@@ -1424,135 +1429,64 @@ The configurations for pdf-tools here simply involve the zooming, page
 fit and continuity of pages. We also ensure that pdf-tools is able to
 install and configure its external binary on first startup.
 
-#+begin_src emacs-lisp :tangle init.el
-  (use-package pdf-tools
-    :straight t
-    :init
-    (pdf-loader-install)
-    :custom
-    (pdf-view-resize-factor 1.1)
-    (pdf-view-continuous nil)
-    (pdf-view-display-size 'fit-page))
-#+end_src
-
-**** Custom functions
-
-Now's the time for some custom function definitions. The first
-function, =aabm/pdf-view-continuous-toggle= is made for toggling the
-page continuity. With that off, scrolling over a page will not take
-you to the next page, you must do that explicitly.
-
-#+begin_src emacs-lisp :tangle init.el
-  (defun aabm/pdf-view-continuous-toggle ()
-    (interactive)
-    (cond ((not pdf-view-continuous)
-           (setq pdf-view-continuous t)
-           (message "Page scrolling: Continous"))
-          (t
-           (setq pdf-view-continuous nil)
-           (message "Page scrolling: Constrained"))))
-#+end_src
+The first function, =aabm/pdf-view-continuous-toggle= is made for
+toggling the page continuity. With that off, scrolling over a page
+will not take you to the next page, you must do that explicitly.
 
 The second function, =aabm/pdf-view-open-in-zathura= allows opening
 the current pdf in the external viewer called =zathura=. This function
 can easily be changed to use any other viewer, like =evince= or
 =okular=.
 
-#+begin_src emacs-lisp :tangle init.el
-(defun aabm/pdf-view-open-in-zathura ()
-  "Open the current PDF with ‘zathura’."
-  (interactive)
-  (save-window-excursion
-    (let ((current-file (buffer-file-name))
-          (current-page (number-to-string (pdf-view-current-page))))
-      (async-shell-command
-       (format "zathura -P %s \"%s\"" current-page current-file))))
-  (message "Sent to Zathura"))
-#+end_src
-
 Finally, the third function, =aabm/pdf-view-print-current-page=, exists
 for printing the current page number to the echo area.
 
 #+begin_src emacs-lisp :tangle init.el
-(defun aabm/pdf-view-show-current-page ()
-  "Print the current page."
-  (interactive)
-  (message "Page: %s" (pdf-view-current-page)))
-#+end_src
-
-**** Keybindings
-
-Now we bind these functions and others to keys in the =pdf-view-mode-map=.
-
-#+begin_src emacs-lisp :tangle init.el
-  (general-define-key
-   :keymaps 'pdf-view-mode-map
-   "C-s" 'isearch-forward
-   "C-r" 'isearch-backward
-   "C-c d" 'pdf-view-midnight-minor-mode
-   "C-c z" 'aabm/pdf-view-open-in-zathura
-   "C-c p" 'aabm/pdf-view-show-current-page
-   "C-c t" 'aabm/pdf-view-continuous-toggle 
-   "C-a" 'image-scroll-right
-   "C-e" 'image-scroll-left
-   "f" 'pdf-view-goto-page)
-#+end_src
-
-
-*** nov.el
-
-Now we install =nov.el=, which is a small package for reading .epub
-files with Emacs. The only significant configuration done here is
-hooking nov.el to olivetti-mode.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package nov
+  (use-package pdf-tools
     :straight t
     :init
-    (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-    :bind
-    (:map nov-mode-map
-            (("M-n" . scroll-up-line)
-            ("M-p" . scroll-down-line))))
-#+end_src
+    (pdf-loader-install)
+    :config
 
-** CalibreDB
+    (defun aabm/pdf-view-continuous-toggle ()
+      (interactive)
+      (cond ((not pdf-view-continuous)
+             (setq pdf-view-continuous t)
+             (message "Page scrolling: Continous"))
+            (t
+             (setq pdf-view-continuous nil)
+             (message "Page scrolling: Constrained"))))
 
-#+begin_src emacs-lisp :tangle init.el
-  (use-package calibredb
-    :straight t
-    :defer t
-    :init
-    (autoload 'calibredb "calibredb")
+    (defun aabm/pdf-view-open-in-zathura ()
+      "Open the current PDF with ‘zathura’."
+      (interactive)
+      (save-window-excursion
+        (let ((current-file (buffer-file-name))
+              (current-page (number-to-string (pdf-view-current-page))))
+          (async-shell-command
+           (format "zathura -P %s \"%s\"" current-page current-file))))
+      (message "Sent to Zathura"))
+
+    (defun aabm/pdf-view-show-current-page ()
+      "Print the current page."
+      (interactive)
+      (message "Page: %s" (pdf-view-current-page)))
+
     :custom
-    (calibredb-root-dir "~/doc/books")
-    (calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
-    (calibredb-library-alist '(("~/doc/books")))
-    (calibredb-format-all-the-icons t)
+    (pdf-view-resize-factor 1.1)
+    (pdf-view-continuous nil)
+    (pdf-view-display-size 'fit-page)
     :bind
-    ((:map database
-           ("l" . calibredb)
-           ("s" . calibredb-find-counsel)
-           ("a" . calibredb-add))
-     (:map calibredb-search-mode-map
-           ("t" . calibredb-set-metadata-dispatch)
-           ("s" . calibredb-search-live-filter)
-           ("n" . calibredb-next-entry)
-           ("p" . calibredb-previous-entry)
-           ("j" . nil)
-           ("k" . nil))))
-#+end_src
-
-** Flyspell
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package flyspell
-    :straight t
-    :custom
-    (ispell-program-name "aspell")
-    :bind
-    (:map text-editing
-          ("f" . flyspell-mode)))
+    (:map pdf-view-mode-map
+          ("C-s" . isearch-forward)
+          ("C-r" . isearch-backward)
+          ("C-c d" . pdf-view-midnight-minor-mode)
+          ("C-c z" . aabm/pdf-view-open-in-zathura)
+          ("C-c p" . aabm/pdf-view-show-current-page)
+          ("C-c t" . aabm/pdf-view-continuous-toggle )
+          ("C-a" . image-scroll-right)
+          ("C-e" . image-scroll-left)
+          ("f" . pdf-view-goto-page)))
 #+end_src
 
 * Personal agenda, time and task management

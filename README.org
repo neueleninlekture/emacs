@@ -1263,10 +1263,7 @@ default, as well as the templates to use for capture.
        ("h" "Home maintenance"
         entry
         (file "agenda/home.org")
-        "* TODO %^{ITEM}\n%?\nDEADLINE: %^T")
-	  
-
-        )))
+        "* TODO %^{ITEM}\n%?\nDEADLINE: %^T"))))
 
     :bind
     (("C-c w" . org-capture)))
