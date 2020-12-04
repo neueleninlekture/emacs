@@ -1493,6 +1493,23 @@ for printing the current page number to the echo area.
           ("f" . pdf-view-goto-page)))
 #+end_src
 
+*** nov.el
+
+Now we install =nov.el=, which is a small package for reading .epub
+files with Emacs. The only significant configuration done here is
+hooking nov.el to olivetti-mode.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package nov
+    :straight t
+    :init
+    (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+    :bind
+    (:map nov-mode-map
+            (("M-n" . scroll-up-line)
+            ("M-p" . scroll-down-line))))
+#+end_src
+
 ** CalibreDB
 
 =calibredb= offers an Emacs interface for the =Calibre= ebook
