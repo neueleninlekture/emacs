@@ -952,14 +952,18 @@ commands you barely understand.
     (("C-x g" . magit-status)))
 #+end_src
 
-*** rg
+*** Loading files conditionally
+
+This is a simple function for loading files conditionally (that is,
+only if they exist). Simply put, it makes the process of loading
+external files such as those containing personal information not
+included in this config, a lot easier.
 
 #+begin_src emacs-lisp :tangle init.el
-  (use-package rg
-    :straight t
-    :bind
-    (:map search+
-     ("r" . rg)))
+(defun aabm/load-file-if (file)
+  "Check if FILE exists, and if so, load it."
+  (if (file-exists-p file)
+    (load-file file)))
 #+end_src
 
 ** Emacs as an Xorg Window manager
@@ -1489,6 +1493,38 @@ for printing the current page number to the echo area.
           ("f" . pdf-view-goto-page)))
 #+end_src
 
+** CalibreDB
+
+=calibredb= offers an Emacs interface for the =Calibre= ebook
+manager. The package allows for interacting with a Calibre database
+entirely from within Emacs, without ever having to bother touching the
+(horrible) interface for calibre.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package calibredb
+    :straight t
+    :defer t
+    :init
+    (autoload 'calibredb "calibredb")
+    :custom
+    (calibredb-root-dir "~/doc/books")
+    (calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
+    (calibredb-library-alist '(("~/doc/books")))
+    (calibredb-format-all-the-icons t)
+    :bind
+    (:map database
+          ("l" . calibredb)
+          ("s" . calibredb-find-counsel)
+          ("a" . calibredb-add))
+    (:map calibredb-search-mode-map
+          ("t" . calibredb-set-metadata-dispatch)
+          ("s" . calibredb-search-live-filter)
+          ("n" . calibredb-next-entry)
+          ("p" . calibredb-previous-entry)
+          ("j" . nil)
+          ("k" . nil)))
+#+end_src
+
 * Personal agenda, time and task management
 
 ** Time display
@@ -1611,20 +1647,6 @@ that it does not load these files.
    "H-c e" 'aabm/build-emacs)
 #+end_src
  
-*** Loading files conditionally
-
-This is a simple function for loading files conditionally (that is,
-only if they exist). Simply put, it makes the process of loading
-external files such as those containing personal information not
-included in this config, a lot easier.
-
-#+begin_src emacs-lisp :tangle init.el
-(defun aabm/load-file-if (file)
-  "Check if FILE exists, and if so, load it."
-  (if (file-exists-p file)
-    (load-file file)))
-#+end_src
-
 ** Haskell
 
 I started using =Haskell= due to =Xmonad=. Don't use it for anything
@@ -1830,6 +1852,34 @@ external video player, namely =mpv=, which is bound to the v key.
           (setq quality-arg (format "--ytdl-format=[height<=?%s]" quality-val)))
         (start-process "elfeed-mpv" nil "mpv" quality-arg (elfeed-entry-link entry))))
 
+    (defun prot/elfeed-search-tag-filter ()
+      "Filter `elfeed' by tags using completion.
+
+    Arbitrary input is also possible, but you may need to exit the
+    minibuffer with `exit-minibuffer' (I bind it to C-j in
+    `minibuffer-local-completion-map')."
+      (interactive)
+      (unwind-protect
+          (elfeed-search-clear-filter)
+        (let* ((crm-separator " ")
+               (elfeed-search-filter-active :live)
+               (db-tags (elfeed-db-get-all-tags))
+               (plus-tags (delete-dups
+                           (mapcar (lambda (x)
+                                     (concat "+" (format "%s" x)))
+                                   db-tags)))
+               (minus-tags (delete-dups
+                            (mapcar (lambda (x)
+                                      (concat "-" (format "%s" x)))
+                                    db-tags)))
+               (all-tags (append plus-tags minus-tags))
+               (tags (completing-read-multiple
+                      "Apply tag: "
+                      all-tags nil t))
+               (input (string-join `(,elfeed-search-filter ,@tags) " ")))
+          (setq elfeed-search-filter input))
+        (elfeed-search-update :force)))
+
     :custom
     (shr-width 100)
 
@@ -1841,7 +1891,8 @@ external video player, namely =mpv=, which is bound to the v key.
            ("v" . aabm/elfeed-play-with-mpv))
 
      (:map elfeed-search-mode-map
-           ("v" . aabm/elfeed-play-with-mpv))))
+           ("v" . aabm/elfeed-play-with-mpv)
+           ("s" . prot/elfeed-search-tag-filter))))
 #+end_src
 
 ** mu4e
