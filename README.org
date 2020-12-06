@@ -550,7 +550,7 @@ these are later bound to keys.
      ("M-s s" . avy-goto-char-2)
      ("C-x C-f" . counsel-find-file)
      ("C-x b" . counsel-switch-buffer)
-     ("C-x r b" . counsel-bookmark)
+     ("C-x r b" . bookmark-jump)
      ("M-x" . counsel-M-x)
      ("C-h f" . counsel-describe-function)
      ("C-h v" . counsel-describe-variable)
@@ -923,8 +923,8 @@ supported.
            ("C-c d c" . chmod)
            ("h" . dired-hide-dotfiles-mode)
            ("H" . dired-hide-details-mode)
-           ("i" . 'peep-dired)
-           ("I" . 'image-dired)
+           ("i" . peep-dired)
+           ("I" . image-dired)
            ("v" . aabm/dired-xdg-open)
            ("q" . kill-this-buffer))))
 
@@ -932,7 +932,7 @@ supported.
     :straight t
     :bind
     (:map dired-mode-map
-          (("i" . 'peep-dired)))
+          (("i" . peep-dired)))
     (:map peep-dired-mode-map
           (("n" . peep-dired-next-file)
            ("p" . peep-dired-prev-file))))
@@ -1229,6 +1229,7 @@ default, as well as the templates to use for capture.
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
     :custom
+    (org-capture-bookmark nil)
     (org-default-notes-file (concat org-directory "agenda.org"))
     (org-capture-templates
      '(
