@@ -731,6 +731,14 @@ Easily open files over sudo using =TRAMP=.
     (auto-sudoedit-mode))
 #+end_src
 
+** Isearch
+
+#+begin_src emacs-lisp :tangle init.el
+  (general-define-key
+   :keymaps 'search+
+   "s" 'isearch-forward)
+#+end_src
+
 * Buffer, file and window management
 
 In this section we deal with all packages relating to the fundamental
@@ -1588,7 +1596,7 @@ entirely from within Emacs, without ever having to bother touching the
                                 "Setembro" "Outubro" "Novembro" "Dezembro"])
     :bind
     ((:map agenda-and-time
-           ("c" . aabm/calendar))))
+           ("c" . calendar))))
 #+end_src
 
 ** User credentials
@@ -1673,6 +1681,20 @@ usage.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package haskell-mode
+    :straight t)
+#+end_src
+
+** Lua
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package lua-mode
+    :straight t)
+#+end_src
+
+** R
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package ess
     :straight t)
 #+end_src
 
