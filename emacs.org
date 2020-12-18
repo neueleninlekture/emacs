@@ -1140,6 +1140,14 @@ reading and writing.
     (("C-c o" . olivetti-mode)))
 
   (straight-use-package 'writeroom-mode)
+
+  (use-package writeroom-mode
+    :straight t
+    :hook
+    (writeroom-mode . auto-fill-mode)
+    :bind
+    (:map fill-text
+          ("w" . writeroom-mode)))
 #+end_src
 
 ** Org
@@ -1607,7 +1615,7 @@ distribution of this configuration does not contain any personal
 information that I'd rather not leak to the public.
 
 #+begin_src emacs-lisp :tangle init.el
-  (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
+  ;; (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
 #+end_src
 
 If you wish to use the above setting, simply create a file in your
@@ -1999,6 +2007,17 @@ better readability in web pages.
           ("M-p" . scroll-down-line))))
 #+end_src
 
+** Transmission
+
+=transmission= is a simple frontend for the Transmission torrent
+client. Transmission normally consists only of a simple daemon, and so
+requires some manner of a frontend for convenience.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package transmission
+    :straight t)
+#+end_src
+
 * Media management
 
 Emacs can be used to manage all sorts of media playback
@@ -2314,8 +2333,8 @@ titlebar), frame size and transparency.
   (add-to-list 'default-frame-alist '(font . "Iosevka 12"))
   (add-to-list 'default-frame-alist '(width  . 110))
   (add-to-list 'default-frame-alist '(height . 40))
-  (add-to-list 'default-frame-alist '(alpha 97 95)) 
-  (set-frame-parameter (selected-frame) 'alpha '(97 95))
+  (add-to-list 'default-frame-alist '(alpha 93 90)) 
+  (set-frame-parameter (selected-frame) 'alpha '(93 90))
 #+end_src
    
 ** LEGACY Dashboard
