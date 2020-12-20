@@ -1615,7 +1615,7 @@ distribution of this configuration does not contain any personal
 information that I'd rather not leak to the public.
 
 #+begin_src emacs-lisp :tangle init.el
-  ;; (aabm/load-file-if (concat user-emacs-directory "creds.el.gpg"))
+  (aabm/load-file-if (concat user-emacs-directory "creds.el"))
 #+end_src
 
 If you wish to use the above setting, simply create a file in your
@@ -1886,7 +1886,7 @@ external video player, namely =mpv=, which is bound to the v key.
     :straight t
 
     :config
-    (aabm/load-file-if (concat user-emacs-directory "feeds.el.gpg"))
+    (aabm/load-file-if (concat user-emacs-directory "feeds.el"))
 
     (defun aabm/elfeed-play-with-mpv ()
       "Play entry link with mpv."
