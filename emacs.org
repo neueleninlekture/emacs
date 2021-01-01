@@ -1429,7 +1429,10 @@ headings with nice looking Unicode characters.
 
 ** Markdown
 
-I don't really use =Markdown=, since org is a much superior markup language, but occasionally I need to open a .md file, and for that I would like to have syntax highlighting. So here we install =markdown-mode=.
+I don't really use =Markdown=, since org is a much superior markup
+language, but occasionally I need to open a .md file, and for that I
+would like to have syntax highlighting. So here we install
+=markdown-mode=.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package markdown-mode
