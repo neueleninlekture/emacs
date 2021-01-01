@@ -1900,34 +1900,6 @@ external video player, namely =mpv=, which is bound to the v key.
           (setq quality-arg (format "--ytdl-format=[height<=?%s]" quality-val)))
         (start-process "elfeed-mpv" nil "mpv" quality-arg (elfeed-entry-link entry))))
 
-    (defun prot/elfeed-search-tag-filter ()
-      "Filter `elfeed' by tags using completion.
-
-    Arbitrary input is also possible, but you may need to exit the
-    minibuffer with `exit-minibuffer' (I bind it to C-j in
-    `minibuffer-local-completion-map')."
-      (interactive)
-      (unwind-protect
-          (elfeed-search-clear-filter)
-        (let* ((crm-separator " ")
-               (elfeed-search-filter-active :live)
-               (db-tags (elfeed-db-get-all-tags))
-               (plus-tags (delete-dups
-                           (mapcar (lambda (x)
-                                     (concat "+" (format "%s" x)))
-                                   db-tags)))
-               (minus-tags (delete-dups
-                            (mapcar (lambda (x)
-                                      (concat "-" (format "%s" x)))
-                                    db-tags)))
-               (all-tags (append plus-tags minus-tags))
-               (tags (completing-read-multiple
-                      "Apply tag: "
-                      all-tags nil t))
-               (input (string-join `(,elfeed-search-filter ,@tags) " ")))
-          (setq elfeed-search-filter input))
-        (elfeed-search-update :force)))
-
     :custom
     (shr-width 100)
 
@@ -1939,8 +1911,7 @@ external video player, namely =mpv=, which is bound to the v key.
            ("v" . aabm/elfeed-play-with-mpv))
 
      (:map elfeed-search-mode-map
-           ("v" . aabm/elfeed-play-with-mpv)
-           ("s" . prot/elfeed-search-tag-filter))))
+           ("v" . aabm/elfeed-play-with-mpv))))
 #+end_src
 
 ** mu4e
