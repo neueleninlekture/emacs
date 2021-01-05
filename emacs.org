@@ -1658,7 +1658,6 @@ for programming major modes, which is really all I need.
                              (if buffer-file-name
                                  (shell-quote-argument
                                   (file-name-sans-extension buffer-file-name))))))))
-
 #+end_src
 
 ** Lisp
@@ -2321,7 +2320,7 @@ titlebar), frame size and transparency.
   (add-to-list 'default-frame-alist '(font . "Iosevka 12"))
   (add-to-list 'default-frame-alist '(width  . 100))
   (add-to-list 'default-frame-alist '(height . 30))
-  (add-to-list 'default-frame-alist '(alpha 93 90)) 
+  (add-to-list 'default-frame-alist '(alpha 93 90))
   (set-frame-parameter (selected-frame) 'alpha '(93 90))
 #+end_src
    
