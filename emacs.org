@@ -1640,6 +1640,27 @@ Here are all the configurations oriented exclusively around
 =programming=. These are mainly just simple =use-package= declarations
 for programming major modes, which is really all I need.
 
+** General options
+
+#+begin_src emacs-lisp :tangle init.el
+  (global-set-key (kbd "C-c x") 'compile)
+#+end_src
+
+** C
+
+#+begin_src emacs-lisp :tangle init.el
+  (add-hook 'c-mode-hook
+            (lambda ()
+              (unless (or (file-exists-p "makefile")
+                          (file-exists-p "Makefile"))
+                (set (make-local-variable 'compile-command)
+                     (concat "gcc "
+                             (if buffer-file-name
+                                 (shell-quote-argument
+                                  (file-name-sans-extension buffer-file-name))))))))
+
+#+end_src
+
 ** Lisp
 
 =Lisp is the most powerful programming language=. Under this section
@@ -1692,13 +1713,6 @@ usage.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package haskell-mode
-    :straight t)
-#+end_src
-
-** Lua
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package lua-mode
     :straight t)
 #+end_src
 
