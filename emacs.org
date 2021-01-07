@@ -878,6 +878,16 @@ supported.
      ("M-o 1" . ace-delete-other-windows)))
 #+end_src
 
+*** Windmove
+
+=windmove= allows easy switching between windows by using shift +
+arrow keys.
+
+#+begin_src emacs-lisp :tangle init.el
+  (when (fboundp 'windmove-default-keybindings)
+    (windmove-default-keybindings))
+#+end_src
+
 ** Files
 
 *** Dired
@@ -1825,18 +1835,18 @@ the built-in ones, while also allowing use of TUI programs.
 
     :custom
     (eshell-prompt-regexp "^[^αλ\n]*[αλ] ")
-    (eshell-prompt-function
-     (lambda nil
-       (concat
-        (if (string= (eshell/pwd) (getenv "HOME"))
-            (propertize "~" 'face `(:foreground "#458588"))
-          (replace-regexp-in-string
-           (getenv "HOME")
-           (propertize "~" 'face `(:foreground "#458588"))
-           (propertize (eshell/pwd) 'face `(:foreground "#458588"))))
-        (if (= (user-uid) 0)
-            (propertize " α " 'face `(:foreground "#CC241D"))
-          (propertize " λ " 'face `(:foreground "#98971A"))))))
+    ;; (eshell-prompt-function
+    ;;  (lambda nil
+    ;;    (concat
+    ;;     (if (string= (eshell/pwd) (getenv "HOME"))
+    ;;         (propertize "~" 'face `(:foreground "#458588"))
+    ;;       (replace-regexp-in-string
+    ;;        (getenv "HOME")
+    ;;        (propertize "~" 'face `(:foreground "#458588"))
+    ;;        (propertize (eshell/pwd) 'face `(:foreground "#458588"))))
+    ;;     (if (= (user-uid) 0)
+    ;;         (propertize " α " 'face `(:foreground "#CC241D"))
+    ;;       (propertize " λ " 'face `(:foreground "#98971A"))))))
     (eshell-banner-message "")
     (eshell-highlight-prompt nil)
 
@@ -2236,7 +2246,6 @@ the normal #282828.
     (modus-operandi-theme-proportional-fonts nil)
     (modus-operandi-theme-org-blocks 'greyscale))
 
-
   (use-package doom-themes
     :straight t
     :custom
@@ -2245,7 +2254,7 @@ the normal #282828.
     (doom-gruvbox-dark-variant "hard")
     (doom-themes-org-config))
 
-  (load-theme 'doom-gruvbox t)
+  (load-theme 'doom-Iosvkem t)
 #+end_src
 
 *** LEGACY Old color theme options
@@ -2320,8 +2329,8 @@ titlebar), frame size and transparency.
   (add-to-list 'default-frame-alist '(font . "Iosevka 12"))
   (add-to-list 'default-frame-alist '(width  . 100))
   (add-to-list 'default-frame-alist '(height . 30))
-  (add-to-list 'default-frame-alist '(alpha 93 90))
-  (set-frame-parameter (selected-frame) 'alpha '(93 90))
+  (add-to-list 'default-frame-alist '(alpha 97 95))
+  (set-frame-parameter (selected-frame) 'alpha '(97 95))
 #+end_src
    
 ** LEGACY Dashboard
