@@ -1660,13 +1660,7 @@ for programming major modes, which is really all I need.
 #+begin_src emacs-lisp :tangle init.el
   (add-hook 'c-mode-hook
             (lambda ()
-              (unless (or (file-exists-p "makefile")
-                          (file-exists-p "Makefile"))
-                (set (make-local-variable 'compile-command)
-                     (concat "gcc "
-                             (if buffer-file-name
-                                 (shell-quote-argument
-                                  (file-name-sans-extension buffer-file-name))))))))
+              (setq-local compile-command "cc -Wall --stdc99 -ledit")))
 #+end_src
 
 ** Lisp
