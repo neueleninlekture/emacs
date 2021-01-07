@@ -884,8 +884,7 @@ supported.
 arrow keys.
 
 #+begin_src emacs-lisp :tangle init.el
-  (when (fboundp 'windmove-default-keybindings)
-    (windmove-default-keybindings))
+  (windmove-default-keybindings)
 #+end_src
 
 ** Files
