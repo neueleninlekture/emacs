@@ -2247,7 +2247,7 @@ the normal #282828.
     (doom-gruvbox-dark-variant "hard")
     (doom-themes-org-config))
 
-  (load-theme 'doom-Iosvkem t)
+  (load-theme 'doom-gruvbox t)
 #+end_src
 
 *** LEGACY Old color theme options
@@ -2333,7 +2333,7 @@ customizable logo, clickable button and a general view of
 things. However, I do not see it as being particularly useful. So it
 is gone.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle init.el
   (use-package dashboard
     :straight t
     :defer nil
