@@ -2333,7 +2333,7 @@ customizable logo, clickable button and a general view of
 things. However, I do not see it as being particularly useful. So it
 is gone.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package dashboard
     :straight t
     :defer nil
