@@ -785,25 +785,9 @@ configurations, similar to the workspaces in tiling window managers.
   (use-package eyebrowse
     :straight t
     :init
-    (eyebrowse-mode))
-#+end_src
-
-*** Ace Window
-
-=ace-window= is a package that allows for quicker switching between
-multiple windows. Other actions like window deletion and swap are also
-supported.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package ace-window
-    :straight t
-    :init
-    (global-unset-key (kbd "M-o"))
+    (eyebrowse-mode)
     :bind
-    (("M-o o" . ace-select-window)
-     ("M-o s" . ace-swap-window)
-     ("M-o 0" . ace-delete-window)
-     ("M-o 1" . ace-delete-other-windows)))
+    (("C-c C-w 0" . eyebrowse-close-window-config)))
 #+end_src
 
 *** Windmove
