@@ -351,7 +351,7 @@ In this section we install general purpose packages that are
 frequently used later. These packages serve as building blocks for
 configuration itself, or other packages.
 
-** Diminish
+** diminish
 
 =diminish= is a package for disabling the display of minor modes in
 the modeline. It works on a per-package basis, and can be called from
@@ -363,7 +363,7 @@ use-package declarations.
     :diminish visual-line-mode eldoc-mode org-indent-mode)
 #+end_src
 
-** Async
+** async
 
 =Async= is a library for asynchronous processing for Emacs. By itself it
 does not do much, but is actually required by some packages. Here we
@@ -379,7 +379,7 @@ Dired and also for compilation of some Elisp.
     :diminish dired-async-mode)
 #+end_src
 
-** GCMH
+** gcmh
 
 =gcmh=, or the =garbage collection magical hack= alters the way Emacs'
 garbage collection works. In short, it makes Emacs run better by not
@@ -412,7 +412,7 @@ keybinding declarations.
 
 ** Which Key
 
-Which-key is a core package in many distributed configurations for
+=which-key= is a core package in many distributed configurations for
 Emacs, and not without reason. It helps the user discover keybindings,
 default or not, simply by displaying a list of active bindings as the
 user types. Very useful for the times you can't remember long series
