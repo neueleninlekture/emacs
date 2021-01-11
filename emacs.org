@@ -1905,17 +1905,6 @@ better readability in web pages.
           ("M-p" . scroll-down-line))))
 #+end_src
 
-** Transmission
-
-=transmission= is a simple frontend for the Transmission torrent
-client. Transmission normally consists only of a simple daemon, and so
-requires some manner of a frontend for convenience.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package transmission
-    :straight t)
-#+end_src
-
 * Media management
 
 Emacs can be used to manage all sorts of media playback
