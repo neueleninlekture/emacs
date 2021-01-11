@@ -1758,10 +1758,19 @@ the built-in ones, while also allowing use of TUI programs.
 ** Vterm
 
 #+begin_src emacs-lisp :tangle init.el
+  (defun aabm/switch-to-vterm-p ()
+    (interactive)
+    (if
+        (get-buffer "vterm")
+        (switch-to-buffer "vterm")
+      (vterm)))
+
   (use-package vterm
     :straight t
     :bind
-    (("C-x v" . vterm)))
+    (("C-x v" . aabm/switch-to-vterm-p)
+     ("C-x C-v" . vterm)))
+
 #+end_src
 
 * Security, news, email and web browsing
