@@ -1827,18 +1827,18 @@ the built-in ones, while also allowing use of TUI programs.
 
     :custom
     (eshell-prompt-regexp "^[^αλ\n]*[αλ] ")
-    ;; (eshell-prompt-function
-    ;;  (lambda nil
-    ;;    (concat
-    ;;     (if (string= (eshell/pwd) (getenv "HOME"))
-    ;;         (propertize "~" 'face `(:foreground "#458588"))
-    ;;       (replace-regexp-in-string
-    ;;        (getenv "HOME")
-    ;;        (propertize "~" 'face `(:foreground "#458588"))
-    ;;        (propertize (eshell/pwd) 'face `(:foreground "#458588"))))
-    ;;     (if (= (user-uid) 0)
-    ;;         (propertize " α " 'face `(:foreground "#CC241D"))
-    ;;       (propertize " λ " 'face `(:foreground "#98971A"))))))
+    (eshell-prompt-function
+     (lambda nil
+       (concat
+        (if (string= (eshell/pwd) (getenv "HOME"))
+            (propertize "~" 'face `(:foreground "#458588"))
+          (replace-regexp-in-string
+           (getenv "HOME")
+           (propertize "~" 'face `(:foreground "#458588"))
+           (propertize (eshell/pwd) 'face `(:foreground "#458588"))))
+        (if (= (user-uid) 0)
+            (propertize " α " 'face `(:foreground "#CC241D"))
+          (propertize " λ " 'face `(:foreground "#98971A"))))))
     (eshell-banner-message "")
     (eshell-highlight-prompt nil)
 
