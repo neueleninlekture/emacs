@@ -345,32 +345,6 @@ Make the window focus will follow the mouse movement.
         mouse-autoselect-window t)
 #+end_src
 
-** LEGACY Fuzzy matching
-
-In this section we add some =fuzzy completion= to all minibuffer
-prompts. For now we use =Ido= for simplicity, but a later upgrade would
-probably involve =Ivy= or =Selectrum=.
-
-=ido-vertical= is a simple extension to the built in ido-mode that makes
-the ido buffer show completions vertically, similar to Ivy and Helm.
-
-We also install =smex=, which provides and ido menu for M-x.
-
-#+begin_src emacs-lisp
-  (use-package ido-vertical-mode
-	:straight t
-	:init
-	(ido-mode)
-	(ido-vertical-mode)
-	:custom
-	(ido-vertical-define-keys 'C-n-and-C-p-only))
-
-  (use-package smex
-	:straight t
-	:bind
-	("M-x" . smex))
-#+end_src
-
 * Base packages
 
 In this section we install general purpose packages that are
