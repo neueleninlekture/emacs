@@ -1104,6 +1104,7 @@ some basic options. These are:
 
     :hook
     (org-mode-hook . org-indent-mode)
+  
     :diminish org-indent-mode
 
     :bind
@@ -1115,7 +1116,11 @@ some basic options. These are:
            ("C-M-p" . org-metaup)
            ("C-M-f" . org-metaright)
            ("C-M-b" . org-metaleft)
-           ("<mouse-3>" . org-cycle)))))
+           ("<mouse-3>" . org-cycle)
+           ("<S-right>" . nil)
+           ("<S-left>" . nil)
+           ("<S-down>" . nil)
+           ("<S-up>" . nil)))))
 #+end_src
 
 *** Agenda, Tasks and TODOs
