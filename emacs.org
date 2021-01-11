@@ -297,7 +297,7 @@ user: line numbers, line highlighting, line wrapping, etc.
   (global-prettify-symbols-mode t)
 #+end_src
 
-** UI settings
+** Some UI settings
 
 These are basic setings related to the GUI. First we disable the
 default startup screen, then we enable line and column number display
