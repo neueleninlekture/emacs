@@ -138,8 +138,8 @@ complete.
 ** Disabling GUI elements
 
 These settings involve disabling GUI elements like tool, menu and
-scroll bars, since they are not really needed. Disabling them early at
-startup avoids having them loaded.
+scroll bars, since I personally do not feel as if they're really
+needed. 
 
 #+begin_src emacs-lisp :tangle early-init.el
   (menu-bar-mode -1)
