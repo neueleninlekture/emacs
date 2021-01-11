@@ -379,7 +379,7 @@ per-package.
 Async is a library for asynchronous processing for Emacs. By itself it
 does not do much, but is actually required by some packages. Here we
 use it mostly for enabling asynchronous operations on files when using
-Dired and also for compilation of Elisp.
+Dired and also for compilation of some Elisp.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package async
@@ -1627,10 +1627,13 @@ that it does not load these files.
     (let ((prog-mode-hook nil))
       (save-buffer "emacs.org")
       (org-babel-tangle-file (concat user-emacs-directory "emacs.org"))
+	
       (delete-file (concat user-emacs-directory "early-init.elc"))
-      (byte-compile-file (concat user-emacs-directory "early-init.el"))
+      (async-byte-compile-file (concat user-emacs-directory "early-init.el"))
+	
       (delete-file (concat user-emacs-directory "init.elc"))	
-      (byte-compile-file (concat user-emacs-directory "init.el"))
+      (async-byte-compile-file (concat user-emacs-directory "init.el"))
+	
       (message "Emacs configuration succesfully rebuilt!")))
 
   (general-define-key
