@@ -157,15 +157,14 @@ These are settings for disabling =package.el=, Emacs' built-in package
 manager. Since Emacs 27, package.el is automatically started before
 loading init.el, so it must be disabled in early-init. As mentioned
 before, this configuration uses =straight.el=, an external package
-manager using a functional paradigm, somewhat similar to the Nix or
-Guix package managers. There is nothing too wrong about package.el,
-this choice was made simply because straight offers a few more
-conveniences, and is generally faster, easier and more comfortable to
-use than package.el.
+manager using a functional paradigm. There is nothing too wrong about
+package.el, this choice was made simply because straight offers a few
+more conveniences, and is generally faster, easier and more
+comfortable to use than package.el.
 
 #+begin_src emacs-lisp :tangle early-init.el
-  (setq package-enable-at-startup nil ; no auto-init for package.el
-        package--init-file-ensured t) ; no adding the annoying 'custom-set-variables' block to init.el
+  (setq package-enable-at-startup nil
+        package--init-file-ensured t)
 #+end_src
 
 ** Bootstrapping straight.el
