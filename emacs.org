@@ -1459,8 +1459,6 @@ entirely from within Emacs, without ever having to bother touching the
   (use-package calibredb
     :straight t
     :defer t
-    :init
-    (autoload 'calibredb "calibredb")
     :custom
     (calibredb-root-dir "~/doc/books")
     (calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
