@@ -317,51 +317,22 @@ the box. Most notable are the non-conservative scrolling, by which the
 entire buffer will shift once the cursor wraps over the bottom, and
 the lack of usage of the X clipboard.
 
-Enabling conservative scrolling. Honestly cannot live without this:
-
 #+begin_src emacs-lisp :tangle init.el
-  (setq scroll-conservatively 100)
-#+end_src
+  (setq scroll-conservatively 100
 
-Disabling the bell ring altogether. I have seen some users setting the
-bell ring to a visual queue, but I think that would be equally as
-annoying as the sound.
+        ring-bell-function 'ignore
 
-#+begin_src emacs-lisp :tangle init.el
-  (setq ring-bell-function 'ignore)
-#+end_src
+        select-enable-clipboard t
+        save-interprogram-paste-before-kill t
 
-Here we enable integration with the system clipboard, and make it so
-that all interactions with the X clipboard are also put into the kill-ring.
+        make-backup-files nil
+        auto-save-default nil
 
-#+begin_src emacs-lisp :tangle init.el
-  (setq select-enable-clipboard t
-        save-interprogram-paste-before-kill t)
-#+end_src
-
-Here we disable the creation of backup and autosave files. I don't
-like those cluttering up my directories.
-
-#+begin_src emacs-lisp :tangle init.el
-  (setq make-backup-files nil
-        auto-save-default nil) 
-#+end_src
-
-Now for changing some prompts. First we change all "Yes or No" prompts
-for simple "y or n", then we remove some prompts that appear when
-killing buffers, and finally we disable the "file is too large. Really
-Open?" prompt. 
-
-#+begin_src emacs-lisp :tangle init.el
-  (defalias 'yes-or-no-p 'y-or-n-p)
-  (setq kill-buffer-query-functions nil
+        kill-buffer-query-functions nil
         large-file-warning-threshold nil)
-#+end_src
 
-Finally, we make sure Emacs automatically reloads any buffers when
-they change on disk.
+  (defalias 'yes-or-no-p 'y-or-n-p)
 
-#+begin_src emacs-lisp :tangle init.el
   (global-auto-revert-mode t)
 #+end_src
 
