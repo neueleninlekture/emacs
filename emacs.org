@@ -537,13 +537,11 @@ marks.
 #+end_src
 
 ** Expand region
-
-=expand-region= is a package for selecting a region based on sintactic
-structures, that usually correlate to semantic value. In simple terms,
-it marks a region and allows you to expand that region from small to
-large, word to line to paragraph. In many ways, expand region can be
-used similarly to Vim's delete/change inside/around commands. Expand
-region is bound to the C-= keychord.
+=expand-region= is a package for selecting text based on expanding
+regions. In simple terms, it marks a region and allows you to expand
+that region from small to large, word to line to paragraph. In many
+ways, expand region can be used similarly to Vim's delete/change
+inside/around commands. 
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package expand-region
@@ -581,9 +579,7 @@ whitespace easier.
 
 =multiple-cursors= is pretty self-explanatory. It allows the user to
 control multiple cursors at the same time, one for each selected
-line. This allows for some pretty convenient editing workflows. To use
-multiple-cursors, simply mark the desired lines under a region, then
-press C-c m, the keybinding defined here.
+line. 
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package multiple-cursors
@@ -597,7 +593,7 @@ press C-c m, the keybinding defined here.
 ** Writable grep
 
 =wgrep= allows one to =grep= through a file or directory, edit the
-output of grep, then write it into the files.
+output of grep, then write the changes into the files.
 
 #+begin_src emacs-lisp :tangle init.el
 (use-package wgrep
@@ -610,7 +606,7 @@ output of grep, then write it into the files.
               (("C-x C-q" . wgrep-change-to-wgrep-mode))))
 #+end_src
 
-** Wrapping and auto-filling text
+** Filling text
 
 A few simple options for filling text to a reasonable character/column
 limit.
@@ -623,6 +619,9 @@ limit.
 #+end_src
 
 ** Undo Tree
+
+=undo-tree= expands the possibilities of undoing and redoing edits by
+allowing the user to interact more with Emacs' undo tree system.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package undo-tree
