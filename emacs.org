@@ -192,9 +192,9 @@ package.el. This requires that =git= be installed on the system.
 In this section we install =use-package=, a collection of macros for
 making package management easier and more convenient. Note that
 use-package is not a complete package manager unto itself, just a
-wrapper around the existing package managers, that provides great
-control over the process of loading a given package. It is also used
-for configuring packages, and lazy loading those configurations.
+wrapper around existing tools, that provides great control over the
+process of loading a given package. It is also used for configuring
+packages, and lazy loading those configurations.
 
 #+begin_src emacs-lisp :tangle init.el
   (straight-use-package 'use-package)
@@ -202,8 +202,6 @@ for configuring packages, and lazy loading those configurations.
   (setq use-package-always-ensure nil)
   (setq use-package-always-defer t)
   (setq use-package-hook-name-suffix nil)
-
-  (require 'bind-key)
 #+end_src
 
 ** Ensuring auto-compilation of all elisp
@@ -213,7 +211,8 @@ instead of simple source files. The first setting here ensures that
 outdated byte code files do not get loaded.
 
 The second variable here forces the byte-compiler to ignore all the
-warnings relating to the deprecation of the =cl= library.
+warnings relating to the deprecation of the =cl= library, since they
+can get annoying.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq load-prefer-newer t
