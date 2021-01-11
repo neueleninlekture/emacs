@@ -1240,13 +1240,6 @@ structure templates for creating blocks.
             ("l" . "export latex\n")
             ("q" . "quote\n")
             ("s" . "src")
-            ("tn" . "src conf :tangle ~/.config/")
-            ("tx" . "src haskell :tangle ~/.xmonad/xmonad.hs\n")
-            ("tz" . "src shell :tangle ~/.config/zsh/.zshrc\n")
-            ("tp" . "src conf :tangle ~/.config/polybar/config\n")
-            ("tb" . "src shell :tangle ~/.config/bspwm/bspwmrc\n")
-            ("ts" . "src fundamental :tangle ~/.config/sxhkd/sxhkdrc\n")
-            ("tq" . "src python :tangle ~/.config/qutebrowser/config.py\n")
             ("v" . "verse\n"))))
 #+end_src
 
