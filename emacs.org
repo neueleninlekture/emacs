@@ -1334,7 +1334,6 @@ headings with nice looking Unicode characters.
 #+end_src
 
 ** LaTeX
-
 *** AucTeX
 
 #+begin_src emacs-lisp :tangle init.el
@@ -1367,8 +1366,6 @@ configure it as a PDF reader, with the help of the =pdf-tools=
 package, and as an EPUB reader, with the =nov.el= package.
 
 *** PDF Tools
-
-**** Use-package
 
 The configurations for pdf-tools here simply involve the zooming, page
 fit and continuity of pages. We also ensure that pdf-tools is able to
