@@ -353,6 +353,10 @@ configuration itself, or other packages.
 
 ** Diminish
 
+=diminish= is a package for disabling the display of minor modes in
+the modeline. It works on a per-package basis, and can be called from
+use-package declarations.
+
 #+begin_src emacs-lisp :tangle init.el
   (use-package diminish
     :straight t
