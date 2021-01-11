@@ -113,41 +113,26 @@ startup. They affect garbage collection, package management, and the
 loading of the GUI. Most of these are done in order to achieve faster
 startup times.
 
-** Garbage collection
+** Startup options hack
 
-Here we disable the garbage collection during the startup
-process. This is done by setting the GC threshold to an absurdly high
-number, meaning GC never kicks in. Then, hooks are made so that
-garbage collection is re-activated post-startup, in order to avoid
-stability issues. Having no garbage collection speeds up startup
-significantly, and does not usually incur in any issues.
-
-
-#+begin_src emacs-lisp :tangle early-init.el
-  (setq gc-cons-threshold 402653184
-        gc-cons-percentage 0.6)
-
-  (defun startup/reset-gc ()
-    (setq gc-cons-threshold 16777216
-          gc-cons-percentage 0.1))
-
-  (add-hook 'emacs-startup-hook 'startup/reset-gc)
-#+end_src
-
-** File name handler
-
-Here we disable the file name handler, for similar reasons and using
-similar methods to the garbage collection settings above.
+A fairly simple hack to speed up startup in Emacs. It works by
+disabling garbage gollection and the file name handler while Emacs is
+starting, then enables them back up once the startup process is
+complete.
 
 #+begin_src emacs-lisp :tangle early-init.el
   (defvar startup/file-name-handler-alist file-name-handler-alist)
 
-  (setq file-name-handler-alist nil)
+  (setq gc-cons-threshold 402653184
+        gc-cons-percentage 0.6
+        file-name-handler-alist nil)
 
-  (defun startup/revert-file-name-handler-alist ()
-    (setq file-name-handler-alist startup/file-name-handler-alist))
+  (defun startup/reset-defaults ()
+    (setq gc-cons-threshold 16777216
+          gc-cons-percentage 0.1
+          startup/file-name-handler-alist file-name-handler-alist))
 
-  (add-hook 'emacs-startup-hook 'startup/revert-file-name-handler-alist)
+  (add-hook 'emacs-startup-hook 'startup/reset-defaults)
 #+end_src
 
 ** GUI elements
@@ -2330,8 +2315,8 @@ titlebar), frame size and transparency.
   (add-to-list 'default-frame-alist '(font . "Iosevka 12"))
   (add-to-list 'default-frame-alist '(width  . 100))
   (add-to-list 'default-frame-alist '(height . 30))
-  (add-to-list 'default-frame-alist '(alpha 97 95))
-  (set-frame-parameter (selected-frame) 'alpha '(97 95))
+  (add-to-list 'default-frame-alist '(alpha 93 90))
+  (set-frame-parameter (selected-frame) 'alpha '(93 90))
 #+end_src
    
 ** LEGACY Dashboard
