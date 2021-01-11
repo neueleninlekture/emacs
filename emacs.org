@@ -1062,7 +1062,9 @@ reading and writing.
   (use-package olivetti
     :straight t
     :bind
-    (("C-c o" . olivetti-mode)))
+    (("C-c o" . olivetti-mode)
+     (:map fill-text
+           ("o" . olivetti-mode))))
 
   (use-package writeroom-mode
     :straight t
