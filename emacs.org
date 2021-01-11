@@ -789,6 +789,15 @@ they be in =org-mode= or in =lisp-interaction-mode=.
     (fundamental-mode))
 #+end_src
 
+*** Kill this buffer
+
+#+begin_src emacs-lisp :tangle init.el
+  (defun aabm/kill-this-buffer ()
+    "Kill the current buffer."
+    (interactive)
+    (kill-buffer (current-buffer)))
+#+end_src
+
 *** Kill buffer and window
 
 This function kills the current buffer, along with the window in which
@@ -807,7 +816,7 @@ it is being displayed.
 
 #+begin_src emacs-lisp :tangle init.el
   (general-define-key
-   "C-x k" 'kill-this-buffer
+   "C-x k" 'aabm/kill-this-buffer
    "C-x C-k" 'aabm/kill-this-buffer-and-window)
 
   (general-define-key
