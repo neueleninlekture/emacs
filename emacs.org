@@ -909,9 +909,9 @@ included in this config, a lot easier.
     (("s-d" . dmenu)))
 #+end_src
 
-*** COMMENT EXWM
+*** LEGACY EXWM
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package exwm
     :straight t
     :init
