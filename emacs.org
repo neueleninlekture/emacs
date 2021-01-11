@@ -263,7 +263,8 @@ any of them. So here we enable these functions:
 
 Here we make sure all possible text encoding is done as UTF-8, which
 is the universal standard. We also set code indentation for occasional
-programming. 
+programming. I think some of these settings may be redundant, but I
+don't mind.
 
 #+begin_src emacs-lisp :tangle init.el
   (prefer-coding-system 'utf-8)
@@ -284,33 +285,15 @@ The settings found here are a bit more varied, but they mostly center
 around the way text and information is displayed on screen to the
 user: line numbers, line highlighting, line wrapping, etc.
 
-First, we make sure line numbers are displayed in every programming
-major mode:
-
 #+begin_src emacs-lisp :tangle init.el
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-#+end_src
 
-Then we enable parentheses highlighting:
-
-#+begin_src emacs-lisp :tangle init.el
   (show-paren-mode t)
-#+end_src
 
-Some settings for line truncation (namely disabling it) in favor of
-visual lines:
-
-#+begin_src emacs-lisp :tangle init.el
   (setq truncate-lines nil
         org-startup-truncated nil)
-
   (global-visual-line-mode t)
-#+end_src
 
-And finally, we enable pretty symbols. Pretty symbols convert lambdas
-and other such elements to their respective symbols.
-
-#+begin_src emacs-lisp :tangle init.el
   (global-prettify-symbols-mode t)
 #+end_src
 
