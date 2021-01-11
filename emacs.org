@@ -699,6 +699,12 @@ they be in =org-mode= or in =lisp-interaction-mode=.
     (interactive)
     (switch-to-buffer (make-temp-name "text-"))
     (fundamental-mode))
+
+  (defun aabm/generate-html-buffer ()
+    "Create and switch to a temporary html buffer with a random name."
+    (interactive)
+    (switch-to-buffer (make-temp-name "html-"))
+    (mhtml-mode))
 #+end_src
 
 *** Kill this buffer
@@ -735,7 +741,8 @@ it is being displayed.
    :keymaps 'buffers
    "o" 'aabm/generate-org-buffer
    "s" 'aabm/generate-scratch-buffer
-   "t" 'aabm/generate-text-buffer)
+   "t" 'aabm/generate-text-buffer
+   "h" 'aabm/generate-html-buffer)
 #+end_src
 
 ** Windows
