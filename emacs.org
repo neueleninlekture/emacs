@@ -1599,18 +1599,20 @@ that it does not load these files.
 
 #+begin_src emacs-lisp :tangle init.el
   (defun aabm/build-emacs ()
-    "This function is used for completely rebuilding the Emacs configuration file after changes are made to it. First, the buffer visiting that file is saved, then all code blocks are tangled from the file, and finally all resulting files are byte-compiled."
+    "This function is used for completely rebuilding the Emacs configuration file after changes are made to it. 
+
+  It saves the configuration buffer, tangles all the code, then byte-compiles it."
     (interactive)
     (let ((prog-mode-hook nil))
       (save-buffer "emacs.org")
       (org-babel-tangle-file (concat user-emacs-directory "emacs.org"))
-	
+
       (delete-file (concat user-emacs-directory "early-init.elc"))
       (async-byte-compile-file (concat user-emacs-directory "early-init.el"))
-	
+
       (delete-file (concat user-emacs-directory "init.elc"))	
       (async-byte-compile-file (concat user-emacs-directory "init.el"))
-	
+
       (message "Emacs configuration succesfully rebuilt!")))
 
   (general-define-key
