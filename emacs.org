@@ -707,7 +707,7 @@ they be in =org-mode= or in =lisp-interaction-mode=.
   (defun aabm/kill-this-buffer ()
     "Kill the current buffer."
     (interactive)
-    (kill-buffer (current-buffer)))
+    (kill-buffer))
 #+end_src
 
 *** Kill buffer and window
