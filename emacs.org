@@ -1811,12 +1811,11 @@ definition for opening video feed links (youtube, invidious) in an
 external video player, namely =mpv=, which is bound to the v key.
 
 #+begin_src emacs-lisp :tangle init.el
+  (aabm/load-file-if (concat user-emacs-directory "feeds.el"))
+
   (use-package elfeed
     :straight t
-
     :config
-    (aabm/load-file-if (concat user-emacs-directory "feeds.el"))
-
     (defun aabm/elfeed-play-with-mpv ()
       "Play entry link with mpv."
       (interactive)
