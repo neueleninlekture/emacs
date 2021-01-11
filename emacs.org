@@ -1148,12 +1148,8 @@ reading and writing.
     :bind
     (("C-c o" . olivetti-mode)))
 
-  (straight-use-package 'writeroom-mode)
-
   (use-package writeroom-mode
     :straight t
-    :hook
-    (writeroom-mode . auto-fill-mode)
     :bind
     (:map fill-text
           ("w" . writeroom-mode)))
