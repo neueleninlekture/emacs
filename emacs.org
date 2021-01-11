@@ -903,6 +903,9 @@ arrow keys.
     (dired-recursive-copies 'always)
     (dired-recursive-deletes 'always)  
     (dired-listing-switches "-alhNF --group-directories-first")
+
+    (wdired-allow-to-change-permissions t)
+  
     (peep-dired-cleanup-on-disable t)
     (peep-dired-ignored-extensions '("mkv" "iso" "mp4"))
 
