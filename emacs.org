@@ -365,7 +365,7 @@ use-package declarations.
 
 ** Async
 
-Async is a library for asynchronous processing for Emacs. By itself it
+=Async= is a library for asynchronous processing for Emacs. By itself it
 does not do much, but is actually required by some packages. Here we
 use it mostly for enabling asynchronous operations on files when using
 Dired and also for compilation of some Elisp.
@@ -400,11 +400,10 @@ would normally be wasted with gc.
 
 ** General
 
-=general.el= is a tool for simplifying the definition of custom
-keybindings. It is frequently used over the length of this
-configuration, so we install it here. We also make creation of
-keybindings under prefix keys a lot easier by running
-=general-auto-unbind-keys=.
+=general.el= is a tool for keybinding declaration. I use it in this
+configuration mainly because it has simpler syntax than =define-key=
+or =global-set-key=, thus making it easier to make large blocks of
+keybinding declarations.
 
 #+begin_src emacs-lisp :tangle init.el
   (straight-use-package 'general)
