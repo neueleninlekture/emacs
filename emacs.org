@@ -135,19 +135,19 @@ complete.
   (add-hook 'emacs-startup-hook 'startup/reset-defaults)
 #+end_src
 
-** GUI elements
+** Disabling GUI elements
 
-These settings involve disabling GTK GUI elements like tool, menu and
+These settings involve disabling GUI elements like tool, menu and
 scroll bars, since they are not really needed. Disabling them early at
-startup avoids having them loaded. The final element disabled is the
-cursor blink. This way the cursor is static.
+startup avoids having them loaded.
 
 #+begin_src emacs-lisp :tangle early-init.el
-  (push '(menu-bar-lines . 0) default-frame-alist)
-  (push '(tool-bar-lines . 0) default-frame-alist)
-  (push '(vertical-scroll-bars) default-frame-alist)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
 
   (set-window-scroll-bars (minibuffer-window) nil nil)
+
   (setq frame-inhibit-implied-resize t)
 #+end_src
 
