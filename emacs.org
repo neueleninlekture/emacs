@@ -353,10 +353,25 @@ configuration itself, or other packages.
 
 ** Diminish
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package diminish
     :straight t
     :diminish visual-line-mode eldoc-mode org-indent-mode)
+#+end_src
+
+** Minions
+
+Minions disables display of minor modes in the modeline. It's more
+convenient than =diminish= because it disables this globally, not
+per-package.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package minions
+    :straight t
+    :custom
+    (minions-mode-line-lighter "")
+    (minions-mode-line-delimiters '("" . ""))
+    (minions-mode 1))
 #+end_src
 
 ** Async
