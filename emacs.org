@@ -520,11 +520,10 @@ and styles defined by minor modes, not major modes.
 
 ** Electric pairs
 
-Electric pairs are quite nice. This feature essentially adds matching
+Electric pairs is a tool for adding matching
 closing characters after point once you insert an opening
-character. Especially good for Lisp programming, what with the
-parentheses and all. Here we configure the characters to be affected
-by electric-pair-mode.
+character. Useful for parentheses, brackets, braces and quotation
+marks.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq electric-pair-pairs '(
