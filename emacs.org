@@ -1619,17 +1619,6 @@ that it does not load these files.
    "H-c e" 'aabm/build-emacs)
 #+end_src
  
-** Haskell
-
-I started using =Haskell= due to =Xmonad=. Don't use it for anything
-other than that. A simple declaration like this is enough for my
-usage.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package haskell-mode
-    :straight t)
-#+end_src
-
 ** R
 
 #+begin_src emacs-lisp :tangle init.el
