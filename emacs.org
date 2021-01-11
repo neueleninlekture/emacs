@@ -338,11 +338,7 @@ the lack of usage of the X clipboard.
 
 ** Focus follows mouse
 
-With these settings on, the window focus will follow the mouse
-movement. This behavior is somewhat unorthodox for Emacs users, but I
-find it very useful. You can still change windows using the keyboard
-normally, as the focus will not get stuck under whichever window the
-mouse points to.
+Make the window focus will follow the mouse movement.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq focus-follows-mouse t
