@@ -113,56 +113,41 @@ startup. They affect garbage collection, package management, and the
 loading of the GUI. Most of these are done in order to achieve faster
 startup times.
 
-** Garbage collection
+** Startup options hack
 
-Here we disable the garbage collection during the startup
-process. This is done by setting the GC threshold to an absurdly high
-number, meaning GC never kicks in. Then, hooks are made so that
-garbage collection is re-activated post-startup, in order to avoid
-stability issues. Having no garbage collection speeds up startup
-significantly, and does not usually incur in any issues.
-
-
-#+begin_src emacs-lisp :tangle early-init.el
-  (setq gc-cons-threshold 402653184
-                  gc-cons-percentage 0.6)
-
-  (defun startup/reset-gc ()
-    (setq gc-cons-threshold 16777216
-          gc-cons-percentage 0.1))
-
-  (add-hook 'emacs-startup-hook 'startup/reset-gc)
-#+end_src
-
-** File name handler
-
-Here we disable the file name handler, for similar reasons and using
-similar methods to the garbage collection settings above.
+A fairly simple hack to speed up startup in Emacs. It works by
+disabling garbage gollection and the file name handler while Emacs is
+starting, then enables them back up once the startup process is
+complete.
 
 #+begin_src emacs-lisp :tangle early-init.el
   (defvar startup/file-name-handler-alist file-name-handler-alist)
 
-  (setq file-name-handler-alist nil)
+  (setq gc-cons-threshold 402653184
+        gc-cons-percentage 0.6
+        file-name-handler-alist nil)
 
-  (defun startup/revert-file-name-handler-alist ()
-    (setq file-name-handler-alist startup/file-name-handler-alist))
+  (defun startup/reset-defaults ()
+    (setq gc-cons-threshold 16777216
+          gc-cons-percentage 0.1
+          startup/file-name-handler-alist file-name-handler-alist))
 
-  (add-hook 'emacs-startup-hook 'startup/revert-file-name-handler-alist)
+  (add-hook 'emacs-startup-hook 'startup/reset-defaults)
 #+end_src
 
-** GUI elements
+** Disabling GUI elements
 
-These settings involve disabling GTK GUI elements like tool, menu and
-scroll bars, since they are not really needed. Disabling them early at
-startup avoids having them loaded. The final element disabled is the
-cursor blink. This way the cursor is static.
+These settings involve disabling GUI elements like tool, menu and
+scroll bars, since I personally do not feel as if they're really
+needed. 
 
 #+begin_src emacs-lisp :tangle early-init.el
-  (push '(menu-bar-lines . 0) default-frame-alist)
-  (push '(tool-bar-lines . 0) default-frame-alist)
-  (push '(vertical-scroll-bars) default-frame-alist)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
 
   (set-window-scroll-bars (minibuffer-window) nil nil)
+
   (setq frame-inhibit-implied-resize t)
 #+end_src
 
@@ -172,15 +157,14 @@ These are settings for disabling =package.el=, Emacs' built-in package
 manager. Since Emacs 27, package.el is automatically started before
 loading init.el, so it must be disabled in early-init. As mentioned
 before, this configuration uses =straight.el=, an external package
-manager using a functional paradigm, somewhat similar to the Nix or
-Guix package managers. There is nothing too wrong about package.el,
-this choice was made simply because straight offers a few more
-conveniences, and is generally faster, easier and more comfortable to
-use than package.el.
+manager using a functional paradigm. There is nothing too wrong about
+package.el, this choice was made simply because straight offers a few
+more conveniences, and is generally faster, easier and more
+comfortable to use than package.el.
 
 #+begin_src emacs-lisp :tangle early-init.el
-  (setq package-enable-at-startup nil ; no auto-init for package.el
-        package--init-file-ensured t) ; no adding the annoying 'custom-set-variables' block to init.el
+  (setq package-enable-at-startup nil
+        package--init-file-ensured t)
 #+end_src
 
 ** Bootstrapping straight.el
@@ -208,9 +192,9 @@ package.el. This requires that =git= be installed on the system.
 In this section we install =use-package=, a collection of macros for
 making package management easier and more convenient. Note that
 use-package is not a complete package manager unto itself, just a
-wrapper around the existing package managers, that provides great
-control over the process of loading a given package. It is also used
-for configuring packages, and lazy loading those configurations.
+wrapper around existing tools, that provides great control over the
+process of loading a given package. It is also used for configuring
+packages, and lazy loading those configurations.
 
 #+begin_src emacs-lisp :tangle init.el
   (straight-use-package 'use-package)
@@ -218,8 +202,6 @@ for configuring packages, and lazy loading those configurations.
   (setq use-package-always-ensure nil)
   (setq use-package-always-defer t)
   (setq use-package-hook-name-suffix nil)
-
-  (require 'bind-key)
 #+end_src
 
 ** Ensuring auto-compilation of all elisp
@@ -229,7 +211,8 @@ instead of simple source files. The first setting here ensures that
 outdated byte code files do not get loaded.
 
 The second variable here forces the byte-compiler to ignore all the
-warnings relating to the deprecation of the =cl= library.
+warnings relating to the deprecation of the =cl= library, since they
+can get annoying.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq load-prefer-newer t
@@ -280,7 +263,8 @@ any of them. So here we enable these functions:
 
 Here we make sure all possible text encoding is done as UTF-8, which
 is the universal standard. We also set code indentation for occasional
-programming. 
+programming. I think some of these settings may be redundant, but I
+don't mind.
 
 #+begin_src emacs-lisp :tangle init.el
   (prefer-coding-system 'utf-8)
@@ -301,37 +285,19 @@ The settings found here are a bit more varied, but they mostly center
 around the way text and information is displayed on screen to the
 user: line numbers, line highlighting, line wrapping, etc.
 
-First, we make sure line numbers are displayed in every programming
-major mode:
-
 #+begin_src emacs-lisp :tangle init.el
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-#+end_src
 
-Then we enable parentheses highlighting:
-
-#+begin_src emacs-lisp :tangle init.el
   (show-paren-mode t)
-#+end_src
 
-Some settings for line truncation (namely disabling it) in favor of
-visual lines:
-
-#+begin_src emacs-lisp :tangle init.el
   (setq truncate-lines nil
         org-startup-truncated nil)
-
   (global-visual-line-mode t)
-#+end_src
 
-And finally, we enable pretty symbols. Pretty symbols convert lambdas
-and other such elements to their respective symbols.
-
-#+begin_src emacs-lisp :tangle init.el
   (global-prettify-symbols-mode t)
 #+end_src
 
-** UI settings
+** Some UI settings
 
 These are basic setings related to the GUI. First we disable the
 default startup screen, then we enable line and column number display
@@ -351,91 +317,32 @@ the box. Most notable are the non-conservative scrolling, by which the
 entire buffer will shift once the cursor wraps over the bottom, and
 the lack of usage of the X clipboard.
 
-Enabling conservative scrolling. Honestly cannot live without this:
-
 #+begin_src emacs-lisp :tangle init.el
-  (setq scroll-conservatively 100)
-#+end_src
+  (setq scroll-conservatively 100
 
-Disabling the bell ring altogether. I have seen some users setting the
-bell ring to a visual queue, but I think that would be equally as
-annoying as the sound.
+        ring-bell-function 'ignore
 
-#+begin_src emacs-lisp :tangle init.el
-  (setq ring-bell-function 'ignore)
-#+end_src
+        select-enable-clipboard t
+        save-interprogram-paste-before-kill t
 
-Here we enable integration with the system clipboard, and make it so
-that all interactions with the X clipboard are also put into the kill-ring.
+        make-backup-files nil
+        auto-save-default nil
 
-#+begin_src emacs-lisp :tangle init.el
-  (setq select-enable-clipboard t
-        save-interprogram-paste-before-kill t)
-#+end_src
-
-Here we disable the creation of backup and autosave files. I don't
-like those cluttering up my directories.
-
-#+begin_src emacs-lisp :tangle init.el
-  (setq make-backup-files nil
-        auto-save-default nil) 
-#+end_src
-
-Now for changing some prompts. First we change all "Yes or No" prompts
-for simple "y or n", then we remove some prompts that appear when
-killing buffers, and finally we disable the "file is too large. Really
-Open?" prompt. 
-
-#+begin_src emacs-lisp :tangle init.el
-  (defalias 'yes-or-no-p 'y-or-n-p)
-  (setq kill-buffer-query-functions nil
+        kill-buffer-query-functions nil
         large-file-warning-threshold nil)
-#+end_src
 
-Finally, we make sure Emacs automatically reloads any buffers when
-they change on disk.
+  (defalias 'yes-or-no-p 'y-or-n-p)
 
-#+begin_src emacs-lisp :tangle init.el
   (global-auto-revert-mode t)
 #+end_src
 
 ** Focus follows mouse
 
-With these settings on, the window focus will follow the mouse
-movement. This behavior is somewhat unorthodox for Emacs users, but I
-find it very useful. You can still change windows using the keyboard
-normally, as the focus will not get stuck under whichever window the
-mouse points to.
+Make the window focus will follow the mouse movement.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq focus-follows-mouse t
         mouse-autoselect-window t)
-#+end_src
-
-** LEGACY Fuzzy matching
-
-In this section we add some =fuzzy completion= to all minibuffer
-prompts. For now we use =Ido= for simplicity, but a later upgrade would
-probably involve =Ivy= or =Selectrum=.
-
-=ido-vertical= is a simple extension to the built in ido-mode that makes
-the ido buffer show completions vertically, similar to Ivy and Helm.
-
-We also install =smex=, which provides and ido menu for M-x.
-
-#+begin_src emacs-lisp
-  (use-package ido-vertical-mode
-	:straight t
-	:init
-	(ido-mode)
-	(ido-vertical-mode)
-	:custom
-	(ido-vertical-define-keys 'C-n-and-C-p-only))
-
-  (use-package smex
-	:straight t
-	:bind
-	("M-x" . smex))
 #+end_src
 
 * Base packages
@@ -444,7 +351,11 @@ In this section we install general purpose packages that are
 frequently used later. These packages serve as building blocks for
 configuration itself, or other packages.
 
-** Diminish
+** diminish
+
+=diminish= is a package for disabling the display of minor modes in
+the modeline. It works on a per-package basis, and can be called from
+use-package declarations.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package diminish
@@ -452,12 +363,12 @@ configuration itself, or other packages.
     :diminish visual-line-mode eldoc-mode org-indent-mode)
 #+end_src
 
-** Async
+** async
 
-Async is a library for asynchronous processing for Emacs. By itself it
+=Async= is a library for asynchronous processing for Emacs. By itself it
 does not do much, but is actually required by some packages. Here we
 use it mostly for enabling asynchronous operations on files when using
-Dired and also for compilation of Elisp.
+Dired and also for compilation of some Elisp.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package async
@@ -468,7 +379,7 @@ Dired and also for compilation of Elisp.
     :diminish dired-async-mode)
 #+end_src
 
-** GCMH
+** gcmh
 
 =gcmh=, or the =garbage collection magical hack= alters the way Emacs'
 garbage collection works. In short, it makes Emacs run better by not
@@ -489,11 +400,10 @@ would normally be wasted with gc.
 
 ** General
 
-=general.el= is a tool for simplifying the definition of custom
-keybindings. It is frequently used over the length of this
-configuration, so we install it here. We also make creation of
-keybindings under prefix keys a lot easier by running
-=general-auto-unbind-keys=.
+=general.el= is a tool for keybinding declaration. I use it in this
+configuration mainly because it has simpler syntax than =define-key=
+or =global-set-key=, thus making it easier to make large blocks of
+keybinding declarations.
 
 #+begin_src emacs-lisp :tangle init.el
   (straight-use-package 'general)
@@ -502,7 +412,7 @@ keybindings under prefix keys a lot easier by running
 
 ** Which Key
 
-Which-key is a core package in many distributed configurations for
+=which-key= is a core package in many distributed configurations for
 Emacs, and not without reason. It helps the user discover keybindings,
 default or not, simply by displaying a list of active bindings as the
 user types. Very useful for the times you can't remember long series
@@ -536,14 +446,18 @@ these are later bound to keys.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package ivy
-    :straight ivy swiper counsel swiper avy ivy-rich 
+    :straight ivy swiper counsel swiper avy ivy-rich
+  
     :init
     (ivy-mode)
     (counsel-mode)
     (ivy-rich-mode)
+  
     :diminish ivy-mode counsel-mode ivy-rich-mode
+  
     :custom
     (enable-recursive-minibuffers t)
+  
     :bind
     (("C-s" . swiper)
      ("C-r" . swiper-backward)
@@ -606,11 +520,10 @@ and styles defined by minor modes, not major modes.
 
 ** Electric pairs
 
-Electric pairs are quite nice. This feature essentially adds matching
+Electric pairs is a tool for adding matching
 closing characters after point once you insert an opening
-character. Especially good for Lisp programming, what with the
-parentheses and all. Here we configure the characters to be affected
-by electric-pair-mode.
+character. Useful for parentheses, brackets, braces and quotation
+marks.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq electric-pair-pairs '(
@@ -624,13 +537,11 @@ by electric-pair-mode.
 #+end_src
 
 ** Expand region
-
-=expand-region= is a package for selecting a region based on sintactic
-structures, that usually correlate to semantic value. In simple terms,
-it marks a region and allows you to expand that region from small to
-large, word to line to paragraph. In many ways, expand region can be
-used similarly to Vim's delete/change inside/around commands. Expand
-region is bound to the C-= keychord.
+=expand-region= is a package for selecting text based on expanding
+regions. In simple terms, it marks a region and allows you to expand
+that region from small to large, word to line to paragraph. In many
+ways, expand region can be used similarly to Vim's delete/change
+inside/around commands. 
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package expand-region
@@ -668,9 +579,7 @@ whitespace easier.
 
 =multiple-cursors= is pretty self-explanatory. It allows the user to
 control multiple cursors at the same time, one for each selected
-line. This allows for some pretty convenient editing workflows. To use
-multiple-cursors, simply mark the desired lines under a region, then
-press C-c m, the keybinding defined here.
+line. 
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package multiple-cursors
@@ -684,20 +593,21 @@ press C-c m, the keybinding defined here.
 ** Writable grep
 
 =wgrep= allows one to =grep= through a file or directory, edit the
-output of grep, then write it into the files.
+output of grep, then write the changes into the files.
 
 #+begin_src emacs-lisp :tangle init.el
-(use-package wgrep
-  :straight t
-  :commands wgrep
-  :custom
-  (wgrep-auto-save-buffer t)
-  (wgrep-change-readonly-file t)
-  :bind (:map grep-mode-map
-              (("C-x C-q" . wgrep-change-to-wgrep-mode))))
+  (use-package wgrep
+    :straight t
+    :commands wgrep
+    :custom
+    (wgrep-auto-save-buffer t)
+    (wgrep-change-readonly-file t)
+    :bind
+    (:map grep-mode-map
+          (("C-x C-q" . wgrep-change-to-wgrep-mode))))
 #+end_src
 
-** Wrapping and auto-filling text
+** Filling text
 
 A few simple options for filling text to a reasonable character/column
 limit.
@@ -710,6 +620,9 @@ limit.
 #+end_src
 
 ** Undo Tree
+
+=undo-tree= expands the possibilities of undoing and redoing edits by
+allowing the user to interact more with Emacs' undo tree system.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package undo-tree
@@ -787,6 +700,21 @@ they be in =org-mode= or in =lisp-interaction-mode=.
     (interactive)
     (switch-to-buffer (make-temp-name "text-"))
     (fundamental-mode))
+
+  (defun aabm/generate-html-buffer ()
+    "Create and switch to a temporary html buffer with a random name."
+    (interactive)
+    (switch-to-buffer (make-temp-name "html-"))
+    (mhtml-mode))
+#+end_src
+
+*** Kill this buffer
+
+#+begin_src emacs-lisp :tangle init.el
+  (defun aabm/kill-this-buffer ()
+    "Kill the current buffer."
+    (interactive)
+    (kill-buffer))
 #+end_src
 
 *** Kill buffer and window
@@ -807,14 +735,15 @@ it is being displayed.
 
 #+begin_src emacs-lisp :tangle init.el
   (general-define-key
-   "C-x k" 'kill-this-buffer
+   "C-x k" 'aabm/kill-this-buffer
    "C-x C-k" 'aabm/kill-this-buffer-and-window)
 
   (general-define-key
    :keymaps 'buffers
    "o" 'aabm/generate-org-buffer
    "s" 'aabm/generate-scratch-buffer
-   "t" 'aabm/generate-text-buffer)
+   "t" 'aabm/generate-text-buffer
+   "h" 'aabm/generate-html-buffer)
 #+end_src
 
 ** Windows
@@ -857,25 +786,9 @@ configurations, similar to the workspaces in tiling window managers.
   (use-package eyebrowse
     :straight t
     :init
-    (eyebrowse-mode))
-#+end_src
-
-*** Ace Window
-
-=ace-window= is a package that allows for quicker switching between
-multiple windows. Other actions like window deletion and swap are also
-supported.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package ace-window
-    :straight t
-    :init
-    (global-unset-key (kbd "M-o"))
+    (eyebrowse-mode)
     :bind
-    (("M-o o" . ace-select-window)
-     ("M-o s" . ace-swap-window)
-     ("M-o 0" . ace-delete-window)
-     ("M-o 1" . ace-delete-other-windows)))
+    (("C-c C-w 0" . eyebrowse-close-window-config)))
 #+end_src
 
 *** Windmove
@@ -902,7 +815,10 @@ arrow keys.
     (dired-dwim-target t)
     (dired-recursive-copies 'always)
     (dired-recursive-deletes 'always)  
-    (dired-listing-switches "-alhNF --group-directories-first")
+    (dired-listing-switches "-alhvNF --group-directories-first")
+
+    (wdired-allow-to-change-permissions t)
+
     (peep-dired-cleanup-on-disable t)
     (peep-dired-ignored-extensions '("mkv" "iso" "mp4"))
 
@@ -996,9 +912,9 @@ included in this config, a lot easier.
     (("s-d" . dmenu)))
 #+end_src
 
-*** COMMENT EXWM
+*** LEGACY EXWM
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package exwm
     :straight t
     :init
@@ -1148,7 +1064,9 @@ reading and writing.
   (use-package olivetti
     :straight t
     :bind
-    (("C-c o" . olivetti-mode)))
+    (("C-c o" . olivetti-mode)
+     (:map fill-text
+           ("o" . olivetti-mode))))
 
   (use-package writeroom-mode
     :straight t
@@ -1188,6 +1106,7 @@ some basic options. These are:
 
     :hook
     (org-mode-hook . org-indent-mode)
+  
     :diminish org-indent-mode
 
     :bind
@@ -1199,7 +1118,11 @@ some basic options. These are:
            ("C-M-p" . org-metaup)
            ("C-M-f" . org-metaright)
            ("C-M-b" . org-metaleft)
-           ("<mouse-3>" . org-cycle)))))
+           ("<mouse-3>" . org-cycle)
+           ("<S-right>" . nil)
+           ("<S-left>" . nil)
+           ("<S-down>" . nil)
+           ("<S-up>" . nil)))))
 #+end_src
 
 *** Agenda, Tasks and TODOs
@@ -1319,13 +1242,6 @@ structure templates for creating blocks.
             ("l" . "export latex\n")
             ("q" . "quote\n")
             ("s" . "src")
-            ("tn" . "src conf :tangle ~/.config/")
-            ("tx" . "src haskell :tangle ~/.xmonad/xmonad.hs\n")
-            ("tz" . "src shell :tangle ~/.config/zsh/.zshrc\n")
-            ("tp" . "src conf :tangle ~/.config/polybar/config\n")
-            ("tb" . "src shell :tangle ~/.config/bspwm/bspwmrc\n")
-            ("ts" . "src fundamental :tangle ~/.config/sxhkd/sxhkdrc\n")
-            ("tq" . "src python :tangle ~/.config/qutebrowser/config.py\n")
             ("v" . "verse\n"))))
 #+end_src
 
@@ -1420,7 +1336,6 @@ headings with nice looking Unicode characters.
 #+end_src
 
 ** LaTeX
-
 *** AucTeX
 
 #+begin_src emacs-lisp :tangle init.el
@@ -1453,8 +1368,6 @@ configure it as a PDF reader, with the help of the =pdf-tools=
 package, and as an EPUB reader, with the =nov.el= package.
 
 *** PDF Tools
-
-**** Use-package
 
 The configurations for pdf-tools here simply involve the zooming, page
 fit and continuity of pages. We also ensure that pdf-tools is able to
@@ -1548,8 +1461,6 @@ entirely from within Emacs, without ever having to bother touching the
   (use-package calibredb
     :straight t
     :defer t
-    :init
-    (autoload 'calibredb "calibredb")
     :custom
     (calibredb-root-dir "~/doc/books")
     (calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
@@ -1690,32 +1601,26 @@ that it does not load these files.
 
 #+begin_src emacs-lisp :tangle init.el
   (defun aabm/build-emacs ()
-    "This function is used for completely rebuilding the Emacs configuration file after changes are made to it. First, the buffer visiting that file is saved, then all code blocks are tangled from the file, and finally all resulting files are byte-compiled."
+    "This function is used for completely rebuilding the Emacs configuration file after changes are made to it. 
+
+  It saves the configuration buffer, tangles all the code, then byte-compiles it."
     (interactive)
     (let ((prog-mode-hook nil))
       (save-buffer "emacs.org")
       (org-babel-tangle-file (concat user-emacs-directory "emacs.org"))
+
       (delete-file (concat user-emacs-directory "early-init.elc"))
-      (byte-compile-file (concat user-emacs-directory "early-init.el"))
+      (async-byte-compile-file (concat user-emacs-directory "early-init.el"))
+
       (delete-file (concat user-emacs-directory "init.elc"))	
-      (byte-compile-file (concat user-emacs-directory "init.el"))
+      (async-byte-compile-file (concat user-emacs-directory "init.el"))
+
       (message "Emacs configuration succesfully rebuilt!")))
 
   (general-define-key
    "H-c e" 'aabm/build-emacs)
 #+end_src
  
-** Haskell
-
-I started using =Haskell= due to =Xmonad=. Don't use it for anything
-other than that. A simple declaration like this is enough for my
-usage.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package haskell-mode
-    :straight t)
-#+end_src
-
 ** R
 
 #+begin_src emacs-lisp :tangle init.el
@@ -1855,10 +1760,18 @@ the built-in ones, while also allowing use of TUI programs.
 ** Vterm
 
 #+begin_src emacs-lisp :tangle init.el
+  (defun aabm/switch-to-vterm-p ()
+    (interactive)
+    (if
+        (get-buffer "vterm")
+        (switch-to-buffer "vterm")
+      (vterm)))
+
   (use-package vterm
     :straight t
     :bind
-    (("C-x v" . vterm)))
+    (("C-x v" . aabm/switch-to-vterm-p)
+     ("C-x C-v" . vterm)))
 #+end_src
 
 * Security, news, email and web browsing
@@ -1899,12 +1812,11 @@ definition for opening video feed links (youtube, invidious) in an
 external video player, namely =mpv=, which is bound to the v key.
 
 #+begin_src emacs-lisp :tangle init.el
+  (aabm/load-file-if (concat user-emacs-directory "feeds.el"))
+
   (use-package elfeed
     :straight t
-
     :config
-    (aabm/load-file-if (concat user-emacs-directory "feeds.el"))
-
     (defun aabm/elfeed-play-with-mpv ()
       "Play entry link with mpv."
       (interactive)
@@ -1993,17 +1905,6 @@ better readability in web pages.
     ((:map eww-mode-map
           ("M-n" . scroll-up-line)
           ("M-p" . scroll-down-line))))
-#+end_src
-
-** Transmission
-
-=transmission= is a simple frontend for the Transmission torrent
-client. Transmission normally consists only of a simple daemon, and so
-requires some manner of a frontend for convenience.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package transmission
-    :straight t)
 #+end_src
 
 * Media management
@@ -2320,8 +2221,8 @@ titlebar), frame size and transparency.
   (add-to-list 'default-frame-alist '(font . "Iosevka 12"))
   (add-to-list 'default-frame-alist '(width  . 100))
   (add-to-list 'default-frame-alist '(height . 30))
-  (add-to-list 'default-frame-alist '(alpha 97 95))
-  (set-frame-parameter (selected-frame) 'alpha '(97 95))
+  (add-to-list 'default-frame-alist '(alpha 93 90))
+  (set-frame-parameter (selected-frame) 'alpha '(93 90))
 #+end_src
    
 ** LEGACY Dashboard
