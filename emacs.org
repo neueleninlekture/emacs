@@ -965,6 +965,8 @@ commands you barely understand.
   (use-package magit
     :straight t
     :commands magit-status
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
     :bind
     (("C-x g" . magit-status)))
 #+end_src
