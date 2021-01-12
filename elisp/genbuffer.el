@@ -27,25 +27,25 @@
 ;; genbuffer's code can be found here, among other things:
 ;;   http://gitlab.com/aabm/emacs
 
-(defun aabm/generate-org-buffer ()
+(defun genbuffer-org ()
   "Create and switch to a temporary org mode buffer with a random name."
   (interactive)
   (switch-to-buffer (make-temp-name "org-"))
   (org-mode))
 
-(defun aabm/generate-scratch-buffer ()
+(defun genbuffer-scratch ()
   "Create and switch to a temporary scratch buffer with a random name."
   (interactive)
   (switch-to-buffer (make-temp-name "scratch-"))
   (lisp-interaction-mode))
 
-(defun aabm/generate-text-buffer ()
+(defun genbuffer-text ()
   "Create and switch to a temporary text buffer with a random name."
   (interactive)
   (switch-to-buffer (make-temp-name "text-"))
   (fundamental-mode))
 
-(defun aabm/generate-html-buffer ()
+(defun genbuffer-html ()
   "Create and switch to a temporary html buffer with a random name."
   (interactive)
   (switch-to-buffer (make-temp-name "html-"))
