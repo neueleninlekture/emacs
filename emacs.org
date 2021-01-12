@@ -685,7 +685,6 @@ they be in =org-mode= or in =lisp-interaction-mode=.
 #+begin_src emacs-lisp :tangle init.el
   (use-package genbuffer
     :load-path "elisp/genbuffer.el"
-    :defer nil
     :bind
     (:map buffers
           ("o" . genbuffer-org)
