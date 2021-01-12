@@ -1560,10 +1560,20 @@ for programming major modes, which is really all I need.
 
 ** General options
 
+*** Compile command
+
 #+begin_src emacs-lisp :tangle init.el
   (global-set-key (kbd "C-c x") 'compile)
 #+end_src
 
+*** Rainbow delimiters
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package rainbow-delimiters
+    :straight t
+    :hook
+    ((prog-mode-hook . rainbow-delimiters-mode)))
+#+end_src
 ** Literate programming with Org
 
 This makes org babel load all the appropriate language packages,
