@@ -1,6 +1,6 @@
 ;;; genbuffer.el --- generate new scratch buffers with ease
 
-;; Copyright (C) 2029-2021 aabm
+;; Copyright (C) 2019-2021 aabm
 
 ;; Author: aabm <aabm@disroot.org>
 ;; Created: 2019

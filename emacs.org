@@ -683,29 +683,15 @@ These are functions for easily generating =scratch buffers=, whether
 they be in =org-mode= or in =lisp-interaction-mode=.
 
 #+begin_src emacs-lisp :tangle init.el
-  (defun aabm/generate-org-buffer ()
-    "Create and switch to a temporary org mode buffer with a random name."
-    (interactive)
-    (switch-to-buffer (make-temp-name "org-"))
-    (org-mode))
-
-  (defun aabm/generate-scratch-buffer ()
-    "Create and switch to a temporary scratch buffer with a random name."
-    (interactive)
-    (switch-to-buffer (make-temp-name "scratch-"))
-    (lisp-interaction-mode))
-
-  (defun aabm/generate-text-buffer ()
-    "Create and switch to a temporary text buffer with a random name."
-    (interactive)
-    (switch-to-buffer (make-temp-name "text-"))
-    (fundamental-mode))
-
-  (defun aabm/generate-html-buffer ()
-    "Create and switch to a temporary html buffer with a random name."
-    (interactive)
-    (switch-to-buffer (make-temp-name "html-"))
-    (mhtml-mode))
+  (use-package genbuffer
+    :load-path "elisp/genbuffer.el"
+    :defer nil
+    :bind
+    (:map buffers
+          ("o" . genbuffer-org)
+          ("s" . genbuffer-scratch)
+          ("t" . genbuffer-text)
+          ("h" . genbuffer-html)))
 #+end_src
 
 *** Kill this buffer
@@ -737,13 +723,6 @@ it is being displayed.
   (general-define-key
    "C-x k" 'aabm/kill-this-buffer
    "C-x C-k" 'aabm/kill-this-buffer-and-window)
-
-  (general-define-key
-   :keymaps 'buffers
-   "o" 'aabm/generate-org-buffer
-   "s" 'aabm/generate-scratch-buffer
-   "t" 'aabm/generate-text-buffer
-   "h" 'aabm/generate-html-buffer)
 #+end_src
 
 ** Windows
