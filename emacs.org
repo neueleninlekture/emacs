@@ -1245,6 +1245,23 @@ structure templates for creating blocks.
             ("v" . "verse\n"))))
 #+end_src
 
+*** Literate programming
+
+This makes org babel load all the appropriate language packages,
+allowing for literate programming.
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq org-confirm-babel-evaluate nil)
+
+  (setq org-babel-load-languages
+   '((R . t)
+     (python . t)
+     (emacs-lisp . t)
+     (shell . t)
+     (org . t)
+     (latex . t)))
+#+end_src
+
 *** Org Roam
 
 =org-roam= is a very powerful extension to org-mode. Essentially, it
@@ -1574,22 +1591,7 @@ for programming major modes, which is really all I need.
     :hook
     ((prog-mode-hook . rainbow-delimiters-mode)))
 #+end_src
-** Literate programming with Org
 
-This makes org babel load all the appropriate language packages,
-allowing for literate programming.
-
-#+begin_src emacs-lisp :tangle init.el
-  (setq org-confirm-babel-evaluate nil)
-
-  (setq org-babel-load-languages
-   '((R . t)
-     (python . t)
-     (emacs-lisp . t)
-     (shell . t)
-     (org . t)
-     (latex . t)))
-#+end_src
 
 ** C
 
@@ -2378,6 +2380,3 @@ startup time and garbage collection information.
                                 (time-subtract after-init-time before-init-time)))
                        gcs-done)))
 #+end_src
-
-
-
