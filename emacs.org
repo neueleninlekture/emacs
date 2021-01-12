@@ -1564,6 +1564,22 @@ for programming major modes, which is really all I need.
   (global-set-key (kbd "C-c x") 'compile)
 #+end_src
 
+** Literate programming with Org
+
+This makes org babel load all the appropriate language packages,
+allowing for literate programming.
+
+#+begin_src emacs-lisp :tangle init.el
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((R . t)
+     (python . t)
+     (emacs-lisp . t)
+     (shell . t)
+     (org . t)
+     (latex . t)))
+#+end_src
+
 ** C
 
 #+begin_src emacs-lisp :tangle init.el
