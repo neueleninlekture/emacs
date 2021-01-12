@@ -1580,8 +1580,9 @@ This makes org babel load all the appropriate language packages,
 allowing for literate programming.
 
 #+begin_src emacs-lisp :tangle init.el
-  (org-babel-do-load-languages
-   'org-babel-load-languages
+  (setq org-confirm-babel-evaluate nil)
+
+  (setq org-babel-load-languages
    '((R . t)
      (python . t)
      (emacs-lisp . t)
