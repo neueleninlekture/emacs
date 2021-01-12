@@ -677,10 +677,11 @@ customizations here involve adding icons and keybindings to
     (("C-x C-b" . ibuffer)))
 #+end_src
 
-*** Generating scratch buffers
+*** Genbuffer
 
-These are functions for easily generating =scratch buffers=, whether
-they be in =org-mode= or in =lisp-interaction-mode=.
+This loads my own package contain a few functions for easily
+generating =scratch buffers=, whether they be in =org-mode= or in
+=lisp-interaction-mode= or something else.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package genbuffer
