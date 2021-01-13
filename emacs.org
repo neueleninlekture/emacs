@@ -1466,9 +1466,34 @@ for programming major modes, which is really all I need.
     ((prog-mode-hook . rainbow-delimiters-mode)))
 #+end_src
 
+*** Company
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package company
+    :straight t
+    :diminish company-mode
+    :custom
+    (company-idle-delay 0)
+    (company-minimum-prefix-length 3)
+    :bind
+    ((:map company-active-map
+           ("M-n" . nil)
+           ("M-p" . nil)
+           ("C-n" . company-select-next)
+           ("C-p" . company-select-previous)
+           ("SPC" . (lambda () (interactive) (progn (company-abort) (insert " "))))))
+
+    :hook
+    (prog-mode-hook . company-mode))
+#+end_src
+
 ** C
 
 #+begin_src emacs-lisp :tangle init.el
+  (use-package company-c-headers
+    :straight t
+    :defer nil)
+
   (add-hook 'c-mode-hook
             (lambda ()
               (setq-local compile-command "cc -Wall --stdc99 -ledit")))
