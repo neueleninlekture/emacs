@@ -1303,6 +1303,10 @@ for printing the current page number to the echo area.
       (interactive)
       (message "Page: %s" (pdf-view-current-page)))
 
+    (defun pdfgrep ()
+      (interactive)
+      (grep (format "pdfgrep --ignore-case --recursive --page-number '%s' ." (read-string "Enter term: "))))  
+
     :custom
     (pdf-view-resize-factor 1.1)
     (pdf-view-continuous nil)
@@ -1462,13 +1466,19 @@ for programming major modes, which is really all I need.
     ((prog-mode-hook . rainbow-delimiters-mode)))
 #+end_src
 
-
 ** C
 
 #+begin_src emacs-lisp :tangle init.el
   (add-hook 'c-mode-hook
             (lambda ()
               (setq-local compile-command "cc -Wall --stdc99 -ledit")))
+#+end_src
+
+** R
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package ess
+    :straight t)
 #+end_src
 
 ** Lisp
@@ -1520,13 +1530,6 @@ that it does not load these files.
    "H-c e" 'aabm/build-emacs)
 #+end_src
  
-** R
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package ess
-    :straight t)
-#+end_src
-
 * Shell and terminal emulation
 
 Emacs comes with a few different solutions for shell and terminal
