@@ -249,7 +249,10 @@ a message reminding the user that these are features recommended only
 to advanced users, and that beginners should turn back. To be honest,
 I never use any of these features very frequently, but I still don't
 want to be confronted by a warning message in the rare case I do use
-any of them. So here we enable these functions:
+any of them. So here we enable these functions.
+
+We also take care to disable the =suspend-frame= key, by default bound
+to =C-z=. It's useless.
 
 #+begin_src emacs-lisp :tangle init.el
   (put 'dired-find-alternate-file 'disabled nil)
@@ -257,6 +260,8 @@ any of them. So here we enable these functions:
   (put 'downcase-region 'disabled nil)
   (put 'narrow-to-region 'disabled nil)
   (setq disabled-command-function nil)
+
+  (global-set-key (kbd "C-z") nil)
 #+end_src
 
 ** Text formatting
