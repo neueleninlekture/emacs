@@ -784,6 +784,14 @@ arrow keys.
   (windmove-default-keybindings)
 #+end_src
 
+*** Keybindings
+
+This key makes it easier to switch windows.
+
+#+begin_src emacs-lisp :tangle init.el
+  (global-set-key (kbd "M-o") 'other-window)
+#+end_src
+
 ** Files
 
 *** Dired
