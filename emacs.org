@@ -1210,6 +1210,7 @@ headings with nice looking Unicode characters.
 #+end_src
 
 ** LaTeX
+
 *** AucTeX
 
 #+begin_src emacs-lisp :tangle init.el
@@ -1217,10 +1218,22 @@ headings with nice looking Unicode characters.
     :straight t
     :custom
     (TeX-PDF-mode t)
-    (TeX-view-program-selection '((output-pdf "PDF Tools")))
+    (TeX-view-program-selection '((output-pdf "pdf-tools")))
+    (TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
+    (TeX-source-correlate-mode t)
     (TeX-source-correlate-start-server t)
+  
+    (TeX-parse-self t)
+    (TeX-auto-save t)
+  
+    (add-hook 'LaTeX-mode-hook
+          
     :hook
-    (TeX-after-compilation-finished-functions . TeX-revert-document-buffer))
+    (TeX-after-compilation-finished-functions . TeX-revert-document-buffer)
+    (LaTeX-mode-hook . turn-on-auto-fill)
+    (LaTeX-mode-hook . (lambda () (set (make-variable-buffer-local
+                                   'TeX-electric-math)
+                                  (cons "\\(" "\\)"))))))
 #+end_src
 
 ** Markdown
