@@ -1466,7 +1466,7 @@ for programming major modes, which is really all I need.
     ((prog-mode-hook . rainbow-delimiters-mode)))
 #+end_src
 
-*** Company
+** Company
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package company
