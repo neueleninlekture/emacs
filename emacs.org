@@ -1084,6 +1084,7 @@ structure templates for creating blocks.
             ("h" . "export html\n")
             ("l" . "export latex\n")
             ("q" . "quote\n")
+            ("r" . "src R :results output :export results\n")
             ("s" . "src")
             ("v" . "verse\n"))))
 #+end_src
