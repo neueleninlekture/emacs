@@ -65,4 +65,4 @@
   :init-value nil
   :keymap aabm/eshell-minor-mode-map)
 
-(add-hook 'eshell-mode-hook 'aabm/eshell-minor-mode-map)
+(add-hook 'eshell-mode-hook 'aabm/eshell-minor-mode)
