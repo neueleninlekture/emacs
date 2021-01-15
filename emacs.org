@@ -1711,8 +1711,7 @@ the built-in ones, while also allowing use of TUI programs.
   (use-package vterm
     :straight t
     :bind
-    (("C-x v" . aabm/switch-to-vterm-p)
-     ("C-x C-v" . vterm)))
+    (("C-x v" . aabm/switch-to-vterm-p)))
 #+end_src
 
 * Security, news, email and web browsing
