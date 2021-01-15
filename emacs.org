@@ -1829,8 +1829,8 @@ of those tools.
                            (signal 'quit nil))))
 
     :bind
-    (("H-x m" . mu4e)
-     ("C-x m" . mu4e-compose-new)))
+    (("C-x m" . mu4e)
+     ("C-c m" . mu4e-compose-new)))
 #+end_src
 
 ** eww
