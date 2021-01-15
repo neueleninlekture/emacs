@@ -452,20 +452,20 @@ these are later bound to keys.
 #+begin_src emacs-lisp :tangle init.el
   (use-package ivy
     :straight ivy swiper counsel swiper avy ivy-rich
-  
+
     :init
     (ivy-mode)
     (counsel-mode)
     (ivy-rich-mode)
-  
+
     :diminish ivy-mode counsel-mode ivy-rich-mode
-  
+
     :custom
     (enable-recursive-minibuffers t)
-  
+
     :bind
     (("C-s" . swiper)
-     ("C-r" . swiper-backward)
+     ("C-r" . isearch-forward)
      ("M-s s" . avy-goto-char-2)
      ("C-x C-f" . counsel-find-file)
      ("C-x b" . counsel-switch-buffer)
