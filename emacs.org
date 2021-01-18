@@ -1770,6 +1770,19 @@ external video player, namely =mpv=, which is bound to the v key.
           (setq quality-arg (format "--ytdl-format=[height<=?%s]" quality-val)))
         (start-process "elfeed-mpv" nil "mpv" quality-arg (elfeed-entry-link entry))))
 
+    (defun aabm/elfeed-show-eww (&optional link)
+      "Browse current entry's link or optional LINK in `eww'.
+
+  Only show the readable part once the website loads.  This can
+  fail on poorly-designed websites."
+      (interactive)
+      (let* ((entry (if (eq major-mode 'elfeed-show-mode)
+                        elfeed-show-entry
+                      (elfeed-search-selected :ignore-region)))
+             (link (or link (elfeed-entry-link entry))))
+        (eww link)
+        (add-hook 'eww-after-render-hook 'eww-readable nil t)))
+
     :custom
     (shr-width 100)
 
@@ -1778,10 +1791,12 @@ external video player, namely =mpv=, which is bound to the v key.
      (:map elfeed-show-mode-map
            ("M-n" . scroll-up-line)
            ("M-p" . scroll-down-line)
-           ("v" . aabm/elfeed-play-with-mpv))
+           ("v" . aabm/elfeed-play-with-mpv)
+           ("e" . aabm/elfeed-show-eww))
 
      (:map elfeed-search-mode-map
-           ("v" . aabm/elfeed-play-with-mpv))))
+           ("v" . aabm/elfeed-play-with-mpv)
+           ("e" . aabm/elfeed-show-eww))))
 #+end_src
 
 ** mu4e
