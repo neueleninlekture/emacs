@@ -4,30 +4,33 @@
 #+seq_todo: TODO(t) | LEGACY(l) DONE(d)
 #+startup: overview
 
-* About this configuration
+* About
 
-This is =Aabm's personal configuration for GNU Emacs=. In this
-configuration, Emacs is treated as an =Integrated Computing
-Enviroment= or a modern =Virtual Lisp Machine=. This means Emacs is
-regarded as a general purpose tool for everything involving the
-manipulation of text, and text interfaces are preferred whenever
-possible. That is, writing, reading, mail, news, web browsing, and
-much more. 
+This is =Aabm's personal configuration for GNU Emacs.=
 
-This configuration started as a simple toolset for academic studies
-and document preparation, but has turned into so much more. Those
-originally included tools are still present, though they have changed
-quite a bit. 
+The goal of this configuration is to allow the use of Emacs as an
+=Integrated Computing Environment=, or a =Virtual Lisp Machine=. This
+means Emacs is treated as the primary tool for anything involving the
+manipulation of text, and text interfaces are always preferred over
+any alternatives.
 
-This configuration is written in literate style, meaning documentation
-is bundled along with the code, thanks to the power of =org-mode=. It
-is structured as one long file named =emacs.org=, which has to be
-extracted (tangled) into a few other files, mainly =early-init.el= and
-=init.el=. Package management is handled entirely in a declarative,
-functional manner, using =straight.el= and =use-package=.
+This configuration covers many use cases. Among these are: writing,
+programming, document preparation, reading mail and news feeds, and
+much more.
 
-In line with the Emacs philosophy, this configuration is =free
-software=. See the [[*License][License]] section for more details.
+This configuration is organized in a literate style, harnessing the
+abilities of =org-mode=. The entire configuration is contained within
+the =emacs.org= file, and all code is extracted (tangled) into the
+files which are to be sourced by Emacs.
+
+All package management is handled in a declarative, functional manner,
+using =straight.el= as a replacement for the standard
+=package.el=. Most configuration is also lazy loaded and contextually
+applied with the help of =use-package=.
+
+In line with the Emacs/GNU philosophy, this configuration is entirely
+=free software=. See the [[*License][License]] section/file for more
+details.
 
 * License
 
@@ -56,31 +59,6 @@ Boston, MA 02110-1301, USA.
 
 ** License headers for other files
 
-#+begin_src emacs-lisp :tangle early-init.el
-  ;; Copyright © 2019-2020 Aabm <aabm@disroot.org>
-
-  ;; Author: Aabm <aabm@disroot.org>
-  ;; URL: https://gitlab.com/aabm/emacs
-
-  ;; This file is NOT part of GNU Emacs.
-
-  ;; This program is free software; you can redistribute it and/or modify
-  ;; it under the terms of the GNU General Public License as published by
-  ;; the Free Software Foundation; either version 3, or (at your option)
-  ;; any later version.
-
-  ;; This program is distributed in the hope that it will be useful,
-  ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ;; GNU General Public License for more details.
-
-  ;; You should have received a copy of the GNU General Public License
-  ;; along with GNU Emacs; see the file LICENSE.  If not, you can visit
-  ;; https://www.gnu.org/licenses/gpl-3.0.html or write to the
-  ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-  ;; Boston, MA 02110-1301, USA.
-#+end_src
-
 #+begin_src emacs-lisp :tangle init.el
   ;; Copyright © 2019-2020 Aabm <aabm@disroot.org>
 
@@ -106,14 +84,56 @@ Boston, MA 02110-1301, USA.
   ;; Boston, MA 02110-1301, USA.
 #+end_src
 
-* Early startup settings
+* Startup settings
 
-This section contains settings for managing the process of
-startup. They affect garbage collection, package management, and the
-loading of the GUI. Most of these are done in order to achieve faster
-startup times.
+** Early initialization (early-init.el)
 
-** Startup options hack
+Here we define all the options to be included in the =early-init.el=
+file. This file is loaded very early in the startup process, making it
+the main vessel for holding startup and performance tweaks.
+
+*** License
+
+Here we include the license header for the =early-init.el= file.
+
+#+begin_src emacs-lisp :tangle early-init.el
+  ;; Copyright © 2019-2020 Aabm <aabm@disroot.org>
+
+  ;; Author: Aabm <aabm@disroot.org>
+  ;; URL: https://gitlab.com/aabm/emacs
+
+  ;; This file is NOT part of GNU Emacs.
+
+  ;; This program is free software; you can redistribute it and/or modify
+  ;; it under the terms of the GNU General Public License as published by
+  ;; the Free Software Foundation; either version 3, or (at your option)
+  ;; any later version.
+
+  ;; This program is distributed in the hope that it will be useful,
+  ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ;; GNU General Public License for more details.
+
+  ;; You should have received a copy of the GNU General Public License
+  ;; along with GNU Emacs; see the file LICENSE.  If not, you can visit
+  ;; https://www.gnu.org/licenses/gpl-3.0.html or write to the
+  ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  ;; Boston, MA 02110-1301, USA.
+#+end_src
+
+*** Check version
+
+This configuration, in its current state, is made for Emacs version
+27.1 or up. It does not aim to support previous versions of Emacs. We
+check the version number in init, and trigger an error if it is
+outdated.
+
+#+begin_src emacs-lisp :tangle init.el
+  (when (version< emacs-version "27.1")
+    (error "This requires Emacs 27.1 and above!"))
+#+end_src
+
+*** Startup options hack
 
 A fairly simple hack to speed up startup in Emacs. It works by
 disabling garbage gollection and the file name handler while Emacs is
@@ -121,53 +141,58 @@ starting, then enables them back up once the startup process is
 complete.
 
 #+begin_src emacs-lisp :tangle early-init.el
-  (defvar startup/file-name-handler-alist file-name-handler-alist)
+  (defvar startup-file-name-handler-alist file-name-handler-alist)
 
-  (setq gc-cons-threshold 402653184
+  (setq gc-cons-threshold most-positive-fixnum
         gc-cons-percentage 0.6
         file-name-handler-alist nil)
 
-  (defun startup/reset-defaults ()
+  (defun startup-reset-defaults ()
     (setq gc-cons-threshold 16777216
           gc-cons-percentage 0.1
-          startup/file-name-handler-alist file-name-handler-alist))
+          file-name-handler-alist startup-file-name-handler-alist))
 
-  (add-hook 'emacs-startup-hook 'startup/reset-defaults)
+  (add-hook 'emacs-startup-hook 'startup-reset-defaults)
 #+end_src
 
-** Disabling GUI elements
+*** Disabling GUI elements
 
 These settings involve disabling GUI elements like tool, menu and
 scroll bars, since I personally do not feel as if they're really
-needed. 
+needed. Disabling these elements before they're loaded is faster, so
+we do it here, in early-init.
 
 #+begin_src emacs-lisp :tangle early-init.el
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
+  (push '(menu-bar-lines . 0) default-frame-alist)
+  (push '(tool-bar-lines . 0) default-frame-alist)
+  (push '(vertical-scroll-bars) default-frame-alist)
 
   (set-window-scroll-bars (minibuffer-window) nil nil)
 
   (setq frame-inhibit-implied-resize t)
 #+end_src
 
-** Disabling package.el
+*** Disabling package.el
 
 These are settings for disabling =package.el=, Emacs' built-in package
 manager. Since Emacs 27, package.el is automatically started before
-loading init.el, so it must be disabled in early-init. As mentioned
-before, this configuration uses =straight.el=, an external package
-manager using a functional paradigm. There is nothing too wrong about
-package.el, this choice was made simply because straight offers a few
-more conveniences, and is generally faster, easier and more
-comfortable to use than package.el.
+loading init.el, so it must be disabled in early-init.
 
 #+begin_src emacs-lisp :tangle early-init.el
   (setq package-enable-at-startup nil
         package--init-file-ensured t)
 #+end_src
 
-** Bootstrapping straight.el
+*** Load path
+
+Here we add the =lisp= directory to the load path. This allows us to
+make and load custom packages.
+
+#+begin_src emacs-lisp :tangle init.el
+(push (expand-file-name "lisp" user-emacs-directory) load-path)
+#+end_src
+
+*** Bootstrapping straight.el
 
 Here we bootstrap the =straight.el= package manager, which replaces
 package.el. This requires that =git= be installed on the system.
@@ -187,14 +212,13 @@ package.el. This requires that =git= be installed on the system.
     (load bootstrap-file nil 'nomessage))
 #+end_src
 
-** Installing and configuring use-package
+
+*** Installing and configuring use-package
 
 In this section we install =use-package=, a collection of macros for
-making package management easier and more convenient. Note that
-use-package is not a complete package manager unto itself, just a
-wrapper around existing tools, that provides great control over the
-process of loading a given package. It is also used for configuring
-packages, and lazy loading those configurations.
+making package management easier and more convenient. It provides
+great control over the process of loading a given package. It is used
+for configuring packages and lazy loading those configurations. 
 
 #+begin_src emacs-lisp :tangle init.el
   (straight-use-package 'use-package)
@@ -204,7 +228,7 @@ packages, and lazy loading those configurations.
   (setq use-package-hook-name-suffix nil)
 #+end_src
 
-** Ensuring auto-compilation of all elisp
+*** Ensuring auto-compilation of all elisp
 
 Here we make sure that Emacs always has access to byte-compiled elisp
 instead of simple source files. The first setting here ensures that
@@ -219,7 +243,7 @@ can get annoying.
         byte-compile-warnings '(cl-functions))
 #+end_src
 
-** Benchmark init
+*** Benchmark init
 
 When activated at startup, the package =benchmark-init= records load
 times for all other installed packages, then allows the user to
