@@ -677,6 +677,10 @@ allowing the user to interact more with Emacs' undo tree system.
     :straight t
     :init
     (global-undo-tree-mode)
+      (setq undo-tree-visualizer-timestamps t
+          undo-tree-enable-undo-in-region nil
+          undo-tree-auto-save-history nil)
+  
     :diminish undo-tree-mode)
 #+end_src
 
