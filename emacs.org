@@ -59,31 +59,6 @@ Boston, MA 02110-1301, USA.
 
 ** License headers for other files
 
-#+begin_src emacs-lisp :tangle init.el
-  ;; Copyright © 2019-2020 Aabm <aabm@disroot.org>
-
-  ;; Author: Aabm <aabm@disroot.org>
-  ;; URL: https://gitlab.com/aabm/emacs
-
-  ;; This file is NOT part of GNU Emacs.
-
-  ;; This program is free software; you can redistribute it and/or modify
-  ;; it under the terms of the GNU General Public License as published by
-  ;; the Free Software Foundation; either version 3, or (at your option)
-  ;; any later version.
-
-  ;; This program is distributed in the hope that it will be useful,
-  ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ;; GNU General Public License for more details.
-
-  ;; You should have received a copy of the GNU General Public License
-  ;; along with GNU Emacs; see the file LICENSE.  If not, you can visit
-  ;; https://www.gnu.org/licenses/gpl-3.0.html or write to the
-  ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-  ;; Boston, MA 02110-1301, USA.
-#+end_src
-
 * Startup settings
 
 ** Early initialization (early-init.el)
@@ -183,6 +158,40 @@ loading init.el, so it must be disabled in early-init.
         package--init-file-ensured t)
 #+end_src
 
+** Initialization (init.el)
+
+Here we define all the initialization options, to be included in the
+=init.el= file.
+
+*** License
+
+Below is the license header to be included in the =init.el= file.
+
+#+begin_src emacs-lisp :tangle init.el
+  ;; Copyright © 2019-2020 Aabm <aabm@disroot.org>
+
+  ;; Author: Aabm <aabm@disroot.org>
+  ;; URL: https://gitlab.com/aabm/emacs
+
+  ;; This file is NOT part of GNU Emacs.
+
+  ;; This program is free software; you can redistribute it and/or modify
+  ;; it under the terms of the GNU General Public License as published by
+  ;; the Free Software Foundation; either version 3, or (at your option)
+  ;; any later version.
+
+  ;; This program is distributed in the hope that it will be useful,
+  ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ;; GNU General Public License for more details.
+
+  ;; You should have received a copy of the GNU General Public License
+  ;; along with GNU Emacs; see the file LICENSE.  If not, you can visit
+  ;; https://www.gnu.org/licenses/gpl-3.0.html or write to the
+  ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  ;; Boston, MA 02110-1301, USA.
+#+end_src
+
 *** Load path
 
 Here we add the =lisp= directory to the load path. This allows us to
@@ -211,7 +220,6 @@ package.el. This requires that =git= be installed on the system.
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 #+end_src
-
 
 *** Installing and configuring use-package
 
