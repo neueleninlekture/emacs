@@ -1435,10 +1435,9 @@ files. All these packages can be acessed under the C-c n map.
 
     :bind
     (:map notes
-     ((("f" . org-roam-find-file)
-     ("l" . org-roam-insert)
-     ("c" . org-roam-random-note)
-     ("d" . org-roam-dailies-date)))))
+          ((("f" . org-roam-find-file)
+            ("l" . org-roam-insert)
+            ("r" . org-roam-random-note)))))
 
   (use-package org-roam-server
     :straight t
