@@ -853,7 +853,9 @@ configurations, similar to the workspaces in tiling window managers.
 arrow keys.
 
 #+begin_src emacs-lisp :tangle init.el
-  (windmove-default-keybindings)
+  (use-package windmove
+    :hook
+    (after-init-hook . windmove-default-keybindings))
 #+end_src
 
 *** Keybindings
