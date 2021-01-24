@@ -704,6 +704,17 @@ Easily open files over sudo using =TRAMP=.
    "s" 'isearch-forward)
 #+end_src
 
+** Subword
+
+=Subword= helps navigation of camelCase words in code.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package subword
+    :diminish
+    :hook ((prog-mode-hook . subword-mode)
+           (minibuffer-setup-hook . subword-mode)))
+#+end_src
+
 * Buffer, file and window management
 
 In this section we deal with all packages relating to the fundamental
