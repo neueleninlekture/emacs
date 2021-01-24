@@ -521,6 +521,9 @@ these are later bound to keys.
       ("C-h o" . counsel-describe-symbol))))
 #+end_src
 
+** Projectile
+
+
 * Custom keybinding system
 
 ** Prefix keys
@@ -821,7 +824,10 @@ commands you barely understand.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package projectile
-    :straight t)
+    :straight t
+    :defer nil
+    :bind
+    (("C-c p" . projectile-command-map)))
 #+end_src
 
 *** Loading files conditionally
