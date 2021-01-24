@@ -2424,6 +2424,28 @@ titlebar), frame size and transparency.
   (set-frame-parameter (selected-frame) 'alpha '(93 90))
 #+end_src
    
+** Doom Modeline
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package doom-modeline
+    :straight t
+    :defer nil
+    :custom
+    (doom-modeline-height 25)
+    (doom-modeline-bar-width 5)
+    (doom-modeline-icon (display-graphic-p))
+    (doom-modeline-major-mode-icon t)
+    (doom-modeline-major-mode-color-icon t)
+    (doom-modeline-buffer-state-icon t)
+    (doom-modeline-buffer-modification-icon t)
+    (doom-modeline-minor-modes nil)
+    (doom-modeline-enable-word-count t)
+    (doom-modeline-buffer-encoding t)
+    (doom-modeline-persp-name t)
+    :config
+    (doom-modeline-mode))
+#+end_src
+
 ** LEGACY Dashboard
 
 Dashboard is quite a nice package. It provides a startup screen with
@@ -2502,35 +2524,6 @@ is gone.
   ;; Load dashboard only if Emacs does not get a file as an argument
   (if (< (length command-line-args) 2)
       (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
-#+end_src
-
-** LEGACY Doom Modeline
-
-:LEGACY:
-Section dropped. Doom Modeline slightly impacts load time, and doesn't
-really look all that much better than the standard. I actually dislike
-how tall it is. I guess it has some fancy icons, but that's it. Not
-really worth the tradeoff.
-:END:
-
-#+begin_src emacs-lisp
-  (use-package doom-modeline
-    :straight t
-    :defer nil
-    :custom
-    (doom-modeline-height 25)
-    (doom-modeline-bar-width 5)
-    (doom-modeline-icon (display-graphic-p))
-    (doom-modeline-major-mode-icon t)
-    (doom-modeline-major-mode-color-icon t)
-    (doom-modeline-buffer-state-icon t)
-    (doom-modeline-buffer-modification-icon t)
-    (doom-modeline-minor-modes nil)
-    (doom-modeline-enable-word-count t)
-    (doom-modeline-buffer-encoding t)
-    (doom-modeline-persp-name t)
-    :config
-    (doom-modeline-mode))
 #+end_src
 
 * Start server
