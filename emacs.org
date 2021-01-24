@@ -386,7 +386,15 @@ In this section we install general purpose packages that are
 frequently used later. These packages serve as building blocks for
 configuration itself, or other packages.
 
-** diminish
+** All The Icons
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package all-the-icons
+    :straight t
+    :defer nil)
+#+end_src
+
+** Diminish
 
 =diminish= is a package for disabling the display of minor modes in
 the modeline. It works on a per-package basis, and can be called from
@@ -398,7 +406,7 @@ use-package declarations.
     :diminish visual-line-mode eldoc-mode org-indent-mode)
 #+end_src
 
-** async
+** Async
 
 =Async= is a library for asynchronous processing for Emacs. By itself it
 does not do much, but is actually required by some packages. Here we
@@ -414,7 +422,7 @@ Dired and also for compilation of some Elisp.
     :diminish dired-async-mode)
 #+end_src
 
-** gcmh
+** GCMH
 
 =gcmh=, or the =garbage collection magical hack= alters the way Emacs'
 garbage collection works. In short, it makes Emacs run better by not
@@ -494,7 +502,7 @@ these are later bound to keys.
     (enable-recursive-minibuffers t)
 
     :bind
-    (("C-s" . swiper)
+    ((("C-s" . swiper)
      ("C-r" . isearch-forward)
      ("M-s s" . avy-goto-char-2)
      ("C-x C-f" . counsel-find-file)
@@ -503,7 +511,7 @@ these are later bound to keys.
      ("M-x" . counsel-M-x)
      ("C-h f" . counsel-describe-function)
      ("C-h v" . counsel-describe-variable)
-     ("C-h o" . counsel-describe-symbol)))
+     ("C-h o" . counsel-describe-symbol))))
 #+end_src
 
 * Custom keybinding system
@@ -594,7 +602,7 @@ brackets, quotation marks, etc. Inspired by Vim's =surround= plugin.
   (use-package emacs-surround
     :straight (:host github :repo "ganmacs/emacs-surround")
     :bind
-    ("C--" . emacs-surround))
+    (("C--" . emacs-surround)))
 #+end_src
 
 ** Hungry delete
@@ -622,7 +630,7 @@ line.
     :commands mc/edit-lines
     :bind
     (:map text-editing
-     ("m" . mc/edit-lines)))
+     (("m" . mc/edit-lines))))
 #+end_src
 
 ** Writable grep
@@ -708,10 +716,12 @@ customizations here involve adding icons and keybindings to
 #+begin_src emacs-lisp :tangle init.el
   (use-package ibuffer
     :straight all-the-icons-ibuffer ibuffer-projectile
+    :functions all-the-icons-octicon ibuffer-do-sort-by-alphabetic  
+    :after all-the-icons
     :commands ibuffer
-  
+
     :init (setq ibuffer-filter-group-name-face '(:inherit (font-lock-string-face bold)))
-  
+
     :custom
     (ibuffer-projectile-prefix
      (concat
@@ -727,7 +737,7 @@ customizations here involve adding icons and keybindings to
                   (ibuffer-projectile-set-filter-groups)
                   (unless (eq ibuffer-sorting-mode 'alphabetic)
                     (ibuffer-do-sort-by-alphabetic)))))
-  
+
     :bind
     (("C-x C-b" . ibuffer)))
 #+end_src
@@ -855,7 +865,7 @@ arrow keys.
 #+begin_src emacs-lisp :tangle init.el
   (use-package windmove
     :hook
-    (after-init-hook . windmove-default-keybindings))
+    ((after-init-hook . windmove-default-keybindings)))
 #+end_src
 
 *** Winner
@@ -865,8 +875,8 @@ arrow keys.
     :commands
     (winner-undo winner-redo)
     :hook
-    (after-init-hook . winner-mode)
-  
+    ((after-init-hook . winner-mode))
+
     :init (setq winner-boring-buffers '("*Completions*"
                                         "*Compile-Log*"
                                         "*inferior-lisp*"
@@ -886,7 +896,7 @@ arrow keys.
     :functions org-switch-to-buffer-other-window
     :commands shackle-display-buffer
     :hook
-    (after-init-hook . shackle-mode)
+    ((after-init-hook . shackle-mode))
     :config
     (with-no-warnings
       (defvar shackle--popup-window-list nil) ; all popup windows
@@ -1057,15 +1067,15 @@ This key makes it easier to switch windows.
       (find-alternate-file ".."))
 
     :hook
-    ((dired-mode-hook . dired-hide-details-mode)
+    (((dired-mode-hook . dired-hide-details-mode)
      (dired-mode-hook . dired-hide-dotfiles-mode)
-     (dired-mode-hook . hl-line-mode))
+     (dired-mode-hook . hl-line-mode)))
 
     :diminish dired-hide-dotfiles-mode
 
     :bind
     (:map dired-mode-map
-          (("RET" . dired-find-alternate-file)
+          ((("RET" . dired-find-alternate-file)
            ("M-RET" . dired-find-file)
            ("DEL" . aabm/dired-up-alternate-directory)
            ("TAB" . dired-subtree-insert)
@@ -1076,7 +1086,7 @@ This key makes it easier to switch windows.
            ("i" . peep-dired)
            ("I" . image-dired)
            ("v" . aabm/dired-xdg-open)
-           ("q" . kill-this-buffer))))
+           ("q" . kill-this-buffer)))))
 
   (use-package peep-dired
     :straight t
@@ -1084,8 +1094,8 @@ This key makes it easier to switch windows.
     (:map dired-mode-map
           (("i" . peep-dired)))
     (:map peep-dired-mode-map
-          (("n" . peep-dired-next-file)
-           ("p" . peep-dired-prev-file))))
+          ((("n" . peep-dired-next-file)
+           ("p" . peep-dired-prev-file)))))
 #+end_src
 
 *** Magit
@@ -1147,13 +1157,13 @@ reading and writing.
     :bind
     (("C-c o" . olivetti-mode)
      (:map fill-text
-           ("o" . olivetti-mode))))
+           (("o" . olivetti-mode)))))
 
   (use-package writeroom-mode
     :straight t
     :bind
     (:map fill-text
-          ("w" . writeroom-mode)))
+          (("w" . writeroom-mode))))
 #+end_src
 
 ** Org
@@ -1186,14 +1196,14 @@ some basic options. These are:
     (org-cycle-global-at-bob t)
 
     :hook
-    (org-mode-hook . org-indent-mode)
-  
+    ((org-mode-hook . org-indent-mode))
+
     :diminish org-indent-mode
 
     :bind
     (("C-," . org-cycle-agenda-files)
      (:map org-mode-map
-          (("M-n" . org-forward-element)
+          ((("M-n" . org-forward-element)
            ("M-p" . org-backward-element)
            ("C-M-n" . org-metadown)
            ("C-M-p" . org-metaup)
@@ -1203,7 +1213,7 @@ some basic options. These are:
            ("<S-right>" . nil)
            ("<S-left>" . nil)
            ("<S-down>" . nil)
-           ("<S-up>" . nil)))))
+           ("<S-up>" . nil))))))
 #+end_src
 
 *** Agenda, Tasks and TODOs
@@ -1239,7 +1249,7 @@ another for quickly opening up the main agenda file.
 
     :bind
     (:map agenda-and-time
-          ("a" . org-agenda)))
+          (("a" . org-agenda))))
 
   (defun aabm/org-todo-done-and-archive ()
     "Sets current org task do DONE and sends it to org-archive-location."
@@ -1387,10 +1397,10 @@ files. All these packages can be acessed under the C-c n map.
 
     :bind
     (:map notes
-     ("f" . org-roam-find-file)
+     ((("f" . org-roam-find-file)
      ("l" . org-roam-insert)
      ("c" . org-roam-random-note)
-     ("d" . org-roam-dailies-date)))
+     ("d" . org-roam-dailies-date)))))
 
   (use-package org-roam-server
     :straight t
@@ -1408,7 +1418,7 @@ files. All these packages can be acessed under the C-c n map.
     (org-roam-server-network-label-wrap-length 20)
     :bind
     (:map notes
-          ("g" . org-roam-server-mode)))
+          (("g" . org-roam-server-mode))))
 
   (use-package deft
     :straight t
@@ -1419,7 +1429,7 @@ files. All these packages can be acessed under the C-c n map.
     (deft-directory "~/org/roam")
     :bind
     (:map notes
-     ("s" . deft)))
+     (("s" . deft))))
 #+end_src
 
 *** Org Superstar
@@ -1431,7 +1441,7 @@ headings with nice looking Unicode characters.
   (use-package org-superstar
     :straight t
     :hook
-    (org-mode-hook . org-superstar-mode))
+    ((org-mode-hook . org-superstar-mode)))
 #+end_src
 
 ** LaTeX
@@ -1449,11 +1459,7 @@ headings with nice looking Unicode characters.
     (TeX-source-correlate-start-server t)
 
     :hook
-    (TeX-after-compilation-finished-functions . TeX-revert-document-buffer))
-    ;; (LaTeX-mode-hook . turn-on-auto-fill))
-    ;; (LaTeX-mode-hook . (lambda () (set (make-variable-buffer-local
-    ;;                                'TeX-electric-math)
-    ;;                               (cons "\\(" "\\)"))))))
+    ((TeX-after-compilation-finished-functions . TeX-revert-document-buffer)))
 #+end_src
 
 ** Markdown
@@ -1533,7 +1539,7 @@ for printing the current page number to the echo area.
     (pdf-view-display-size 'fit-page)
     :bind
     (:map pdf-view-mode-map
-          ("C-s" . isearch-forward)
+          ((("C-s" . isearch-forward)
           ("C-r" . isearch-backward)
           ("C-c d" . pdf-view-midnight-minor-mode)
           ("C-c z" . aabm/pdf-view-open-in-zathura)
@@ -1541,7 +1547,7 @@ for printing the current page number to the echo area.
           ("C-c t" . aabm/pdf-view-continuous-toggle )
           ("C-a" . image-scroll-right)
           ("C-e" . image-scroll-left)
-          ("f" . pdf-view-goto-page)))
+          ("f" . pdf-view-goto-page)))))
 #+end_src
 
 *** nov.el
@@ -1557,8 +1563,8 @@ hooking nov.el to olivetti-mode.
     (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
     :bind
     (:map nov-mode-map
-            (("M-n" . scroll-up-line)
-            ("M-p" . scroll-down-line))))
+            ((("M-n" . scroll-up-line)
+            ("M-p" . scroll-down-line)))))
 #+end_src
 
 ** CalibreDB
@@ -1579,16 +1585,16 @@ entirely from within Emacs, without ever having to bother touching the
     (calibredb-format-all-the-icons t)
     :bind
     (:map database
-          ("l" . calibredb)
+          ((("l" . calibredb)
           ("s" . calibredb-find-counsel)
-          ("a" . calibredb-add))
+          ("a" . calibredb-add))))
     (:map calibredb-search-mode-map
-          ("t" . calibredb-set-metadata-dispatch)
+          ((("t" . calibredb-set-metadata-dispatch)
           ("s" . calibredb-search-live-filter)
           ("n" . calibredb-next-entry)
           ("p" . calibredb-previous-entry)
           ("j" . nil)
-          ("k" . nil)))
+          ("k" . nil)))))
 #+end_src
 
 * Personal agenda, time and task management
@@ -1615,11 +1621,11 @@ entirely from within Emacs, without ever having to bother touching the
        ("Asia/Tokyo" "+9 Tokyo")))
 
     :hook
-    (after-init-hook . display-time-mode)
+    ((after-init-hook . display-time-mode))
 
     :bind
     (:map agenda-and-time
-     ("t" . display-time-world)))
+     (("t" . display-time-world))))
 #+end_src
 
 ** Calendar
@@ -1704,7 +1710,7 @@ for programming major modes, which is really all I need.
            ("SPC" . (lambda () (interactive) (progn (company-abort) (insert " "))))))
 
     :hook
-    (prog-mode-hook . company-mode))
+    ((prog-mode-hook . company-mode)))
 #+end_src
 
 ** C
@@ -1872,7 +1878,7 @@ the built-in ones, while also allowing use of TUI programs.
       :keymap aabm/eshell-minor-mode-map)
 
     (add-hook 'eshell-mode-hook 'aabm/eshell-minor-mode)
-  
+
     :custom
     (eshell-prompt-regexp "^[^αλ\n]*[αλ] ")
     (eshell-prompt-function
@@ -1895,10 +1901,10 @@ the built-in ones, while also allowing use of TUI programs.
     :bind
     (("C-x s" . eshell)
      (:map aabm/eshell-minor-mode-map
-           ("C-c w" . aabm/eshell-copy-file-path-at-point)
+           ((("C-c w" . aabm/eshell-copy-file-path-at-point)
            ("C-c f" . aabm/eshell-find-file-at-point)
            ("C-c o" . aabm/eshell-cat-file-at-point)
-           ("C-c C-b" . aabm/eshell-put-last-output-to-buffer))))
+           ("C-c C-b" . aabm/eshell-put-last-output-to-buffer))))))
 #+end_src
 
 ** Vterm
@@ -1914,8 +1920,8 @@ the built-in ones, while also allowing use of TUI programs.
   (use-package vterm
     :straight t
     :bind
-    (("C-x v" . aabm/switch-to-vterm-p)
-     ("C-c v" . vterm)))
+    ((("C-x v" . aabm/switch-to-vterm-p)
+     ("C-c v" . vterm))))
 #+end_src
 
 * Security, news, email and web browsing
@@ -1941,10 +1947,10 @@ standard completion mechanism, which for this configuration is Ivy.
      pass)
     :bind
     (:map password-management
-          ("i" . password-store-insert)
+          ((("i" . password-store-insert)
           ("w" . password-store-copy)
           ("e" . password-store-edit)
-          ("p" . pass)))
+          ("p" . pass)))))
 #+end_src
 
 ** Elfeed
@@ -1992,14 +1998,14 @@ external video player, namely =mpv=, which is bound to the v key.
     :bind
     (("C-c e" . elfeed)
      (:map elfeed-show-mode-map
-           ("M-n" . scroll-up-line)
-           ("M-p" . scroll-down-line)
-           ("v" . aabm/elfeed-play-with-mpv)
-           ("e" . aabm/elfeed-show-eww))
+           ((("M-n" . scroll-up-line)
+             ("M-p" . scroll-down-line)
+             ("v" . aabm/elfeed-play-with-mpv)
+             ("e" . aabm/elfeed-show-eww))))
 
      (:map elfeed-search-mode-map
-           ("v" . aabm/elfeed-play-with-mpv)
-           ("e" . aabm/elfeed-show-eww))))
+           ((("v" . aabm/elfeed-play-with-mpv)
+             ("e" . aabm/elfeed-show-eww))))))
 #+end_src
 
 ** mu4e
@@ -2047,8 +2053,8 @@ of those tools.
                            (signal 'quit nil))))
 
     :bind
-    (("C-x m" . mu4e)
-     ("C-c m" . mu4e-compose-new)))
+    ((("C-x m" . mu4e)
+     ("C-c m" . mu4e-compose-new))))
 #+end_src
 
 ** eww
@@ -2084,9 +2090,9 @@ databases. =ivy-mpdel= adds Ivy completion to mpdel.
     :straight ivy-mpdel
     :bind
     (:map music
-          ("m" . ivy-mpdel-list)
+          ((("m" . ivy-mpdel-list)
           ("l" . mpdel-playlist-open)
-          ("b" . mpdel-browser-open)))
+          ("b" . mpdel-browser-open)))))
 #+end_src
 
 ** Videos
@@ -2117,8 +2123,8 @@ configure the standard directories to be used by it.
     (youtube-dl-directory "~/vid")
     :bind
     (:map youtube
-          ("d" . youtube-dl)
-          ("l" . youtube-dl-list)))
+          ((("d" . youtube-dl)
+          ("l" . youtube-dl-list)))))
 #+end_src
 
 *** ytel
@@ -2146,9 +2152,9 @@ elfeed.
       (message "Starting stream..."))
     :bind
     (:map youtube
-          ("y" . ytel)
+          (("y" . ytel))
      (:map ytel-mode-map
-          ("RET" . ytel-watch-mpv))))
+          (("RET" . ytel-watch-mpv)))))
 #+end_src
 
 ** Screencasts
@@ -2194,14 +2200,6 @@ which works similarly to the above.
 
 Finally, ricing. In this section we make all visual customisation,
 install all cosmetic packages and color themes.
-
-** All The Icons
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package all-the-icons
-    :straight t
-    :defer nil)
-#+end_src
 
 ** Powerline
 
