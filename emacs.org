@@ -494,14 +494,16 @@ these are later bound to keys.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package ivy
-    :straight ivy swiper counsel swiper avy ivy-rich
+    :straight ivy swiper counsel swiper avy ivy-rich all-the-icons-ivy-rich
 
     :init
     (ivy-mode)
     (counsel-mode)
+    (all-the-icons-ivy-rich-mode)
     (ivy-rich-mode)
 
-    :diminish ivy-mode counsel-mode ivy-rich-mode
+    :diminish
+    (ivy-mode counsel-mode ivy-rich-mode all-the-icons-ivy-rich-mode)
 
     :custom
     (enable-recursive-minibuffers t)
@@ -720,6 +722,119 @@ Easily open files over sudo using =TRAMP=.
 In this section we deal with all packages relating to the fundamental
 components of any Emacs workflow, those being buffers, files and
 windows.
+
+** Files
+
+*** Dired
+
+=dired=, or the =directory editor= is Emacs' built in file manager.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package dired
+    :straight peep-dired dired-subtree dired-hide-dotfiles all-the-icons-dired
+    :commands dired
+
+    :custom
+    (dired-dwim-target t)
+    (dired-recursive-copies 'always)
+    (dired-recursive-deletes 'always)  
+    (dired-listing-switches "-alhvNF --group-directories-first")
+
+    (wdired-allow-to-change-permissions t)
+
+    (peep-dired-cleanup-on-disable t)
+    (peep-dired-ignored-extensions '("mkv" "iso" "mp4"))
+
+    :config
+
+    (defun aabm/dired-xdg-open ()
+      "Open the marked files using xdg-open."
+      (interactive)
+      (let ((file-list (dired-get-marked-files)))
+        (mapc
+         (lambda (file-path)
+           (let ((process-connection-type nil))
+             (start-process "" nil "xdg-open" file-path)))
+         file-list)))
+
+    (defun aabm/dired-up-alternate-directory ()
+      "Move up a directory, reusing the current buffer, instead of creating a new one."
+      (interactive)
+      (find-alternate-file ".."))
+
+    :hook
+    (((dired-mode-hook . dired-hide-dotfiles-mode)
+      (dired-mode-hook . hl-line-mode)
+      (dired-mode-hook . all-the-icons-dired-mode)))
+
+    :diminish dired-hide-dotfiles-mode
+
+    :bind
+    (:map dired-mode-map
+          ((("RET" . dired-find-alternate-file)
+            ("M-RET" . dired-find-file)
+            ("DEL" . aabm/dired-up-alternate-directory)
+            ("TAB" . dired-subtree-insert)
+            ("C-c d m" . mkdir)
+            ("C-c d c" . chmod)
+            ("h" . dired-hide-dotfiles-mode)
+            ("H" . dired-hide-details-mode)
+            ("i" . peep-dired)
+            ("I" . image-dired)
+            ("v" . aabm/dired-xdg-open)
+            ("q" . kill-this-buffer)))))
+
+  (use-package peep-dired
+    :straight t
+    :bind
+    (:map dired-mode-map
+          (("i" . peep-dired)))
+    (:map peep-dired-mode-map
+          ((("n" . peep-dired-next-file)
+            ("p" . peep-dired-prev-file)))))
+
+  (use-package diredfl
+    :straight t
+    :init
+    (diredfl-global-mode t))
+#+end_src
+
+*** Magit
+
+=Magit= is a complete =git= frontend for Emacs. It makes usage of git
+significantly easier and more intuitive. No more typing esoteric shell
+commands you barely understand.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package magit
+    :straight t
+    :commands magit-status
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+    :bind
+    (("C-x g" . magit-status)))
+#+end_src
+
+*** Projectile
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package projectile
+    :straight t)
+#+end_src
+
+*** Loading files conditionally
+
+This is a simple function for loading files conditionally (that is,
+only if they exist). Simply put, it makes the process of loading
+external files such as those containing personal information not
+included in this config, a lot easier.
+
+#+begin_src emacs-lisp :tangle init.el
+(defun aabm/load-file-if (file)
+  "Check if FILE exists, and if so, load it."
+  (if (file-exists-p file)
+    (load-file file)))
+#+end_src
 
 ** Buffers
 
@@ -1048,112 +1163,6 @@ This key makes it easier to switch windows.
 
 #+begin_src emacs-lisp :tangle init.el
   (global-set-key (kbd "M-o") 'other-window)
-#+end_src
-
-** Files
-
-*** Dired
-
-=dired=, or the =directory editor= is Emacs' built in file manager.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package dired
-    :straight peep-dired dired-subtree dired-hide-dotfiles all-the-icons-dired
-    :commands dired
-
-    :custom
-    (dired-dwim-target t)
-    (dired-recursive-copies 'always)
-    (dired-recursive-deletes 'always)  
-    (dired-listing-switches "-alhvNF --group-directories-first")
-
-    (wdired-allow-to-change-permissions t)
-
-    (peep-dired-cleanup-on-disable t)
-    (peep-dired-ignored-extensions '("mkv" "iso" "mp4"))
-
-    :config
-
-    (defun aabm/dired-xdg-open ()
-      "Open the marked files using xdg-open."
-      (interactive)
-      (let ((file-list (dired-get-marked-files)))
-        (mapc
-         (lambda (file-path)
-           (let ((process-connection-type nil))
-             (start-process "" nil "xdg-open" file-path)))
-         file-list)))
-
-    (defun aabm/dired-up-alternate-directory ()
-      "Move up a directory, reusing the current buffer, instead of creating a new one."
-      (interactive)
-      (find-alternate-file ".."))
-
-    :hook
-    (((dired-mode-hook . dired-hide-dotfiles-mode)
-      (dired-mode-hook . hl-line-mode)
-      (dired-mode-hook . all-the-icons-dired-mode)))
-
-    :diminish dired-hide-dotfiles-mode
-
-    :bind
-    (:map dired-mode-map
-          ((("RET" . dired-find-alternate-file)
-            ("M-RET" . dired-find-file)
-            ("DEL" . aabm/dired-up-alternate-directory)
-            ("TAB" . dired-subtree-insert)
-            ("C-c d m" . mkdir)
-            ("C-c d c" . chmod)
-            ("h" . dired-hide-dotfiles-mode)
-            ("H" . dired-hide-details-mode)
-            ("i" . peep-dired)
-            ("I" . image-dired)
-            ("v" . aabm/dired-xdg-open)
-            ("q" . kill-this-buffer)))))
-
-  (use-package peep-dired
-    :straight t
-    :bind
-    (:map dired-mode-map
-          (("i" . peep-dired)))
-    (:map peep-dired-mode-map
-          ((("n" . peep-dired-next-file)
-            ("p" . peep-dired-prev-file)))))
-
-  (use-package diredfl
-    :straight t
-    :init
-    (diredfl-global-mode t))
-#+end_src
-
-*** Magit
-
-=Magit= is a complete =git= frontend for Emacs. It makes usage of git
-significantly easier and more intuitive. No more typing esoteric shell
-commands you barely understand.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package magit
-    :straight t
-    :commands magit-status
-    :custom
-    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
-    :bind
-    (("C-x g" . magit-status)))
-#+end_src
-
-*** Loading files conditionally
-
-This is a simple function for loading files conditionally (that is,
-only if they exist). Simply put, it makes the process of loading
-external files such as those containing personal information not
-included in this config, a lot easier.
-
-#+begin_src emacs-lisp :tangle init.el
-(defun aabm/load-file-if (file)
-  "Check if FILE exists, and if so, load it."
-  (if (file-exists-p file)
-    (load-file file)))
 #+end_src
 
 * Writing, notetaking and reading
@@ -1631,6 +1640,7 @@ entirely from within Emacs, without ever having to bother touching the
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package time
+    :straight counsel-world-clock
     :commands world-clock display-time-world
     :custom
     (display-time-format "%a, %b %d %H:%M")
@@ -1653,7 +1663,8 @@ entirely from within Emacs, without ever having to bother touching the
 
     :bind
     (:map agenda-and-time
-     (("t" . display-time-world))))
+          (("t" . display-time-world)
+           ("s" . counsel-world-clock))))
 #+end_src
 
 ** Calendar
