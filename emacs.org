@@ -1194,8 +1194,7 @@ reading and writing.
     :custom
     (olivetti-body-width 90)
     :bind
-    (("C-c o" . olivetti-mode)
-     (:map fill-text
+    ((:map fill-text
            (("o" . olivetti-mode)))))
 
   (use-package writeroom-mode
