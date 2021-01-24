@@ -94,18 +94,6 @@ Here we include the license header for the =early-init.el= file.
   ;; Boston, MA 02110-1301, USA.
 #+end_src
 
-*** Check version
-
-This configuration, in its current state, is made for Emacs version
-27.1 or up. It does not aim to support previous versions of Emacs. We
-check the version number in init, and trigger an error if it is
-outdated.
-
-#+begin_src emacs-lisp :tangle init.el
-  (when (version< emacs-version "27.1")
-    (error "This requires Emacs 27.1 and above!"))
-#+end_src
-
 *** Startup options hack
 
 A fairly simple hack to speed up startup in Emacs. It works by
@@ -188,6 +176,18 @@ Below is the license header to be included in the =init.el= file.
   ;; https://www.gnu.org/licenses/gpl-3.0.html or write to the
   ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   ;; Boston, MA 02110-1301, USA.
+#+end_src
+
+*** Check version
+
+This configuration, in its current state, is made for Emacs version
+27.1 or up. It does not aim to support previous versions of Emacs. We
+check the version number in init, and trigger an error if it is
+outdated.
+
+#+begin_src emacs-lisp :tangle init.el
+  (when (version< emacs-version "27.1")
+    (error "This requires Emacs 27.1 and above!"))
 #+end_src
 
 *** Load path
