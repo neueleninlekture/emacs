@@ -392,6 +392,11 @@ configuration itself, or other packages.
   (use-package all-the-icons
     :straight t
     :defer nil)
+
+  (defun icons-displayable-p ()
+    "Return non-nil if `all-the-icons' is displayable."
+    (if (display-graphic-p)
+        (require 'all-the-icons nil t)))
 #+end_src
 
 ** Diminish
@@ -715,31 +720,33 @@ customizations here involve adding icons and keybindings to
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package ibuffer
-    :straight all-the-icons-ibuffer ibuffer-projectile
-    :functions all-the-icons-octicon ibuffer-do-sort-by-alphabetic  
-    :after all-the-icons
-    :commands ibuffer
-
-    :init (setq ibuffer-filter-group-name-face '(:inherit (font-lock-string-face bold)))
-
-    :custom
-    (ibuffer-projectile-prefix
-     (concat
-      (all-the-icons-octicon "file-directory"
-                             :face ibuffer-filter-group-name-face
-                             :v-adjust 0.0
-                             :height 1.0)
-      " "))
+    :straight all-the-icons-ibuffer
+    :defer nil
+    :init
+    (setq ibuffer-filter-group-name-face '(:inherit (font-lock-string-face bold)))
 
     :hook
-    ((ibuffer-mode . all-the-icons-ibuffer-mode)
-     (ibuffer . (lambda ()
-                  (ibuffer-projectile-set-filter-groups)
-                  (unless (eq ibuffer-sorting-mode 'alphabetic)
-                    (ibuffer-do-sort-by-alphabetic)))))
+    ((ibuffer-mode-hook . all-the-icons-ibuffer-mode))
 
     :bind
     (("C-x C-b" . ibuffer)))
+
+  (use-package ibuffer-projectile
+    :straight t
+    :hook
+    ((ibuffer-hook . (lambda ()
+                       (ibuffer-projectile-set-filter-groups)
+                       (unless (eq ibuffer-sorting-mode 'alphabetic)
+                         (ibuffer-do-sort-by-alphabetic)))))
+    :config
+    (setq ibuffer-projectile-prefix
+          (if (icons-displayable-p)
+              (concat
+               (all-the-icons-octicon "file-directory"
+                                      :face ibuffer-filter-group-name-face
+                                      :v-adjust 0.0
+                                      :height 1.0)
+               " "))))
 #+end_src
 
 *** Genbuffer
@@ -893,6 +900,7 @@ arrow keys.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package shackle
+    :straight t
     :functions org-switch-to-buffer-other-window
     :commands shackle-display-buffer
     :hook
@@ -1768,13 +1776,6 @@ that it does not load these files.
     (let ((prog-mode-hook nil))
       (save-buffer "emacs.org")
       (org-babel-tangle-file (concat user-emacs-directory "emacs.org"))
-
-      (delete-file (concat user-emacs-directory "early-init.elc"))
-      (async-byte-compile-file (concat user-emacs-directory "early-init.el"))
-
-      (delete-file (concat user-emacs-directory "init.elc"))	
-      (async-byte-compile-file (concat user-emacs-directory "init.el"))
-
       (message "Emacs configuration succesfully rebuilt!")))
 
   (general-define-key
