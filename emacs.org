@@ -1477,9 +1477,11 @@ files. All these packages can be acessed under the C-c n map.
     :custom
     (org-journal-dir "~/org/journal/")
     (org-journal-date-format "%A, %d %B %Y")
-    (org-journal-file-type 'monthly)
+    (org-journal-file-type 'daily)
+    (org-journal-file-format "%Y-%m-%d-%a")
     :bind
-    ((("C-c ))))
+    (:map notes
+          (("j" . org-journal-new-entry))))
 #+end_src
 
 *** Org Superstar
