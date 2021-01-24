@@ -1191,6 +1191,8 @@ reading and writing.
 #+begin_src emacs-lisp :tangle init.el
   (use-package olivetti
     :straight t
+    :custom
+    (olivetti-body-width 90)
     :bind
     (("C-c o" . olivetti-mode)
      (:map fill-text
@@ -1517,6 +1519,24 @@ Emacs can serve as a great tool for reading books. In this section we
 configure it as a PDF reader, with the help of the =pdf-tools=
 package, and as an EPUB reader, with the =nov.el= package.
 
+*** Reader mode
+
+#+begin_src emacs-lisp :tangle init.el
+  (define-minor-mode aabm-read-mode
+    "Minor Mode for better reading experience."
+    :init-value nil
+    ;; :group aabm
+    (if aabm-read-mode
+        (progn
+          (and (fboundp 'olivetti-mode) (olivetti-mode 1))
+          ;; (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode 1))
+          (text-scale-set +1))
+      (progn
+        (and (fboundp 'olivetti-mode) (olivetti-mode -1))
+        ;; (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode -1))
+        (text-scale-set 0))))
+#+end_src
+
 *** PDF Tools
 
 The configurations for pdf-tools here simply involve the zooming, page
@@ -1598,6 +1618,12 @@ hooking nov.el to olivetti-mode.
     :straight t
     :init
     (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+    (defun my-nov-setup ()
+      "Setup `nov-mode' for better reading experience."
+      (visual-line-mode 1)
+      (aabm-read-mode))
+    :hook
+    (nov-mode-hook . my-nov-setup)
     :bind
     (:map nov-mode-map
             ((("M-n" . scroll-up-line)
@@ -2026,6 +2052,9 @@ external video player, namely =mpv=, which is bound to the v key.
 
     :custom
     (shr-width 100)
+
+    :hook
+    ((elfeed-show-mode-hook . aabm-read-mode))
 
     :bind
     (("C-c e" . elfeed)
