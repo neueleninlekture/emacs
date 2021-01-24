@@ -2350,10 +2350,7 @@ not show =minor modes=, thus making =diminish= pointless.
 
 ** Color theme
 
-Here we install a bunch of themes I like. These involve:
-- Modus Themes by Protesilaos Stavrou
-- The Majapahit theme
-- The entire collection of themes from Doom Emacs, just for Gruvbox
+Here we install the themes I like. Main one is =doom-gruvbox=.
 
 The customizations applied to the doom-themes simply ensure some basic
 features are enabled. We also ensure the Doom Gruvbox theme always
@@ -2361,13 +2358,6 @@ uses the Hard contrast variant, with a #1D2021 background instead of
 the normal #282828.
 
 #+begin_src emacs-lisp :tangle init.el
-  (use-package modus-operandi-theme
-    :straight t
-    :custom
-    (modus-operandi-theme-no-mixed-fonts nil)
-    (modus-operandi-theme-proportional-fonts nil)
-    (modus-operandi-theme-org-blocks 'greyscale))
-
   (use-package doom-themes
     :straight t
     :custom
@@ -2377,27 +2367,6 @@ the normal #282828.
     (doom-themes-org-config))
 
   (load-theme 'doom-gruvbox t)
-#+end_src
-
-*** LEGACY Old color theme options
-
-#+begin_src emacs-lisp
-  (use-package modus-vivendi-theme
-    :straight t
-    :custom
-    (modus-vivendi-theme-no-mixed-fonts nil)
-    (modus-vivendi-theme-proportional-fonts nil)
-    (modus-vivendi-theme-org-blocks 'greyscale))
-
-  (load-theme 'modus-operandi t)
-  (run-at-time "06:00" (* 60 60 24)
-               (lambda ()
-                 (enable-theme 'modus-operandi)))
-
-  (load-theme 'doom-gruvbox t t)
-  (run-at-time "18:00" (* 60 60 24)
-               (lambda ()
-                 (enable-theme 'doom-gruvbox)))
 #+end_src
 
 ** Beacon
