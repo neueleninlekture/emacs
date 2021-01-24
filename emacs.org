@@ -196,7 +196,7 @@ Here we add the =lisp= directory to the load path. This allows us to
 make and load custom packages.
 
 #+begin_src emacs-lisp :tangle init.el
-(push (expand-file-name "lisp" user-emacs-directory) load-path)
+  (push (expand-file-name "lisp" user-emacs-directory) load-path)
 #+end_src
 
 *** Bootstrapping straight.el
@@ -510,15 +510,15 @@ these are later bound to keys.
 
     :bind
     ((("C-s" . swiper)
-     ("C-r" . isearch-forward)
-     ("M-s s" . avy-goto-char-2)
-     ("C-x C-f" . counsel-find-file)
-     ("C-x b" . counsel-switch-buffer)
-     ("C-x r b" . bookmark-jump)
-     ("M-x" . counsel-M-x)
-     ("C-h f" . counsel-describe-function)
-     ("C-h v" . counsel-describe-variable)
-     ("C-h o" . counsel-describe-symbol))))
+      ("C-r" . isearch-forward)
+      ("M-s s" . avy-goto-char-2)
+      ("C-x C-f" . counsel-find-file)
+      ("C-x b" . counsel-switch-buffer)
+      ("C-x r b" . bookmark-jump)
+      ("M-x" . counsel-M-x)
+      ("C-h f" . counsel-describe-function)
+      ("C-h v" . counsel-describe-variable)
+      ("C-h o" . counsel-describe-symbol))))
 #+end_src
 
 * Custom keybinding system
@@ -577,11 +577,11 @@ marks.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq electric-pair-pairs '(
-							 (?\{ . ?\})
-							 (?\( . ?\))
-							 (?\[ . ?\])
-							 (?\" . ?\")
-							 ))
+                              (?\{ . ?\})
+                              (?\( . ?\))
+                              (?\[ . ?\])
+                              (?\" . ?\")
+                              ))
 
   (electric-pair-mode t)
 #+end_src
@@ -637,7 +637,7 @@ line.
     :commands mc/edit-lines
     :bind
     (:map text-editing
-     (("m" . mc/edit-lines))))
+          (("m" . mc/edit-lines))))
 #+end_src
 
 ** Writable grep
@@ -679,10 +679,10 @@ allowing the user to interact more with Emacs' undo tree system.
     :straight t
     :init
     (global-undo-tree-mode)
-      (setq undo-tree-visualizer-timestamps t
+    (setq undo-tree-visualizer-timestamps t
           undo-tree-enable-undo-in-region nil
           undo-tree-auto-save-history nil)
-  
+
     :diminish undo-tree-mode)
 #+end_src
 
@@ -830,10 +830,10 @@ external files such as those containing personal information not
 included in this config, a lot easier.
 
 #+begin_src emacs-lisp :tangle init.el
-(defun aabm/load-file-if (file)
-  "Check if FILE exists, and if so, load it."
-  (if (file-exists-p file)
-    (load-file file)))
+  (defun aabm/load-file-if (file)
+    "Check if FILE exists, and if so, load it."
+    (if (file-exists-p file)
+        (load-file file)))
 #+end_src
 
 ** Buffers
@@ -1241,17 +1241,17 @@ some basic options. These are:
     :bind
     (("C-," . org-cycle-agenda-files)
      (:map org-mode-map
-          ((("M-n" . org-forward-element)
-           ("M-p" . org-backward-element)
-           ("C-M-n" . org-metadown)
-           ("C-M-p" . org-metaup)
-           ("C-M-f" . org-metaright)
-           ("C-M-b" . org-metaleft)
-           ("<mouse-3>" . org-cycle)
-           ("<S-right>" . nil)
-           ("<S-left>" . nil)
-           ("<S-down>" . nil)
-           ("<S-up>" . nil))))))
+           ((("M-n" . org-forward-element)
+             ("M-p" . org-backward-element)
+             ("C-M-n" . org-metadown)
+             ("C-M-p" . org-metaup)
+             ("C-M-f" . org-metaright)
+             ("C-M-b" . org-metaleft)
+             ("<mouse-3>" . org-cycle)
+             ("<S-right>" . nil)
+             ("<S-left>" . nil)
+             ("<S-down>" . nil)
+             ("<S-up>" . nil))))))
 #+end_src
 
 *** Agenda, Tasks and TODOs
@@ -1365,14 +1365,14 @@ structure templates for creating blocks.
     (org-src-fontify-natively t)
     (org-src-window-setup 'current-window)
     (org-structure-template-alist
-          '(("c" . "center\n")
-            ("e" . "src emacs-lisp :tangle init.el\n")
-            ("h" . "export html\n")
-            ("l" . "export latex\n")
-            ("q" . "quote\n")
-            ("r" . "src R :results output :export results\n")
-            ("s" . "src")
-            ("v" . "verse\n"))))
+     '(("c" . "center\n")
+       ("e" . "src emacs-lisp :tangle init.el\n")
+       ("h" . "export html\n")
+       ("l" . "export latex\n")
+       ("q" . "quote\n")
+       ("r" . "src R :results output :export results\n")
+       ("s" . "src")
+       ("v" . "verse\n"))))
 #+end_src
 
 *** Literate programming
@@ -1384,12 +1384,12 @@ allowing for literate programming.
   (setq org-confirm-babel-evaluate nil)
 
   (setq org-babel-load-languages
-   '((R . t)
-     (python . t)
-     (emacs-lisp . t)
-     (shell . t)
-     (org . t)
-     (latex . t)))
+        '((R . t)
+          (python . t)
+          (emacs-lisp . t)
+          (shell . t)
+          (org . t)
+          (latex . t)))
 #+end_src
 
 *** Org Roam
@@ -1467,7 +1467,20 @@ files. All these packages can be acessed under the C-c n map.
     (deft-directory "~/org/roam")
     :bind
     (:map notes
-     (("s" . deft))))
+          (("s" . deft))))
+#+end_src
+
+*** Org Journal
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package org-journal
+    :straight t
+    :custom
+    (org-journal-dir "~/org/journal/")
+    (org-journal-date-format "%A, %d %B %Y")
+    (org-journal-file-type 'monthly)
+    :bind
+    ((("C-c ))))
 #+end_src
 
 *** Org Superstar
@@ -1596,14 +1609,14 @@ for printing the current page number to the echo area.
     :bind
     (:map pdf-view-mode-map
           ((("C-s" . isearch-forward)
-          ("C-r" . isearch-backward)
-          ("C-c d" . pdf-view-midnight-minor-mode)
-          ("C-c z" . aabm/pdf-view-open-in-zathura)
-          ("C-c p" . aabm/pdf-view-show-current-page)
-          ("C-c t" . aabm/pdf-view-continuous-toggle )
-          ("C-a" . image-scroll-right)
-          ("C-e" . image-scroll-left)
-          ("f" . pdf-view-goto-page)))))
+            ("C-r" . isearch-backward)
+            ("C-c d" . pdf-view-midnight-minor-mode)
+            ("C-c z" . aabm/pdf-view-open-in-zathura)
+            ("C-c p" . aabm/pdf-view-show-current-page)
+            ("C-c t" . aabm/pdf-view-continuous-toggle )
+            ("C-a" . image-scroll-right)
+            ("C-e" . image-scroll-left)
+            ("f" . pdf-view-goto-page)))))
 #+end_src
 
 *** nov.el
@@ -1625,7 +1638,7 @@ hooking nov.el to olivetti-mode.
     (nov-mode-hook . my-nov-setup)
     :bind
     (:map nov-mode-map
-            ((("M-n" . scroll-up-line)
+          ((("M-n" . scroll-up-line)
             ("M-p" . scroll-down-line)))))
 #+end_src
 
@@ -1648,15 +1661,15 @@ entirely from within Emacs, without ever having to bother touching the
     :bind
     (:map database
           ((("l" . calibredb)
-          ("s" . calibredb-find-counsel)
-          ("a" . calibredb-add))))
+            ("s" . calibredb-find-counsel)
+            ("a" . calibredb-add))))
     (:map calibredb-search-mode-map
           ((("t" . calibredb-set-metadata-dispatch)
-          ("s" . calibredb-search-live-filter)
-          ("n" . calibredb-next-entry)
-          ("p" . calibredb-previous-entry)
-          ("j" . nil)
-          ("k" . nil)))))
+            ("s" . calibredb-search-live-filter)
+            ("n" . calibredb-next-entry)
+            ("p" . calibredb-previous-entry)
+            ("j" . nil)
+            ("k" . nil)))))
 #+end_src
 
 * Personal agenda, time and task management
@@ -1959,9 +1972,9 @@ the built-in ones, while also allowing use of TUI programs.
     (("C-x s" . eshell)
      (:map aabm/eshell-minor-mode-map
            ((("C-c w" . aabm/eshell-copy-file-path-at-point)
-           ("C-c f" . aabm/eshell-find-file-at-point)
-           ("C-c o" . aabm/eshell-cat-file-at-point)
-           ("C-c C-b" . aabm/eshell-put-last-output-to-buffer))))))
+             ("C-c f" . aabm/eshell-find-file-at-point)
+             ("C-c o" . aabm/eshell-cat-file-at-point)
+             ("C-c C-b" . aabm/eshell-put-last-output-to-buffer))))))
 #+end_src
 
 ** Vterm
@@ -1978,7 +1991,7 @@ the built-in ones, while also allowing use of TUI programs.
     :straight t
     :bind
     ((("C-x v" . aabm/switch-to-vterm-p)
-     ("C-c v" . vterm))))
+      ("C-c v" . vterm))))
 #+end_src
 
 * Security, news, email and web browsing
@@ -2005,9 +2018,9 @@ standard completion mechanism, which for this configuration is Ivy.
     :bind
     (:map password-management
           ((("i" . password-store-insert)
-          ("w" . password-store-copy)
-          ("e" . password-store-edit)
-          ("p" . pass)))))
+            ("w" . password-store-copy)
+            ("e" . password-store-edit)
+            ("p" . pass)))))
 #+end_src
 
 ** Elfeed
@@ -2114,7 +2127,7 @@ of those tools.
 
     :bind
     ((("C-x m" . mu4e)
-     ("C-c m" . mu4e-compose-new))))
+      ("C-c m" . mu4e-compose-new))))
 #+end_src
 
 ** eww
@@ -2128,8 +2141,8 @@ better readability in web pages.
   (use-package eww
     :bind
     ((:map eww-mode-map
-          ("M-n" . scroll-up-line)
-          ("M-p" . scroll-down-line))))
+           ("M-n" . scroll-up-line)
+           ("M-p" . scroll-down-line))))
 #+end_src
 
 * Media management
@@ -2151,8 +2164,8 @@ databases. =ivy-mpdel= adds Ivy completion to mpdel.
     :bind
     (:map music
           ((("m" . ivy-mpdel-list)
-          ("l" . mpdel-playlist-open)
-          ("b" . mpdel-browser-open)))))
+            ("l" . mpdel-playlist-open)
+            ("b" . mpdel-browser-open)))))
 #+end_src
 
 ** Videos
@@ -2184,7 +2197,7 @@ configure the standard directories to be used by it.
     :bind
     (:map youtube
           ((("d" . youtube-dl)
-          ("l" . youtube-dl-list)))))
+            ("l" . youtube-dl-list)))))
 #+end_src
 
 *** ytel
@@ -2213,8 +2226,8 @@ elfeed.
     :bind
     (:map youtube
           (("y" . ytel))
-     (:map ytel-mode-map
-          (("RET" . ytel-watch-mpv)))))
+          (:map ytel-mode-map
+                (("RET" . ytel-watch-mpv)))))
 #+end_src
 
 ** Screencasts
@@ -2459,9 +2472,9 @@ is gone.
     (dashboard-set-heading-icons t)
     (dashboard-set-file-icons t)
     (dashboard-items
-          '((bookmarks . 5)
-            (recents . 5)
-            (agenda . 10)))
+     '((bookmarks . 5)
+       (recents . 5)
+       (agenda . 10)))
     (dashboard-banner-logo-title "Welcome to GNU Emacs!")
     (dashboard-startup-banner 'official)
     (dashboard-center-content t)
@@ -2469,57 +2482,57 @@ is gone.
     (dashboard-set-init-info t)
     (dashboard-set-footer t)
     (dashboard-footer-messages 
-          '("We conjure the spirits of the computer with our spells..."
-            "Happy hacking!"
-            "The One True Editor, Emacs."
-            "Vi Vi Vi, the editor of the beast."
-            "Violence begins with Vi."
-            "There is no system but GNU, and Linux is one of its kernels."
+     '("We conjure the spirits of the computer with our spells..."
+       "Happy hacking!"
+       "The One True Editor, Emacs."
+       "Vi Vi Vi, the editor of the beast."
+       "Violence begins with Vi."
+       "There is no system but GNU, and Linux is one of its kernels."
 
-            "The proof of the pudding is in the eating."
-            "In the beginning was the deed."
-            "Vanitas! Vanitatum vanitas!"
-            "Workers of the world, unite!"
-            "A spectre is haunting Europe..."))
+       "The proof of the pudding is in the eating."
+       "In the beginning was the deed."
+       "Vanitas! Vanitatum vanitas!"
+       "Workers of the world, unite!"
+       "A spectre is haunting Europe..."))
     (dashboard-set-navigator t)
     (dashboard-navigator-buttons
-          `(;; line1
-            ((,nil
-              "Config"
-              "Open config file for easy editing"
-              (lambda (&rest _) (find-file "~/.emacs.d/emacs.org"))
-              'default)
-           (nil
-            "Magit"
-            "Open this config's local git repository"
-            (lambda (&rest _) (magit "~/.emacs.d"))
-            'default)
-             (nil
-              "Gitlab"
-              "Open this config's Gitea page in your web browser"
-              (lambda (&rest _) (browse-url "https://gitlab.com/aabm/emacs"))
-              'default)
-             )
-            ;; line 2
-            ((,nil
-              "Email"
-              "Read email with mu4e"
-              (lambda (&rest _) (mu4e))
-              'default)
-             (nil
-              "Elfeed"
-              "Read RSS/Atom feeds with Elfeed"
-              (lambda (&rest _) (elfeed))
-              'default)
-             (nil
-              "Dired"
-              "Manage files with dired"
-              (lambda (&rest _) (dired "~/"))
-              'default)))))
+     `(;; line1
+       ((,nil
+         "Config"
+         "Open config file for easy editing"
+         (lambda (&rest _) (find-file "~/.emacs.d/emacs.org"))
+         'default)
+        (nil
+         "Magit"
+         "Open this config's local git repository"
+         (lambda (&rest _) (magit "~/.emacs.d"))
+         'default)
+        (nil
+         "Gitlab"
+         "Open this config's Gitea page in your web browser"
+         (lambda (&rest _) (browse-url "https://gitlab.com/aabm/emacs"))
+         'default)
+        )
+       ;; line 2
+       ((,nil
+         "Email"
+         "Read email with mu4e"
+         (lambda (&rest _) (mu4e))
+         'default)
+        (nil
+         "Elfeed"
+         "Read RSS/Atom feeds with Elfeed"
+         (lambda (&rest _) (elfeed))
+         'default)
+        (nil
+         "Dired"
+         "Manage files with dired"
+         (lambda (&rest _) (dired "~/"))
+         'default)))))
 
   ;; Load dashboard only if Emacs does not get a file as an argument
   (if (< (length command-line-args) 2)
-    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
+      (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
 #+end_src
 
 ** LEGACY Doom Modeline
