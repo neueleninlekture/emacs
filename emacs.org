@@ -535,6 +535,7 @@ for use with regular Emacs keys.
   (define-prefix-command 'buffers)
   (define-prefix-command 'database)
   (define-prefix-command 'fill-text)
+  (define-prefix-command 'journal)
   (define-prefix-command 'music)
   (define-prefix-command 'notes)
   (define-prefix-command 'password-management)
@@ -545,6 +546,7 @@ for use with regular Emacs keys.
   (global-set-key (kbd "C-c c") 'leader)
   (global-set-key (kbd "C-c b") 'buffers)
   (global-set-key (kbd "C-c f") 'fill-text)
+  (global-set-key (kbd "C-c j") 'journal)
   (global-set-key (kbd "C-c n") 'notes)
   (global-set-key (kbd "C-c t") 'text-editing)
 
@@ -554,6 +556,7 @@ for use with regular Emacs keys.
    "b" 'buffers
    "d" 'database
    "f" 'fill-text
+   "j" 'journal
    "m" 'music
    "n" 'notes
    "p" 'password-management
@@ -1463,9 +1466,16 @@ files. All these packages can be acessed under the C-c n map.
     (deft-use-filter-string-for-filename t)
     (deft-default-extension "org")
     (deft-directory "~/org/roam")
+    :config
+    (defun deft-journal ()
+      (interactive)
+      (let ((deft-directory "~/org/journal"))
+        (deft)))
     :bind
     (:map notes
-          (("s" . deft))))
+          (("s" . deft)))
+    (:map journal
+          (("s" . deft-journal))))
 #+end_src
 
 *** Org Journal
@@ -1477,10 +1487,10 @@ files. All these packages can be acessed under the C-c n map.
     (org-journal-dir "~/org/journal/")
     (org-journal-date-format "%A, %d %B %Y")
     (org-journal-file-type 'daily)
-    (org-journal-file-format "%Y-%m-%d-%a")
+    (org-journal-file-format "%Y-%m-%d-%a.org")
     :bind
-    (:map notes
-          (("j" . org-journal-new-entry))))
+    (:map journal
+          (("f" . org-journal-new-entry))))
 #+end_src
 
 *** Org Superstar
