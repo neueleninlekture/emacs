@@ -511,7 +511,7 @@ these are later bound to keys.
     :bind
     ((("C-s" . swiper)
       ("C-r" . isearch-forward)
-      ("M-s s" . avy-goto-char-2)
+      ("M-s" . avy-goto-char-2)
       ("C-x C-f" . counsel-find-file)
       ("C-x b" . counsel-switch-buffer)
       ("C-x r b" . bookmark-jump)
