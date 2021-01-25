@@ -1568,15 +1568,15 @@ package, and as an EPUB reader, with the =nov.el= package.
   (define-minor-mode aabm-read-mode
     "Minor Mode for better reading experience."
     :init-value nil
-    ;; :group aabm
+    :group aabm
     (if aabm-read-mode
         (progn
           (and (fboundp 'olivetti-mode) (olivetti-mode 1))
-          ;; (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode 1))
+          (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode 1))
           (text-scale-set +1))
       (progn
         (and (fboundp 'olivetti-mode) (olivetti-mode -1))
-        ;; (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode -1))
+        (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode -1))
         (text-scale-set 0))))
 #+end_src
 
