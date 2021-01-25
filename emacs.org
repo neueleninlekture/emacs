@@ -521,6 +521,9 @@ these are later bound to keys.
       ("C-h o" . counsel-describe-symbol))))
 #+end_src
 
+** Projectile
+
+
 * Custom keybinding system
 
 ** Prefix keys
@@ -535,6 +538,7 @@ for use with regular Emacs keys.
   (define-prefix-command 'buffers)
   (define-prefix-command 'database)
   (define-prefix-command 'fill-text)
+  (define-prefix-command 'journal)
   (define-prefix-command 'music)
   (define-prefix-command 'notes)
   (define-prefix-command 'password-management)
@@ -545,6 +549,7 @@ for use with regular Emacs keys.
   (global-set-key (kbd "C-c c") 'leader)
   (global-set-key (kbd "C-c b") 'buffers)
   (global-set-key (kbd "C-c f") 'fill-text)
+  (global-set-key (kbd "C-c j") 'journal)
   (global-set-key (kbd "C-c n") 'notes)
   (global-set-key (kbd "C-c t") 'text-editing)
 
@@ -554,6 +559,7 @@ for use with regular Emacs keys.
    "b" 'buffers
    "d" 'database
    "f" 'fill-text
+   "j" 'journal
    "m" 'music
    "n" 'notes
    "p" 'password-management
@@ -818,7 +824,10 @@ commands you barely understand.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package projectile
-    :straight t)
+    :straight t
+    :defer nil
+    :bind
+    (("C-c p" . projectile-command-map)))
 #+end_src
 
 *** Loading files conditionally
@@ -1131,7 +1140,8 @@ arrow keys.
             (("*Gofmt Errors*" "*Go Test*") :select t :size 0.3 :align 'below :autoclose t)
             ("*How Do You*" :select t :size 0.5 :align 'below :autoclose t)
 
-            (("*Org Agenda*" " *Agenda Commands*" " *Org todo*" "*Org Dashboard*" "*Org Select*") :select t :size 0.1 :align 'below :autoclose t)
+            (("*Org Agenda*" " *Agenda Commands*" " *Org todo*" "*Org Dashboard*") :select t :size 0.1 :align 'below :autoclose t)
+            (("*Org Select*") :select t :autoclose t :same t)
             (("\\*Capture\\*" "^CAPTURE-.*\\.org*") :regexp t :select t :size 0.3 :align 'below :autoclose t)
 
             ("*ert*" :size 15 :align 'below :autoclose t)
@@ -1469,9 +1479,16 @@ files. All these packages can be acessed under the C-c n map.
     (deft-use-filter-string-for-filename t)
     (deft-default-extension "org")
     (deft-directory "~/org/roam")
+    :config
+    (defun deft-journal ()
+      (interactive)
+      (let ((deft-directory "~/org/journal"))
+        (deft)))
     :bind
     (:map notes
-          (("s" . deft))))
+          (("s" . deft)))
+    (:map journal
+          (("s" . deft-journal))))
 #+end_src
 
 *** Org Journal
@@ -1483,10 +1500,10 @@ files. All these packages can be acessed under the C-c n map.
     (org-journal-dir "~/org/journal/")
     (org-journal-date-format "%A, %d %B %Y")
     (org-journal-file-type 'daily)
-    (org-journal-file-format "%Y-%m-%d-%a")
+    (org-journal-file-format "%Y-%m-%d-%a.org")
     :bind
-    (:map notes
-          (("j" . org-journal-new-entry))))
+    (:map journal
+          (("f" . org-journal-new-entry))))
 #+end_src
 
 *** Org Superstar
@@ -2356,10 +2373,7 @@ not show =minor modes=, thus making =diminish= pointless.
 
 ** Color theme
 
-Here we install a bunch of themes I like. These involve:
-- Modus Themes by Protesilaos Stavrou
-- The Majapahit theme
-- The entire collection of themes from Doom Emacs, just for Gruvbox
+Here we install the themes I like. Main one is =doom-gruvbox=.
 
 The customizations applied to the doom-themes simply ensure some basic
 features are enabled. We also ensure the Doom Gruvbox theme always
@@ -2367,13 +2381,6 @@ uses the Hard contrast variant, with a #1D2021 background instead of
 the normal #282828.
 
 #+begin_src emacs-lisp :tangle init.el
-  (use-package modus-operandi-theme
-    :straight t
-    :custom
-    (modus-operandi-theme-no-mixed-fonts nil)
-    (modus-operandi-theme-proportional-fonts nil)
-    (modus-operandi-theme-org-blocks 'greyscale))
-
   (use-package doom-themes
     :straight t
     :custom
@@ -2383,27 +2390,6 @@ the normal #282828.
     (doom-themes-org-config))
 
   (load-theme 'doom-gruvbox t)
-#+end_src
-
-*** LEGACY Old color theme options
-
-#+begin_src emacs-lisp
-  (use-package modus-vivendi-theme
-    :straight t
-    :custom
-    (modus-vivendi-theme-no-mixed-fonts nil)
-    (modus-vivendi-theme-proportional-fonts nil)
-    (modus-vivendi-theme-org-blocks 'greyscale))
-
-  (load-theme 'modus-operandi t)
-  (run-at-time "06:00" (* 60 60 24)
-               (lambda ()
-                 (enable-theme 'modus-operandi)))
-
-  (load-theme 'doom-gruvbox t t)
-  (run-at-time "18:00" (* 60 60 24)
-               (lambda ()
-                 (enable-theme 'doom-gruvbox)))
 #+end_src
 
 ** Beacon
@@ -2461,6 +2447,28 @@ titlebar), frame size and transparency.
   (set-frame-parameter (selected-frame) 'alpha '(93 90))
 #+end_src
    
+** Doom Modeline
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package doom-modeline
+    :straight t
+    :defer nil
+    :custom
+    (doom-modeline-height 25)
+    (doom-modeline-bar-width 5)
+    (doom-modeline-icon (display-graphic-p))
+    (doom-modeline-major-mode-icon t)
+    (doom-modeline-major-mode-color-icon t)
+    (doom-modeline-buffer-state-icon t)
+    (doom-modeline-buffer-modification-icon t)
+    (doom-modeline-minor-modes nil)
+    (doom-modeline-enable-word-count t)
+    (doom-modeline-buffer-encoding t)
+    (doom-modeline-persp-name t)
+    :config
+    (doom-modeline-mode))
+#+end_src
+
 ** LEGACY Dashboard
 
 Dashboard is quite a nice package. It provides a startup screen with
@@ -2539,35 +2547,6 @@ is gone.
   ;; Load dashboard only if Emacs does not get a file as an argument
   (if (< (length command-line-args) 2)
       (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
-#+end_src
-
-** LEGACY Doom Modeline
-
-:LEGACY:
-Section dropped. Doom Modeline slightly impacts load time, and doesn't
-really look all that much better than the standard. I actually dislike
-how tall it is. I guess it has some fancy icons, but that's it. Not
-really worth the tradeoff.
-:END:
-
-#+begin_src emacs-lisp
-  (use-package doom-modeline
-    :straight t
-    :defer nil
-    :custom
-    (doom-modeline-height 25)
-    (doom-modeline-bar-width 5)
-    (doom-modeline-icon (display-graphic-p))
-    (doom-modeline-major-mode-icon t)
-    (doom-modeline-major-mode-color-icon t)
-    (doom-modeline-buffer-state-icon t)
-    (doom-modeline-buffer-modification-icon t)
-    (doom-modeline-minor-modes nil)
-    (doom-modeline-enable-word-count t)
-    (doom-modeline-buffer-encoding t)
-    (doom-modeline-persp-name t)
-    :config
-    (doom-modeline-mode))
 #+end_src
 
 * Start server
