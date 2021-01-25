@@ -1595,11 +1595,11 @@ package, and as an EPUB reader, with the =nov.el= package.
 *** Reader mode
 
 #+begin_src emacs-lisp :tangle init.el
-  (define-minor-mode aabm-read-mode
+  (define-minor-mode aabm/read-mode
     "Minor Mode for better reading experience."
     :init-value nil
     :group aabm
-    (if aabm-read-mode
+    (if aabm/read-mode
         (progn
           (and (fboundp 'olivetti-mode) (olivetti-mode 1))
           (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode 1))
@@ -1694,7 +1694,7 @@ hooking nov.el to my custom reader mode.
     (defun my-nov-setup ()
       "Setup `nov-mode' for better reading experience."
       (visual-line-mode 1)
-      (aabm-read-mode))
+      (aabm/read-mode))
     :hook
     (nov-mode-hook . my-nov-setup)
     :bind
@@ -2097,7 +2097,7 @@ external video player, namely =mpv=, which is bound to the v key.
     (shr-width 100)
 
     :hook
-    ((elfeed-show-mode-hook . aabm-read-mode))
+    ((elfeed-show-mode-hook . aabm/read-mode))
 
     :bind
     (("C-c e" . elfeed)
