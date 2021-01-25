@@ -523,6 +523,14 @@ these are later bound to keys.
 
 ** Projectile
 
+#+begin_src emacs-lisp :tangle init.el
+  (use-package projectile
+    :straight t
+    :defer nil
+    :bind
+    (("C-c p" . projectile-command-map)))
+#+end_src
+
 * Custom keybinding system
 
 ** Prefix keys
