@@ -1694,7 +1694,14 @@ hooking nov.el to my custom reader mode.
     (defun my-nov-setup ()
       "Setup `nov-mode' for better reading experience."
       (visual-line-mode 1)
-      (aabm/read-mode))
+      (aabm/read-mode)
+      (face-remap-add-relative 'variable-pitch
+                               :family "Liberation Serif"
+                               :height 1.0))
+    :custom
+    (nov-text-width 80)
+    (nov-text-width t)
+    (visual-fill-column-center-text t)  
     :hook
     (nov-mode-hook . my-nov-setup)
     :bind
