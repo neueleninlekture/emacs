@@ -1556,6 +1556,36 @@ would like to have syntax highlighting. So here we install
     :straight t)
 #+end_src
 
+** CalibreDB
+
+=calibredb= offers an Emacs interface for the =Calibre= ebook
+manager. The package allows for interacting with a Calibre database
+entirely from within Emacs, without ever having to bother touching the
+(horrible) interface for calibre.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package calibredb
+    :straight t
+    :defer t
+    :custom
+    (calibredb-root-dir "~/doc/books")
+    (calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
+    (calibredb-library-alist '(("~/doc/books")))
+    (calibredb-format-all-the-icons t)
+    :bind
+    (:map database
+          ((("l" . calibredb)
+            ("s" . calibredb-find-counsel)
+            ("a" . calibredb-add))))
+    (:map calibredb-search-mode-map
+          ((("t" . calibredb-set-metadata-dispatch)
+            ("s" . calibredb-search-live-filter)
+            ("n" . calibredb-next-entry)
+            ("p" . calibredb-previous-entry)
+            ("j" . nil)
+            ("k" . nil)))))
+#+end_src
+
 ** Reading PDFs and EPUBs
 
 Emacs can serve as a great tool for reading books. In this section we
@@ -1654,7 +1684,7 @@ for printing the current page number to the echo area.
 
 Now we install =nov.el=, which is a small package for reading .epub
 files with Emacs. The only significant configuration done here is
-hooking nov.el to olivetti-mode.
+hooking nov.el to my custom reader mode.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package nov
@@ -1671,36 +1701,6 @@ hooking nov.el to olivetti-mode.
     (:map nov-mode-map
           ((("M-n" . scroll-up-line)
             ("M-p" . scroll-down-line)))))
-#+end_src
-
-** CalibreDB
-
-=calibredb= offers an Emacs interface for the =Calibre= ebook
-manager. The package allows for interacting with a Calibre database
-entirely from within Emacs, without ever having to bother touching the
-(horrible) interface for calibre.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package calibredb
-    :straight t
-    :defer t
-    :custom
-    (calibredb-root-dir "~/doc/books")
-    (calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
-    (calibredb-library-alist '(("~/doc/books")))
-    (calibredb-format-all-the-icons t)
-    :bind
-    (:map database
-          ((("l" . calibredb)
-            ("s" . calibredb-find-counsel)
-            ("a" . calibredb-add))))
-    (:map calibredb-search-mode-map
-          ((("t" . calibredb-set-metadata-dispatch)
-            ("s" . calibredb-search-live-filter)
-            ("n" . calibredb-next-entry)
-            ("p" . calibredb-previous-entry)
-            ("j" . nil)
-            ("k" . nil)))))
 #+end_src
 
 * Personal agenda, time and task management
