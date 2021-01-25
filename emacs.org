@@ -523,7 +523,6 @@ these are later bound to keys.
 
 ** Projectile
 
-
 * Custom keybinding system
 
 ** Prefix keys
