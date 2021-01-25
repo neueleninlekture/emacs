@@ -526,7 +526,8 @@ these are later bound to keys.
 #+begin_src emacs-lisp :tangle init.el
   (use-package projectile
     :straight t
-    :defer nil
+    :init
+    (projectile-mode)
     :bind
     (("C-c p" . projectile-command-map)))
 #+end_src
