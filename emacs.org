@@ -1130,7 +1130,7 @@ arrow keys.
             ("^\\*.*Shell Command.*\\*$" :regexp t :size 0.3 :align 'below :autoclose t)
             ("\\*[Wo]*Man.*\\*" :regexp t :select t :align 'below :autoclose t)
             ("*Calendar*" :select t :size 0.3 :align 'below)
-            (("*shell*" "*eshell*" "*ielm*") :popup t :size 0.3 :align 'below)
+            (("*shell*" "*eshell*" "*ielm*") :popup t :size 0.3 :align 'below :autoclose t)
             ("^\\*vc-.*\\*$" :regexp t :size 0.3 :align 'below :autoclose t)
             ("*gud-debug*" :select t :size 0.4 :align 'below :autoclose t)
             ("\\*ivy-occur .*\\*" :regexp t :select t :size 0.3 :align 'below)
@@ -1556,6 +1556,36 @@ would like to have syntax highlighting. So here we install
     :straight t)
 #+end_src
 
+** CalibreDB
+
+=calibredb= offers an Emacs interface for the =Calibre= ebook
+manager. The package allows for interacting with a Calibre database
+entirely from within Emacs, without ever having to bother touching the
+(horrible) interface for calibre.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package calibredb
+    :straight t
+    :defer t
+    :custom
+    (calibredb-root-dir "~/doc/books")
+    (calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
+    (calibredb-library-alist '(("~/doc/books")))
+    (calibredb-format-all-the-icons t)
+    :bind
+    (:map database
+          ((("l" . calibredb)
+            ("s" . calibredb-find-counsel)
+            ("a" . calibredb-add))))
+    (:map calibredb-search-mode-map
+          ((("t" . calibredb-set-metadata-dispatch)
+            ("s" . calibredb-search-live-filter)
+            ("n" . calibredb-next-entry)
+            ("p" . calibredb-previous-entry)
+            ("j" . nil)
+            ("k" . nil)))))
+#+end_src
+
 ** Reading PDFs and EPUBs
 
 Emacs can serve as a great tool for reading books. In this section we
@@ -1565,18 +1595,18 @@ package, and as an EPUB reader, with the =nov.el= package.
 *** Reader mode
 
 #+begin_src emacs-lisp :tangle init.el
-  (define-minor-mode aabm-read-mode
+  (define-minor-mode aabm/read-mode
     "Minor Mode for better reading experience."
     :init-value nil
-    ;; :group aabm
-    (if aabm-read-mode
+    :group aabm
+    (if aabm/read-mode
         (progn
           (and (fboundp 'olivetti-mode) (olivetti-mode 1))
-          ;; (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode 1))
+          (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode 1))
           (text-scale-set +1))
       (progn
         (and (fboundp 'olivetti-mode) (olivetti-mode -1))
-        ;; (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode -1))
+        (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode -1))
         (text-scale-set 0))))
 #+end_src
 
@@ -1654,7 +1684,7 @@ for printing the current page number to the echo area.
 
 Now we install =nov.el=, which is a small package for reading .epub
 files with Emacs. The only significant configuration done here is
-hooking nov.el to olivetti-mode.
+hooking nov.el to my custom reader mode.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package nov
@@ -1664,43 +1694,20 @@ hooking nov.el to olivetti-mode.
     (defun my-nov-setup ()
       "Setup `nov-mode' for better reading experience."
       (visual-line-mode 1)
-      (aabm-read-mode))
+      (aabm/read-mode)
+      (face-remap-add-relative 'variable-pitch
+                               :family "Liberation Serif"
+                               :height 1.0))
+    :custom
+    (nov-text-width 80)
+    (nov-text-width t)
+    (visual-fill-column-center-text t)  
     :hook
     (nov-mode-hook . my-nov-setup)
     :bind
     (:map nov-mode-map
           ((("M-n" . scroll-up-line)
             ("M-p" . scroll-down-line)))))
-#+end_src
-
-** CalibreDB
-
-=calibredb= offers an Emacs interface for the =Calibre= ebook
-manager. The package allows for interacting with a Calibre database
-entirely from within Emacs, without ever having to bother touching the
-(horrible) interface for calibre.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package calibredb
-    :straight t
-    :defer t
-    :custom
-    (calibredb-root-dir "~/doc/books")
-    (calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
-    (calibredb-library-alist '(("~/doc/books")))
-    (calibredb-format-all-the-icons t)
-    :bind
-    (:map database
-          ((("l" . calibredb)
-            ("s" . calibredb-find-counsel)
-            ("a" . calibredb-add))))
-    (:map calibredb-search-mode-map
-          ((("t" . calibredb-set-metadata-dispatch)
-            ("s" . calibredb-search-live-filter)
-            ("n" . calibredb-next-entry)
-            ("p" . calibredb-previous-entry)
-            ("j" . nil)
-            ("k" . nil)))))
 #+end_src
 
 * Personal agenda, time and task management
@@ -2092,12 +2099,28 @@ external video player, namely =mpv=, which is bound to the v key.
              (link (or link (elfeed-entry-link entry))))
         (eww link)
         (add-hook 'eww-after-render-hook 'eww-readable nil t)))
+  
+   (defun elfeed-scroll-up-command (&optional arg)
+      "Scroll up or go to next feed item in Elfeed"
+      (interactive "^P")
+      (let ((scroll-error-top-bottom nil))
+        (condition-case-unless-debug nil
+            (scroll-up-command arg)
+          (error (elfeed-show-next)))))
 
+    (defun elfeed-scroll-down-command (&optional arg)
+      "Scroll up or go to next feed item in Elfeed"
+      (interactive "^P")
+      (let ((scroll-error-top-bottom nil))
+        (condition-case-unless-debug nil
+            (scroll-down-command arg)
+          (error (elfeed-show-prev)))))
+  
     :custom
     (shr-width 100)
 
     :hook
-    ((elfeed-show-mode-hook . aabm-read-mode))
+    ((elfeed-show-mode-hook . aabm/read-mode))
 
     :bind
     (("C-c e" . elfeed)
@@ -2105,7 +2128,9 @@ external video player, namely =mpv=, which is bound to the v key.
            ((("M-n" . scroll-up-line)
              ("M-p" . scroll-down-line)
              ("v" . aabm/elfeed-play-with-mpv)
-             ("e" . aabm/elfeed-show-eww))))
+             ("e" . aabm/elfeed-show-eww)
+             ("SPC" . elfeed-scroll-down-command)
+             ("S-SPC" . elfeed-scroll-up-command))))
 
      (:map elfeed-search-mode-map
            ((("v" . aabm/elfeed-play-with-mpv)
