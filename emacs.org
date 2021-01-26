@@ -788,6 +788,8 @@ windows.
             ("M-RET" . dired-find-file)
             ("DEL" . aabm/dired-up-alternate-directory)
             ("TAB" . dired-subtree-cycle)
+            ("M-n" . dired-subtree-down)
+            ("M-p" . dired-subtree-up)
             ("C-c d m" . mkdir)
             ("C-c d c" . chmod)
             ("h" . dired-hide-dotfiles-mode)
