@@ -787,7 +787,7 @@ windows.
           ((("RET" . dired-find-alternate-file)
             ("M-RET" . dired-find-file)
             ("DEL" . aabm/dired-up-alternate-directory)
-            ("TAB" . dired-subtree-insert)
+            ("TAB" . dired-subtree-cycle)
             ("C-c d m" . mkdir)
             ("C-c d c" . chmod)
             ("h" . dired-hide-dotfiles-mode)
