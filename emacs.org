@@ -1452,53 +1452,58 @@ files. All these packages can be acessed under the C-c n map.
     (org-roam-graph-executable "/usr/bin/neato")
     (org-roam-graph-extra-config '(("overlap" . "false")))
     (org-roam-capture-templates
-     '(("t" "tagged" plain (function org-roam--capture-get-point)
+     '(("o" "Show: overview" plain (function org-roam--capture-get-point)
         "#+date:%T\n#+startup: overview\n#+roam_tags: %?\n#+roam_alias:"
         :file-name "%<%Y%m%d%H%M%S>-${slug}"
         :head "#+title: ${title}\n"
-        :unnarrowed t)))
+        :unnarrowed t)
+       ("a" "Show: all" plain (function org-roam--capture-get-point)
+        "#+date:%T\n#+startup: showall\n#+roam_tags: %?\n#+roam_alias:"
+        :file-name "%<%Y%m%d%H%M%S>-${slug}"
+        :head "#+title: ${title}\n"
+        :unnarrowed t	 )))
 
-    :bind
-    (:map notes
-          ((("f" . org-roam-find-file)
-            ("l" . org-roam-insert)
-            ("r" . org-roam-random-note)))))
+     :bind
+     (:map notes
+           ((("f" . org-roam-find-file)
+             ("l" . org-roam-insert)
+             ("r" . org-roam-random-note)))))
 
-  (use-package org-roam-server
-    :straight t
-    :custom
-    (org-roam-server-host "127.0.0.1")
-    (org-roam-server-port 8080)
-    (org-roam-server-authenticate nil)
-    (org-roam-server-export-inline-images t)
-    (org-roam-server-serve-files nil)
-    (org-roam-server-served-file-extensions '("pdf" "mp4" "ogv"))
-    (org-roam-server-network-poll t)
-    (org-roam-server-network-arrows nil)
-    (org-roam-server-network-label-truncate t)
-    (org-roam-server-network-label-truncate-length 60)
-    (org-roam-server-network-label-wrap-length 20)
-    :bind
-    (:map notes
-          (("g" . org-roam-server-mode))))
+    (use-package org-roam-server
+      :straight t
+      :custom
+      (org-roam-server-host "127.0.0.1")
+      (org-roam-server-port 8080)
+      (org-roam-server-authenticate nil)
+      (org-roam-server-export-inline-images t)
+      (org-roam-server-serve-files nil)
+      (org-roam-server-served-file-extensions '("pdf" "mp4" "ogv"))
+      (org-roam-server-network-poll t)
+      (org-roam-server-network-arrows nil)
+      (org-roam-server-network-label-truncate t)
+      (org-roam-server-network-label-truncate-length 60)
+      (org-roam-server-network-label-wrap-length 20)
+      :bind
+      (:map notes
+            (("g" . org-roam-server-mode))))
 
-  (use-package deft
-    :straight t
-    :custom
-    (deft-recursive t)
-    (deft-use-filter-string-for-filename t)
-    (deft-default-extension "org")
-    (deft-directory "~/org/roam")
-    :config
-    (defun deft-journal ()
-      (interactive)
-      (let ((deft-directory "~/org/journal"))
-        (deft)))
-    :bind
-    (:map notes
-          (("s" . deft)))
-    (:map journal
-          (("s" . deft-journal))))
+    (use-package deft
+      :straight t
+      :custom
+      (deft-recursive t)
+      (deft-use-filter-string-for-filename t)
+      (deft-default-extension "org")
+      (deft-directory "~/org/roam")
+      :config
+      (defun deft-journal ()
+        (interactive)
+        (let ((deft-directory "~/org/journal"))
+          (deft)))
+      :bind
+      (:map notes
+            (("s" . deft)))
+      (:map journal
+            (("s" . deft-journal))))
 #+end_src
 
 *** Org Journal
