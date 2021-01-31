@@ -1396,6 +1396,7 @@ structure templates for creating blocks.
        ("l" . "export latex\n")
        ("q" . "quote\n")
        ("r" . "src R :results output :export results\n")
+       ("p" . "src python\n")
        ("s" . "src")
        ("v" . "verse\n"))))
 #+end_src
