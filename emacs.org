@@ -928,18 +928,12 @@ generating =scratch buffers=, whether they be in =org-mode= or in
     (switch-to-buffer (make-temp-name "html-"))
     (mhtml-mode))
 
-  (defun genbuffer-eshell ()
-    (interactive)
-    (switch-to-buffer "*eshell*")
-    (eshell-mode))
-
   (general-define-key
    :keymaps 'buffers
    "o" 'genbuffer-org
    "s" 'genbuffer-scratch
    "t" 'genbuffer-text
-   "h" 'genbuffer-html
-   "e" 'genbuffer-eshell)
+   "h" 'genbuffer-html)
 #+end_src
 
 *** Kill this buffer
