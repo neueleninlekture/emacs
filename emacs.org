@@ -787,6 +787,7 @@ windows.
           ((("RET" . dired-find-alternate-file)
             ("M-RET" . dired-find-file)
             ("DEL" . aabm/dired-up-alternate-directory)
+            ("l" . aabm/dired-up-alternate-directory)
             ("TAB" . dired-subtree-cycle)
             ("M-n" . dired-subtree-down)
             ("M-p" . dired-subtree-up)
