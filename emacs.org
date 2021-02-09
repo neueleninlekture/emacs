@@ -576,6 +576,14 @@ for use with regular Emacs keys.
    "y" 'youtube)
 #+end_src
 
+** Text navigation keys
+
+#+begin_src emacs-lisp :tangle init.el
+  (general-define-key
+   "M-[" 'backward-paragraph
+   "M-]" 'forward-paragraph)
+#+end_src
+
 * Text editing
 
 Under this section we put all configurations and packages that expand
