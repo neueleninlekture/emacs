@@ -2483,7 +2483,7 @@ the normal #282828.
     (doom-gruvbox-dark-variant "hard")
     (doom-themes-org-config))
 
-  (load-theme 'doom-gruvbox t)
+  (load-theme 'doom-Iosvkem t)
 #+end_src
 
 ** Beacon
