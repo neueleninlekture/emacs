@@ -354,11 +354,9 @@ don't mind.
 
 The settings found here are a bit more varied, but they mostly center
 around the way text and information is displayed on screen to the
-user: line numbers, line highlighting, line wrapping, etc.
+user: line highlighting, line wrapping, etc.
 
 #+begin_src emacs-lisp :tangle init.el
-  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-
   (show-paren-mode t)
 
   (setq truncate-lines nil
@@ -1845,6 +1843,18 @@ Here are all the configurations oriented exclusively around
 for programming major modes, which is really all I need.
 
 ** General options
+
+*** Line numbers
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package display-line-numbers
+    :hook
+    ((prog-mode . display-line-numbers-mode))
+    :custom
+    (display-line-numbers-width 4)
+    (display-line-numbers-grow-only t)
+    (display-line-numbers-width-start t))
+#+end_src
 
 *** Compile command
 
