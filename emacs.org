@@ -2583,7 +2583,7 @@ is gone.
        (recents . 5)
        (agenda . 10)))
     (dashboard-banner-logo-title "Welcome to GNU Emacs!")
-    (dashboard-startup-banner 'official)
+    (dashboard-startup-banner 'logo)
     (dashboard-center-content t)
     (dashboard-show-shortcuts t)
     (dashboard-set-init-info t)
