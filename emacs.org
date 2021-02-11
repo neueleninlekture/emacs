@@ -391,16 +391,18 @@ the lack of usage of the X clipboard.
 #+begin_src emacs-lisp :tangle init.el
   (setq scroll-conservatively 100
 
-        ring-bell-function 'ignore
+  (setq ring-bell-function 'ignore)
 
-        select-enable-clipboard t
-        save-interprogram-paste-before-kill t
+  (setq select-enable-clipboard t)
+  (setq save-interprogram-paste-before-kill t)
 
-        make-backup-files nil
-        auto-save-default nil
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
 
-        kill-buffer-query-functions nil
-        large-file-warning-threshold nil)
+  (setq kill-buffer-query-functions nil)
+  (setq large-file-warning-threshold nil)
+
+  (setq-default custom-safe-themes t)
 
   (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -2535,8 +2537,8 @@ titlebar), frame size and transparency.
   (add-to-list 'default-frame-alist '(font . "Iosevka 12"))
   (add-to-list 'default-frame-alist '(width  . 100))
   (add-to-list 'default-frame-alist '(height . 30))
-  (add-to-list 'default-frame-alist '(alpha 93 90))
-  (set-frame-parameter (selected-frame) 'alpha '(93 90))
+  (add-to-list 'default-frame-alist '(alpha 100 100))
+  (set-frame-parameter (selected-frame) 'alpha '(100 100))
 #+end_src
    
 ** Doom Modeline
