@@ -775,6 +775,17 @@ Easily open files over sudo using =TRAMP=.
            (minibuffer-setup-hook . subword-mode)))
 #+end_src
 
+** Delete selection
+
+This built-in package makes it so that typing while a region is
+selected deletes that region.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package delsel
+    :init
+    (delete-selection-mode t))
+#+end_src
+
 * Buffer, file and window management
 
 In this section we deal with all packages relating to the fundamental
