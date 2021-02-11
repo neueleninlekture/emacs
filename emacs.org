@@ -1174,8 +1174,7 @@ arrow keys.
           shackle-default-alignment 'below
           shackle-default-rule nil
           shackle-rules
-          '(
-            ;; (("*Help*" "*Apropos*") :select t :size 0.3 :align 'below :autoclose t)
+          '((("*Help*" "*Apropos*") :select t :autoclose t)
             (compilation-mode :select t :size 0.3 :align 'below :autoclose t)
             (comint-mode :select t :size 0.4 :align 'below :autoclose t)
             ("*Completions*" :size 0.3 :align 'below :autoclose t)
@@ -1189,7 +1188,7 @@ arrow keys.
             ("^\\*vc-.*\\*$" :regexp t :size 0.3 :align 'below :autoclose t)
             ("*gud-debug*" :select t :size 0.4 :align 'below :autoclose t)
             ("\\*ivy-occur .*\\*" :regexp t :select t :size 0.3 :align 'below)
-            ;; (" *undo-tree*" :select t)
+            (" *undo-tree*" :select t)
             ("*quickrun*" :select t :size 15 :align 'below)
             ("*tldr*" :size 0.4 :align 'below :autoclose t)
             ("*Youdao Dictionary*" :size 15 :align 'below :autoclose t)
@@ -2546,7 +2545,6 @@ titlebar), frame size and transparency.
 #+begin_src emacs-lisp :tangle init.el
   (use-package doom-modeline
     :straight t
-    :defer nil
     :custom
     (doom-modeline-height 25)
     (doom-modeline-bar-width 5)
