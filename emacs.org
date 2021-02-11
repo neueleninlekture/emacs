@@ -389,7 +389,7 @@ entire buffer will shift once the cursor wraps over the bottom, and
 the lack of usage of the X clipboard.
 
 #+begin_src emacs-lisp :tangle init.el
-  (setq scroll-conservatively 100
+  (setq scroll-conservatively 100)
 
   (setq ring-bell-function 'ignore)
 
