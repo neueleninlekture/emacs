@@ -598,6 +598,7 @@ for use with regular Emacs keys.
    "p" 'password-management
    "s" 'search+
    "t" 'text-editing
+   "u" 'system-administration
    "y" 'youtube
    "w" 'web-browsing)
 
