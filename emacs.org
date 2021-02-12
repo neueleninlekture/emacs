@@ -2121,7 +2121,8 @@ package managers. It supports most commonplace package managers, like
 
 ** Aurel
 
-=aurel= is a utility for checking information on packages  
+=aurel= is a utility for interacting with the =Arch User
+Repository=. It allows searching, voting and downloading packages.
 #+begin_src emacs-lisp :tangle init.el
   (use-package aurel
     :straight t
