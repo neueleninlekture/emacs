@@ -2132,6 +2132,15 @@ package managers. It supports most commonplace package managers, like
            ("l" . aurel-installed-packages))))
 #+end_src
 
+** Systemd
+
+This package adds a major mode for editing systemd unit files.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package systemd
+    :straight t)
+#+end_src
+
 * Security, news, email and web browsing
 
 This section includes all customization necessary for using Emacs as a
