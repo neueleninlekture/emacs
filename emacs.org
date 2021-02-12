@@ -575,6 +575,10 @@ for use with regular Emacs keys.
   (define-prefix-command 'youtube)
   (define-prefix-command 'web-browsing)
 
+  (define-prefix-command 'system-administration)
+  (define-prefix-command 'aur-management)
+  (define-prefix-command 'package-management)
+
   (global-set-key (kbd "C-c c") 'leader)
   (global-set-key (kbd "C-c b") 'buffers)
   (global-set-key (kbd "C-c f") 'fill-text)
@@ -596,6 +600,11 @@ for use with regular Emacs keys.
    "t" 'text-editing
    "y" 'youtube
    "w" 'web-browsing)
+
+  (general-define-key
+   :keymaps 'system-administration
+   "a" 'aur-management
+   "p" 'package-management)
 #+end_src
 
 ** Text navigation keys
