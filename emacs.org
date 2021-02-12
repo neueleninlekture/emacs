@@ -2049,14 +2049,14 @@ the built-in ones, while also allowing use of TUI programs.
      (lambda nil
        (concat
         (if (string= (eshell/pwd) (getenv "HOME"))
-            (propertize "~" 'face `(:foreground "#458588"))
+            (propertize "~" 'face `(:foreground "#FC20BB"))
           (replace-regexp-in-string
            (getenv "HOME")
-           (propertize "~" 'face `(:foreground "#458588"))
-           (propertize (eshell/pwd) 'face `(:foreground "#458588"))))
+           (propertize "~" 'face `(:foreground "#6688AA"))
+           (propertize (eshell/pwd) 'face `(:foreground "#6688AA"))))
         (if (= (user-uid) 0)
-            (propertize " α " 'face `(:foreground "#CC241D"))
-          (propertize " λ " 'face `(:foreground "#98971A"))))))
+            (propertize " α " 'face `(:foreground "#D02B61"))
+          (propertize " λ " 'face `(:foreground "#dddddd"))))))
     (eshell-banner-message "")
     (eshell-highlight-prompt nil)
 
