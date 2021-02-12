@@ -2263,15 +2263,18 @@ better readability in web pages.
   (setq webjump-sites
         '(("DuckDuckGo" .
            [simple-query "duckduckgo.com" "duckduckgo.com/?q=" ""])
-          ("Wikipedia English" .
+          ("Wikipedia-EN" .
            [simple-query "en.wikipedia.org" "en.wikipedia.org/w/index.php?search=" ""])
-          ("Wikipédia Português" .
+          ("Wikipedia-PT" .
            [simple-query "pt.wikipedia.org" "pt.wikipedia.org/w/index.php?search=" ""])
           ("4chan" .
-           [simple-query "4chan.org" "4chan.org/" ""])
-          ("/emg/ on 4chan" . "4chan.org/g/emg")
+           [mirrors "4chan.org/a/" "4chan.org/g/" "4chan.org/g/emg" "4chan.org/int/" "4chan.org/lit/"])
+          ("leftypol" .
+           [mirrors "leftypol.org/leftypol/" "leftypol.org/tech/" "leftypol.org/edu/"])
           ("Emacs Wiki" .
            [simple-query "www.emacswiki.org" "www.emacswiki.org/cgi-bin/wiki/" ""])
+          ("aabm" . "aabm.neocities.org")
+          ("/read/" . "leftyread.ml")
           ("GNU Project Home Page" . "www.gnu.org")))
 #+end_src
 
