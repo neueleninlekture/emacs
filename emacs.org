@@ -573,6 +573,7 @@ for use with regular Emacs keys.
   (define-prefix-command 'search+)
   (define-prefix-command 'text-editing)
   (define-prefix-command 'youtube)
+  (define-prefix-command 'web-browsing)
 
   (global-set-key (kbd "C-c c") 'leader)
   (global-set-key (kbd "C-c b") 'buffers)
@@ -593,7 +594,8 @@ for use with regular Emacs keys.
    "p" 'password-management
    "s" 'search+
    "t" 'text-editing
-   "y" 'youtube)
+   "y" 'youtube
+   "w" 'web-browsing)
 #+end_src
 
 ** Text navigation keys
