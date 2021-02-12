@@ -2242,7 +2242,7 @@ of those tools.
       ("C-c m" . mu4e-compose-new))))
 #+end_src
 
-** eww
+** EWW
 
 =eww=, the Emacs Web Wowser, is a simple text-based web browser built
 into Emacs. I use it somewhat frequently. So far the only
@@ -2255,6 +2255,33 @@ better readability in web pages.
     ((:map eww-mode-map
            ("M-n" . scroll-up-line)
            ("M-p" . scroll-down-line))))
+#+end_src
+
+** Webjump
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq webjump-sites
+        '(("DuckDuckGo" .
+           [simple-query "duckduckgo.com" "duckduckgo.com/?q=" ""])
+          ("Wikipedia English" .
+           [simple-query "en.wikipedia.org" "en.wikipedia.org/w/index.php?search=" ""])
+          ("Wikipédia Português" .
+           [simple-query "pt.wikipedia.org" "pt.wikipedia.org/w/index.php?search=" ""])
+          ("4chan" .
+           [simple-query "4chan.org" "4chan.org/" ""])
+          ("/emg/ on 4chan" . "4chan.org/g/emg")
+          ("Emacs Wiki" .
+           [simple-query "www.emacswiki.org" "www.emacswiki.org/cgi-bin/wiki/" ""])
+          ("GNU Project Home Page" . "www.gnu.org")))
+#+end_src
+
+** Keybindings
+
+#+begin_src emacs-lisp :tangle init.el
+  (general-define-key
+   :keymaps 'web-browsing
+   "b" 'eww
+   "j" 'webjump)
 #+end_src
 
 * Media management
