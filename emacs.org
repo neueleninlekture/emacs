@@ -2097,6 +2097,41 @@ the built-in ones, while also allowing use of TUI programs.
       ("C-c v" . vterm))))
 #+end_src
 
+* System utilities
+
+Here we include a series of utilities for managing the Emacs' host
+operating system. This means package and service management, mostly.
+
+** System packages
+
+=system-packages= is a general utility for interfacing with external
+package managers. It supports most commonplace package managers, like
+=pacman=, =apt=, =dnf=, etc.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package system-packages
+    :straight t
+    :bind
+    ((:map package-management
+           ("i" . system-packages-install)
+           ("r" . system-packages-uninstall)
+           ("l" . system-packages-list-installed-packages)
+           ("s" . system-packages-search))))
+#+end_src
+
+** Aurel
+
+=aurel= is a utility for checking information on packages  
+#+begin_src emacs-lisp :tangle init.el
+  (use-package aurel
+    :straight t
+    :bind
+    ((:map aur-management
+           ("s" . aurel-package-search-by-name)
+           ("i" . aurel-package-info)
+           ("l" . aurel-installed-packages))))
+#+end_src
+
 * Security, news, email and web browsing
 
 This section includes all customization necessary for using Emacs as a
