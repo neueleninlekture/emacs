@@ -1100,16 +1100,18 @@ arrow keys.
     :hook
     ((after-init-hook . winner-mode))
 
-    :init (setq winner-boring-buffers '("*Completions*"
-                                        "*Compile-Log*"
-                                        "*inferior-lisp*"
-                                        "*Fuzzy Completions*"
-                                        "*Apropos*"
-                                        "*Help*"
-                                        "*cvs*"
-                                        "*Buffer List*"
-                                        "*Ibuffer*"
-                                        "*esh command on file*")))
+    :init
+    (setq winner-boring-buffers
+          '("*Completions*"
+            "*Compile-Log*"
+            "*inferior-lisp*"
+            "*Fuzzy Completions*"
+            "*Apropos*"
+            "*Help*"
+            "*cvs*"
+            "*Buffer List*"
+            "*Ibuffer*"
+            "*esh command on file*")))
 #+end_src
 
 *** Shackle
