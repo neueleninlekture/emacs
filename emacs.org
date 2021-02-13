@@ -796,7 +796,7 @@ windows.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package dired
-    :straight peep-dired dired-subtree dired-hide-dotfiles all-the-icons-dired
+    :straight peep-dired dired-subtree dired-hide-dotfiles
     :commands dired
 
     :custom
@@ -829,7 +829,6 @@ windows.
 
     :hook
     (((dired-mode-hook . dired-hide-dotfiles-mode)
-      (dired-mode-hook . all-the-icons-dired-mode)
       (dired-mode-hook . hl-line-mode)))
 
     :diminish dired-hide-dotfiles-mode
@@ -860,6 +859,11 @@ windows.
     (:map peep-dired-mode-map
           ((("n" . peep-dired-next-file)
             ("p" . peep-dired-prev-file)))))
+
+  (use-package all-the-icons-dired
+    :straight t
+    :hook
+    (dired-mode-hook . all-the-icons-dired-mode))
 
   (use-package diredfl
     :straight t
