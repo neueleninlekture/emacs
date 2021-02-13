@@ -963,6 +963,11 @@ customizations here involve adding icons and keybindings to
                                       :v-adjust 0.0
                                       :height 1.0)
                " "))))
+
+  (use-package ibuffer-sidebar
+    :straight t
+    :commands
+    (ibuffer-sidebar-toggle-sidebar))
 #+end_src
 
 *** Genbuffer
