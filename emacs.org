@@ -1866,8 +1866,10 @@ for programming major modes, which is really all I need.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package display-line-numbers
+    :commands
+    (display-line-numbers-mode)
     :hook
-    ((prog-mode . display-line-numbers-mode))
+    (prog-mode-hook . display-line-numbers-mode)
     :custom
     (display-line-numbers-width 4)
     (display-line-numbers-grow-only t)
