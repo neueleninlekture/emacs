@@ -1862,7 +1862,7 @@ for programming major modes, which is really all I need.
 
 ** General options
 
-*** Line numbers
+*** Line numbers in programming modes
 
 #+begin_src emacs-lisp :tangle init.el
   (setq display-line-numbers-width 4)
@@ -1908,31 +1908,6 @@ for programming major modes, which is really all I need.
     ((prog-mode-hook . company-mode)))
 #+end_src
 
-** C
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package company-c-headers
-    :straight t
-    :defer nil)
-
-  (add-hook 'c-mode-hook
-            (lambda ()
-              (setq-local compile-command "cc -Wall --std=c99 -ledit")))
-#+end_src
-
-** Python
-
-#+begin_src emacs-lisp :tangle init.el
-  (setq python-indent-offset 4)
-#+end_src
-
-** R
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package ess
-    :straight t)
-#+end_src
-
 ** Lisp
 
 =Lisp is the most powerful programming language=. Under this section
@@ -1975,6 +1950,31 @@ that it does not load these files.
    "H-c e" 'aabm/build-emacs)
 #+end_src
  
+** C/C++
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package company-c-headers
+    :straight t
+    :defer nil)
+
+  (add-hook 'c-mode-hook
+            (lambda ()
+              (setq-local compile-command "cc -Wall --std=c99 -ledit")))
+#+end_src
+
+** Python
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq python-indent-offset 4)
+#+end_src
+
+** R and others
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package ess
+    :straight t)
+#+end_src
+
 * Shell and terminal emulation
 
 Emacs comes with a few different solutions for shell and terminal
