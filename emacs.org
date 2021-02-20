@@ -1460,7 +1460,8 @@ structure templates for creating blocks.
        ("r" . "src R :results output :export results\n")
        ("p" . "src python\n")
        ("s" . "src")
-       ("v" . "verse\n"))))
+       ("v" . "verse\n")
+       ("w" . "src lisp :tangle init.lisp\n"))))
 #+end_src
 
 *** Literate programming
