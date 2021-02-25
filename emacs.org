@@ -2257,8 +2257,8 @@ external video player, namely =mpv=, which is bound to the v key.
              ("M-p" . scroll-down-line)
              ("v" . aabm/elfeed-play-with-mpv)
              ("e" . aabm/elfeed-show-eww)
-             ("SPC" . elfeed-scroll-down-command)
-             ("S-SPC" . elfeed-scroll-up-command))))
+             ("SPC" . elfeed-scroll-up-command)
+             ("S-SPC" . elfeed-scroll-down-command))))
 
      (:map elfeed-search-mode-map
            ((("v" . aabm/elfeed-play-with-mpv)
