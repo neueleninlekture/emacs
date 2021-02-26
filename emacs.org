@@ -1947,6 +1947,18 @@ that it does not load these files.
    "H-c e" 'aabm/build-emacs)
 #+end_src
  
+*** SLIME
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package slime
+    :straight slime-company
+    :custom
+    (inferior-lisp-program "sbcl")
+    :config
+    (slime-setup '(slime-company))
+    (load (expand-file-name "~/src/quicklisp/slime-helper.el")))
+#+end_src
+
 ** C/C++
 
 #+begin_src emacs-lisp :tangle init.el
