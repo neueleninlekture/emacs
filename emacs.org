@@ -1914,18 +1914,6 @@ anything besides Elisp on a regular basis, but you never know. Also
 included here are the configurations that help in the process of
 configuring Emacs.
 
-*** SICP
-
-The famous meme-book =Structure and Interpretation of Computer
-Programs= or more commonly, =SICP=, has a whole Emacs package just for
-itself. The package provides a .info file, which can be comfortably
-read from Emacs using the =info= command, or C-h i.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package sicp
-    :straight t)
-#+end_src
-
 *** Rebuilding Emacs configuration
 
 This is a function for easily =rebuilding my Emacs config=. It
@@ -1947,7 +1935,9 @@ that it does not load these files.
    "H-c e" 'aabm/build-emacs)
 #+end_src
  
-*** SLIME
+*** Common Lisp
+
+**** SLIME
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package slime
@@ -1957,6 +1947,29 @@ that it does not load these files.
     :config
     (slime-setup '(slime-company))
     (load (expand-file-name "~/src/quicklisp/slime-helper.el")))
+#+end_src
+
+*** Scheme
+
+**** SICP
+
+The famous meme-book =Structure and Interpretation of Computer
+Programs= or more commonly, =SICP=, has a whole Emacs package just for
+itself. The package provides a .info file, which can be comfortably
+read from Emacs using the =info= command, or C-h i.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package sicp
+    :straight t)
+#+end_src
+
+**** Geiser
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package geiser
+    :straight t
+    :init
+    (setq geiser-active-implementations '(guile mit)))
 #+end_src
 
 ** C/C++
