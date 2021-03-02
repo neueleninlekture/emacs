@@ -1969,7 +1969,7 @@ read from Emacs using the =info= command, or C-h i.
   (use-package geiser
     :straight t
     :init
-    (setq geiser-active-implementations '(guile mit)))
+    (setq geiser-active-implementations '(guile)))
 #+end_src
 
 ** C/C++
