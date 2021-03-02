@@ -2608,17 +2608,19 @@ the normal #282828.
   (load-theme 'doom-Iosvkem t)
 #+end_src
 
-** Beacon
+** LEGACY Beacon
 
 =beacon-mode= highlights the point everytime a significant motion
 happens. It helps the user quickly locate the new position.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package beacon
     :straight t
     :init
     (beacon-mode)
-    :diminish beacon-mode)
+    :diminish beacon-mode
+    :custom
+    (beacon-dont-blink-commands '(next-line previous-line forward-line other-window)))
 #+end_src
 
 ** Mouse and cursor
