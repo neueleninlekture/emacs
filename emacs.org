@@ -549,7 +549,7 @@ these are later bound to keys.
     :init
     (projectile-mode)
     :bind
-    (("C-c p" . projectile-command-map)))
+    (("C-c C-p" . projectile-command-map)))
 #+end_src
 
 * Custom keybinding system
