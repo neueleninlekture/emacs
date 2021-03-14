@@ -541,17 +541,6 @@ these are later bound to keys.
       ("C-h o" . counsel-describe-symbol))))
 #+end_src
 
-** Projectile
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package projectile
-    :straight t
-    :init
-    (projectile-mode)
-    :bind
-    (("C-c C-p" . projectile-command-map)))
-#+end_src
-
 * Custom keybinding system
 
 ** Prefix keys
@@ -907,7 +896,8 @@ commands you barely understand.
 #+begin_src emacs-lisp :tangle init.el
   (use-package projectile
     :straight t
-    :defer nil
+    :init
+    (projectile-mode)
     :bind
     (("C-c p" . projectile-command-map)))
 #+end_src
@@ -2775,13 +2765,15 @@ start the Emacs server. We also add a little hook for displaying
 startup time and garbage collection information.
 
 #+begin_src emacs-lisp :tangle init.el
-  (server-start)
+  (unless (server-running-p)
+    (message "Starting a server...")
+    (server-start))
 
   (add-hook 'emacs-startup-hook
             (lambda ()
-              (message "Emacs ready in %s with %d garbage collections."
-                       (format "%.2f seconds"
-                               (float-time
-                                (time-subtract after-init-time before-init-time)))
-                       gcs-done)))
+              (message
+               "Emacs ready in %s with %d garbage collections."
+               (format "%.2f seconds"
+                       (float-time
+                        (time-subtract after-init-time before-init-time))) gcs-done)))
 #+end_src
