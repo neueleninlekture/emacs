@@ -754,7 +754,7 @@ Easily open files over sudo using =TRAMP=.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package subword
-    :diminish
+    :diminish subword-mode
     :hook ((prog-mode-hook . subword-mode)
            (minibuffer-setup-hook . subword-mode)))
 #+end_src
