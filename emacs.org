@@ -2019,7 +2019,7 @@ the built-in ones, while also allowing use of TUI programs.
     :config
     (defun with-face (str &rest face-plist)
       (propertize str 'face face-plist))
-  
+
     (defun aabm/eshell-sudo-open (filename)
       "Open a file as root in Eshell, using TRAMP."
       (let ((qual-filename (if (string-match "^/" filename)
@@ -2071,10 +2071,15 @@ the built-in ones, while also allowing use of TUI programs.
           (yank)
           (switch-to-buffer-other-window (current-buffer)))))
 
+    (defun aabm/dired-here ()
+      (interactive)
+      (dired "."))
+
     (defalias 'open 'find-file-other-window)
     (defalias 'clean 'eshell/clear-scrollback)
     (defalias 'mkcd 'aabm/eshell-mkcd)
     (defalias 'sopen 'aabm/eshell-sudo-open)
+    (defalias 'dr 'aabm/dired-here)
 
     (defvar aabm/eshell-minor-mode-map
       (let ((map (make-sparse-keymap))) map)
