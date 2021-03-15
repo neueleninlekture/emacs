@@ -2771,10 +2771,6 @@ start the Emacs server. We also add a little hook for displaying
 startup time and garbage collection information.
 
 #+begin_src emacs-lisp :tangle init.el
-  (unless (server-running-p)
-    (message "Starting a server...")
-    (server-start))
-
   (add-hook 'emacs-startup-hook
             (lambda ()
               (message
