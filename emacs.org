@@ -1013,12 +1013,14 @@ This function kills the current buffer, along with the window in which
 it is being displayed.
 
 #+begin_src emacs-lisp :tangle init.el
-  (defun aabm/kill-this-buffer-and-window ()
-    "Kill the current buffer and its corresponding window."
+  (defun aabm/kill-this-buffer-and-window-or-frame ()
+    "Kill the current buffer. Check whether current window is deletable. If so, delete it, and if not, delete the whole frame."
     (interactive)
     (progn
       (kill-buffer)
-      (delete-window)))
+      (if (eq (window-deletable-p) 't)
+          (delete-window)
+        (delete-frame))))
 #+end_src
 
 *** Keybindings
