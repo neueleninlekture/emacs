@@ -1185,26 +1185,25 @@ arrow keys.
           shackle-default-rule nil
           shackle-rules
           '((("*Help*" "*Apropos*") :select t :autoclose t)
-            (helpful-mode :select t :size 0.3 :align 'below :autoclose t)
             (("\\*[Wo]*Man.*\\*" "*tldr*") :regexp t :select t :autoclose t :same t)
             (("*Calendar*" "*wclock*") :select t :size 0.3 :align 'below :autoclose t)
-		  
+
             (compilation-mode :select t :size 0.3 :align 'below :autoclose t)
             (comint-mode :select t :size 0.4 :align 'below :autoclose t)
             (("*Warnings*" "*Messages*") :size 0.3 :align 'below :autoclose t)
             (" *Install vterm* " :size 0.35 :same t :align 'below)
-		  
+
             ("*Completions*" :size 0.3 :align 'below :autoclose t)
             ("*Pp Eval Output*" :size 15 :align 'below :autoclose t)
             ("*Backtrace*" :select t :size 15 :align 'below :autoclose t)
-		  
+
             ("^\\*.*Shell Command.*\\*$" :regexp t :size 0.3 :align 'below :autoclose t)
             ("*shell*" :popup t :align 'below :autoclose t)
             (("*ielm*" "* Guile REPL *" "* slime-repl sbcl *") :popup t :align 'below)
             ("^\\*R*" :regexp t :align 'below :autoclose t)
             ((inferior-python-mode) :align 'below)
             ((inferior-ess-mode ess-r-mode) :align 'below)
-		  
+
             (("*Agenda Commands*" " *Org todo*" "*Org Dashboard*") :select t :size 0.1 :align 'below :autoclose t)
             (("*Org Select*") :select t :autoclose t :same t)
             (("\\*Capture\\*" "^CAPTURE-.*\\.org*") :regexp t :select t :size 0.3 :align 'below)
