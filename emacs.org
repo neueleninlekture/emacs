@@ -124,7 +124,7 @@ complete.
           gc-cons-percentage 0.1
           file-name-handler-alist startup-file-name-handler-alist))
 
-  (add-hook 'emacs-startup-hook 'startup-reset-defaults)
+  (add-hook 'emacs-startup-hook #'startup-reset-defaults)
 #+end_src
 
 *** Disabling GUI elements
