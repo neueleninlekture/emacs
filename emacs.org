@@ -555,6 +555,7 @@ for use with regular Emacs keys.
   (define-prefix-command 'buffers)
   (define-prefix-command 'database)
   (define-prefix-command 'fill-text)
+  (define-prefix-command 'info-docs)
   (define-prefix-command 'journal)
   (define-prefix-command 'music)
   (define-prefix-command 'notes)
@@ -581,6 +582,7 @@ for use with regular Emacs keys.
    "b" 'buffers
    "d" 'database
    "f" 'fill-text
+   "i" 'info-docs
    "j" 'journal
    "m" 'music
    "n" 'notes
@@ -1874,6 +1876,18 @@ for programming major modes, which is really all I need.
     :straight t
     :hook
     ((prog-mode-hook . rainbow-delimiters-mode)))
+#+end_src
+
+** Documentation
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package tldr
+    :straight t
+    :bind
+    (:map info-docs
+          (("t" . tldr)
+           ("m" . man)
+           ("w" . woman))))
 #+end_src
 
 ** Company
