@@ -720,13 +720,12 @@ allowing the user to interact more with Emacs' undo tree system.
 #+begin_src emacs-lisp :tangle init.el
   (use-package undo-tree
     :straight t
+    :diminish undo-tree-mode
     :init
     (global-undo-tree-mode)
-    (setq undo-tree-visualizer-timestamps t
-          undo-tree-enable-undo-in-region nil
-          undo-tree-auto-save-history nil)
-
-    :diminish undo-tree-mode)
+    (undo-tree-visualizer-timestamps t)
+    (undo-tree-enable-undo-in-region nil)
+    (undo-tree-auto-save-history nil))
 #+end_src
 
 ** Sudo edit
