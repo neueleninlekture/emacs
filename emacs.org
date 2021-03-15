@@ -1028,7 +1028,7 @@ it is being displayed.
 #+begin_src emacs-lisp :tangle init.el
   (general-define-key
    "C-x k" 'aabm/kill-this-buffer
-   "C-x C-k" 'aabm/kill-this-buffer-and-window)
+   "C-x C-k" 'aabm/kill-this-buffer-and-window-or-frame)
 #+end_src
 
 ** Windows
