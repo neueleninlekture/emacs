@@ -2016,6 +2016,9 @@ the built-in ones, while also allowing use of TUI programs.
   (use-package esh-mode
     :commands eshell
     :config
+    (defun with-face (str &rest face-plist)
+      (propertize str 'face face-plist))
+  
     (defun aabm/eshell-sudo-open (filename)
       "Open a file as root in Eshell, using TRAMP."
       (let ((qual-filename (if (string-match "^/" filename)
@@ -2079,7 +2082,7 @@ the built-in ones, while also allowing use of TUI programs.
     (define-minor-mode aabm/eshell-minor-mode
       "Special minor mode to enable custom keys in `eshell'.
 
-  \\{aabm/eshell-minor-mode-map}"
+    \\{aabm/eshell-minor-mode-map}"
       :init-value nil
       :keymap aabm/eshell-minor-mode-map)
 
@@ -2088,18 +2091,21 @@ the built-in ones, while also allowing use of TUI programs.
     :custom
     (eshell-prompt-regexp "^[^αλ\n]*[αλ] ")
     (eshell-prompt-function
-     (lambda nil
-       (concat
-        (if (string= (eshell/pwd) (getenv "HOME"))
-            (propertize "~" 'face `(:foreground "#FC20BB"))
-          (replace-regexp-in-string
-           (getenv "HOME")
-           (propertize "~" 'face `(:foreground "#6688AA"))
-           (propertize (eshell/pwd) 'face `(:foreground "#6688AA"))))
-        (if (= (user-uid) 0)
-            (propertize " α " 'face `(:foreground "#D02B61"))
-          (propertize " λ " 'face `(:foreground "#dddddd"))))))
-    (eshell-banner-message "")
+     (lambda ()
+       (let ((header-bg "#1d1d1e"))
+         (concat
+          (if (string= (eshell/pwd) (getenv "HOME"))
+              (propertize "~" 'face `(:foreground "#FC20BB"))
+            (replace-regexp-in-string
+             (getenv "HOME")
+             (propertize "~" 'face `(:foreground "#6688AA"))
+             (propertize (eshell/pwd) 'face `(:foreground "#6688AA"))))
+          (if (= (user-uid) 0)
+              (with-face " #" :foreground "#FC20BB"))
+          (with-face " λ" :foreground "#FC20BB")
+          " "))))
+
+    (eshell-banner-message "In the beginning, there was the command line.\n")
     (eshell-highlight-prompt nil)
 
     (eshell-cd-on-directory t)
