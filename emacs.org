@@ -2681,7 +2681,7 @@ titlebar), frame size and transparency.
     :init
     (setq doom-modeline-height 25)
     (setq doom-modeline-bar-width 5)
-    (setq doom-modeline-icon (display-graphic-p))
+    (setq doom-modeline-icon t)
     (setq doom-modeline-major-mode-icon t)
     (setq doom-modeline-major-mode-color-icon t)
     (setq doom-modeline-buffer-state-icon t)
