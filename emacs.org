@@ -2116,7 +2116,7 @@ the built-in ones, while also allowing use of TUI programs.
           (with-face " λ" :foreground "#FC20BB")
           " "))))
 
-    (eshell-banner-message "In the beginning, was the command line.\n")
+    (eshell-banner-message "In the beginning was the command line.\n")
     (eshell-highlight-prompt nil)
 
     (eshell-cd-on-directory t)
