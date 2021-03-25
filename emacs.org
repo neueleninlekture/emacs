@@ -850,7 +850,7 @@ windows.
             ("i" . peep-dired)
             ("I" . image-dired)
             ("v" . aabm/dired-xdg-open)
-            ("q" . kill-this-buffer)
+            ("q" . aabm/kill-this-buffer)
             ("/" . dired-narrow)))))
 
   (use-package peep-dired
