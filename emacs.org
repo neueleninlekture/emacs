@@ -1330,6 +1330,8 @@ some basic options. These are:
              ("<S-left>" . nil)
              ("<S-down>" . nil)
              ("<S-up>" . nil))))))
+
+  (diminish 'org-indent-mode)
 #+end_src
 
 *** Agenda, Tasks and TODOs
