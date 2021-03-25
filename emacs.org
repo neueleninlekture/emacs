@@ -909,6 +909,7 @@ commands you barely understand.
 #+begin_src emacs-lisp :tangle init.el
   (use-package projectile
     :straight t
+    :diminish projectile-mode
     :init
     (projectile-mode)
     :bind
@@ -1303,22 +1304,18 @@ some basic options. These are:
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
     :straight t
+    :diminish org-indent-mode
     :init
     (setq org-export-backends '(ascii beamer html latex md))
     :defer t
-
     :custom
     (org-directory "~/org/")
     (org-ellipsis "⬎")
     (org-hide-leading-stars t)
     (org-html-postamble nil)
     (org-cycle-global-at-bob t)
-
     :hook
     ((org-mode-hook . org-indent-mode))
-
-    :diminish org-indent-mode
-
     :bind
     (("C-," . org-cycle-agenda-files)
      (:map org-mode-map
