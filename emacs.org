@@ -787,7 +787,7 @@ windows.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package dired
-    :straight peep-dired dired-subtree dired-hide-dotfiles
+    :straight peep-dired dired-subtree dired-hide-dotfiles dired-narrow
     :commands dired
 
     :custom
@@ -840,7 +840,8 @@ windows.
             ("i" . peep-dired)
             ("I" . image-dired)
             ("v" . aabm/dired-xdg-open)
-            ("q" . kill-this-buffer)))))
+            ("q" . kill-this-buffer)
+            ("/" . dired-narrow)))))
 
   (use-package peep-dired
     :straight t
