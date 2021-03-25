@@ -773,6 +773,16 @@ selected deletes that region.
     (delete-selection-mode t))
 #+end_src
 
+** Inserting emojis
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package ivy-emoji
+    :straight t
+    :bind
+    (:map text-editing
+          (("e" . ivy-emoji))))
+#+end_src
+
 * Buffer, file and window management
 
 In this section we deal with all packages relating to the fundamental
