@@ -840,7 +840,7 @@ windows.
             ("M-RET" . dired-find-file)
             ("DEL" . aabm/dired-up-alternate-directory)
             ("l" . aabm/dired-up-alternate-directory)
-            ("TAB" . dired-subtree-cycle)
+            ("TAB" . dired-subtree-toggle)
             ("M-n" . dired-subtree-down)
             ("M-p" . dired-subtree-up)
             ("C-c d m" . mkdir)
