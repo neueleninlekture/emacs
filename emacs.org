@@ -1233,7 +1233,7 @@ arrow keys.
 
             (("*Agenda Commands*" " *Org todo*" "*Org Dashboard*") :select t :size 0.1 :align 'below :autoclose t)
             (("*Org Select*") :select t :autoclose t :same t)
-            (("\\*Capture\\*" "^CAPTURE-.*\\.org*") :regexp t :select t :size 0.3 :align 'below)
+            (("\\*Capture\\*" "^CAPTURE*") :regexp t :select t :size 0.3 :align 'below)
 
             (" *undo-tree*" :select t)
             ("^\\*macro expansion\\**" :regexp t :size 0.4 :align 'below)
