@@ -2674,15 +2674,14 @@ include fonts, frame name (to be used by the window manager's
 titlebar), frame size and transparency.
 
 #+begin_src emacs-lisp :tangle init.el
-  (set-frame-font "Iosevka 12" nil t)
-  (setq frame-title-format "%b")
-  (set-fontset-font t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend)
-
   (add-to-list 'default-frame-alist '(font . "Iosevka 12"))
   (add-to-list 'default-frame-alist '(width  . 100))
   (add-to-list 'default-frame-alist '(height . 30))
-  (add-to-list 'default-frame-alist '(alpha 95 93))
-  (set-frame-parameter (selected-frame) 'alpha '(95 93))
+  (add-to-list 'default-frame-alist '(alpha 100 100))
+  (set-frame-parameter (selected-frame) 'alpha '(100 100))
+  (set-frame-font "Iosevka 12" nil t)
+  (setq frame-title-format "%b")
+  (set-fontset-font t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend)
 #+end_src
    
 ** Doom Modeline
