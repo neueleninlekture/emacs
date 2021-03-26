@@ -1958,6 +1958,7 @@ that it does not load these files.
 #+begin_src emacs-lisp :tangle init.el
   (use-package slime
     :straight slime-company
+    :diminish slime-mode slime-autodoc-mode
     :custom
     (inferior-lisp-program "sbcl")
     :config
