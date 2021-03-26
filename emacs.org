@@ -533,6 +533,7 @@ these are later bound to keys.
       ("C-r" . isearch-forward)
       ("M-s" . avy-goto-char-2)
       ("C-x C-f" . counsel-find-file)
+      ("C-x d" . counsel-dired)
       ("C-x b" . counsel-switch-buffer)
       ("C-x r b" . bookmark-jump)
       ("M-x" . counsel-M-x)
@@ -2137,7 +2138,8 @@ the built-in ones, while also allowing use of TUI programs.
            ((("C-c w" . aabm/eshell-copy-file-path-at-point)
              ("C-c f" . aabm/eshell-find-file-at-point)
              ("C-c o" . aabm/eshell-cat-file-at-point)
-             ("C-c C-b" . aabm/eshell-put-last-output-to-buffer))))))
+             ("C-c C-b" . aabm/eshell-put-last-output-to-buffer)
+             ("C-r" . counsel-esh-history))))))
 #+end_src
 
 ** Vterm
