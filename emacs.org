@@ -2627,7 +2627,17 @@ features are enabled. We also ensure the Doom Gruvbox theme always
 uses the Hard contrast variant, with a #1D2021 background instead of
 the normal #282828.
 
+
 #+begin_src emacs-lisp :tangle init.el
+  (use-package base16-theme
+    :straight t)
+
+  ;; (setq base16-spacemacs-colors '(:base00 "#303030" :base01 "#d02b61" :base02 "#60aa00" :base03 "#d08928" :base04 "#6688aa" :base05 "#fc20bb" :base06 "#00aa80" :base07 "#5b6268" :base08 "#505050" :base09 "#EF447b" :base0A "#84C034" :base0B "#F4Ae50" :base0C "#6c9ef8" :base0D "#FF5ed0" :base0E "#20FCbb" :base0F "#dddddd"))
+
+  (load-theme 'base16-spacemacs)
+#+end_src
+
+#+begin_src emacs-lisp
   (use-package doom-themes
     :straight t
     :custom
