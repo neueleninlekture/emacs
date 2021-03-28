@@ -1882,10 +1882,12 @@ for programming major modes, which is really all I need.
 *** Code folding
 
 	#+begin_src emacs-lisp :tangle init.el
-	  (add-hook 'prog-mode-hook 'hs-minor-mode)
-	  (diminish 'hs-minor-mode)
-
-	  (global-set-key (kbd "C-x @") 'hs-toggle-hiding)
+      (use-package hideshow
+        :diminish hs-minor-mode
+        :hook
+        (prog-mode-hook . hs-minor-mode)
+        :bind
+        ("C-x @" . hs-toggle-hiding))
 	#+end_src
 
 ** Documentation
