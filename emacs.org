@@ -798,22 +798,18 @@ windows.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package dired
-    :straight peep-dired dired-subtree dired-hide-dotfiles dired-narrow
+    :straight peep-dired dired-subtree dired-narrow
     :commands dired
-
     :custom
     (dired-dwim-target t)
     (dired-recursive-copies 'always)
     (dired-recursive-deletes 'always)  
     (dired-listing-switches "-alhvNF --group-directories-first")
-
     (wdired-allow-to-change-permissions t)
-
     (peep-dired-cleanup-on-disable t)
     (peep-dired-ignored-extensions '("mkv" "iso" "mp4"))
-
     :config
-
+  
     (defun aabm/dired-xdg-open ()
       "Open the marked files using xdg-open."
       (interactive)
@@ -830,11 +826,7 @@ windows.
       (find-alternate-file ".."))
 
     :hook
-    (((dired-mode-hook . dired-hide-dotfiles-mode)
-      (dired-mode-hook . hl-line-mode)))
-
-    :diminish dired-hide-dotfiles-mode
-
+    ((dired-mode-hook . hl-line-mode))
     :bind
     (:map dired-mode-map
           ((("RET" . dired-find-alternate-file)
@@ -846,7 +838,6 @@ windows.
             ("M-p" . dired-subtree-up)
             ("C-c d m" . mkdir)
             ("C-c d c" . chmod)
-            ("h" . dired-hide-dotfiles-mode)
             ("H" . dired-hide-details-mode)
             ("i" . peep-dired)
             ("I" . image-dired)
@@ -887,6 +878,15 @@ windows.
     (dired-sidebar-use-custom-font t)
     :bind
     (("C-x C-n" . dired-sidebar-toggle-sidebar)))
+
+  (use-package dired-hide-dotfiles
+    :straight t
+    :diminish dired-hide-dotfiles-mode
+    :hook
+    (dired-mode-hook . dired-hide-dotfiles-mode)
+    :bind
+    (:map dired-mode-map
+          (("h" . dired-hide-dotfiles-mode))))
 #+end_src
 
 *** Magit
