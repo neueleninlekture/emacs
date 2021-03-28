@@ -2693,9 +2693,9 @@ titlebar), frame size and transparency.
   (set-fontset-font t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend)
 #+end_src
    
-** Doom Modeline
+** LEGACY Doom Modeline
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package doom-modeline
     :straight t
     :defer nil
