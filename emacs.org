@@ -856,6 +856,7 @@ windows.
 
   (use-package all-the-icons-dired
     :straight t
+    :diminish all-the-icons-dired-mode
     :hook
     (dired-mode-hook . all-the-icons-dired-mode))
 
