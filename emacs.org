@@ -1475,6 +1475,13 @@ allowing for literate programming.
           (shell . t)
           (org . t)
           (latex . t)))
+
+  (defun tangle-message ()
+    "Displays a message announcing success at tangling."
+    (interactive)
+    (message "File succesfully tangled."))
+
+  (advice-add 'org-babel-tangle :after #'tangle-message)
 #+end_src
 
 *** Org Roam
@@ -1933,27 +1940,6 @@ anything besides Elisp on a regular basis, but you never know. Also
 included here are the configurations that help in the process of
 configuring Emacs.
 
-*** Rebuilding Emacs configuration
-
-This is a function for easily =rebuilding my Emacs config=. It
-tangles all code blocks then byte-compiles the necessary files. Note
-that it does not load these files.
-
-#+begin_src emacs-lisp :tangle init.el
-  (defun aabm/build-emacs ()
-    "This function is used for completely rebuilding the Emacs configuration file after changes are made to it. 
-
-  It saves the configuration buffer, tangles all the code, then byte-compiles it."
-    (interactive)
-    (let ((prog-mode-hook nil))
-      (save-buffer "emacs.org")
-      (org-babel-tangle-file (concat user-emacs-directory "emacs.org"))
-      (message "Emacs configuration succesfully rebuilt!")))
-
-  (general-define-key
-   "H-c e" 'aabm/build-emacs)
-#+end_src
- 
 *** Common Lisp
 
 **** SLIME
