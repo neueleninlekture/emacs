@@ -2670,7 +2670,7 @@ relate to fonts.
 #+begin_src emacs-lisp :tangle init.el
   (custom-set-faces
    '(Info-quoted ((t (:inherit fixed-pitch :foreground "#feacd0"))))
-   '(fixed-pitch ((t (:family "iosevka extended medium 11"))))
+   '(fixed-pitch ((t (:family "iosevka medium extended 11"))))
    '(fixed-pitch-serif ((t (:family "IBM Plex Mono"))))
    '(variable-pitch ((t (:family "Iosevka"))))
    '(diredfl-date-time ((t (:weight medium)))))
@@ -2683,7 +2683,7 @@ include fonts, frame name (to be used by the window manager's
 titlebar), frame size and transparency.
 
 #+begin_src emacs-lisp :tangle init.el
-  (add-to-list 'default-frame-alist '(font . "iosevka extended medium 11"))
+  (add-to-list 'default-frame-alist '(font . "iosevka medium extended 11"))
   (add-to-list 'default-frame-alist '(width  . 100))
   (add-to-list 'default-frame-alist '(height . 30))
   (add-to-list 'default-frame-alist '(alpha 100 100))
