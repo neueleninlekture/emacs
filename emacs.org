@@ -1510,90 +1510,90 @@ files. All these packages can be acessed under the C-c n map.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package org-roam
-    :straight t
-    :config
-    (require 'org-protocol)
-    (require 'org-roam-protocol)
-    (org-roam-mode)
-    :diminish org-roam-mode
-    :custom
-    (org-roam-directory "~/org/roam/")
-    (org-roam-index-file "~/org/roam/index.org")
-    (org-roam-encrypt-files nil)
-    (org-roam-completion-system 'default)
-    (org-roam-db-update-method 'immediate)
-    (org-roam-graph-executable "/usr/bin/neato")
-    (org-roam-graph-extra-config '(("overlap" . "false")))
-    (org-roam-capture-templates
-     '(("o" "Show: overview" plain (function org-roam--capture-get-point)
-        "#+date:%T\n#+startup: overview\n#+roam_tags: %?\n#+roam_alias:"
-        :file-name "%<%Y%m%d%H%M%S>-${slug}"
-        :head "#+title: ${title}\n"
-        :unnarrowed t)
-       ("a" "Show: all" plain (function org-roam--capture-get-point)
-        "#+date:%T\n#+startup: showall\n#+roam_tags: %?\n#+roam_alias:"
-        :file-name "%<%Y%m%d%H%M%S>-${slug}"
-        :head "#+title: ${title}\n"
-        :unnarrowed t	 )))
+	:straight t
+	:config
+	(require 'org-protocol)
+	(require 'org-roam-protocol)
+	(org-roam-mode)
+	:diminish org-roam-mode
+	:custom
+	(org-roam-directory "~/org/roam/")
+	(org-roam-index-file "~/org/roam/index.org")
+	(org-roam-encrypt-files nil)
+	(org-roam-completion-system 'default)
+	(org-roam-db-update-method 'immediate)
+	(org-roam-graph-executable "/usr/bin/neato")
+	(org-roam-graph-extra-config '(("overlap" . "false")))
+	(org-roam-capture-templates
+	 '(("o" "Show: overview" plain (function org-roam--capture-get-point)
+		"#+date:%T\n#+startup: overview\n#+roam_tags: %?\n#+roam_alias:"
+		:file-name "%<%Y%m%d%H%M%S>-${slug}"
+		:head "#+title: ${title}\n"
+		:unnarrowed t)
+	   ("a" "Show: all" plain (function org-roam--capture-get-point)
+		"#+date:%T\n#+startup: showall\n#+roam_tags: %?\n#+roam_alias:"
+		:file-name "%<%Y%m%d%H%M%S>-${slug}"
+		:head "#+title: ${title}\n"
+		:unnarrowed t	 )))
 
-    :bind
-    (:map notes
-          ((("f" . org-roam-find-file)
-            ("l" . org-roam-insert)
-            ("L" . org-roam-insert-immediate)
-            ("r" . org-roam-random-note)
-            ("w" . org-roam-capture)))))
+	:bind
+	(:map notes
+		  ((("f" . org-roam-find-file)
+			("l" . org-roam-insert)
+			("L" . org-roam-insert-immediate)
+			("r" . org-roam-random-note)
+			("w" . org-roam-capture)))))
 
   (use-package org-roam-server
-    :straight t
-    :custom
-    (org-roam-server-host "127.0.0.1")
-    (org-roam-server-port 8080)
-    (org-roam-server-authenticate nil)
-    (org-roam-server-export-inline-images t)
-    (org-roam-server-serve-files nil)
-    (org-roam-server-served-file-extensions '("pdf" "mp4" "ogv"))
-    (org-roam-server-network-poll t)
-    (org-roam-server-network-arrows nil)
-    (org-roam-server-network-label-truncate t)
-    (org-roam-server-network-label-truncate-length 60)
-    (org-roam-server-network-label-wrap-length 20)
-    :bind
-    (:map notes
-          (("g" . org-roam-server-mode))))
+	:straight t
+	:custom
+	(org-roam-server-host "127.0.0.1")
+	(org-roam-server-port 8080)
+	(org-roam-server-authenticate nil)
+	(org-roam-server-export-inline-images t)
+	(org-roam-server-serve-files nil)
+	(org-roam-server-served-file-extensions '("pdf" "mp4" "ogv"))
+	(org-roam-server-network-poll t)
+	(org-roam-server-network-arrows nil)
+	(org-roam-server-network-label-truncate t)
+	(org-roam-server-network-label-truncate-length 60)
+	(org-roam-server-network-label-wrap-length 20)
+	:bind
+	(:map notes
+		  (("g" . org-roam-server-mode))))
 
   (use-package deft
-    :straight t
-    :custom
-    (deft-recursive t)
-    (deft-use-filter-string-for-filename t)
-    (deft-default-extension "org")
-    (deft-directory "~/org/roam")
-    :config
-    (defun deft-journal ()
-      (interactive)
-      (let ((deft-directory "~/org/journal"))
-        (deft)))
-    :bind
-    (:map notes
-          (("s" . deft)))
-    (:map journal
-          (("s" . deft-journal))))
+	:straight t
+	:custom
+	(deft-recursive t)
+	(deft-use-filter-string-for-filename t)
+	(deft-default-extension "org")
+	(deft-directory "~/org/roam")
+	:config
+	(defun deft-journal ()
+	  (interactive)
+	  (let ((deft-directory "~/org/journal"))
+		(deft)))
+	:bind
+	(:map notes
+		  (("s" . deft)))
+	(:map journal
+		  (("s" . deft-journal))))
 #+end_src
 
 *** Org Journal
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package org-journal
-    :straight t
-    :custom
-    (org-journal-dir "~/org/journal/")
-    (org-journal-date-format "%A, %d %B %Y")
-    (org-journal-file-type 'daily)
-    (org-journal-file-format "%Y-%m-%d-%a.org")
-    :bind
-    (:map journal
-          (("f" . org-journal-new-entry))))
+	:straight t
+	:custom
+	(org-journal-dir "~/org/journal/")
+	(org-journal-date-format "%A, %d %B %Y")
+	(org-journal-file-type 'daily)
+	(org-journal-file-format "%Y-%m-%d-%a.org")
+	:bind
+	(:map journal
+		  (("f" . org-journal-new-entry))))
 #+end_src
 
 *** Org Superstar
