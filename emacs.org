@@ -507,39 +507,55 @@ keybindings with Counsel actions. =Ivy-rich= adds a few more bits of
 information to Ivy menus, like a function description when using
 counsel-M-x. 
 
-=Swiper= is a search tool, for searching for text or regex
-in-buffer. It pairs nicely with Ivy and Counsel. There is also =Avy=,
-which is a buffer navigation tool using narrowing completion. Both of
-these are later bound to keys.
-
 #+begin_src emacs-lisp :tangle init.el
   (use-package ivy
-    :straight ivy swiper counsel swiper avy ivy-rich all-the-icons-ivy-rich
-
-    :init
-    (ivy-mode)
-    (counsel-mode)
-    (all-the-icons-ivy-rich-mode)
-    (ivy-rich-mode)
-
-    :diminish
-    (ivy-mode counsel-mode ivy-rich-mode all-the-icons-ivy-rich-mode)
-
+    :straight ivy counsel
     :custom
-    (enable-recursive-minibuffers t)
+    (enable-recursive-minibuffers t))
+#+end_src
 
+** Selectrum
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package selectrum
+    :straight t
+    :init
+    (selectrum-mode))
+
+  (use-package selectrum-prescient
+    :straight t
+    :custom
+    (selectrum-prescient-enable-filtering nil)
+    :config
+    (selectrum-prescient-mode)
+    (prescient-persist-mode))
+
+  (use-package orderless
+    :straight t
+    :custom
+    (completion-styles '(orderless))
+    (orderless-skip-highlighting (lambda () selectrum-is-active))
+    (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+
+  (use-package marginalia
+    :straight t
+    :bind (("M-A" . marginalia-cycle)
+           :map minibuffer-local-map
+           ("M-A" . marginalia-cycle))
+    :init
+    (marginalia-mode)
+    (advice-add #'marginalia-cycle :after
+                (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit 'keep-selected))))
+    :custom
+    (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
+
+  (use-package consult
+    :straight t
     :bind
-    ((("C-s" . swiper)
-      ("C-r" . isearch-forward)
-      ("M-s" . avy-goto-char-2)
-      ("C-x C-f" . counsel-find-file)
-      ("C-x d" . counsel-dired)
-      ("C-x b" . counsel-switch-buffer)
-      ("C-x r b" . bookmark-jump)
-      ("M-x" . counsel-M-x)
-      ("C-h f" . counsel-describe-function)
-      ("C-h v" . counsel-describe-variable)
-      ("C-h o" . counsel-describe-symbol))))
+    (("C-s" . consult-line)))
+
+  (use-package embark
+    :straight (:host github :repo "oantolin/embark"))
 #+end_src
 
 * Custom keybinding system
@@ -1492,19 +1508,16 @@ files. All these packages can be acessed under the C-c n map.
 #+begin_src emacs-lisp :tangle init.el
   (use-package org-roam
     :straight t
-
     :config
     (require 'org-protocol)
     (require 'org-roam-protocol)
     (org-roam-mode)
-
     :diminish org-roam-mode
-
     :custom
     (org-roam-directory "~/org/roam/")
     (org-roam-index-file "~/org/roam/index.org")
     (org-roam-encrypt-files nil)
-    (org-roam-completion-system 'ivy)
+    (org-roam-completion-system 'default)
     (org-roam-db-update-method 'immediate)
     (org-roam-graph-executable "/usr/bin/neato")
     (org-roam-graph-extra-config '(("overlap" . "false")))
@@ -2204,7 +2217,7 @@ settings are somehow security related.
 
 Here we set up a convenient interface for =pass=, the standard Unix
 password manager. This interface allows for completion using the
-standard completion mechanism, which for this configuration is Ivy.
+standard completion mechanism.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package password-store
@@ -2328,7 +2341,7 @@ of those tools.
     (sendmail-program "/usr/bin/msmtp")
     (message-sendmail-extra-arguments '("--read-envelope-from"))
     (message-sendmail-f-is-evil 't)
-    (mu4e-completing-read-function 'ivy-completing-read)
+    (mu4e-completing-read-function 'completing-read)
     (mu4e-confirm-quit nil)
     (message-kill-buffer-on-exit t)
     (mu4e-html2text-command "/usr/bin/w3m -T text/html")
@@ -2401,10 +2414,7 @@ better readability in web pages.
 * Media management
 
 Emacs can be used to manage all sorts of media playback
-utilities. This is usually accomplished by means of packages that
-provide frontends for certain local applications. For instance, we use
-=mpdel= and =ivy-mpdel= to interface with =mpd= for music playback,
-and =ytdl= and =ytel= to watch and download videos.
+utilities. 
 
 ** Videos
 
