@@ -512,6 +512,11 @@ counsel-M-x.
     :straight ivy counsel
     :custom
     (enable-recursive-minibuffers t))
+
+  (use-package avy
+    :straight t
+    :bind
+    (("M-s" . avy-goto-char-2)))
 #+end_src
 
 ** Selectrum
