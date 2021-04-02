@@ -1545,7 +1545,9 @@ files. All these packages can be acessed under the C-c n map.
     (:map notes
           ((("f" . org-roam-find-file)
             ("l" . org-roam-insert)
-            ("r" . org-roam-random-note)))))
+            ("L" . org-roam-insert-immediate)
+            ("r" . org-roam-random-note)
+            ("w" . org-roam-capture)))))
 
   (use-package org-roam-server
     :straight t
