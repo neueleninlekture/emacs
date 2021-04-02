@@ -2406,21 +2406,6 @@ provide frontends for certain local applications. For instance, we use
 =mpdel= and =ivy-mpdel= to interface with =mpd= for music playback,
 and =ytdl= and =ytel= to watch and download videos.
 
-** Music
-
-=mpdel= provides a range of functions for managing =mpd= playlists and
-databases. =ivy-mpdel= adds Ivy completion to mpdel.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package mpdel
-    :straight ivy-mpdel
-    :bind
-    (:map music
-          ((("m" . ivy-mpdel-list)
-            ("l" . mpdel-playlist-open)
-            ("b" . mpdel-browser-open)))))
-#+end_src
-
 ** Videos
 
 These are tools for downloading and streaming videos from the web.
