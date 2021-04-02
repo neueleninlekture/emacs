@@ -2627,21 +2627,6 @@ the normal #282828.
   (load-theme 'doom-Iosvkem t)
 #+end_src
 
-** LEGACY Beacon
-
-=beacon-mode= highlights the point everytime a significant motion
-happens. It helps the user quickly locate the new position.
-
-#+begin_src emacs-lisp
-  (use-package beacon
-    :straight t
-    :init
-    (beacon-mode)
-    :diminish beacon-mode
-    :custom
-    (beacon-dont-blink-commands '(next-line previous-line forward-line other-window)))
-#+end_src
-
 ** Mouse and cursor
 
 #+begin_src emacs-lisp :tangle init.el
@@ -2681,108 +2666,6 @@ titlebar), frame size and transparency.
   (set-fontset-font t 'symbol (font-spec :family "Noto Color Emoji") nil 'prepend)
 #+end_src
    
-** LEGACY Doom Modeline
-
-#+begin_src emacs-lisp
-  (use-package doom-modeline
-    :straight t
-    :defer nil
-    :init
-    (setq doom-modeline-height 25)
-    (setq doom-modeline-bar-width 5)
-    (setq doom-modeline-icon t)
-    (setq doom-modeline-major-mode-icon t)
-    (setq doom-modeline-major-mode-color-icon t)
-    (setq doom-modeline-buffer-state-icon t)
-    (setq doom-modeline-buffer-modification-icon t)
-    (setq doom-modeline-minor-modes nil)
-    (setq doom-modeline-enable-word-count t)
-    (setq doom-modeline-buffer-encoding t)
-    (setq doom-modeline-persp-name t)
-    :config
-    (doom-modeline-mode))
-#+end_src
-
-** LEGACY Dashboard
-
-Dashboard is quite a nice package. It provides a startup screen with
-customizable logo, clickable button and a general view of
-things. However, I do not see it as being particularly useful. So it
-is gone.
-
-#+begin_src emacs-lisp
-  (use-package dashboard
-    :straight t
-    :defer nil
-    :config
-    (dashboard-setup-startup-hook)
-    :custom
-    (dashboard-set-heading-icons t)
-    (dashboard-set-file-icons t)
-    (dashboard-items
-     '((bookmarks . 5)
-       (recents . 5)
-       (agenda . 10)))
-    (dashboard-banner-logo-title "Welcome to GNU Emacs!")
-    (dashboard-startup-banner 'logo)
-    (dashboard-center-content t)
-    (dashboard-show-shortcuts t)
-    (dashboard-set-init-info t)
-    (dashboard-set-footer t)
-    (dashboard-footer-messages 
-     '("We conjure the spirits of the computer with our spells..."
-       "Happy hacking!"
-       "The One True Editor, Emacs."
-       "Vi Vi Vi, the editor of the beast."
-       "Violence begins with Vi."
-       "There is no system but GNU, and Linux is one of its kernels."
-
-       "The proof of the pudding is in the eating."
-       "In the beginning was the deed."
-       "Vanitas! Vanitatum vanitas!"
-       "Workers of the world, unite!"
-       "A spectre is haunting Europe..."))
-    (dashboard-set-navigator t)
-    (dashboard-navigator-buttons
-     `(;; line1
-       ((,nil
-         "Config"
-         "Open config file for easy editing"
-         (lambda (&rest _) (find-file "~/.emacs.d/emacs.org"))
-         'default)
-        (nil
-         "Magit"
-         "Open this config's local git repository"
-         (lambda (&rest _) (magit "~/.emacs.d"))
-         'default)
-        (nil
-         "Gitlab"
-         "Open this config's Gitea page in your web browser"
-         (lambda (&rest _) (browse-url "https://gitlab.com/aabm/emacs"))
-         'default)
-        )
-       ;; line 2
-       ((,nil
-         "Email"
-         "Read email with mu4e"
-         (lambda (&rest _) (mu4e))
-         'default)
-        (nil
-         "Elfeed"
-         "Read RSS/Atom feeds with Elfeed"
-         (lambda (&rest _) (elfeed))
-         'default)
-        (nil
-         "Dired"
-         "Manage files with dired"
-         (lambda (&rest _) (dired "~/"))
-         'default)))))
-
-  ;; Load dashboard only if Emacs does not get a file as an argument
-  (if (< (length command-line-args) 2)
-      (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*"))))
-#+end_src
-
 * Start server
 
 It is preferable to use Emacs as daemon in the background. Here we
