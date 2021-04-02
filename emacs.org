@@ -2643,9 +2643,8 @@ relate to fonts.
 #+begin_src emacs-lisp :tangle init.el
   (custom-set-faces
    '(Info-quoted ((t (:inherit fixed-pitch :foreground "#feacd0"))))
-   '(fixed-pitch ((t (:family "iosevka medium extended 11"))))
+   '(fixed-pitch ((t (:family "Iosevka 11"))))
    '(fixed-pitch-serif ((t (:family "IBM Plex Mono"))))
-   '(variable-pitch ((t (:family "Iosevka"))))
    '(diredfl-date-time ((t (:weight medium)))))
 #+end_src
 
