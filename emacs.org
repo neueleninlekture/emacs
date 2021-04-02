@@ -1712,54 +1712,55 @@ for printing the current page number to the echo area.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package pdf-tools
-    :straight t
-    :init
-    (pdf-loader-install)
-    :config
+	:straight t
+	:init
+	(pdf-loader-install)
+	:config
 
-    (defun aabm/pdf-view-continuous-toggle ()
-      (interactive)
-      (cond ((not pdf-view-continuous)
-             (setq pdf-view-continuous t)
-             (message "Page scrolling: Continous"))
-            (t
-             (setq pdf-view-continuous nil)
-             (message "Page scrolling: Constrained"))))
+	(defun aabm/pdf-view-continuous-toggle ()
+	  (interactive)
+	  (cond ((not pdf-view-continuous)
+			 (setq pdf-view-continuous t)
+			 (message "Page scrolling: Continous"))
+			(t
+			 (setq pdf-view-continuous nil)
+			 (message "Page scrolling: Constrained"))))
 
-    (defun aabm/pdf-view-open-in-zathura ()
-      "Open the current PDF with ‘zathura’."
-      (interactive)
-      (save-window-excursion
-        (let ((current-file (buffer-file-name))
-              (current-page (number-to-string (pdf-view-current-page))))
-          (async-shell-command
-           (format "zathura -P %s \"%s\"" current-page current-file))))
-      (message "Sent to Zathura"))
+	(defun aabm/pdf-view-open-in-zathura ()
+	  "Open the current PDF with ‘zathura’."
+	  (interactive)
+	  (save-window-excursion
+		(let ((current-file (buffer-file-name))
+			  (current-page (number-to-string (pdf-view-current-page))))
+		  (async-shell-command
+		   (format "zathura -P %s \"%s\"" current-page current-file))))
+	  (message "Sent to Zathura"))
 
-    (defun aabm/pdf-view-show-current-page ()
-      "Print the current page."
-      (interactive)
-      (message "Page: %s" (pdf-view-current-page)))
+	(defun aabm/pdf-view-show-current-page ()
+	  "Print the current page."
+	  (interactive)
+	  (message "Page: %s" (pdf-view-current-page)))
 
-    (defun pdfgrep ()
-      (interactive)
-      (grep (format "pdfgrep --ignore-case --recursive --page-number '%s' ." (read-string "Enter term: "))))  
+	(defun pdfgrep ()
+	  (interactive)
+	  (grep (format "pdfgrep --ignore-case --recursive --page-number '%s' ." (read-string "Enter term: "))))  
 
-    :custom
-    (pdf-view-resize-factor 1.1)
-    (pdf-view-continuous nil)
-    (pdf-view-display-size 'fit-page)
-    :bind
-    (:map pdf-view-mode-map
-          ((("C-s" . isearch-forward)
-            ("C-r" . isearch-backward)
-            ("C-c d" . pdf-view-midnight-minor-mode)
-            ("C-c z" . aabm/pdf-view-open-in-zathura)
-            ("C-c p" . aabm/pdf-view-show-current-page)
-            ("C-c t" . aabm/pdf-view-continuous-toggle )
-            ("C-a" . image-scroll-right)
-            ("C-e" . image-scroll-left)
-            ("f" . pdf-view-goto-page)))))
+	:custom
+	(pdf-view-resize-factor 1.1)
+	(pdf-view-continuous nil)
+	(pdf-view-display-size 'fit-page)
+	:bind
+	(:map pdf-view-mode-map
+		  ((("C-s" . isearch-forward)
+			("C-r" . isearch-backward)
+			("C-c d" . pdf-view-midnight-minor-mode)
+			("C-c z" . aabm/pdf-view-open-in-zathura)
+			("C-c p" . aabm/pdf-view-show-current-page)
+			("C-c t" . aabm/pdf-view-continuous-toggle )
+			("C-a" . image-scroll-right)
+			("C-e" . image-scroll-left)
+			("f" . pdf-view-goto-page)
+			("M-g g" . pdf-view-goto-page)))))
 #+end_src
 
 *** nov.el
