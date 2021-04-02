@@ -428,7 +428,7 @@ use-package declarations.
 #+begin_src emacs-lisp :tangle init.el
   (use-package diminish
     :straight t
-    :diminish visual-line-mode eldoc-mode org-indent-mode)
+    :diminish visual-line-mode eldoc-mode)
 #+end_src
 
 ** Async
@@ -1320,7 +1320,6 @@ some basic options. These are:
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
     :straight t
-    :diminish org-indent-mode
     :init
     (setq org-export-backends '(ascii beamer html latex md))
     :defer t
@@ -1330,8 +1329,6 @@ some basic options. These are:
     (org-hide-leading-stars t)
     (org-html-postamble nil)
     (org-cycle-global-at-bob t)
-    :hook
-    ((org-mode-hook . org-indent-mode))
     :bind
     (("C-," . org-cycle-agenda-files)
      (:map org-mode-map
@@ -1346,8 +1343,6 @@ some basic options. These are:
              ("<S-left>" . nil)
              ("<S-down>" . nil)
              ("<S-up>" . nil))))))
-
-  (diminish 'org-indent-mode)
 #+end_src
 
 *** Agenda, Tasks and TODOs
