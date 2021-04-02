@@ -516,7 +516,7 @@ counsel-M-x.
   (use-package avy
     :straight t
     :bind
-    (("M-s" . avy-goto-char-2)))
+    (("M-s" . avy-goto-char-timer)))
 #+end_src
 
 ** Selectrum
