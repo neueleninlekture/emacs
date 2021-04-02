@@ -558,7 +558,9 @@ counsel-M-x.
     :straight t
     :bind
     (("C-s" . consult-line)
-     ("M-y" . consult-yank)))
+     ("M-y" . consult-yank)
+     ("C-x b" . consult-buffer)
+     ("M-g g" . consult-goto-line)))
 
   (use-package embark
     :straight (:host github :repo "oantolin/embark"))
