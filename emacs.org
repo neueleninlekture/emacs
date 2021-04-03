@@ -1593,7 +1593,9 @@ files. All these packages can be acessed under the C-c n map.
 	(org-journal-file-format "%Y-%m-%d-%a.org")
 	:bind
 	(:map journal
-		  (("f" . org-journal-new-entry))))
+		  (("f" . org-journal-new-entry)))
+	:hook
+	(org-journal-mode-hook . auto-fill-mode))
 #+end_src
 
 *** Org Superstar
