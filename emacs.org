@@ -391,13 +391,21 @@ the lack of usage of the X clipboard.
   (global-auto-revert-mode t)
 #+end_src
 
-** Focus follows mouse
-
-Make the window focus will follow the mouse movement.
+** Mouse and cursor options
 
 #+begin_src emacs-lisp :tangle init.el
+  (blink-cursor-mode -1)
+  (tooltip-mode -1)
+
   (setq focus-follows-mouse t
-        mouse-autoselect-window t)
+		mouse-autoselect-window t)
+
+  (setf mouse-wheel-scroll-amount '(3 ((shift) . 3))
+		mouse-wheel-progressive-speed nil
+		mouse-wheel-follow-mouse t
+		scroll-step 1
+		scroll-conservatively 100
+		disabled-command-function nil)
 #+end_src
 
 * Base packages
