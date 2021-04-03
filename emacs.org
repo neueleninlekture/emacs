@@ -398,14 +398,14 @@ the lack of usage of the X clipboard.
   (tooltip-mode -1)
 
   (setq focus-follows-mouse t
-		mouse-autoselect-window t)
+        mouse-autoselect-window t)
 
   (setf mouse-wheel-scroll-amount '(3 ((shift) . 3))
-		mouse-wheel-progressive-speed nil
-		mouse-wheel-follow-mouse t
-		scroll-step 1
-		scroll-conservatively 100
-		disabled-command-function nil)
+        mouse-wheel-progressive-speed nil
+        mouse-wheel-follow-mouse t
+        scroll-step 1
+        scroll-conservatively 100
+        disabled-command-function nil)
 #+end_src
 
 * Base packages
