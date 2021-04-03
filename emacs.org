@@ -1327,30 +1327,32 @@ some basic options. These are:
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
-    :straight t
-    :init
-    (setq org-export-backends '(ascii beamer html latex md))
-    :defer t
-    :custom
-    (org-directory "~/org/")
-    (org-ellipsis "⬎")
-    (org-hide-leading-stars t)
-    (org-html-postamble nil)
-    (org-cycle-global-at-bob t)
-    :bind
-    (("C-," . org-cycle-agenda-files)
-     (:map org-mode-map
-           ((("M-n" . org-forward-element)
-             ("M-p" . org-backward-element)
-             ("C-M-n" . org-metadown)
-             ("C-M-p" . org-metaup)
-             ("C-M-f" . org-metaright)
-             ("C-M-b" . org-metaleft)
-             ("<mouse-3>" . org-cycle)
-             ("<S-right>" . nil)
-             ("<S-left>" . nil)
-             ("<S-down>" . nil)
-             ("<S-up>" . nil))))))
+	:straight t
+	:init
+	(setq org-export-backends '(ascii beamer html latex md))
+	:defer t
+	:hook
+	(org-mode-hook . org-indent-mode)
+	:custom
+	(org-directory "~/org/")
+	(org-ellipsis "⬎")
+	(org-hide-leading-stars t)
+	(org-html-postamble nil)
+	(org-cycle-global-at-bob t)
+	:bind
+	(("C-," . org-cycle-agenda-files)
+	 (:map org-mode-map
+		   ((("M-n" . org-forward-element)
+			 ("M-p" . org-backward-element)
+			 ("C-M-n" . org-metadown)
+			 ("C-M-p" . org-metaup)
+			 ("C-M-f" . org-metaright)
+			 ("C-M-b" . org-metaleft)
+			 ("<mouse-3>" . org-cycle)
+			 ("<S-right>" . nil)
+			 ("<S-left>" . nil)
+			 ("<S-down>" . nil)
+			 ("<S-up>" . nil))))))
 #+end_src
 
 *** Agenda, Tasks and TODOs
