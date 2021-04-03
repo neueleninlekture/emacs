@@ -814,6 +814,13 @@ selected deletes that region.
   (global-set-key (kbd "M-u") 'upcase-dwim)
 #+end_src
 
+** Transpose
+
+#+begin_src emacs-lisp :tangle init.el
+  (global-set-key (kbd "C-x M-t") 'transpose-sentences)
+  (global-set-key (kbd "C-x C-M-t") 'transpose-sexps)
+#+end_src
+
 * Buffer, file and window management
 
 In this section we deal with all packages relating to the fundamental
