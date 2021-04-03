@@ -1919,6 +1919,15 @@ for programming major modes, which is really all I need.
            ("w" . woman))))
 #+end_src
 
+** Other minor formats
+
+**** YAML
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package yaml-mode
+	:straight t)
+#+end_src
+
 ** Company
 
 #+begin_src emacs-lisp :tangle init.el
