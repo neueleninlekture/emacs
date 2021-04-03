@@ -839,7 +839,6 @@ windows.
     (peep-dired-cleanup-on-disable t)
     (peep-dired-ignored-extensions '("mkv" "iso" "mp4"))
     :config
-  
     (defun aabm/dired-xdg-open ()
       "Open the marked files using xdg-open."
       (interactive)
@@ -1049,13 +1048,13 @@ generating =scratch buffers=, whether they be in =org-mode= or in
 #+begin_src emacs-lisp :tangle init.el
   (defun aabm/restore-scratch ()
     "Restores the scratch buffer, in case it has been killed."
-      (interactive)
-      (switch-to-buffer "*scratch*")
-      (get-buffer "*scratch*")
-      (with-current-buffer "*scratch*"
-        (when (zerop (buffer-size))
-          (insert (substitute-command-keys initial-scratch-message))
-          (set-buffer-modified-p nil))))
+    (interactive)
+    (switch-to-buffer "*scratch*")
+    (get-buffer "*scratch*")
+    (with-current-buffer "*scratch*"
+      (when (zerop (buffer-size))
+        (insert (substitute-command-keys initial-scratch-message))
+        (set-buffer-modified-p nil))))
 #+end_src
 
 *** Kill this buffer
@@ -1174,101 +1173,101 @@ arrow keys.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package shackle
-	:straight t
-	:functions org-switch-to-buffer-other-window
-	:commands shackle-display-buffer
-	:hook
-	((after-init-hook . shackle-mode))
-	:config
-	(with-no-warnings
-	  (defvar shackle--popup-window-list nil) ; all popup windows
-	  (defvar-local shackle--current-popup-window nil) ; current popup window
-	  (put 'shackle--current-popup-window 'permanent-local t)
+    :straight t
+    :functions org-switch-to-buffer-other-window
+    :commands shackle-display-buffer
+    :hook
+    ((after-init-hook . shackle-mode))
+    :config
+    (with-no-warnings
+      (defvar shackle--popup-window-list nil) ; all popup windows
+      (defvar-local shackle--current-popup-window nil) ; current popup window
+      (put 'shackle--current-popup-window 'permanent-local t)
 
-	  (defun shackle-last-popup-buffer ()
-		"View last popup buffer."
-		(interactive)
-		(ignore-errors
-		  (display-buffer shackle-last-buffer)))
-	  (bind-key "C-h z" #'shackle-last-popup-buffer)
+      (defun shackle-last-popup-buffer ()
+        "View last popup buffer."
+        (interactive)
+        (ignore-errors
+          (display-buffer shackle-last-buffer)))
+      (bind-key "C-h z" #'shackle-last-popup-buffer)
 
-	  ;; Add keyword: `autoclose'
-	  (defun shackle-display-buffer-hack (fn buffer alist plist)
-		(let ((window (funcall fn buffer alist plist)))
-		  (setq shackle--current-popup-window window)
+      ;; Add keyword: `autoclose'
+      (defun shackle-display-buffer-hack (fn buffer alist plist)
+        (let ((window (funcall fn buffer alist plist)))
+          (setq shackle--current-popup-window window)
 
-		  (when (plist-get plist :autoclose)
-			(push (cons window buffer) shackle--popup-window-list))
-		  window))
+          (when (plist-get plist :autoclose)
+            (push (cons window buffer) shackle--popup-window-list))
+          window))
 
-	  (defun shackle-close-popup-window-hack (&rest _)
-		"Close current popup window via `C-g'."
-		(setq shackle--popup-window-list
-			  (cl-loop for (window . buffer) in shackle--popup-window-list
-					   if (and (window-live-p window)
-							   (equal (window-buffer window) buffer))
-					   collect (cons window buffer)))
-		;; `C-g' can deactivate region
-		(when (and (called-interactively-p 'interactive)
-				   (not (region-active-p)))
-		  (let (window buffer process)
-			(if (one-window-p)
-				(progn
-				  (setq window (selected-window))
-				  (when (equal (buffer-local-value 'shackle--current-popup-window
-												   (window-buffer window))
-							   window)
-					(winner-undo)))
-			  (progn
-				(setq window (caar shackle--popup-window-list))
-				(setq buffer (cdar shackle--popup-window-list))
-				(when (and (window-live-p window)
-						   (equal (window-buffer window) buffer))
-				  (setq process (get-buffer-process buffer))
-				  (when (process-live-p process)
-					(kill-process process))
-				  (delete-window window)
+      (defun shackle-close-popup-window-hack (&rest _)
+        "Close current popup window via `C-g'."
+        (setq shackle--popup-window-list
+              (cl-loop for (window . buffer) in shackle--popup-window-list
+                       if (and (window-live-p window)
+                               (equal (window-buffer window) buffer))
+                       collect (cons window buffer)))
+        ;; `C-g' can deactivate region
+        (when (and (called-interactively-p 'interactive)
+                   (not (region-active-p)))
+          (let (window buffer process)
+            (if (one-window-p)
+                (progn
+                  (setq window (selected-window))
+                  (when (equal (buffer-local-value 'shackle--current-popup-window
+                                                   (window-buffer window))
+                               window)
+                    (winner-undo)))
+              (progn
+                (setq window (caar shackle--popup-window-list))
+                (setq buffer (cdar shackle--popup-window-list))
+                (when (and (window-live-p window)
+                           (equal (window-buffer window) buffer))
+                  (setq process (get-buffer-process buffer))
+                  (when (process-live-p process)
+                    (kill-process process))
+                  (delete-window window)
 
-				  (pop shackle--popup-window-list)))))))
+                  (pop shackle--popup-window-list)))))))
 
-	  (advice-add #'keyboard-quit :before #'shackle-close-popup-window-hack)
-	  (advice-add #'shackle-display-buffer :around #'shackle-display-buffer-hack))
+      (advice-add #'keyboard-quit :before #'shackle-close-popup-window-hack)
+      (advice-add #'shackle-display-buffer :around #'shackle-display-buffer-hack))
 
-	;; HACK: compatibility issue with `org-switch-to-buffer-other-window'
-	;; (advice-add #'org-switch-to-buffer-other-window :override #'switch-to-buffer-other-window)
+    ;; HACK: compatibility issue with `org-switch-to-buffer-other-window'
+    ;; (advice-add #'org-switch-to-buffer-other-window :override #'switch-to-buffer-other-window)
 
-	;; rules
-	(setq shackle-default-size 0.4
-		  shackle-default-alignment 'below
-		  shackle-default-rule nil
-		  shackle-rules
-		  '((("*Help*" "*Apropos*") :select t :autoclose t)
-			(("\\*[Wo]*Man.*\\*" "*tldr*" "*\\*info*\\*") :regexp t :select t :autoclose t :same t)
-			(("*Calendar*" "*wclock*") :select t :size 0.3 :align 'below :autoclose t)
+    ;; rules
+    (setq shackle-default-size 0.4
+          shackle-default-alignment 'below
+          shackle-default-rule nil
+          shackle-rules
+          '((("*Help*" "*Apropos*") :select t :autoclose t)
+            (("\\*[Wo]*Man.*\\*" "*tldr*" "*\\*info*\\*") :regexp t :select t :autoclose t :same t)
+            (("*Calendar*" "*wclock*") :select t :size 0.3 :align 'below :autoclose t)
 
-			(compilation-mode :select t :size 0.3 :align 'below :autoclose t)
-			(comint-mode :select t :size 0.4 :align 'below :autoclose t)
-			(("*Warnings*" "*Messages*") :size 0.3 :align 'below :autoclose t)
-			(" *Install vterm* " :size 0.35 :same t :align 'below)
+            (compilation-mode :select t :size 0.3 :align 'below :autoclose t)
+            (comint-mode :select t :size 0.4 :align 'below :autoclose t)
+            (("*Warnings*" "*Messages*") :size 0.3 :align 'below :autoclose t)
+            (" *Install vterm* " :size 0.35 :same t :align 'below)
 
-			("*Completions*" :size 0.3 :align 'below :autoclose t)
-			("*Pp Eval Output*" :size 15 :align 'below :autoclose t)
-			("*Backtrace*" :select t :size 15 :align 'below :autoclose t)
+            ("*Completions*" :size 0.3 :align 'below :autoclose t)
+            ("*Pp Eval Output*" :size 15 :align 'below :autoclose t)
+            ("*Backtrace*" :select t :size 15 :align 'below :autoclose t)
 
-			("^\\*.*Shell Command.*\\*$" :regexp t :size 0.3 :align 'below :autoclose t)
-			("*shell*" :popup t :align 'below :autoclose t)
-			(("*ielm*" "* Guile REPL *" "* slime-repl sbcl *") :popup t :align 'below)
-			("^\\*R*" :regexp t :align 'below :autoclose t)
-			((inferior-python-mode) :align 'below)
-			((inferior-ess-mode ess-r-mode) :align 'below)
+            ("^\\*.*Shell Command.*\\*$" :regexp t :size 0.3 :align 'below :autoclose t)
+            ("*shell*" :popup t :align 'below :autoclose t)
+            (("*ielm*" "* Guile REPL *" "* slime-repl sbcl *") :popup t :align 'below)
+            ("^\\*R*" :regexp t :align 'below :autoclose t)
+            ((inferior-python-mode) :align 'below)
+            ((inferior-ess-mode ess-r-mode) :align 'below)
 
-			(("*Agenda Commands*" " *Org todo*" "*Org Dashboard*") :select t :size 0.1 :align 'below :autoclose t)
-			(("*Org Select*") :select t :same t)
-			(("\\*Capture\\*" "^CAPTURE*") :regexp t :select t :size 0.3 :align 'below)
-			((org-journal-mode) :select t :same t
-			(" *undo-tree*" :select t)
-			("^\\*macro expansion\\**" :regexp t :size 0.4 :align 'below)
-			((grep-mode rg-mode deadgrep-mode ag-mode pt-mode) :select t :size 0.4 :align 'below))))
+            (("*Agenda Commands*" " *Org todo*" "*Org Dashboard*") :select t :size 0.1 :align 'below :autoclose t)
+            (("*Org Select*") :select t :same t)
+            (("\\*Capture\\*" "^CAPTURE*") :regexp t :select t :size 0.3 :align 'below)
+            ((org-journal-mode) :select t :same t
+             (" *undo-tree*" :select t)
+             ("^\\*macro expansion\\**" :regexp t :size 0.4 :align 'below)
+             ((grep-mode rg-mode deadgrep-mode ag-mode pt-mode) :select t :size 0.4 :align 'below))))
 #+end_src
 
 *** Keybindings
@@ -1335,32 +1334,32 @@ some basic options. These are:
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
-	:straight t
-	:init
-	(setq org-export-backends '(ascii beamer html latex md))
-	:defer t
-	:hook
-	(org-mode-hook . org-indent-mode)
-	:custom
-	(org-directory "~/org/")
-	(org-ellipsis "⬎")
-	(org-hide-leading-stars t)
-	(org-html-postamble nil)
-	(org-cycle-global-at-bob t)
-	:bind
-	(("C-," . org-cycle-agenda-files)
-	 (:map org-mode-map
-		   ((("M-n" . org-forward-element)
-			 ("M-p" . org-backward-element)
-			 ("C-M-n" . org-metadown)
-			 ("C-M-p" . org-metaup)
-			 ("C-M-f" . org-metaright)
-			 ("C-M-b" . org-metaleft)
-			 ("<mouse-3>" . org-cycle)
-			 ("<S-right>" . nil)
-			 ("<S-left>" . nil)
-			 ("<S-down>" . nil)
-			 ("<S-up>" . nil))))))
+    :straight t
+    :init
+    (setq org-export-backends '(ascii beamer html latex md))
+    :defer t
+    :hook
+    (org-mode-hook . org-indent-mode)
+    :custom
+    (org-directory "~/org/")
+    (org-ellipsis "⬎")
+    (org-hide-leading-stars t)
+    (org-html-postamble nil)
+    (org-cycle-global-at-bob t)
+    :bind
+    (("C-," . org-cycle-agenda-files)
+     (:map org-mode-map
+           ((("M-n" . org-forward-element)
+             ("M-p" . org-backward-element)
+             ("C-M-n" . org-metadown)
+             ("C-M-p" . org-metaup)
+             ("C-M-f" . org-metaright)
+             ("C-M-b" . org-metaleft)
+             ("<mouse-3>" . org-cycle)
+             ("<S-right>" . nil)
+             ("<S-left>" . nil)
+             ("<S-down>" . nil)
+             ("<S-up>" . nil))))))
 #+end_src
 
 *** Agenda, Tasks and TODOs
@@ -1528,92 +1527,92 @@ files. All these packages can be acessed under the C-c n map.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package org-roam
-	:straight t
-	:config
-	(require 'org-protocol)
-	(require 'org-roam-protocol)
-	(org-roam-mode)
-	:diminish org-roam-mode
-	:custom
-	(org-roam-directory "~/org/roam/")
-	(org-roam-index-file "~/org/roam/index.org")
-	(org-roam-encrypt-files nil)
-	(org-roam-completion-system 'default)
-	(org-roam-db-update-method 'immediate)
-	(org-roam-graph-executable "/usr/bin/neato")
-	(org-roam-graph-extra-config '(("overlap" . "false")))
-	(org-roam-capture-templates
-	 '(("o" "Show: overview" plain (function org-roam--capture-get-point)
-		"#+date:%T\n#+startup: overview\n#+roam_tags: %?\n#+roam_alias:"
-		:file-name "%<%Y%m%d%H%M%S>-${slug}"
-		:head "#+title: ${title}\n"
-		:unnarrowed t)
-	   ("a" "Show: all" plain (function org-roam--capture-get-point)
-		"#+date:%T\n#+startup: showall\n#+roam_tags: %?\n#+roam_alias:"
-		:file-name "%<%Y%m%d%H%M%S>-${slug}"
-		:head "#+title: ${title}\n"
-		:unnarrowed t	 )))
+    :straight t
+    :config
+    (require 'org-protocol)
+    (require 'org-roam-protocol)
+    (org-roam-mode)
+    :diminish org-roam-mode
+    :custom
+    (org-roam-directory "~/org/roam/")
+    (org-roam-index-file "~/org/roam/index.org")
+    (org-roam-encrypt-files nil)
+    (org-roam-completion-system 'default)
+    (org-roam-db-update-method 'immediate)
+    (org-roam-graph-executable "/usr/bin/neato")
+    (org-roam-graph-extra-config '(("overlap" . "false")))
+    (org-roam-capture-templates
+     '(("o" "Show: overview" plain (function org-roam--capture-get-point)
+        "#+date:%T\n#+startup: overview\n#+roam_tags: %?\n#+roam_alias:"
+        :file-name "%<%Y%m%d%H%M%S>-${slug}"
+        :head "#+title: ${title}\n"
+        :unnarrowed t)
+       ("a" "Show: all" plain (function org-roam--capture-get-point)
+        "#+date:%T\n#+startup: showall\n#+roam_tags: %?\n#+roam_alias:"
+        :file-name "%<%Y%m%d%H%M%S>-${slug}"
+        :head "#+title: ${title}\n"
+        :unnarrowed t	 )))
 
-	:bind
-	(:map notes
-		  ((("f" . org-roam-find-file)
-			("l" . org-roam-insert)
-			("L" . org-roam-insert-immediate)
-			("r" . org-roam-random-note)
-			("w" . org-roam-capture)))))
+    :bind
+    (:map notes
+          ((("f" . org-roam-find-file)
+            ("l" . org-roam-insert)
+            ("L" . org-roam-insert-immediate)
+            ("r" . org-roam-random-note)
+            ("w" . org-roam-capture)))))
 
   (use-package org-roam-server
-	:straight t
-	:custom
-	(org-roam-server-host "127.0.0.1")
-	(org-roam-server-port 8080)
-	(org-roam-server-authenticate nil)
-	(org-roam-server-export-inline-images t)
-	(org-roam-server-serve-files nil)
-	(org-roam-server-served-file-extensions '("pdf" "mp4" "ogv"))
-	(org-roam-server-network-poll t)
-	(org-roam-server-network-arrows nil)
-	(org-roam-server-network-label-truncate t)
-	(org-roam-server-network-label-truncate-length 60)
-	(org-roam-server-network-label-wrap-length 20)
-	:bind
-	(:map notes
-		  (("g" . org-roam-server-mode))))
+    :straight t
+    :custom
+    (org-roam-server-host "127.0.0.1")
+    (org-roam-server-port 8080)
+    (org-roam-server-authenticate nil)
+    (org-roam-server-export-inline-images t)
+    (org-roam-server-serve-files nil)
+    (org-roam-server-served-file-extensions '("pdf" "mp4" "ogv"))
+    (org-roam-server-network-poll t)
+    (org-roam-server-network-arrows nil)
+    (org-roam-server-network-label-truncate t)
+    (org-roam-server-network-label-truncate-length 60)
+    (org-roam-server-network-label-wrap-length 20)
+    :bind
+    (:map notes
+          (("g" . org-roam-server-mode))))
 
   (use-package deft
-	:straight t
-	:custom
-	(deft-recursive t)
-	(deft-use-filter-string-for-filename t)
-	(deft-default-extension "org")
-	(deft-directory "~/org/roam")
-	:config
-	(defun deft-journal ()
-	  (interactive)
-	  (let ((deft-directory "~/org/journal"))
-		(deft)))
-	:bind
-	(:map notes
-		  (("s" . deft)))
-	(:map journal
-		  (("s" . deft-journal))))
+    :straight t
+    :custom
+    (deft-recursive t)
+    (deft-use-filter-string-for-filename t)
+    (deft-default-extension "org")
+    (deft-directory "~/org/roam")
+    :config
+    (defun deft-journal ()
+      (interactive)
+      (let ((deft-directory "~/org/journal"))
+        (deft)))
+    :bind
+    (:map notes
+          (("s" . deft)))
+    (:map journal
+          (("s" . deft-journal))))
 #+end_src
 
 *** Org Journal
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package org-journal
-	:straight t
-	:custom
-	(org-journal-dir "~/org/journal/")
-	(org-journal-date-format "%A, %d %B %Y")
-	(org-journal-file-type 'daily)
-	(org-journal-file-format "%Y-%m-%d-%a.org")
-	:bind
-	(:map journal
-		  (("f" . org-journal-new-entry)))
-	:hook
-	(org-journal-mode-hook . auto-fill-mode))
+    :straight t
+    :custom
+    (org-journal-dir "~/org/journal/")
+    (org-journal-date-format "%A, %d %B %Y")
+    (org-journal-file-type 'daily)
+    (org-journal-file-format "%Y-%m-%d-%a.org")
+    :bind
+    (:map journal
+          (("f" . org-journal-new-entry)))
+    :hook
+    (org-journal-mode-hook . auto-fill-mode))
 #+end_src
 
 *** Org Superstar
@@ -1732,55 +1731,55 @@ for printing the current page number to the echo area.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package pdf-tools
-	:straight t
-	:init
-	(pdf-loader-install)
-	:config
+    :straight t
+    :init
+    (pdf-loader-install)
+    :config
 
-	(defun aabm/pdf-view-continuous-toggle ()
-	  (interactive)
-	  (cond ((not pdf-view-continuous)
-			 (setq pdf-view-continuous t)
-			 (message "Page scrolling: Continous"))
-			(t
-			 (setq pdf-view-continuous nil)
-			 (message "Page scrolling: Constrained"))))
+    (defun aabm/pdf-view-continuous-toggle ()
+      (interactive)
+      (cond ((not pdf-view-continuous)
+             (setq pdf-view-continuous t)
+             (message "Page scrolling: Continous"))
+            (t
+             (setq pdf-view-continuous nil)
+             (message "Page scrolling: Constrained"))))
 
-	(defun aabm/pdf-view-open-in-zathura ()
-	  "Open the current PDF with ‘zathura’."
-	  (interactive)
-	  (save-window-excursion
-		(let ((current-file (buffer-file-name))
-			  (current-page (number-to-string (pdf-view-current-page))))
-		  (async-shell-command
-		   (format "zathura -P %s \"%s\"" current-page current-file))))
-	  (message "Sent to Zathura"))
+    (defun aabm/pdf-view-open-in-zathura ()
+      "Open the current PDF with ‘zathura’."
+      (interactive)
+      (save-window-excursion
+        (let ((current-file (buffer-file-name))
+              (current-page (number-to-string (pdf-view-current-page))))
+          (async-shell-command
+           (format "zathura -P %s \"%s\"" current-page current-file))))
+      (message "Sent to Zathura"))
 
-	(defun aabm/pdf-view-show-current-page ()
-	  "Print the current page."
-	  (interactive)
-	  (message "Page: %s" (pdf-view-current-page)))
+    (defun aabm/pdf-view-show-current-page ()
+      "Print the current page."
+      (interactive)
+      (message "Page: %s" (pdf-view-current-page)))
 
-	(defun pdfgrep ()
-	  (interactive)
-	  (grep (format "pdfgrep --ignore-case --recursive --page-number '%s' ." (read-string "Enter term: "))))  
+    (defun pdfgrep ()
+      (interactive)
+      (grep (format "pdfgrep --ignore-case --recursive --page-number '%s' ." (read-string "Enter term: "))))  
 
-	:custom
-	(pdf-view-resize-factor 1.1)
-	(pdf-view-continuous nil)
-	(pdf-view-display-size 'fit-page)
-	:bind
-	(:map pdf-view-mode-map
-		  ((("C-s" . isearch-forward)
-			("C-r" . isearch-backward)
-			("C-c d" . pdf-view-midnight-minor-mode)
-			("C-c z" . aabm/pdf-view-open-in-zathura)
-			("C-c p" . aabm/pdf-view-show-current-page)
-			("C-c t" . aabm/pdf-view-continuous-toggle )
-			("C-a" . image-scroll-right)
-			("C-e" . image-scroll-left)
-			("f" . pdf-view-goto-page)
-			("M-g g" . pdf-view-goto-page)))))
+    :custom
+    (pdf-view-resize-factor 1.1)
+    (pdf-view-continuous nil)
+    (pdf-view-display-size 'fit-page)
+    :bind
+    (:map pdf-view-mode-map
+          ((("C-s" . isearch-forward)
+            ("C-r" . isearch-backward)
+            ("C-c d" . pdf-view-midnight-minor-mode)
+            ("C-c z" . aabm/pdf-view-open-in-zathura)
+            ("C-c p" . aabm/pdf-view-show-current-page)
+            ("C-c t" . aabm/pdf-view-continuous-toggle )
+            ("C-a" . image-scroll-right)
+            ("C-e" . image-scroll-left)
+            ("f" . pdf-view-goto-page)
+            ("M-g g" . pdf-view-goto-page)))))
 #+end_src
 
 *** nov.el
@@ -1901,6 +1900,12 @@ for programming major modes, which is really all I need.
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+end_src
 
+*** Indentation
+
+#+begin_src emacs-lisp :tangle init.el
+  (global-set-key (kbd "C-\\") 'indent-region)
+#+end_src
+
 *** Compile command
 
 #+begin_src emacs-lisp :tangle init.el
@@ -1918,14 +1923,14 @@ for programming major modes, which is really all I need.
 
 *** Code folding
 
-	#+begin_src emacs-lisp :tangle init.el
-      (use-package hideshow
-        :diminish hs-minor-mode
-        :hook
-        (prog-mode-hook . hs-minor-mode)
-        :bind
-        ("C-x @" . hs-toggle-hiding))
-	#+end_src
+#+begin_src emacs-lisp :tangle init.el
+  (use-package hideshow
+    :diminish hs-minor-mode
+    :hook
+    (prog-mode-hook . hs-minor-mode)
+    :bind
+    ("C-x @" . hs-toggle-hiding))
+#+end_src
 
 ** Documentation
    
@@ -1942,158 +1947,158 @@ for programming major modes, which is really all I need.
 
 *** Info
 
-	#+begin_src emacs-lisp :tangle init.el
-	  (defvar Info-directory-list)
-	  (defvar Info-additional-directory-list)
-	  (defvar Info-default-directory-list)
-	  (declare-function info-initialize "info")
-	  (declare-function cl-mapcar "cl-lib")
+#+begin_src emacs-lisp :tangle init.el
+  (defvar Info-directory-list)
+  (defvar Info-additional-directory-list)
+  (defvar Info-default-directory-list)
+  (declare-function info-initialize "info")
+  (declare-function cl-mapcar "cl-lib")
 
-	  (defvar selectrum-info-history nil
-		"Completion history for `selectrum-info' and derived commands.")
+  (defvar selectrum-info-history nil
+    "Completion history for `selectrum-info' and derived commands.")
 
-	  (defcustom selectrum-info-default-other-window nil
-		"Whether `selectrum-info' (and derived commands) should display
-	  the Info buffer in the other window by default. Use a prefix argument to
-	  do the opposite."
-		:type 'boolean
-		:group 'selectrum)
+  (defcustom selectrum-info-default-other-window nil
+    "Whether `selectrum-info' (and derived commands) should display
+  the Info buffer in the other window by default. Use a prefix argument to
+  do the opposite."
+    :type 'boolean
+    :group 'selectrum)
 
-	  (defun selectrum--info-get-child-node (top-node)
-		"Create and select from a list of Info nodes found in the parent node TOP-NODE."
-		(let (;; It's reasonable to assume that sections are intentionally
-			  ;; ordered in a certain way, so we preserve that order.
-			  (selectrum-should-sort nil)
-			  ;; Headers look like "* Some Thing::      Description",
-			  ;; where descriptions are optional and might continue on
-			  ;; the next line.
-			  (sub-topic-format (rx "* "
-									(group (+? (not ?:)))
-									"::"
-									;; Include the description, if one exists.
-									;; If it doesn't, the line ends immediately.
-									(or "\n"
-										(seq
-										 (0+ blank)
-										 (group (+? anychar))
-										 ;; Sometimes a heading follows on the next line,
-										 ;; and sometimes there's any empty blank line
-										 ;; (such as before a section title).  For now,
-										 ;; assume continuation lines use indentation and
-										 ;; other lines don't.
-										 ;; (or "\n\n" "\n*")
-										 "\n" (not blank))))))
-		  (let ((candidates
-				 (save-selected-window
-				   (save-match-data
-					 (with-temp-buffer
-					   ;; Some nodes created from multiple files.
-					   (info top-node (current-buffer))
-					   (goto-char (point-min))
-					   (cl-loop while (re-search-forward sub-topic-format nil t)
-							 do (forward-line 0)         ; Go back to start of line.
-							 collect (match-string 1) into node-names
-							 collect (match-string 2) into descriptions
-							 ;; If a node has a description, it helps if that description is
-							 ;; also searchable.  For the normal ‘*Completions*’ buffer, that
-							 ;; can be done using regular annotation data.  For Selectrum,
-							 ;; (in which annotations can't currently be matched against),
-							 ;; this can be done by including the annotation in the
-							 ;; displayed text and setting the ‘selectrum-candidate-full’
-							 ;; property to be the actual node name.
-							 finally return
-							 (cl-mapcar (lambda (node-name description)
-										  (cons
-										   (concat
-											node-name
-											(when description
-											  (propertize
-											   (concat " - "
-													   (replace-regexp-in-string
-														"\n" ""
-														(replace-regexp-in-string
-														 " +" " " description)))
-											   'face 'completions-annotations)))
-										   node-name))
-										node-names descriptions)))))))
+  (defun selectrum--info-get-child-node (top-node)
+    "Create and select from a list of Info nodes found in the parent node TOP-NODE."
+    (let (;; It's reasonable to assume that sections are intentionally
+          ;; ordered in a certain way, so we preserve that order.
+          (selectrum-should-sort nil)
+          ;; Headers look like "* Some Thing::      Description",
+          ;; where descriptions are optional and might continue on
+          ;; the next line.
+          (sub-topic-format (rx "* "
+                                (group (+? (not ?:)))
+                                "::"
+                                ;; Include the description, if one exists.
+                                ;; If it doesn't, the line ends immediately.
+                                (or "\n"
+                                    (seq
+                                     (0+ blank)
+                                     (group (+? anychar))
+                                     ;; Sometimes a heading follows on the next line,
+                                     ;; and sometimes there's any empty blank line
+                                     ;; (such as before a section title).  For now,
+                                     ;; assume continuation lines use indentation and
+                                     ;; other lines don't.
+                                     ;; (or "\n\n" "\n*")
+                                     "\n" (not blank))))))
+      (let ((candidates
+             (save-selected-window
+               (save-match-data
+                 (with-temp-buffer
+                   ;; Some nodes created from multiple files.
+                   (info top-node (current-buffer))
+                   (goto-char (point-min))
+                   (cl-loop while (re-search-forward sub-topic-format nil t)
+                            do (forward-line 0)         ; Go back to start of line.
+                            collect (match-string 1) into node-names
+                            collect (match-string 2) into descriptions
+                            ;; If a node has a description, it helps if that description is
+                            ;; also searchable.  For the normal ‘*Completions*’ buffer, that
+                            ;; can be done using regular annotation data.  For Selectrum,
+                            ;; (in which annotations can't currently be matched against),
+                            ;; this can be done by including the annotation in the
+                            ;; displayed text and setting the ‘selectrum-candidate-full’
+                            ;; property to be the actual node name.
+                            finally return
+                            (cl-mapcar (lambda (node-name description)
+                                         (cons
+                                          (concat
+                                           node-name
+                                           (when description
+                                             (propertize
+                                              (concat " - "
+                                                      (replace-regexp-in-string
+                                                       "\n" ""
+                                                       (replace-regexp-in-string
+                                                        " +" " " description)))
+                                              'face 'completions-annotations)))
+                                          node-name))
+                                       node-names descriptions)))))))
 
-			(cdr (assoc (completing-read
-						 "Info Sub-Topic: "
-						 candidates
-						 nil t nil 'selectrum-info-history)
-						candidates)))))
+        (cdr (assoc (completing-read
+                     "Info Sub-Topic: "
+                     candidates
+                     nil t nil 'selectrum-info-history)
+                    candidates)))))
 
-	  ;;;###autoload
-	  (defun selectrum-info (other-window-opposite-p &optional top-node)
-		"Go to a node of an Info topic.
-	  With a prefix argument, do the opposite
-	  of `selectrum-info-default-other-window'.
-	  For example, you can go to \"(magit)Notes\" by selecting \"magit\", then \"Notes\" ."
-		(interactive "P")
+  ;;;###autoload
+  (defun selectrum-info (other-window-opposite-p &optional top-node)
+    "Go to a node of an Info topic.
+  With a prefix argument, do the opposite
+  of `selectrum-info-default-other-window'.
+  For example, you can go to \"(magit)Notes\" by selecting \"magit\", then \"Notes\" ."
+    (interactive "P")
 
-		;; Initialize Info information so that the proper directories
-		;; can be found.
-		(info-initialize)
+    ;; Initialize Info information so that the proper directories
+    ;; can be found.
+    (info-initialize)
 
-		(save-match-data
-		  (let* ((use-other-window (if other-window-opposite-p
-									   (not selectrum-info-default-other-window)
-									 selectrum-info-default-other-window))
-				 ;; Get all Info files.
-				 (node-files
-				  (cl-loop for directory in (append (or Info-directory-list
-														Info-default-directory-list)
-													Info-additional-directory-list)
-						;; If the directory exists
-						when (file-directory-p directory)
-						;; get all files with ".info" in their name.
-						append (directory-files directory nil "\\.info" t)))
+    (save-match-data
+      (let* ((use-other-window (if other-window-opposite-p
+                                   (not selectrum-info-default-other-window)
+                                 selectrum-info-default-other-window))
+             ;; Get all Info files.
+             (node-files
+              (cl-loop for directory in (append (or Info-directory-list
+                                                    Info-default-directory-list)
+                                                Info-additional-directory-list)
+                       ;; If the directory exists
+                       when (file-directory-p directory)
+                       ;; get all files with ".info" in their name.
+                       append (directory-files directory nil "\\.info" t)))
 
-				 ;; Get the names of the Info nodes, based on the file names.
-				 (node-names (cl-remove-duplicates
-							  (cl-loop for file in node-files
-									do (string-match "\\(.+?\\)\\." file)
-									collect (match-string 1 file))
-							  :test #'equal))
+             ;; Get the names of the Info nodes, based on the file names.
+             (node-names (cl-remove-duplicates
+                          (cl-loop for file in node-files
+                                   do (string-match "\\(.+?\\)\\." file)
+                                   collect (match-string 1 file))
+                          :test #'equal))
 
-				 ;; Select a top node/topic.
-				 (chosen-top-node (cond
-									((null top-node)
-									 (completing-read "Info Topic: " node-names nil t))
-									((member top-node node-names)
-									 top-node)
-									(t (error "Top-level Info node does not exist: %s"
-											  top-node))))
+             ;; Select a top node/topic.
+             (chosen-top-node (cond
+                               ((null top-node)
+                                (completing-read "Info Topic: " node-names nil t))
+                               ((member top-node node-names)
+                                top-node)
+                               (t (error "Top-level Info node does not exist: %s"
+                                         top-node))))
 
-				 ;; Select a child node.
-				 (chosen-child-node (selectrum--info-get-child-node chosen-top-node)))
+             ;; Select a child node.
+             (chosen-child-node (selectrum--info-get-child-node chosen-top-node)))
 
-			;; Go to the chosen child node.
-			(funcall (if use-other-window
-						 #'info-other-window
-					   #'info)
-					 (format "(%s)%s" chosen-top-node chosen-child-node)))))
+        ;; Go to the chosen child node.
+        (funcall (if use-other-window
+                     #'info-other-window
+                   #'info)
+                 (format "(%s)%s" chosen-top-node chosen-child-node)))))
 
-	  ;;;###autoload
-	  (defun selectrum-info-elisp-manual (other-window-opposite-p)
-		"Like `selectrum-info', but directly choose nodes from the Emacs Lisp (Elisp) manual."
-		(interactive "P")
-		(selectrum-info other-window-opposite-p "elisp"))
+  ;;;###autoload
+  (defun selectrum-info-elisp-manual (other-window-opposite-p)
+    "Like `selectrum-info', but directly choose nodes from the Emacs Lisp (Elisp) manual."
+    (interactive "P")
+    (selectrum-info other-window-opposite-p "elisp"))
 
-	  ;;;###autoload
-	  (defun selectrum-info-emacs-manual (other-window-opposite-p)
-		"Like `selectrum-info', but directly choose nodes from the Emacs manual."
-		(interactive "P")
-		(selectrum-info other-window-opposite-p "emacs"))
+  ;;;###autoload
+  (defun selectrum-info-emacs-manual (other-window-opposite-p)
+    "Like `selectrum-info', but directly choose nodes from the Emacs manual."
+    (interactive "P")
+    (selectrum-info other-window-opposite-p "emacs"))
 
-	  ;;;###autoload
-	  (defun selectrum-info-org-manual (other-window-opposite-p)
-		"Like `selectrum-info', but directly choose nodes from the Org manual."
-		(interactive "P")
-		(selectrum-info other-window-opposite-p "org"))
+  ;;;###autoload
+  (defun selectrum-info-org-manual (other-window-opposite-p)
+    "Like `selectrum-info', but directly choose nodes from the Org manual."
+    (interactive "P")
+    (selectrum-info other-window-opposite-p "org"))
 
-	  (global-set-key (kbd "C-h I") 'selectrum-info)
-	#+end_src
+  (global-set-key (kbd "C-h I") 'selectrum-info)
+#+end_src
 
 ** Other minor formats
 
@@ -2101,7 +2106,7 @@ for programming major modes, which is really all I need.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package yaml-mode
-	:straight t)
+    :straight t)
 #+end_src
 
 ** Company
