@@ -1944,7 +1944,7 @@ for programming major modes, which is really all I need.
 	  (defvar selectrum-info-history nil
 		"Completion history for `selectrum-info' and derived commands.")
 
-	  (defcustom selectrum-info-default-other-window t
+	  (defcustom selectrum-info-default-other-window nil
 		"Whether `selectrum-info' (and derived commands) should display
 	  the Info buffer in the other window by default. Use a prefix argument to
 	  do the opposite."
@@ -2798,13 +2798,6 @@ the normal #282828.
     (doom-themes-org-config))
 
   (load-theme 'doom-Iosvkem t)
-#+end_src
-
-** Mouse and cursor
-
-#+begin_src emacs-lisp :tangle init.el
-  (blink-cursor-mode -1)
-  (tooltip-mode -1)
 #+end_src
 
 ** Face customization
