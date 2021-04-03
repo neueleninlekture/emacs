@@ -1235,7 +1235,7 @@ arrow keys.
 		  shackle-default-rule nil
 		  shackle-rules
 		  '((("*Help*" "*Apropos*") :select t :autoclose t)
-			(("\\*[Wo]*Man.*\\*" "*tldr*") :regexp t :select t :autoclose t :same t)
+			(("\\*[Wo]*Man.*\\*" "*tldr*" "*\\*info*\\*") :regexp t :select t :autoclose t :same t)
 			(("*Calendar*" "*wclock*") :select t :size 0.3 :align 'below :autoclose t)
 
 			(compilation-mode :select t :size 0.3 :align 'below :autoclose t)
