@@ -1192,50 +1192,50 @@ arrow keys.
       (put 'shackle--current-popup-window 'permanent-local t)
 
       (defun shackle-last-popup-buffer ()
-        "View last popup buffer."
-        (interactive)
-        (ignore-errors
-          (display-buffer shackle-last-buffer)))
+	"View last popup buffer."
+	(interactive)
+	(ignore-errors
+	  (display-buffer shackle-last-buffer)))
       (bind-key "C-h z" #'shackle-last-popup-buffer)
 
       ;; Add keyword: `autoclose'
       (defun shackle-display-buffer-hack (fn buffer alist plist)
-        (let ((window (funcall fn buffer alist plist)))
-          (setq shackle--current-popup-window window)
+	(let ((window (funcall fn buffer alist plist)))
+	  (setq shackle--current-popup-window window)
 
-          (when (plist-get plist :autoclose)
-            (push (cons window buffer) shackle--popup-window-list))
-          window))
+	  (when (plist-get plist :autoclose)
+	    (push (cons window buffer) shackle--popup-window-list))
+	  window))
 
       (defun shackle-close-popup-window-hack (&rest _)
-        "Close current popup window via `C-g'."
-        (setq shackle--popup-window-list
-              (cl-loop for (window . buffer) in shackle--popup-window-list
-                       if (and (window-live-p window)
-                               (equal (window-buffer window) buffer))
-                       collect (cons window buffer)))
-        ;; `C-g' can deactivate region
-        (when (and (called-interactively-p 'interactive)
-                   (not (region-active-p)))
-          (let (window buffer process)
-            (if (one-window-p)
-                (progn
-                  (setq window (selected-window))
-                  (when (equal (buffer-local-value 'shackle--current-popup-window
-                                                   (window-buffer window))
-                               window)
-                    (winner-undo)))
-              (progn
-                (setq window (caar shackle--popup-window-list))
-                (setq buffer (cdar shackle--popup-window-list))
-                (when (and (window-live-p window)
-                           (equal (window-buffer window) buffer))
-                  (setq process (get-buffer-process buffer))
-                  (when (process-live-p process)
-                    (kill-process process))
-                  (delete-window window)
+	"Close current popup window via `C-g'."
+	(setq shackle--popup-window-list
+	      (cl-loop for (window . buffer) in shackle--popup-window-list
+		       if (and (window-live-p window)
+			       (equal (window-buffer window) buffer))
+		       collect (cons window buffer)))
+	;; `C-g' can deactivate region
+	(when (and (called-interactively-p 'interactive)
+		   (not (region-active-p)))
+	  (let (window buffer process)
+	    (if (one-window-p)
+		(progn
+		  (setq window (selected-window))
+		  (when (equal (buffer-local-value 'shackle--current-popup-window
+						   (window-buffer window))
+			       window)
+		    (winner-undo)))
+	      (progn
+		(setq window (caar shackle--popup-window-list))
+		(setq buffer (cdar shackle--popup-window-list))
+		(when (and (window-live-p window)
+			   (equal (window-buffer window) buffer))
+		  (setq process (get-buffer-process buffer))
+		  (when (process-live-p process)
+		    (kill-process process))
+		  (delete-window window)
 
-                  (pop shackle--popup-window-list)))))))
+		  (pop shackle--popup-window-list)))))))
 
       (advice-add #'keyboard-quit :before #'shackle-close-popup-window-hack)
       (advice-add #'shackle-display-buffer :around #'shackle-display-buffer-hack))
@@ -1245,36 +1245,36 @@ arrow keys.
 
     ;; rules
     (setq shackle-default-size 0.4
-          shackle-default-alignment 'below
-          shackle-default-rule nil
-          shackle-rules
-          '((("*Help*" "*Apropos*") :select t :autoclose t)
-            (("\\*[Wo]*Man.*\\*" "*tldr*" "*\\*info*\\*") :regexp t :select t :autoclose t :same t)
-            (("*Calendar*" "*wclock*") :select t :size 0.3 :align 'below :autoclose t)
+	  shackle-default-alignment 'below
+	  shackle-default-rule nil
+	  shackle-rules
+	  '((("*Help*" "*Apropos*") :select t :autoclose t)
+	    (("\\*[Wo]*Man.*\\*" "*tldr*" "*\\*info*\\*") :regexp t :select t :autoclose t :same t)
+	    (("*Calendar*" "*wclock*") :select t :size 0.3 :align 'below :autoclose t)
 
-            (compilation-mode :select t :size 0.3 :align 'below :autoclose t)
-            (comint-mode :select t :size 0.4 :align 'below :autoclose t)
-            (("*Warnings*" "*Messages*") :size 0.3 :align 'below :autoclose t)
-            (" *Install vterm* " :size 0.35 :same t :align 'below)
+	    (compilation-mode :select t :size 0.3 :align 'below :autoclose t)
+	    (comint-mode :select t :size 0.4 :align 'below :autoclose t)
+	    (("*Warnings*" "*Messages*") :size 0.3 :align 'below :autoclose t)
+	    (" *Install vterm* " :size 0.35 :same t :align 'below)
 
-            ("*Completions*" :size 0.3 :align 'below :autoclose t)
-            ("*Pp Eval Output*" :size 15 :align 'below :autoclose t)
-            ("*Backtrace*" :select t :size 15 :align 'below :autoclose t)
+	    ("*Completions*" :size 0.3 :align 'below :autoclose t)
+	    ("*Pp Eval Output*" :size 15 :align 'below :autoclose t)
+	    ("*Backtrace*" :select t :size 15 :align 'below :autoclose t)
 
-            ("^\\*.*Shell Command.*\\*$" :regexp t :size 0.3 :align 'below :autoclose t)
-            ("*shell*" :popup t :align 'below :autoclose t)
-            (("*ielm*" "* Guile REPL *" "* slime-repl sbcl *") :popup t :align 'below)
-            ("^\\*R*" :regexp t :align 'below :autoclose t)
-            ((inferior-python-mode) :align 'below)
-            ((inferior-ess-mode ess-r-mode) :align 'below)
+	    ("^\\*.*Shell Command.*\\*$" :regexp t :size 0.3 :align 'below :autoclose t)
+	    ("*shell*" :popup t :align 'below :autoclose t)
+	    (("*ielm*" "* Guile REPL *" "* slime-repl sbcl *") :popup t :align 'below)
+	    ("^\\*R*" :regexp t :align 'below :autoclose t)
+	    ((inferior-python-mode) :align 'below)
+	    ((inferior-ess-mode ess-r-mode) :align 'below)
 
-            (("*Agenda Commands*" " *Org todo*" "*Org Dashboard*") :select t :size 0.1 :align 'below :autoclose t)
-            (("*Org Select*") :select t :same t)
-            (("\\*Capture\\*" "^CAPTURE*") :regexp t :select t :size 0.3 :align 'below)
-            ((org-journal-mode) :select t :same t
-             (" *undo-tree*" :select t)
-             ("^\\*macro expansion\\**" :regexp t :size 0.4 :align 'below)
-             ((grep-mode rg-mode deadgrep-mode ag-mode pt-mode) :select t :size 0.4 :align 'below))))
+	    (("*Agenda Commands*" " *Org todo*" "*Org Dashboard*") :select t :size 0.1 :align 'below :autoclose t)
+	    (("*Org Select*") :select t :same t)
+	    (("\\*Capture\\*" "^CAPTURE*") :regexp t :select t :size 0.3 :align 'below)
+	    ((org-journal-mode) :select t :same t)
+	    (" *undo-tree*" :select t)
+	    ("^\\*macro expansion\\**" :regexp t :size 0.4 :align 'below)
+	    ((grep-mode rg-mode deadgrep-mode ag-mode pt-mode) :select t :size 0.4 :align 'below))))
 #+end_src
 
 *** Keybindings
