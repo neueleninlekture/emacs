@@ -2199,6 +2199,17 @@ read from Emacs using the =info= command, or C-h i.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq python-indent-offset 4)
+
+  (use-package anaconda-mode
+    :straight t
+    :hook
+    ((python-mode-hook . anaconda-mode)
+     (python-mode-hook . anaconda-eldoc-mode)))
+
+  (use-package company-anaconda
+    :straight t
+    :config
+    (add-to-list 'company-backends 'company-anaconda))
 #+end_src
 
 ** R and others
