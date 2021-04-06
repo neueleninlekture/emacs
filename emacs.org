@@ -754,12 +754,32 @@ A few simple options for filling text to a reasonable character/column
 limit.
 
 #+begin_src emacs-lisp :tangle init.el
+  (defun aabm/unfill-paragraph (&optional region)
+    "Takes a multi-line paragraph and makes it into a single line of text. This function was taken from Sacha Chua's configuration."
+    (interactive
+     (progn
+       (barf-if-buffer-read-only)
+       (list t)))
+    (let ((fill-column (point-max)))
+      (fill-paragraph nil region)))
+
+  (defun aabm/fill-or-unfill-paragraph (&optional unfill region)
+    "Fill paragraph (or REGION). With the prefix argument UNFILL, unfill it instead. This function was taken from Sacha Chua's configuration."
+    (interactive
+     (progn
+       (barf-if-buffer-read-only)
+       (list (if current-prefix-arg 'unfill) t)))
+    (let ((fill-column (if unfill (point-max) fill-column)))
+      (fill-paragraph nil region)))
+
+  (bind-key "M-Q" 'aabm/unfill-paragraph)
+  (bind-key "M-q" 'aabm/fill-or-unfill-paragraph)
+
   (general-define-key
    :keymaps 'fill-text
    "a" 'auto-fill-mode
    "f" 'fill-region)
 #+end_src
-
 ** Undo Tree
 
 =undo-tree= expands the possibilities of undoing and redoing edits by
