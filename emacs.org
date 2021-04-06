@@ -904,11 +904,11 @@ windows.
   (use-package peep-dired
     :straight t
     :bind
-    (:map dired-mode-map
-          (("i" . peep-dired)))
-    (:map peep-dired-mode-map
-          ((("n" . peep-dired-next-file)
-            ("p" . peep-dired-prev-file)))))
+    ((:map dired-mode-map
+           (("i" . peep-dired)))
+     (:map peep-dired-mode-map 
+           (("SPC" . nil)
+            ("<backspace>" . nil)))))
 
   (use-package all-the-icons-dired
     :straight t
