@@ -821,6 +821,12 @@ selected deletes that region.
   (global-set-key (kbd "C-x C-M-t") 'transpose-sexps)
 #+end_src
 
+** Sentence editing
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq sentence-end-double-space nil)
+#+end_src
+
 * Buffer, file and window management
 
 In this section we deal with all packages relating to the fundamental
