@@ -2578,6 +2578,27 @@ of those tools.
     (mu4e-alert-email-notification-types '(count)))
 #+end_src
 
+** Gnus
+
+#+begin_src emacs-lisp
+  (setq gnus-select-method
+        '(nnimap "disroot"
+                 (nnimap-address "disroot.org")
+                 (nnimap-server-port 993)
+                 (nnimap-stream tls)
+                 (nnmail-expiry-wait immediate)))
+
+  (setq gnus-select-method
+        '(nnmaildir))
+
+  (setq user-full-name "skele"
+        user-mail-address "skele@aaathats3as.com"
+        send-mail-function 'smtpmail-send-it
+        smtpmail-smtp-server "mail.cock.li"
+        smtpmail-stream-type 'starttls
+        smtpmail-smtp-service 587)
+#+end_src
+
 ** EWW
 
 =eww=, the Emacs Web Wowser, is a simple text-based web browser built
