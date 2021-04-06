@@ -486,6 +486,11 @@ keybinding declarations.
   (general-auto-unbind-keys)
 #+end_src
 
+* Minibuffer
+
+Here we install the packages which deal with minibuffer completion and
+other possible uses for the minibuffer.
+
 ** Which Key
 
 =which-key= is a core package in many distributed configurations for
@@ -503,7 +508,6 @@ of bindings.
     :custom
     (which-key-show-early-on-C-h t))
 #+end_src
-
 ** Ivy, Swiper, Avy
 
 =Ivy= is a lightweight but powerful =fuzzy completion= and =narrowing
@@ -526,7 +530,6 @@ counsel-M-x.
     :bind
     (("M-s" . avy-goto-char-timer)))
 #+end_src
-
 ** Selectrum
 
 #+begin_src emacs-lisp :tangle init.el
@@ -572,6 +575,17 @@ counsel-M-x.
 
   (use-package embark
     :straight (:host github :repo "oantolin/embark"))
+#+end_src
+** Miniedit
+
+This package allows you to edit the minibuffer contents in a dedicated
+buffer by pressing =C-M-e=.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package miniedit
+    :straight t
+    :commands minibuffer-edit
+    :init (miniedit-install))
 #+end_src
 
 * Custom keybinding system
