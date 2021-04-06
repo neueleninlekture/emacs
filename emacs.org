@@ -1395,6 +1395,7 @@ some basic options. These are:
     (org-cycle-global-at-bob t)
     :bind
     (("C-," . org-cycle-agenda-files)
+     ("C-c l" . org-store-link)
      (:map org-mode-map
            ((("M-n" . org-forward-element)
              ("M-p" . org-backward-element)
