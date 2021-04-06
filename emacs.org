@@ -507,16 +507,10 @@ of bindings.
     :custom
     (which-key-show-early-on-C-h t))
 #+end_src
-** Ivy, Swiper, Avy
+** Ivy
 
 =Ivy= is a lightweight but powerful =fuzzy completion= and =narrowing
-search framework= for Emacs. It can be used to replace actions like
-=find-file= or =switch-buffer=. Here it is paired with =Counsel=,
-which adds further replacements for default actions. We replace the
-default actions in this config, by simply overwriting default
-keybindings with Counsel actions. =Ivy-rich= adds a few more bits of
-information to Ivy menus, like a function description when using
-counsel-M-x. 
+search framework= for Emacs. 
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package ivy
@@ -524,7 +518,8 @@ counsel-M-x.
     :custom
     (enable-recursive-minibuffers t))
 #+end_src
-** Selectrum
+
+** Selectrum, Consult, Marginalia, Embark
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package selectrum
@@ -570,6 +565,7 @@ counsel-M-x.
   (use-package embark
     :straight (:host github :repo "oantolin/embark"))
 #+end_src
+
 ** Miniedit
 
 This package allows you to edit the minibuffer contents in a dedicated
@@ -653,6 +649,7 @@ for use with regular Emacs keys.
 Under this section we put all configurations and packages that expand
 Emacs' text editing capabilities. These mostly refer to editing motions
 and styles defined by minor modes, not major modes.
+
 ** Avy
 
 #+begin_src emacs-lisp :tangle init.el
