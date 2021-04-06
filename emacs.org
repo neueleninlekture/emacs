@@ -1420,46 +1420,39 @@ default, as well as the templates to use for capture.
     :custom
     (org-capture-bookmark nil)
     (org-default-notes-file (concat org-directory "agenda.org"))
+    (org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "DROP(D)")))
     (org-capture-templates
-     '(
-       ("u" "Uni")
-       ("ut" "Uni - Trabalhos"
+     '(("t" "Todo (GTD)")
+       ("i" "GTD Inbox"
         entry
-        (file+headline "agenda/uni.org" "Trabalhos")
-        "* TODO Trabalho de %^{Disciplina|Política|Antropologia|Sociologia|Demografia|Estatística} - %^{ITEM}\n%?\nDEADLINE: %^T")
-
-       ("ul" "Uni - Leituras"
+        (file+headline "agenda/inbox.org" "Tasks")
+        "** TODO %?\n%i\n%a")
+       ("t" "GTD Time-sensitive"
         entry
-        (file+headline "agenda/uni.org" "Leituras")
-        "* TODO Leitura de %^{Disciplina|Política|Antropologia|Sociologia|Demografia|Estatística} - %^{ITEM}\n%?\nDEADLINE: %^T")
-
-       ("l" "List of")
+        (file+headline "agenda/time.org" "Time-sensitive Tasks")
+        "** TODO %?\n%i\n%a")
+       ("l" "Logs")
        ("lb" "Books"
         entry
         (file "list/books.org")
         "* %^{Status|PLAN|READING|READ} %^{Title}\n\n** Info\n:TIME: %t\n:AUTHOR: %^{Author}\n:YEAR: %^{Year of publication}\n:SERIES: %^{Series}\n:LANG: %^{Language|Português|English|Español|Deutsch}\n:PUBL: %^{Publisher}\n\n** Thoughts\n%?")
-
        ("ll" "Library"
         entry
         (file "list/library.org")
         "* %^{Status|HOME|BORROWED|LENT|GONE} %^{Title}\n\n** Info\n\n:AUTHOR: %^{Authors}\n:SORT: %^{Author Sort}\n:SERIES: %^{Series}\n:NUMBER: %^{Number in series}\n:PUBL: %^{Publisher}\n:LANG: %^{Language|Português|English|Español}\n:CONDITION: %^{Condition|New|Good|Medium|Worn|Fucked}\n:SHELF: %^{Shelf|Fiction|Non-fiction|Manga|Other}\n:SOURCE: %^{Source|Gift:|Purchase:} %?\n\n** Log\n\n")
-
        ("la" "Anime"
         entry
         (file "list/anime.org")
         "* %^{Status|PLAN|WATCHING|SEEN|DROPPED} %^{Title}\n:TIME: %t\n:STUDIO: %^{Studio}\n:DIRECTOR:\n:YEAR: %^{Year}\n:SEASON: %^{Season}\n")
-
        ("lb" "Books"
         entry
         (file "list/books.org")
-        "* %^{Status|PLAN|READING|READ} %^{Title}\n:TIME: %t\n:AUTHOR: %^{Author}\n:YEAR: %^{Year of publication}\n:SERIES: %^{Series}\n:LANG: %^{Language}\n:PUBL: %^{Publisher}\n")
-
-       ("h" "Home maintenance"
-        entry
-        (file "agenda/home.org")
-        "* TODO %^{ITEM}\n%?\nDEADLINE: %^T")))
-
-    :bind
+        "* %^{Status|PLAN|READING|READ} %^{Title}\n:TIME: %t\n:AUTHOR: %^{Author}\n:YEAR: %^{Year of publication}\n:SERIES: %^{Series}\n:LANG: %^{Language}\n:PUBL: %^{Publisher}\n")))
+  
+    (org-refile-targets '(("agenda/projects.org" :maxlevel . 3)
+                          ("agenda/someday.org" :level . 1)
+                          ("agenda/time.org" :maxlevel . 2)))
+      :bind
     (("C-c w" . org-capture)))
 #+end_src
 
