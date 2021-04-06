@@ -780,6 +780,7 @@ limit.
    "a" 'auto-fill-mode
    "f" 'fill-region)
 #+end_src
+
 ** Undo Tree
 
 =undo-tree= expands the possibilities of undoing and redoing edits by
@@ -1439,8 +1440,9 @@ another for quickly opening up the main agenda file.
                             (file . find-file)
                             (wl . wl-other-frame)))
     :bind
+    (("C-c a" . org-agenda)
     (:map agenda-and-time
-          (("a" . org-agenda))))
+          (("a" . org-agenda)))))
 
   (defun aabm/org-todo-done-and-archive ()
     "Sets current org task do DONE and sends it to org-archive-location."
