@@ -679,16 +679,6 @@ and styles defined by minor modes, not major modes.
            (minibuffer-setup-hook . subword-mode)))
 #+end_src
 
-*** mwim
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package mwim
-    :straight t
-    :bind
-    (("C-a" . mwim-beginning)
-     ("C-e" . mwim-end)))
-#+end_src
-
 ** Region
 
 
