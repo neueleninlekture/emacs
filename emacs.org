@@ -650,7 +650,11 @@ Under this section we put all configurations and packages that expand
 Emacs' text editing capabilities. These mostly refer to editing motions
 and styles defined by minor modes, not major modes.
 
-** Avy
+** Navigation
+
+
+
+*** Avy
 
 #+begin_src emacs-lisp :tangle init.el
 (use-package avy
@@ -663,7 +667,72 @@ and styles defined by minor modes, not major modes.
   :bind
   (("M-z" . avy-zap-up-to-char-dwim)))
 #+end_src
-** Electric pairs
+
+*** Subword
+
+=Subword= helps navigation of camelCase words in code.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package subword
+    :diminish subword-mode
+    :hook ((prog-mode-hook . subword-mode)
+           (minibuffer-setup-hook . subword-mode)))
+#+end_src
+
+*** mwim
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package mwim
+    :straight t
+    :bind
+    (("C-a" . mwim-beginning)
+     ("C-e" . mwim-end)))
+#+end_src
+
+** Region
+
+
+
+*** Expand region
+
+=expand-region= is a package for selecting text based on expanding
+regions. In simple terms, it marks a region and allows you to expand
+that region from small to large, word to line to paragraph. In many
+ways, expand region can be used similarly to Vim's delete/change
+inside/around commands. 
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package expand-region
+    :straight t
+    :bind
+    (("C-=" . er/expand-region)))
+#+end_src
+
+*** Surround
+
+A utility for editing text surrounding other text, like parentheses,
+brackets, quotation marks, etc. Inspired by Vim's =surround= plugin.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package emacs-surround
+    :straight (:host github :repo "ganmacs/emacs-surround")
+    :bind
+    (("C--" . emacs-surround)))
+#+end_src
+
+*** Delete selection
+
+This built-in package makes it so that typing while a region is
+selected deletes that region.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package delsel
+    :init
+    (delete-selection-mode t))
+#+end_src
+
+** Parens
+*** Electric pairs
 
 Electric pairs is a tool for adding matching
 closing characters after point once you insert an opening
@@ -681,34 +750,29 @@ marks.
   (electric-pair-mode t)
 #+end_src
 
-** Expand region
-
-=expand-region= is a package for selecting text based on expanding
-regions. In simple terms, it marks a region and allows you to expand
-that region from small to large, word to line to paragraph. In many
-ways, expand region can be used similarly to Vim's delete/change
-inside/around commands. 
+** Transpose
 
 #+begin_src emacs-lisp :tangle init.el
-  (use-package expand-region
-    :straight t
-    :bind
-    (("C-=" . er/expand-region)))
+  (global-set-key (kbd "C-x M-t") 'transpose-sentences)
+  (global-set-key (kbd "C-x C-M-t") 'transpose-sexps)
 #+end_src
 
-** Surround
-
-A utility for editing text surrounding other text, like parentheses,
-brackets, quotation marks, etc. Inspired by Vim's =surround= plugin.
+** Capitalization
 
 #+begin_src emacs-lisp :tangle init.el
-  (use-package emacs-surround
-    :straight (:host github :repo "ganmacs/emacs-surround")
-    :bind
-    (("C--" . emacs-surround)))
+  (global-set-key (kbd "M-l") 'downcase-dwim)
+  (global-set-key (kbd "M-c") 'capitalize-dwim)
+  (global-set-key (kbd "M-u") 'upcase-dwim)
 #+end_src
 
-** Hungry delete
+** Sentence editing
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq sentence-end-double-space nil)
+#+end_src
+
+** Whitespace
+*** Hungry delete
 
 =hungry-delete= is a utility for making deletion of long bits of
 whitespace easier.
@@ -821,49 +885,6 @@ Easily open files over sudo using =TRAMP=.
   (general-define-key
    :keymaps 'search+
    "s" 'isearch-forward)
-#+end_src
-
-** Subword
-
-=Subword= helps navigation of camelCase words in code.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package subword
-    :diminish subword-mode
-    :hook ((prog-mode-hook . subword-mode)
-           (minibuffer-setup-hook . subword-mode)))
-#+end_src
-
-** Delete selection
-
-This built-in package makes it so that typing while a region is
-selected deletes that region.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package delsel
-    :init
-    (delete-selection-mode t))
-#+end_src
-
-** Capitalization
-
-#+begin_src emacs-lisp :tangle init.el
-  (global-set-key (kbd "M-l") 'downcase-dwim)
-  (global-set-key (kbd "M-c") 'capitalize-dwim)
-  (global-set-key (kbd "M-u") 'upcase-dwim)
-#+end_src
-
-** Transpose
-
-#+begin_src emacs-lisp :tangle init.el
-  (global-set-key (kbd "C-x M-t") 'transpose-sentences)
-  (global-set-key (kbd "C-x C-M-t") 'transpose-sexps)
-#+end_src
-
-** Sentence editing
-
-#+begin_src emacs-lisp :tangle init.el
-  (setq sentence-end-double-space nil)
 #+end_src
 
 * Buffer, file and window management
