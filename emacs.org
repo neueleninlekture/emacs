@@ -22,3 +22,11 @@
   (setq make-backup-files nil)
   (setq auto-save-default nil)
 #+end_src
+
+* Theming and customization
+
+** Color theme
+
+#+begin_src emacs-lisp :tangle init.el
+  (load-theme 'wheatgrass t)
+#+end_src
