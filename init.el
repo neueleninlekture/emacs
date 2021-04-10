@@ -9,5 +9,5 @@
 
 (load-theme 'wheatgrass t)
 
-(add-to-list 'default-frame-alist '(font . "Iosevka 11"))
-(set-frame-font "Iosevka 11" nil t)
+(add-to-list 'default-frame-alist '(font . "Iosevka medium extended 10"))
+(set-frame-font "Iosevka medium extended 10" nil t)
