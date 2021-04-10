@@ -20,5 +20,5 @@
 
 #+begin_src emacs-lisp :tangle init.el
   (setq make-backup-files nil)
-  (setq auto-save-default nil)n
+  (setq auto-save-default nil)
 #+end_src

@@ -5,4 +5,4 @@
 (setq inhibit-startup-screen t)
 
 (setq make-backup-files nil)
-(setq auto-save-default nil)n
+(setq auto-save-default nil)
