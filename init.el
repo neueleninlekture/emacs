@@ -6,3 +6,5 @@
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
+
+(load-theme 'wheatgrass t)
