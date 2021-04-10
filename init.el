@@ -7,6 +7,10 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
+(setq electric-pair-pairs '((?\{ . ?\}) (?\( . ?\))
+			    (?\[ . ?\]) (?\" . ?\")))
+(electric-pair-mode t)
+
 (load-theme 'wheatgrass t)
 
 (add-to-list 'default-frame-alist '(font . "Iosevka medium extended 10"))

@@ -6,6 +6,9 @@
 * Quality of life changes
 ** Disable GUI elements
 
+Emacs has by default, a few GTK GUI elements which I find get in the
+way. So we disable those.
+
 #+begin_src emacs-lisp :tangle init.el
   (menu-bar-mode -1)
   (tool-bar-mode -1)
@@ -14,24 +17,49 @@
 
 ** Disable startup messages
 
+This disables the default startup screen.
+
 #+begin_src emacs-lisp :tangle init.el
   (setq inhibit-startup-screen t)
 #+end_src
 
 ** Disable creation of backup files
 
+Emacs tends to litter all your directories with backups of all files
+you visit. I find this behavior annoying and mostly useless. So we
+disable it.
+
 #+begin_src emacs-lisp :tangle init.el
   (setq make-backup-files nil)
   (setq auto-save-default nil)
 #+end_src
 
+* Text editing functionality
+** Electric pairs
+
+Electric pairs make it so that every opening character that you type
+(parentheses, braces, brackets, quotation marks) is automatically
+matched with the corresponding closing character. This is handy at all
+times when editing, but especially useful for programming in Lisp.
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq electric-pair-pairs '((?\{ . ?\}) (?\( . ?\))
+			      (?\[ . ?\]) (?\" . ?\")))
+  (electric-pair-mode t)
+#+end_src
+
 * Theming and customization
 ** Color theme
+
+For now I'm just using one of the built-in themes.
 
 #+begin_src emacs-lisp :tangle init.el
   (load-theme 'wheatgrass t)
 #+end_src
+
 ** Font
+
+Here we customize the font to be used by default by Emacs.
 
 #+begin_src emacs-lisp :tangle init.el
   (add-to-list 'default-frame-alist '(font . "Iosevka medium extended 10"))
