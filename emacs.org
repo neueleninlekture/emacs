@@ -11,11 +11,13 @@
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
 #+end_src
+
 ** Disable startup messages
 
 #+begin_src emacs-lisp :tangle init.el
   (setq inhibit-startup-screen t)
 #+end_src
+
 ** Disable creation of backup files
 
 #+begin_src emacs-lisp :tangle init.el
@@ -24,7 +26,6 @@
 #+end_src
 
 * Theming and customization
-
 ** Color theme
 
 #+begin_src emacs-lisp :tangle init.el
