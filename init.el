@@ -8,3 +8,6 @@
 (setq auto-save-default nil)
 
 (load-theme 'wheatgrass t)
+
+(add-to-list 'default-frame-alist '(font . "Iosevka 11"))
+(set-frame-font "Iosevka 11" nil t)
