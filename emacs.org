@@ -1,0 +1,24 @@
+#+title: Aabm's literate configuration for GNU Emacs
+#+author: aabm
+#+email: aabm@disroot.org
+#+startup: overview
+
+* Quality of life changes
+** Disable GUI elements
+
+#+begin_src emacs-lisp :tangle init.el
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+#+end_src
+** Disable startup messages
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq inhibit-startup-screen t)
+#+end_src
+** Disable creation of backup files
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)n
+#+end_src
