@@ -1,3 +1,5 @@
+(setq disabled-command-function nil)
+
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -40,7 +42,9 @@
   (find-alternate-file ".."))
 
 (with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "l") 'dired-up-alternate-directory))
+  (define-key dired-mode-map (kbd "l") 'dired-up-alternate-directory)
+  (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+  (define-key dired-mode-map (kbd "M-RET") 'dired-find-file))
 
 (with-eval-after-load 'org
   (setq org-src-tab-acts-natively t)

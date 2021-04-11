@@ -4,6 +4,15 @@
 #+startup: overview
 
 * Quality of life changes
+** Disabled commands
+
+Here we make it so that no commands are disabled by Emacs. I want
+access to all of them.
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq disabled-command-function nil)
+#+end_src
+
 ** Disable GUI elements
 
 Emacs has by default, a few GTK GUI elements which I find get in the
@@ -108,7 +117,9 @@ moves up a directory without invoking another buffer.
     (find-alternate-file ".."))
 
   (with-eval-after-load 'dired
-    (define-key dired-mode-map (kbd "l") 'dired-up-alternate-directory))
+    (define-key dired-mode-map (kbd "l") 'dired-up-alternate-directory)
+    (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+    (define-key dired-mode-map (kbd "M-RET") 'dired-find-file))
 #+end_src
 
 * Org mode
