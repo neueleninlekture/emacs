@@ -11,6 +11,8 @@
 			    (?\[ . ?\]) (?\" . ?\")))
 (electric-pair-mode t)
 
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+
 (defun split-window-below-and-follow ()
   "A simple replacement for `split-window-below', which automatically focuses the new window."
   (interactive)
@@ -52,3 +54,6 @@
 
 (add-to-list 'default-frame-alist '(font . "Iosevka medium extended 10"))
 (set-frame-font "Iosevka medium extended 10" nil t)
+
+(line-number-mode t)
+(column-number-mode t)

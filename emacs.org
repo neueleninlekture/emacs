@@ -48,6 +48,16 @@ times when editing, but especially useful for programming in Lisp.
   (electric-pair-mode t)
 #+end_src
 
+* Programming modes
+** Line number display
+
+Here we make it so that line numbers are displayed in every
+programming mode buffer.
+
+#+begin_src emacs-lisp :tangle init.el
+  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+#+end_src
+
 * Window and buffer management
 ** Switch and focus window
 
@@ -141,4 +151,14 @@ Here we customize the font to be used by default by Emacs.
 #+begin_src emacs-lisp :tangle init.el
   (add-to-list 'default-frame-alist '(font . "Iosevka medium extended 10"))
   (set-frame-font "Iosevka medium extended 10" nil t)
+#+end_src
+
+** Modeline
+
+Here we make it so that the current position of point is displayed in
+the modeline.
+
+#+begin_src emacs-lisp :tangle init.el
+  (line-number-mode t)
+  (column-number-mode t)
 #+end_src
