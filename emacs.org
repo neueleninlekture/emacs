@@ -99,6 +99,16 @@ org use the current window when opening dedicated edit buffers.
     (setq org-src-fontify-natively t)
     (setq org-src-window-setup 'current-window))
 #+end_src
+** Navigating headings
+
+Some settings for better navigating org headings. First we make the
+TAB key cycle all headings when pressed while point on the first line
+of the buffer.
+
+#+begin_src emacs-lisp :tangle init.el
+  (with-eval-after-load 'org
+    (setq org-cycle-global-at-bob t))
+#+end_src
 
 * Theming and customization
 ** Color theme

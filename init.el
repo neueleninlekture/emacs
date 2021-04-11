@@ -38,6 +38,9 @@
   (setq org-src-fontify-natively t)
   (setq org-src-window-setup 'current-window))
 
+(with-eval-after-load 'org
+  (setq org-cycle-global-at-bob t))
+
 (load-theme 'wheatgrass t)
 
 (add-to-list 'default-frame-alist '(font . "Iosevka medium extended 10"))
