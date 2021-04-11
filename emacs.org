@@ -86,6 +86,21 @@ both simpler and more reliable than the built-in =kill-this-buffer=.
   (global-set-key (kbd "C-x k") 'kill-this-buffer+)
 #+end_src
 
+* Files and projects
+
+** Dired
+
+Some simple changes to dired behavior. We make it so that pressing =l=
+moves up a directory without invoking another buffer.
+
+#+begin_src emacs-lisp :tangle init.el
+  (defun dired-up-alternate-directory ()
+    (interactive)
+    (find-alternate-file ".."))
+
+  (define-key dired-mode-map (kbd "l") 'dired-up-alternate-directory))
+#+end_src
+
 * Org mode
 ** Source blocks
 
