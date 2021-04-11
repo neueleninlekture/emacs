@@ -49,7 +49,6 @@ times when editing, but especially useful for programming in Lisp.
 #+end_src
 
 * Window and buffer management
-
 ** Switch and focus window
 
 #+begin_src emacs-lisp :tangle init.el
