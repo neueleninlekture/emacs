@@ -33,6 +33,13 @@
 
 (global-set-key (kbd "C-x k") 'kill-this-buffer+)
 
+(defun dired-up-alternate-directory ()
+  (interactive)
+  (find-alternate-file ".."))
+
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "l") 'dired-up-alternate-directory))
+
 (with-eval-after-load 'org
   (setq org-src-tab-acts-natively t)
   (setq org-src-fontify-natively t)
