@@ -48,6 +48,20 @@ times when editing, but especially useful for programming in Lisp.
   (electric-pair-mode t)
 #+end_src
 
+* Org mode
+** Source blocks
+
+Here we define a few settings for the src blocks in org-mode. We force
+indentation and syntax highlighting to work as if natively and have
+org use the current window when opening dedicated edit buffers.
+  
+#+begin_src emacs-lisp :tangle init.el
+  (with-eval-after-load 'org
+    (setq org-src-tab-acts-natively t)
+    (setq org-src-fontify-natively t)
+    (setq org-src-window-setup 'current-window))
+#+end_src
+
 * Theming and customization
 ** Color theme
 

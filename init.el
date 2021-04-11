@@ -11,6 +11,11 @@
 			    (?\[ . ?\]) (?\" . ?\")))
 (electric-pair-mode t)
 
+(with-eval-after-load 'org
+  (setq org-src-tab-acts-natively t)
+  (setq org-src-fontify-natively t)
+  (setq org-src-window-setup 'current-window))
+
 (load-theme 'wheatgrass t)
 
 (add-to-list 'default-frame-alist '(font . "Iosevka medium extended 10"))
