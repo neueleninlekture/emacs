@@ -51,6 +51,9 @@ times when editing, but especially useful for programming in Lisp.
 * Window and buffer management
 ** Switch and focus window
 
+Here we make some custom functions for splitting windows. We replace
+the defaults with these.
+
 #+begin_src emacs-lisp :tangle init.el
   (defun split-window-below-and-follow ()
     "A simple replacement for `split-window-below', which automatically focuses the new window."
@@ -70,13 +73,17 @@ times when editing, but especially useful for programming in Lisp.
 
 ** Kill this buffer
 
+Here we make the =C-x k= key immediately kill the current buffer
+instead of prompting. We do this by making a custom function that is
+both simpler and more reliable than the built-in =kill-this-buffer=.
+
 #+begin_src emacs-lisp :tangle init.el
-  (defun aabm/kill-this-buffer ()
+  (defun kill-this-buffer+ ()
     "Kill the current buffer. More reliable alternative to `kill-this-buffer'"
     (interactive)
     (kill-buffer))
 
-  (global-set-key (kbd "C-x k") 'kill-this-buffer)
+  (global-set-key (kbd "C-x k") 'kill-this-buffer+)
 #+end_src
 
 * Org mode
