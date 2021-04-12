@@ -72,6 +72,9 @@ times when editing, but especially useful for programming in Lisp.
 #+end_src
 ** Highlight matching parentheses
 
+This minor mode highlights the parentheses that matches the one
+under/behind point. Useful for Lisp programming.
+
 #+begin_src emacs-lisp :tangle init.el
   (show-paren-mode t)
 #+end_src
@@ -89,6 +92,9 @@ times when editing, but especially useful for programming in Lisp.
 #+begin_src emacs-lisp
   ()
 #+end_src
+** Scheme
+
+   
 
 * Window and buffer management
 ** Switch and focus window
