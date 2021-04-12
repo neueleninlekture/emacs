@@ -46,6 +46,12 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(straight-use-package 'use-package)
+
+(setq use-package-always-ensure nil)
+(setq use-package-always-defer t)
+(setq use-package-hook-name-suffix nil)
+
 (push (expand-file-name "elisp" user-emacs-directory) load-path)
 
 (setq load-prefer-newer t)
@@ -74,8 +80,8 @@
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 (setq geiser-active-implementations '(guile))
-(require 'geiser)
-(require 'geiser-guile)
+;; (require 'geiser)
+;; (require 'geiser-guile)
 
 (defun split-window-below-and-follow ()
   "A simple replacement for `split-window-below', which automatically focuses the new window."
@@ -109,7 +115,7 @@
   (define-key dired-mode-map (kbd "l") 'dired-up-alternate-directory)
   (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
   (define-key dired-mode-map (kbd "M-RET") 'dired-find-file)
-  (require 'dired-hide-dotfiles)
+  ;; (require 'dired-hide-dotfiles)
   (define-key dired-mode-map (kbd "h") 'dired-hide-dotfiles-mode))
 
 (add-hook 'dired-mode-hook 'dired-hide-dotfiles-mode)
@@ -122,7 +128,7 @@
 (with-eval-after-load 'org
   (setq org-cycle-global-at-bob t))
 
-(require 'elfeed)
+;; (require 'elfeed)
 (global-set-key (kbd "C-c e") 'elfeed)
 
 (with-eval-after-load 'elfeed

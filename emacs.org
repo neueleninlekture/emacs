@@ -220,6 +220,20 @@ error if it is outdated.
      (load bootstrap-file nil 'nomessage))
  #+end_src
    
+*** Installing and configuring use-package
+
+In this section we install =use-package=, a collection of macros for
+making package management easier and more convenient. It provides
+great control over the process of loading a given package. It is used
+for configuring packages and lazy loading those configurations. 
+
+#+begin_src emacs-lisp :tangle init.el
+  (straight-use-package 'use-package)
+
+  (setq use-package-always-ensure nil)
+  (setq use-package-always-defer t)
+  (setq use-package-hook-name-suffix nil)
+#+end_src
 *** Load path
 
 Here we add the =elisp= directory to the load path. This allows us to
@@ -342,8 +356,8 @@ interactive Scheme sessions, and supports various implementations.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq geiser-active-implementations '(guile))
-  (require 'geiser)
-  (require 'geiser-guile)
+  ;; (require 'geiser)
+  ;; (require 'geiser-guile)
 #+end_src
 
 * Window and buffer management
@@ -401,7 +415,7 @@ moves up a directory without invoking another buffer.
     (define-key dired-mode-map (kbd "l") 'dired-up-alternate-directory)
     (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
     (define-key dired-mode-map (kbd "M-RET") 'dired-find-file)
-    (require 'dired-hide-dotfiles)
+    ;; (require 'dired-hide-dotfiles)
     (define-key dired-mode-map (kbd "h") 'dired-hide-dotfiles-mode))
 
   (add-hook 'dired-mode-hook 'dired-hide-dotfiles-mode)
@@ -438,7 +452,7 @@ Elfeed is a complete RSS feed reader for Emacs. I use it as my main
 program for reading and receiving news.
 
 #+begin_src emacs-lisp :tangle init.el
-  (require 'elfeed)
+  ;; (require 'elfeed)
   (global-set-key (kbd "C-c e") 'elfeed)
 
   (with-eval-after-load 'elfeed
