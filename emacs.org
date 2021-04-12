@@ -1,4 +1,4 @@
-#+title: Aabm's literate configuration for GNU Emacs
+k#+title: Aabm's literate configuration for GNU Emacs
 #+author: aabm
 #+email: aabm@disroot.org
 #+startup: overview
@@ -6,9 +6,14 @@
 * Package system configuration
 ** Initialize package and repos
 
+Here we configure the package repositories to be used, and tell the
+package manager to load using them.
+
 #+begin_src emacs-lisp :tangle init.el
   (require 'package)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+  (setq package-archives '(("gnu" . "htttps://elpa.gnu.org/packages/")
+			   ("nongnu" . "https://elpa.nongnu.org/packages/")
+			   ("melpa" . "https://melpa.org/packages/"))
   (package-initialize)
 #+end_src
 

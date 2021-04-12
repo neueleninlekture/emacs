@@ -1,5 +1,7 @@
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(setq package-archives '(("gnu" . "htttps://elpa.gnu.org/packages/")
+			 ("nongnu" . "https://elpa.nongnu.org/packages/")
+			 ("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
 (setq disabled-command-function nil)
