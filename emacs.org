@@ -3,6 +3,15 @@
 #+email: aabm@disroot.org
 #+startup: overview
 
+* Package system configuration
+** Initialize package and repos
+
+#+begin_src emacs-lisp :tangle init.el
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+  (package-initialize)
+#+end_src
+
 * Quality of life changes
 ** Disabled commands
 
