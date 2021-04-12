@@ -1,4 +1,4 @@
-k#+title: Aabm's literate configuration for GNU Emacs
+#+title: Aabm's literate configuration for GNU Emacs
 #+author: aabm
 #+email: aabm@disroot.org
 #+startup: overview
