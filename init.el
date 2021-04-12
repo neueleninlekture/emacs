@@ -23,6 +23,9 @@
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
+(setq geiser-active-implementations '(guile))
+(require 'geiser)
+
 (defun split-window-below-and-follow ()
   "A simple replacement for `split-window-below', which automatically focuses the new window."
   (interactive)

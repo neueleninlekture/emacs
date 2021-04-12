@@ -94,7 +94,14 @@ under/behind point. Useful for Lisp programming.
 #+end_src
 ** Scheme
 
-   
+Here we include all the options for programming in the Scheme
+language. We start with the Geiser package, which allows powerful
+interactive Scheme sessions, and supports various implementations.
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq geiser-active-implementations '(guile))
+  (require 'geiser)
+#+end_src
 
 * Window and buffer management
 ** Switch and focus window
