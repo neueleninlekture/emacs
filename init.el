@@ -1,7 +1,7 @@
 (require 'package)
 (setq package-archives '(("gnu" . "htttps://elpa.gnu.org/packages/")
 			 ("nongnu" . "https://elpa.nongnu.org/packages/")
-			 ("melpa" . "https://melpa.org/packages/"))
+			 ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
 
 (setq disabled-command-function nil)
@@ -59,6 +59,12 @@
 
 (with-eval-after-load 'org
   (setq org-cycle-global-at-bob t))
+
+(require 'elfeed)
+(global-set-key (kbd "C-c e") 'elfeed)
+
+(with-eval-after-load 'elfeed
+  (load-file (expand-file-name "feeds.el" user-emacs-directory)))
 
 (load-theme 'wheatgrass t)
 

@@ -13,7 +13,7 @@ package manager to load using them.
   (require 'package)
   (setq package-archives '(("gnu" . "htttps://elpa.gnu.org/packages/")
 			   ("nongnu" . "https://elpa.nongnu.org/packages/")
-			   ("melpa" . "https://melpa.org/packages/"))
+			   ("melpa" . "https://melpa.org/packages/")))
   (package-initialize)
 #+end_src
 
@@ -158,6 +158,20 @@ of the buffer.
 #+begin_src emacs-lisp :tangle init.el
   (with-eval-after-load 'org
     (setq org-cycle-global-at-bob t))
+#+end_src
+
+* Web, news, mail, etc
+** Elfeed
+
+Elfeed is a complete RSS feed reader for Emacs. I use it as my main
+program for reading and receiving news.
+
+#+begin_src emacs-lisp :tangle init.el
+  (require 'elfeed)
+  (global-set-key (kbd "C-c e") 'elfeed)
+
+  (with-eval-after-load 'elfeed
+    (load-file (expand-file-name "feeds.el" user-emacs-directory)))
 #+end_src
 
 * Theming and customization
