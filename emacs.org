@@ -57,6 +57,16 @@ disable it.
   (setq auto-save-default nil)
 #+end_src
 
+** Change yes-or-no-p to y-or-n-p
+
+Emacs has a lot of annoying prompts asking for user confirmation that
+require you to type in "yes" everytime. This makes a simple "y"
+sufficient.
+
+#+begin_src emacs-lisp :tangle init.el
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
 * Text editing functionality
 ** Electric pairs
 

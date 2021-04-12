@@ -15,6 +15,8 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 (setq electric-pair-pairs '((?\{ . ?\}) (?\( . ?\))
 			    (?\[ . ?\]) (?\" . ?\")))
 (electric-pair-mode t)
