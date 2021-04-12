@@ -1,3 +1,10 @@
+(add-hook 'emacs-startup-hook
+	  (lambda ()
+	    (message "Emacs ready in %s with %d garbage collections."
+	     (format "%.2f seconds"
+		     (float-time
+		      (time-subtract after-init-time before-init-time))) gcs-done)))
+
 ;;; init.el --- Main Emacs configuration file
 ;; Copyright © 2019-2021 Aabm <aabm@disroot.org>
 

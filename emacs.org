@@ -129,6 +129,20 @@ loading init.el, so it must be disabled in early-init.
   (setq package-enable-at-startup nil
         package--init-file-ensured t)
 #+end_src
+*** Notify startup time
+
+We enable a simple hook to print a message stating the length of
+startup in the echo area.
+
+#+begin_src emacs-lisp :tangle init.el
+  (add-hook 'emacs-startup-hook
+	    (lambda ()
+	      (message "Emacs ready in %s with %d garbage collections."
+	       (format "%.2f seconds"
+		       (float-time
+			(time-subtract after-init-time before-init-time))) gcs-done)))
+#+end_src
+
 ** init.el
 
 Here we define all the initialization options, to be included in the
