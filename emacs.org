@@ -88,6 +88,15 @@ under/behind point. Useful for Lisp programming.
 #+begin_src emacs-lisp :tangle init.el
   (show-paren-mode t)
 #+end_src
+** Auto fill text
+
+When editing plain text files, I like my text to be automatically
+wrapped to a sane default. This avoids having to manually fill
+paragraphs.
+
+#+begin_src emacs-lisp :tangle init.el
+  (add-hook 'text-mode #'auto-fill-mode)
+#+end_src
 
 * Programming modes
 ** General options
