@@ -57,10 +57,16 @@
   (interactive)
   (find-alternate-file ".."))
 
+(setq dired-listing-switches "-alNF --group-directories-first")
+
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "l") 'dired-up-alternate-directory)
   (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
-  (define-key dired-mode-map (kbd "M-RET") 'dired-find-file))
+  (define-key dired-mode-map (kbd "M-RET") 'dired-find-file)
+  (require 'dired-hide-dotfiles)
+  (define-key dired-mode-map (kbd "h") 'dired-hide-dotfiles-mode))
+
+(add-hook 'dired-mode-hook 'dired-hide-dotfiles-mode)
 
 (with-eval-after-load 'org
   (setq org-src-tab-acts-natively t)
