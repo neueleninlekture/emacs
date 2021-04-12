@@ -266,7 +266,7 @@ access to all of them.
 
 ** Disable GUI elements
 
-Emacs has by default, a few GTK GUI elements which I find get in the
+Emacs has by default a few GTK GUI elements which I find get in the
 way. So we disable those.
 
 #+begin_src emacs-lisp :tangle init.el
@@ -305,26 +305,38 @@ sufficient.
 #+end_src
 
 * Text editing functionality
-** Electric pairs
+** Parens
+*** Electric pairs
 
-Electric pairs make it so that every opening character that you type
-(parentheses, braces, brackets, quotation marks) is automatically
-matched with the corresponding closing character. This is handy at all
-times when editing, but especially useful for programming in Lisp.
+ Electric pairs make it so that every opening character that you type
+ (parentheses, braces, brackets, quotation marks) is automatically
+ matched with the corresponding closing character. This is handy at all
+ times when editing, but especially useful for programming in Lisp.
+
+ #+begin_src emacs-lisp :tangle init.el
+   (setq electric-pair-pairs '((?\{ . ?\}) (?\( . ?\))
+			       (?\[ . ?\]) (?\" . ?\")))
+   (electric-pair-mode t)
+ #+end_src
+*** Highlight matching parentheses
+
+ This minor mode highlights the parentheses that matches the one
+ under/behind point. Useful for Lisp programming.
+
+ #+begin_src emacs-lisp :tangle init.el
+   (show-paren-mode t)
+ #+end_src
+** Text wrapping and filling
+*** Line truncation
+
+Emacs normally makes long lines extend off the edge of the screen. I
+dislike this behavior and would rather have lines be (visually)
+wrapped. 
 
 #+begin_src emacs-lisp :tangle init.el
-  (setq electric-pair-pairs '((?\{ . ?\}) (?\( . ?\))
-			      (?\[ . ?\]) (?\" . ?\")))
-  (electric-pair-mode t)
+  (setq truncate-lines nil)
 #+end_src
-** Highlight matching parentheses
-
-This minor mode highlights the parentheses that matches the one
-under/behind point. Useful for Lisp programming.
-
-#+begin_src emacs-lisp :tangle init.el
-  (show-paren-mode t)
-#+end_src
+   
 ** Auto fill text
 
 When editing plain text files, I like my text to be automatically
@@ -449,7 +461,8 @@ of the buffer.
 
 #+begin_src emacs-lisp :tangle init.el
   (with-eval-after-load 'org
-    (setq org-cycle-global-at-bob t))
+    (setq org-cycle-global-at-bob t)
+    (setq org-hide-leading-stars t))
 #+end_src
 
 * Web, news, mail, etc

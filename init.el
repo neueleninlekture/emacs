@@ -75,6 +75,8 @@
 
 (show-paren-mode t)
 
+(setq truncate-lines nil)
+
 (add-hook 'text-mode-hook #'auto-fill-mode)
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
@@ -133,7 +135,8 @@
   (setq org-src-window-setup 'current-window))
 
 (with-eval-after-load 'org
-  (setq org-cycle-global-at-bob t))
+  (setq org-cycle-global-at-bob t)
+  (setq org-hide-leading-stars t))
 
 (use-package elfeed
   :straight t
