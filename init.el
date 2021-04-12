@@ -79,9 +79,10 @@
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
-(setq geiser-active-implementations '(guile))
-;; (require 'geiser)
-;; (require 'geiser-guile)
+(use-package geiser
+  :straight t
+  :custom
+  (geiser-active-implementations '(guile)))
 
 (defun split-window-below-and-follow ()
   "A simple replacement for `split-window-below', which automatically focuses the new window."
@@ -105,20 +106,26 @@
 
 (global-set-key (kbd "C-x k") 'kill-this-buffer+)
 
-(defun dired-up-alternate-directory ()
-  (interactive)
-  (find-alternate-file ".."))
+(use-package dired
+  :custom
+  (dired-listing-switches "-alNF --group-directories-first")
+  :config
+  (defun dired-up-alternate-directory ()
+    (interactive)
+    (find-alternate-file ".."))
+  :bind
+  (:map dired-mode-map
+	(("l" . dired-up-alternate-directory)
+	 ("RET" . dired-find-alternate-file)
+	 ("M_RET" . dired-find-file))))
 
-(setq dired-listing-switches "-alNF --group-directories-first")
-
-(with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "l") 'dired-up-alternate-directory)
-  (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
-  (define-key dired-mode-map (kbd "M-RET") 'dired-find-file)
-  ;; (require 'dired-hide-dotfiles)
-  (define-key dired-mode-map (kbd "h") 'dired-hide-dotfiles-mode))
-
-(add-hook 'dired-mode-hook 'dired-hide-dotfiles-mode)
+(use-package dired-hide-dotfiles
+  :straight t
+  :hook
+  ((dired-mode-hook . dired-hide-dotfiles-mode))
+  :bind
+  (:map dired-mode-map
+	(("h" . dired-hide-dotfiles-mode))))
 
 (with-eval-after-load 'org
   (setq org-src-tab-acts-natively t)
@@ -128,11 +135,12 @@
 (with-eval-after-load 'org
   (setq org-cycle-global-at-bob t))
 
-;; (require 'elfeed)
-(global-set-key (kbd "C-c e") 'elfeed)
-
-(with-eval-after-load 'elfeed
-  (load-file (expand-file-name "feeds.el" user-emacs-directory)))
+(use-package elfeed
+  :straight t
+  :config
+  (load-file (expand-file-name "feeds.el" user-emacs-directory))
+  :bind
+  (("C-c e" . elfeed)))
 
 (load-theme 'wheatgrass t)
 

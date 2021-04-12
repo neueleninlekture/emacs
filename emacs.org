@@ -355,9 +355,10 @@ language. We start with the Geiser package, which allows powerful
 interactive Scheme sessions, and supports various implementations.
 
 #+begin_src emacs-lisp :tangle init.el
-  (setq geiser-active-implementations '(guile))
-  ;; (require 'geiser)
-  ;; (require 'geiser-guile)
+  (use-package geiser
+    :straight t
+    :custom
+    (geiser-active-implementations '(guile)))
 #+end_src
 
 * Window and buffer management
@@ -405,20 +406,26 @@ Some simple changes to dired behavior. We make it so that pressing =l=
 moves up a directory without invoking another buffer.
 
 #+begin_src emacs-lisp :tangle init.el
-  (defun dired-up-alternate-directory ()
-    (interactive)
-    (find-alternate-file ".."))
+  (use-package dired
+    :custom
+    (dired-listing-switches "-alNF --group-directories-first")
+    :config
+    (defun dired-up-alternate-directory ()
+      (interactive)
+      (find-alternate-file ".."))
+    :bind
+    (:map dired-mode-map
+	  (("l" . dired-up-alternate-directory)
+	   ("RET" . dired-find-alternate-file)
+	   ("M_RET" . dired-find-file))))
 
-  (setq dired-listing-switches "-alNF --group-directories-first")
-
-  (with-eval-after-load 'dired
-    (define-key dired-mode-map (kbd "l") 'dired-up-alternate-directory)
-    (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
-    (define-key dired-mode-map (kbd "M-RET") 'dired-find-file)
-    ;; (require 'dired-hide-dotfiles)
-    (define-key dired-mode-map (kbd "h") 'dired-hide-dotfiles-mode))
-
-  (add-hook 'dired-mode-hook 'dired-hide-dotfiles-mode)
+  (use-package dired-hide-dotfiles
+    :straight t
+    :hook
+    ((dired-mode-hook . dired-hide-dotfiles-mode))
+    :bind
+    (:map dired-mode-map
+	  (("h" . dired-hide-dotfiles-mode))))
 #+end_src
 
 * Org mode
@@ -452,11 +459,12 @@ Elfeed is a complete RSS feed reader for Emacs. I use it as my main
 program for reading and receiving news.
 
 #+begin_src emacs-lisp :tangle init.el
-  ;; (require 'elfeed)
-  (global-set-key (kbd "C-c e") 'elfeed)
-
-  (with-eval-after-load 'elfeed
-    (load-file (expand-file-name "feeds.el" user-emacs-directory)))
+  (use-package elfeed
+    :straight t
+    :config
+    (load-file (expand-file-name "feeds.el" user-emacs-directory))
+    :bind
+    (("C-c e" . elfeed)))
 #+end_src
 
 * Theming and customization
