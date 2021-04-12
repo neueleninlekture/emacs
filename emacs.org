@@ -72,14 +72,15 @@ times when editing, but especially useful for programming in Lisp.
 #+end_src
 
 * Programming modes
-** Line number display
+** General options
+*** Line number display
 
-Here we make it so that line numbers are displayed in every
-programming mode buffer.
+ Here we make it so that line numbers are displayed in every
+ programming mode buffer.
 
-#+begin_src emacs-lisp :tangle init.el
-  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-#+end_src
+ #+begin_src emacs-lisp :tangle init.el
+   (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+ #+end_src
 
 * Window and buffer management
 ** Switch and focus window
