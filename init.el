@@ -117,7 +117,7 @@
   (:map dired-mode-map
 	(("l" . dired-up-alternate-directory)
 	 ("RET" . dired-find-alternate-file)
-	 ("M_RET" . dired-find-file))))
+	 ("M-RET" . dired-find-file))))
 
 (use-package dired-hide-dotfiles
   :straight t
