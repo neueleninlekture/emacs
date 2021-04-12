@@ -19,6 +19,8 @@
 			    (?\[ . ?\]) (?\" . ?\")))
 (electric-pair-mode t)
 
+(show-paren-mode t)
+
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 (defun split-window-below-and-follow ()
