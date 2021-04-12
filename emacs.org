@@ -95,7 +95,7 @@ wrapped to a sane default. This avoids having to manually fill
 paragraphs.
 
 #+begin_src emacs-lisp :tangle init.el
-  (add-hook 'text-mode #'auto-fill-mode)
+  (add-hook 'text-mode-hook #'auto-fill-mode)
 #+end_src
 
 * Programming modes

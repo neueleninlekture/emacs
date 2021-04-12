@@ -23,7 +23,7 @@
 
 (show-paren-mode t)
 
-(add-hook 'text-mode #'auto-fill-mode)
+(add-hook 'text-mode-hook #'auto-fill-mode)
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
