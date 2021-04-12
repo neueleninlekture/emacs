@@ -25,6 +25,7 @@
 
 (setq geiser-active-implementations '(guile))
 (require 'geiser)
+(require 'geiser-guile)
 
 (defun split-window-below-and-follow ()
   "A simple replacement for `split-window-below', which automatically focuses the new window."

@@ -101,6 +101,7 @@ interactive Scheme sessions, and supports various implementations.
 #+begin_src emacs-lisp :tangle init.el
   (setq geiser-active-implementations '(guile))
   (require 'geiser)
+  (require 'geiser-guile)
 #+end_src
 
 * Window and buffer management
