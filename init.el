@@ -33,15 +33,22 @@
 (when (version< emacs-version "27.1")
   (error "This requires Emacs 27.1 and above! Preferably 28 (master), but 27 should be fine..."))
 
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
 (push (expand-file-name "elisp" user-emacs-directory) load-path)
 
 (setq load-prefer-newer t)
-
-(require 'package)
-(setq package-archives '(("gnu" . "htttps://elpa.gnu.org/packages/")
-			 ("nongnu" . "https://elpa.nongnu.org/packages/")
-			 ("melpa" . "https://melpa.org/packages/")))
-(package-initialize)
 
 (setq disabled-command-function nil)
 

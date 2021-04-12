@@ -200,6 +200,26 @@ error if it is outdated.
     (error "This requires Emacs 27.1 and above! Preferably 28 (master), but 27 should be fine..."))
 #+end_src
 
+*** Bootstrap straight.el
+
+ Here we bootstrap the =straight.el= package manager, which replaces
+ package.el. This requires that =git= be installed on the system.
+
+ #+begin_src emacs-lisp :tangle init.el
+   (defvar bootstrap-version)
+   (let ((bootstrap-file
+          (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+         (bootstrap-version 5))
+     (unless (file-exists-p bootstrap-file)
+       (with-current-buffer
+           (url-retrieve-synchronously
+            "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+            'silent 'inhibit-cookies)
+         (goto-char (point-max))
+         (eval-print-last-sexp)))
+     (load bootstrap-file nil 'nomessage))
+ #+end_src
+   
 *** Load path
 
 Here we add the =elisp= directory to the load path. This allows us to
@@ -218,20 +238,6 @@ before being loaded.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq load-prefer-newer t)
-#+end_src
-
-* Package system configuration
-** Initialize package and repos
-
-Here we configure the package repositories to be used, and tell the
-package manager to load using them.
-
-#+begin_src emacs-lisp :tangle init.el
-  (require 'package)
-  (setq package-archives '(("gnu" . "htttps://elpa.gnu.org/packages/")
-			   ("nongnu" . "https://elpa.nongnu.org/packages/")
-			   ("melpa" . "https://melpa.org/packages/")))
-  (package-initialize)
 #+end_src
 
 * Quality of life changes
