@@ -92,6 +92,8 @@
 
 (use-package olivetti
   :straight t
+  :custom
+  (olivetti-body-width 90)
   :bind
   (("C-c o" . olivetti-mode)))
 

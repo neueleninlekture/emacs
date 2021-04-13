@@ -367,9 +367,12 @@ wrapped.
  #+begin_src emacs-lisp :tangle init.el
    (use-package olivetti
      :straight t
+     :custom
+     (olivetti-body-width 90)
      :bind
      (("C-c o" . olivetti-mode)))
  #+end_src
+ 
 ** Reader mode
 
 A custom minor mode using olivetti and other extensions for optimal
