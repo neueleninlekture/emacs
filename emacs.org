@@ -337,15 +337,15 @@ wrapped.
   (setq truncate-lines nil)
 #+end_src
    
-** Auto fill text
+*** Auto fill text
 
-When editing plain text files, I like my text to be automatically
-wrapped to a sane default. This avoids having to manually fill
-paragraphs.
+ When editing plain text files, I like my text to be automatically
+ wrapped to a sane default. This avoids having to manually fill
+ paragraphs.
 
-#+begin_src emacs-lisp :tangle init.el
-  (add-hook 'text-mode-hook #'auto-fill-mode)
-#+end_src
+ #+begin_src emacs-lisp :tangle init.el
+   (add-hook 'text-mode-hook #'auto-fill-mode)
+ #+end_src
 
 * Minibuffer
 ** Which Key
@@ -358,7 +358,9 @@ navigate your keybindings via prefixes.
   (use-package which-key
     :straight t
     :init
-    (which-key-mode))
+    (which-key-mode)
+    :custom
+    (which-key-idle-delay 0.4))
 #+end_src
 
 * Programming modes

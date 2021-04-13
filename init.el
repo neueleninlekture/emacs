@@ -82,7 +82,9 @@
 (use-package which-key
   :straight t
   :init
-  (which-key-mode))
+  (which-key-mode)
+  :custom
+  (which-key-idle-delay 0.4))
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
