@@ -358,6 +358,55 @@ wrapped.
    (add-hook 'text-mode-hook #'auto-fill-mode)
  #+end_src
 
+* Readers
+** Olivetti
+
+ Olivetti mode is a minor mode that centers text on the screen. Useful
+ for reading and focusing on writing.
+
+ #+begin_src emacs-lisp :tangle init.el
+   (use-package olivetti
+     :straight t
+     :bind
+     (("C-c o" . olivetti-mode)))
+ #+end_src
+** Reader mode
+
+A custom minor mode using olivetti and other extensions for optimal
+reading.
+
+#+begin_src emacs-lisp :tangle init.el
+  (define-minor-mode aabm/read-mode
+    "Minor Mode for better reading experience."
+    :init-value nil
+    :group aabm
+    (if aabm/read-mode
+	(progn
+	  (and (fboundp 'olivetti-mode) (olivetti-mode 1))
+	  (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode 1))
+	  (text-scale-set +1))
+      (progn
+	(and (fboundp 'olivetti-mode) (olivetti-mode -1))
+	(and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode -1))
+	(text-scale-set 0))))
+#+end_src
+
+** pdf-tools
+
+PDF Tools is a fast and convenient PDF Reader. It appears here as a
+replacement for docview, essentially.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package pdf-tools
+    :straight t
+    :init
+    (pdf-loader-install)
+    :custom
+    (pdf-view-resize-factor 1.1)
+    (pdf-view-continuous nil)
+    (pdf-view-display-size 'fit-page))
+#+end_src
+
 * Minibuffer
 ** Which Key
 
@@ -512,25 +561,10 @@ program for reading and receiving news.
     :straight t
     :config
     (load-file (expand-file-name "personal/feeds.el" user-emacs-directory))
+    :hook
+    ((elfeed-show-mode-hook . aabm/read-mode))
     :bind
     (("C-c e" . elfeed)))
-#+end_src
-
-* Readers
-** pdf-tools
-
-PDF Tools is a fast and convenient PDF Reader. It appears here as a
-replacement for docview, essentially.
-
-#+begin_src emacs-lisp :tangle init.el
-  (use-package pdf-tools
-    :straight t
-    :init
-    (pdf-loader-install)
-    :custom
-    (pdf-view-resize-factor 1.1)
-    (pdf-view-continuous nil)
-    (pdf-view-display-size 'fit-page))
 #+end_src
 
 * Theming and customization

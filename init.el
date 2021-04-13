@@ -90,6 +90,34 @@
 
 (add-hook 'text-mode-hook #'auto-fill-mode)
 
+(use-package olivetti
+  :straight t
+  :bind
+  (("C-c o" . olivetti-mode)))
+
+(define-minor-mode aabm/read-mode
+  "Minor Mode for better reading experience."
+  :init-value nil
+  :group aabm
+  (if aabm/read-mode
+      (progn
+	(and (fboundp 'olivetti-mode) (olivetti-mode 1))
+	(and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode 1))
+	(text-scale-set +1))
+    (progn
+      (and (fboundp 'olivetti-mode) (olivetti-mode -1))
+      (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode -1))
+      (text-scale-set 0))))
+
+(use-package pdf-tools
+  :straight t
+  :init
+  (pdf-loader-install)
+  :custom
+  (pdf-view-resize-factor 1.1)
+  (pdf-view-continuous nil)
+  (pdf-view-display-size 'fit-page))
+
 (use-package which-key
   :straight t
   :init
@@ -162,17 +190,10 @@
   :straight t
   :config
   (load-file (expand-file-name "personal/feeds.el" user-emacs-directory))
+  :hook
+  ((elfeed-show-mode-hook . aabm/read-mode))
   :bind
   (("C-c e" . elfeed)))
-
-(use-package pdf-tools
-  :straight t
-  :init
-  (pdf-loader-install)
-  :custom
-  (pdf-view-resize-factor 1.1)
-  (pdf-view-continuous nil)
-  (pdf-view-display-size 'fit-page))
 
 (load-theme 'wheatgrass t)
 
