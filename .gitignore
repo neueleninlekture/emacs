@@ -16,8 +16,8 @@
 /dmenu-items
 /games/
 /newsticker/
-/creds.el
-/feeds.el
+/personal/creds.el
+/personal/feeds.el
 /emacs.pdf
 /emacs.tex
 /image-dired/
