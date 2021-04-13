@@ -152,6 +152,15 @@
   :bind
   (("C-c e" . elfeed)))
 
+(use-package pdf-tools
+  :straight t
+  :init
+  (pdf-loader-install)
+  :custom
+  (pdf-view-resize-factor 1.1)
+  (pdf-view-continuous nil)
+  (pdf-view-display-size 'fit-page))
+
 (load-theme 'wheatgrass t)
 
 (add-to-list 'default-frame-alist '(font . "Iosevka medium extended 10"))

@@ -496,6 +496,23 @@ program for reading and receiving news.
     (("C-c e" . elfeed)))
 #+end_src
 
+* Readers
+** pdf-tools
+
+PDF Tools is a fast and convenient PDF Reader. It appears here as a
+replacement for docview, essentially.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package pdf-tools
+    :straight t
+    :init
+    (pdf-loader-install)
+    :custom
+    (pdf-view-resize-factor 1.1)
+    (pdf-view-continuous nil)
+    (pdf-view-display-size 'fit-page))
+#+end_src
+
 * Theming and customization
 ** Color theme
 
