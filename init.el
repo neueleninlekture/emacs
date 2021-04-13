@@ -52,7 +52,18 @@
 (setq use-package-always-defer t)
 (setq use-package-hook-name-suffix nil)
 
-(push (expand-file-name "elisp" user-emacs-directory) load-path)
+(defun update-load-path (&rest _)
+  "Update `load-path'."
+  (dolist (dir '("elisp"))
+    (push (expand-file-name dir user-emacs-directory) load-path)))
+
+(defun add-subdirs-to-load-path (&rest _)
+  "Add subdirectories to `load-path'."
+  (let ((default-directory (expand-file-name "elisp" user-emacs-directory)))
+    (normal-top-level-add-subdirs-to-load-path)))
+
+(update-load-path)
+(add-subdirs-to-load-path)
 
 (setq load-prefer-newer t)
 
