@@ -165,11 +165,22 @@
   (defun dired-up-alternate-directory ()
     (interactive)
     (find-alternate-file ".."))
+
+  (defun dired-xdg-open ()
+    "Open the marked files using xdg-open."
+    (interactive)
+    (let ((file-list (dired-get-marked-files)))
+      (mapc
+       (lambda (file-path)
+	 (let ((process-connection-type nil))
+	   (start-process "" nil "xdg-open" file-path)))
+       file-list)))
   :bind
   (:map dired-mode-map
 	(("l" . dired-up-alternate-directory)
 	 ("RET" . dired-find-alternate-file)
-	 ("M-RET" . dired-find-file))))
+	 ("M-RET" . dired-find-file)
+	 ("v" . dired-xdg-open))))
 
 (use-package dired-hide-dotfiles
   :straight t
