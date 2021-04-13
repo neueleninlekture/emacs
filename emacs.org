@@ -401,42 +401,51 @@ interactive Scheme sessions, and supports various implementations.
 #+end_src
 
 * Window and buffer management
-** Switch and focus window
+** Windows
+*** Switch and focus window
 
-Here we make some custom functions for splitting windows. We replace
-the defaults with these.
+ Here we make some custom functions for splitting windows. We replace
+ the defaults with these.
 
-#+begin_src emacs-lisp :tangle init.el
-  (defun split-window-below-and-follow ()
-    "A simple replacement for `split-window-below', which automatically focuses the new window."
-    (interactive)
-    (split-window-below)
-    (other-window 1))
+ #+begin_src emacs-lisp :tangle init.el
+   (defun split-window-below-and-follow ()
+     "A simple replacement for `split-window-below', which automatically focuses the new window."
+     (interactive)
+     (split-window-below)
+     (other-window 1))
 
-  (defun split-window-right-and-follow ()
-    "A simple replacement for `split-window-right', which automatically focuses the new window."
-    (interactive)
-    (split-window-right)
-    (other-window 1))
+   (defun split-window-right-and-follow ()
+     "A simple replacement for `split-window-right', which automatically focuses the new window."
+     (interactive)
+     (split-window-right)
+     (other-window 1))
 
-  (global-set-key (kbd "C-x 2") 'split-window-below-and-follow)
-  (global-set-key (kbd "C-x 3") 'split-window-right-and-follow)
-#+end_src
+   (global-set-key (kbd "C-x 2") 'split-window-below-and-follow)
+   (global-set-key (kbd "C-x 3") 'split-window-right-and-follow)
+ #+end_src
+*** Switch window
 
-** Kill this buffer
-
-Here we make the =C-x k= key immediately kill the current buffer
-instead of prompting. We do this by making a custom function that is
-both simpler and more reliable than the built-in =kill-this-buffer=.
+A simpler keybinding for switching windows.
 
 #+begin_src emacs-lisp :tangle init.el
-  (defun kill-this-buffer+ ()
-    "Kill the current buffer. More reliable alternative to `kill-this-buffer'"
-    (interactive)
-    (kill-buffer))
-
-  (global-set-key (kbd "C-x k") 'kill-this-buffer+)
+  (global-set-key (kbd "M-o") 'other-window)
 #+end_src
+    
+** Buffers
+*** Kill this buffer
+
+ Here we make the =C-x k= key immediately kill the current buffer
+ instead of prompting. We do this by making a custom function that is
+ both simpler and more reliable than the built-in =kill-this-buffer=.
+
+ #+begin_src emacs-lisp :tangle init.el
+   (defun kill-this-buffer+ ()
+     "Kill the current buffer. More reliable alternative to `kill-this-buffer'"
+     (interactive)
+     (kill-buffer))
+
+   (global-set-key (kbd "C-x k") 'kill-this-buffer+)
+ #+end_src
 
 * Files and projects
 ** Dired

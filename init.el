@@ -119,6 +119,8 @@
 (global-set-key (kbd "C-x 2") 'split-window-below-and-follow)
 (global-set-key (kbd "C-x 3") 'split-window-right-and-follow)
 
+(global-set-key (kbd "M-o") 'other-window)
+
 (defun kill-this-buffer+ ()
   "Kill the current buffer. More reliable alternative to `kill-this-buffer'"
   (interactive)
