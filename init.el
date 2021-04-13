@@ -148,7 +148,7 @@
 (use-package elfeed
   :straight t
   :config
-  (load-file (expand-file-name "persona/feeds.el" user-emacs-directory))
+  (load-file (expand-file-name "personal/feeds.el" user-emacs-directory))
   :bind
   (("C-c e" . elfeed)))
 
