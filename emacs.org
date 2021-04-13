@@ -347,6 +347,20 @@ paragraphs.
   (add-hook 'text-mode-hook #'auto-fill-mode)
 #+end_src
 
+* Minibuffer
+** Which Key
+
+=which-key= uses the minibuffer to display a nice buffer showing you
+active keybindings in the currently typed prefix. It allows you to
+navigate your keybindings via prefixes.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package which-key
+    :straight t
+    :init
+    (which-key-mode))
+#+end_src
+
 * Programming modes
 ** General options
 *** Line number display

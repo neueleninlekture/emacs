@@ -79,6 +79,11 @@
 
 (add-hook 'text-mode-hook #'auto-fill-mode)
 
+(use-package which-key
+  :straight t
+  :init
+  (which-key-mode))
+
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 (use-package geiser
