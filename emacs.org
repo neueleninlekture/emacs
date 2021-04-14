@@ -624,9 +624,9 @@ for its usage.
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
     :bind
-    (("C-c w" . org-capture))
-    :custom
-    (org-capture-templates))
+    (("C-c w" . org-capture)))
+    ;; :custom
+    ;; (org-capture-templates))
 #+end_src
 
 * Web, news, mail, etc

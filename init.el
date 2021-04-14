@@ -240,9 +240,9 @@ This function was taken from prot."
 
 (use-package org
   :bind
-  (("C-c w" . org-capture))
-  :custom
-  (org-capture-templates))
+  (("C-c w" . org-capture)))
+  ;; :custom
+  ;; (org-capture-templates))
 
 (use-package elfeed
   :straight t
