@@ -190,6 +190,32 @@
   (:map dired-mode-map
 	(("h" . dired-hide-dotfiles-mode))))
 
+(use-package vc
+  :config
+  (defvar aabm-vc-shell-output "*aabm-vc-output*")
+  (defun aabm-vc-git-log-grep (pattern &optional diff)
+    "Run ’git log --grep’ for PATTERN.
+  With optional DIFF as a prefix (\\[universal-argument])
+  argument, also show the corresponding diffs. 
+
+This function was taken from prot."
+    (interactive
+     (list (read-regexp "Search git log for PATTERN: ")
+	   current-prefix-arg))
+    (let* ((buf-name aabm-vc-shell-output)
+	   (buf (get-buffer-create buf-name))
+	   (diffs (if diff "-p" ""))
+	   (type (if diff 'with-diff 'log-search))
+	   (resize-mini-windows nil))
+      (shell-command (format "git log %s --grep=%s -E --" diffs pattern) buf)
+      (with-current-buffer buf
+	(setq-local vc-log-view-type type)
+	(setq-local revert-buffer-function nil)
+	(vc-git-region-history-mode))))
+  :bind
+  (:map vc-prefix-map
+	(("S" . aabm-vc-git-log-grep))))
+
 (with-eval-after-load 'org
   (setq org-src-tab-acts-natively t)
   (setq org-src-fontify-natively t)
