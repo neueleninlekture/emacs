@@ -234,6 +234,12 @@ for configuring packages and lazy loading those configurations.
   (setq use-package-always-defer t)
   (setq use-package-hook-name-suffix nil)
 #+end_src
+*** Installing other use-package related packages
+
+#+begin_src emacs-lisp :tangle init.el
+  (straight-use-package 'diminish)
+#+end_src
+
 *** Load path
 
 Here we add the =elisp= directory and all its subdirectories to the
@@ -356,6 +362,7 @@ wrapped.
 
  #+begin_src emacs-lisp :tangle init.el
    (add-hook 'text-mode-hook #'auto-fill-mode)
+   (diminish 'auto-fill-function)
  #+end_src
 
 * Readers
@@ -420,6 +427,7 @@ navigate your keybindings via prefixes.
 #+begin_src emacs-lisp :tangle init.el
   (use-package which-key
     :straight t
+    :diminish which-key-mode
     :init
     (which-key-mode)
     :custom

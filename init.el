@@ -52,6 +52,8 @@
 (setq use-package-always-defer t)
 (setq use-package-hook-name-suffix nil)
 
+(straight-use-package 'diminish)
+
 (defun update-load-path (&rest _)
   "Update `load-path'."
   (dolist (dir '("elisp"))
@@ -89,6 +91,7 @@
 (setq truncate-lines nil)
 
 (add-hook 'text-mode-hook #'auto-fill-mode)
+(diminish 'auto-fill-function)
 
 (use-package olivetti
   :straight t
@@ -122,6 +125,7 @@
 
 (use-package which-key
   :straight t
+  :diminish which-key-mode
   :init
   (which-key-mode)
   :custom
