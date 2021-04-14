@@ -220,14 +220,29 @@ This function was taken from prot."
   (:map vc-prefix-map
 	(("S" . aabm-vc-git-log-grep))))
 
+(use-package org
+  :custom
+  (org-cycle-global-at-bob t)
+  (org-hide-leading-stars t)
+  :bind
+  (:map org-mode-map
+	(("M-n" . org-forward-element)
+	 ("M-p" . org-backward-element)
+	 ("C-M-n" . org-metadown)
+	 ("C-M-p" . org-metaup)
+	 ("C-M-f" . org-metaright)
+	 ("C-M-b" . org-metaleft))))
+
 (with-eval-after-load 'org
   (setq org-src-tab-acts-natively t)
   (setq org-src-fontify-natively t)
   (setq org-src-window-setup 'current-window))
 
-(with-eval-after-load 'org
-  (setq org-cycle-global-at-bob t)
-  (setq org-hide-leading-stars t))
+(use-package org
+  :bind
+  (("C-c w" . org-capture))
+  :custom
+  (org-capture-templates))
 
 (use-package elfeed
   :straight t

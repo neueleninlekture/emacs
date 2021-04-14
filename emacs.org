@@ -581,6 +581,27 @@ git logs.
 #+end_src
 
 * Org mode
+** Navigating headings
+
+Some settings for better navigating org headings. First we make the
+TAB key cycle all headings when pressed while point on the first line
+of the buffer.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package org
+    :custom
+    (org-cycle-global-at-bob t)
+    (org-hide-leading-stars t)
+    :bind
+    (:map org-mode-map
+	  (("M-n" . org-forward-element)
+	   ("M-p" . org-backward-element)
+	   ("C-M-n" . org-metadown)
+	   ("C-M-p" . org-metaup)
+	   ("C-M-f" . org-metaright)
+	   ("C-M-b" . org-metaleft))))
+#+end_src
+
 ** Source blocks
 
 Here we define a few settings for the src blocks in org-mode. We force
@@ -593,16 +614,19 @@ org use the current window when opening dedicated edit buffers.
     (setq org-src-fontify-natively t)
     (setq org-src-window-setup 'current-window))
 #+end_src
-** Navigating headings
 
-Some settings for better navigating org headings. First we make the
-TAB key cycle all headings when pressed while point on the first line
-of the buffer.
+** Capture
+
+Org capture is a powerful tool for creating notes and quickly
+capturing information to be processed later. Here we define templates
+for its usage.
 
 #+begin_src emacs-lisp :tangle init.el
-  (with-eval-after-load 'org
-    (setq org-cycle-global-at-bob t)
-    (setq org-hide-leading-stars t))
+  (use-package org
+    :bind
+    (("C-c w" . org-capture))
+    :custom
+    (org-capture-templates))
 #+end_src
 
 * Web, news, mail, etc
