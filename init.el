@@ -135,8 +135,11 @@
 
 (use-package geiser
   :straight t
-  :custom
-  (geiser-active-implementations '(guile)))
+  :init
+  (setq geiser-active-implementations '(guile)))
+
+(use-package geiser-guile
+  :straight t)
 
 (defun split-window-below-and-follow ()
   "A simple replacement for `split-window-below', which automatically focuses the new window."
