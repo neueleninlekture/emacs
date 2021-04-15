@@ -134,12 +134,9 @@
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 (use-package geiser
-  :straight t
+  :straight geiser-guile
   :init
   (setq geiser-active-implementations '(guile)))
-
-(use-package geiser-guile
-  :straight t)
 
 (defun split-window-below-and-follow ()
   "A simple replacement for `split-window-below', which automatically focuses the new window."

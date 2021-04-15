@@ -455,12 +455,9 @@ interactive Scheme sessions, and supports various implementations.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package geiser
-    :straight t
+    :straight geiser-guile
     :init
     (setq geiser-active-implementations '(guile)))
-
-  (use-package geiser-guile
-    :straight t)
 #+end_src
 
 * Window and buffer management
