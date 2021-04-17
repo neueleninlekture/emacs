@@ -624,10 +624,23 @@ indentation and syntax highlighting to work as if natively and have
 org use the current window when opening dedicated edit buffers.
   
 #+begin_src emacs-lisp :tangle init.el
-  (with-eval-after-load 'org
-    (setq org-src-tab-acts-natively t)
-    (setq org-src-fontify-natively t)
-    (setq org-src-window-setup 'current-window))
+  (use-package org
+    :custom
+    (org-src-tab-acts-natively t)
+    (org-src-fontify-natively t)
+    (org-src-window-setup 'current-window)
+    (org-structure-template-alist
+     '(("a" . "export ascii")
+       ("c" . "center")
+       ("C" . "comment")
+       ("ee" . "export")
+       ("eh" . "export html")
+       ("el" . "export latex")
+       ("E" . "example")     
+       ("q" . "quote")
+       ("ss" . "src")
+       ("se" . "src emacs-lisp :tangle init.el\n")
+       ("v" . "verse"))))
 #+end_src
 
 ** Capture

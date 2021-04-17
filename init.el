@@ -243,10 +243,23 @@ This function was taken from prot."
 	 ("C-M-f" . org-metaright)
 	 ("C-M-b" . org-metaleft))))
 
-(with-eval-after-load 'org
-  (setq org-src-tab-acts-natively t)
-  (setq org-src-fontify-natively t)
-  (setq org-src-window-setup 'current-window))
+(use-package org
+  :custom
+  (org-src-tab-acts-natively t)
+  (org-src-fontify-natively t)
+  (org-src-window-setup 'current-window)
+  (org-structure-template-alist
+   '(("a" . "export ascii")
+     ("c" . "center")
+     ("C" . "comment")
+     ("ee" . "export")
+     ("eh" . "export html")
+     ("el" . "export latex")
+     ("E" . "example")     
+     ("q" . "quote")
+     ("ss" . "src")
+     ("se" . "src emacs-lisp :tangle init.el\n")
+     ("v" . "verse"))))
 
 (use-package org
   :bind
