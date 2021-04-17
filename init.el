@@ -82,6 +82,18 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+(blink-cursor-mode -1)
+
+(setq focus-follows-mouse t
+      mouse-autoselect-window t)
+
+(setf mouse-wheel-scroll-amount '(3 ((shift) . 3))
+      mouse-wheel-progressive-speed nil
+      mouse-wheel-follow-mouse t
+      scroll-step 1
+      scroll-conservatively 100
+      disabled-command-function nil)
+
 (setq electric-pair-pairs '((?\{ . ?\}) (?\( . ?\))
 			    (?\[ . ?\]) (?\" . ?\")))
 (electric-pair-mode t)
@@ -92,6 +104,11 @@
 
 (add-hook 'text-mode-hook #'auto-fill-mode)
 (diminish 'auto-fill-function)
+
+(use-package avy
+  :straight t
+  :bind
+  (("M-s" . avy-goto-char-2)))
 
 (use-package olivetti
   :straight t

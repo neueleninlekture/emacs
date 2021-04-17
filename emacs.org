@@ -321,6 +321,26 @@ sufficient.
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
 
+** Mouse and cursor settings
+
+Default mouse behavior in Emacs is not ideal. I don't use the mouse
+very often, but when I do, I like having it feel decent. We also
+change some cursor options.
+
+#+begin_src emacs-lisp :tangle init.el
+  (blink-cursor-mode -1)
+
+  (setq focus-follows-mouse t
+	mouse-autoselect-window t)
+
+  (setf mouse-wheel-scroll-amount '(3 ((shift) . 3))
+	mouse-wheel-progressive-speed nil
+	mouse-wheel-follow-mouse t
+	scroll-step 1
+	scroll-conservatively 100
+	disabled-command-function nil)
+#+end_src
+
 * Text editing functionality
 ** Parens
 *** Electric pairs
@@ -364,7 +384,16 @@ wrapped.
    (add-hook 'text-mode-hook #'auto-fill-mode)
    (diminish 'auto-fill-function)
  #+end_src
+** Navigation
+*** Avy
 
+#+begin_src emacs-lisp :tangle init.el
+  (use-package avy
+    :straight t
+    :bind
+    (("M-s" . avy-goto-char-2)))
+#+end_src
+    
 * Readers
 ** Olivetti
 
