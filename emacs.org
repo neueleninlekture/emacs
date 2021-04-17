@@ -595,8 +595,6 @@ Functions for general file management.
     (kill-buffer))
 #+end_src
 
-   
-
 * Org mode
 ** Navigating headings
 
