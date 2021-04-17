@@ -165,6 +165,7 @@
 (use-package dired
   :custom
   (dired-listing-switches "-alNF --group-directories-first")
+  (wdired-allow-to-change-permissions t)
   :config
   (defun dired-up-alternate-directory ()
     (interactive)
@@ -219,6 +220,15 @@ This function was taken from prot."
   :bind
   (:map vc-prefix-map
 	(("S" . aabm-vc-git-log-grep))))
+
+(defun delete-this-file ()
+  (interactive)
+  (delete-file (buffer-file-name)))
+
+(defun delete-this-file-and-buffer ()
+  (interactive)
+  (delete-file (buffer-file-name))
+  (kill-buffer))
 
 (use-package org
   :custom
