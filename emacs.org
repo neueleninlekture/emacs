@@ -686,6 +686,53 @@ for its usage.
     ;; (org-capture-templates))
 #+end_src
 
+** Roam
+
+=org-roam= is a very powerful extension to org-mode. Essentially, it
+is a package that maintains a relational database of links between
+files, and allows navigation of this database using links and
+backlinks. Org Roam is made as a tool for notetaking following the
+=zettelkasten= method. It is quite a useful tool, and I personally
+treat it as a second brain, in which I store all my information.
+
+We also install =org-roam-server=, which runs a simple local web
+server for displaying a visual representation of links between notes.
+
+The final package installed is =deft=, a search tool for org
+files. All these packages can be acessed under the C-c n map.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package org-roam
+    :straight t
+    :config
+    (org-roam-mode)
+    :custom
+    (org-roam-directory "~/org/roam/")
+    (org-roam-index-file "~/org/roam/index.org")
+    (org-roam-encrypt-files t)
+    (org-roam-completion-system 'default)
+    (org-roam-db-update-method 'immediate)
+    (org-roam-graph-executable "/usr/bin/neato")
+    (org-roam-graph-extra-config '(("overlap" . "false")))
+    (org-roam-capture-templates
+     '(("o" "Show: overview" plain (function org-roam--capture-get-point)
+	"#+date:%T\n#+startup: overview\n#+roam_alias:\n"
+	:file-name "%<%Y%m%d%H%M%S>-${slug}"
+	:head "#+title: ${title}\n"
+	:unnarrowed t)
+       ("a" "Show: all" plain (function org-roam--capture-get-point)
+	"#+date:%T\n#+startup: showall\n#+roam_alias:\n"
+	:file-name "%<%Y%m%d%H%M%S>-${slug}"
+	:head "#+title: ${title}\n"
+	:unnarrowed t)))
+    :bind
+    (("C-c n f" . org-roam-find-file)
+     ("C-c n l" . org-roam-insert)
+     ("C-c n L" . org-roam-insert-immediate)
+     ("C-c n r" . org-roam-random-note)
+     ("C-c n w" . org-roam-capture)))
+#+end_src
+
 * Web, news, mail, etc
 ** Elfeed
 

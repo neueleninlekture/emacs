@@ -284,6 +284,36 @@ This function was taken from prot."
   ;; :custom
   ;; (org-capture-templates))
 
+(use-package org-roam
+  :straight t
+  :config
+  (org-roam-mode)
+  :custom
+  (org-roam-directory "~/org/roam/")
+  (org-roam-index-file "~/org/roam/index.org")
+  (org-roam-encrypt-files t)
+  (org-roam-completion-system 'default)
+  (org-roam-db-update-method 'immediate)
+  (org-roam-graph-executable "/usr/bin/neato")
+  (org-roam-graph-extra-config '(("overlap" . "false")))
+  (org-roam-capture-templates
+   '(("o" "Show: overview" plain (function org-roam--capture-get-point)
+      "#+date:%T\n#+startup: overview\n#+roam_alias:\n"
+      :file-name "%<%Y%m%d%H%M%S>-${slug}"
+      :head "#+title: ${title}\n"
+      :unnarrowed t)
+     ("a" "Show: all" plain (function org-roam--capture-get-point)
+      "#+date:%T\n#+startup: showall\n#+roam_alias:\n"
+      :file-name "%<%Y%m%d%H%M%S>-${slug}"
+      :head "#+title: ${title}\n"
+      :unnarrowed t)))
+  :bind
+  (("C-c n f" . org-roam-find-file)
+   ("C-c n l" . org-roam-insert)
+   ("C-c n L" . org-roam-insert-immediate)
+   ("C-c n r" . org-roam-random-note)
+   ("C-c n w" . org-roam-capture)))
+
 (use-package elfeed
   :straight t
   :config
