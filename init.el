@@ -138,7 +138,10 @@
   :custom
   (pdf-view-resize-factor 1.1)
   (pdf-view-continuous nil)
-  (pdf-view-display-size 'fit-page))
+  (pdf-view-display-size 'fit-page)
+  :bind
+  (:map pdf-view-mode-map
+	(("M-g g" . pdf-view-goto-page))))
 
 (use-package which-key
   :straight t

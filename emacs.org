@@ -443,7 +443,10 @@ replacement for docview, essentially.
     :custom
     (pdf-view-resize-factor 1.1)
     (pdf-view-continuous nil)
-    (pdf-view-display-size 'fit-page))
+    (pdf-view-display-size 'fit-page)
+    :bind
+    (:map pdf-view-mode-map
+	  (("M-g g" . pdf-view-goto-page))))
 #+end_src
 
 * Minibuffer
