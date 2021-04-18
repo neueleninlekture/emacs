@@ -234,6 +234,7 @@ for configuring packages and lazy loading those configurations.
   (setq use-package-always-defer t)
   (setq use-package-hook-name-suffix nil)
 #+end_src
+
 *** Installing other use-package related packages
 
 #+begin_src emacs-lisp :tangle init.el
@@ -355,6 +356,7 @@ change some cursor options.
 			       (?\[ . ?\]) (?\" . ?\")))
    (electric-pair-mode t)
  #+end_src
+
 *** Highlight matching parentheses
 
  This minor mode highlights the parentheses that matches the one
@@ -363,6 +365,7 @@ change some cursor options.
  #+begin_src emacs-lisp :tangle init.el
    (show-paren-mode t)
  #+end_src
+ 
 ** Text wrapping and filling
 *** Line truncation
 
@@ -384,6 +387,7 @@ wrapped.
    (add-hook 'text-mode-hook #'auto-fill-mode)
    (diminish 'auto-fill-function)
  #+end_src
+ 
 ** Navigation
 *** Avy
 
@@ -465,6 +469,7 @@ navigate your keybindings via prefixes.
     :custom
     (which-key-idle-delay 0.4))
 #+end_src
+
 ** Selectrum
 
 =Selectrum= offers minibuffer completion and visual selection in the
@@ -510,9 +515,7 @@ vein of =ido=, but offering much more extensibility.
  #+begin_src emacs-lisp :tangle init.el
    (add-hook 'prog-mode-hook #'display-line-numbers-mode)
  #+end_src
-#+begin_src emacs-lisp
-  ()
-#+end_src
+ 
 ** Scheme
 
 Here we include all the options for programming in the Scheme
@@ -548,7 +551,8 @@ interactive Scheme sessions, and supports various implementations.
 
    (global-set-key (kbd "C-x 2") 'split-window-below-and-follow)
    (global-set-key (kbd "C-x 3") 'split-window-right-and-follow)
- #+end_src
+#+end_src
+
 *** Switch window
 
 A simpler keybinding for switching windows.
@@ -572,6 +576,7 @@ A simpler keybinding for switching windows.
 
    (global-set-key (kbd "C-x k") 'kill-this-buffer+)
  #+end_src
+
 *** Ibuffer
 
 #+begin_src emacs-lisp :tangle init.el
@@ -618,6 +623,7 @@ moves up a directory without invoking another buffer.
     (:map dired-mode-map
 	  (("h" . dired-hide-dotfiles-mode))))
 #+end_src
+
 ** VC
 
 The vc package is the built in version-control interaction library for
@@ -651,6 +657,7 @@ git logs.
     (:map vc-prefix-map
 	  (("S" . aabm-vc-git-log-grep))))
 #+end_src
+
 ** Custom functions
 
 Functions for general file management.
@@ -820,3 +827,4 @@ the modeline.
   (line-number-mode t)
   (column-number-mode t)
 #+end_src
+
