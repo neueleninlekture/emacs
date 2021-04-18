@@ -151,33 +151,18 @@
   :custom
   (which-key-idle-delay 0.4))
 
-(use-package selectrum
+(use-package live-completions
   :straight t
   :init
-  (selectrum-mode))
-
-(use-package orderless
-  :straight t
+  (live-completions-mode)
+  (temp-buffer-resize-mode)
+  (live-completions-set-columns 'single)
   :custom
-  (completion-styles '(orderless))
-  (orderless-skip-highlighting (lambda () selectrum-is-active))
-  (selectrum-highlight-candidates-function #'orderless-highlight-matches))
-
-(use-package selectrum-prescient
-  :straight t
-  :custom
-  (selectrum-prescient-enable-filtering nil)
-  :config
-  (selectrum-prescient-mode)
-  (prescient-persist-mode))
-
-(use-package consult
-  :straight t
-  :bind
-  (("M-y" . consult-yank)
-   ("C-x b" . consult-buffer)
-   ("M-g g" . consult-goto-line)
-   ("C-x r b" . consult-bookmark)))
+  (temp-buffer-max-height 10)
+  (completion-ignore-case t)
+  (read-file-name-completion-ignore-case t)
+  (read-buffer-completion-ignore-case t)
+  (completion-styles '(basic partial-completion substring flex)))
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
