@@ -203,8 +203,15 @@
 
 (use-package corfu
   :straight t
-  :hook ((prog-mode-hook . corfu-mode)
-	 (eshell-mode-hook . corfu-mode)))
+  :hook
+  ((prog-mode-hook . corfu-mode)
+   (eshell-mode-hook . corfu-mode))
+  :bind
+  (:map corfu-map
+	(("TAB" . corfu-next)
+	 ("S-TAB" . corfu-previous)))
+  :custom
+  (corfu-cycle t))
 
 (use-package geiser
   :straight geiser-guile
