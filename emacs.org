@@ -806,7 +806,14 @@ program for reading and receiving news.
 For now I'm just using one of the built-in themes.
 
 #+begin_src emacs-lisp :tangle init.el
-  (load-theme 'wheatgrass t)
+  (load-theme 'modus-vivendi t)
+#+end_src
+
+** Faces
+   
+#+begin_src emacs-lisp :tangle init.el
+  (custom-set-faces
+   '(fixed-pitch ((t (:family "Iosevka 11")))))
 #+end_src
 
 ** Font

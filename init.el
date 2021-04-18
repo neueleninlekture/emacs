@@ -357,7 +357,10 @@ This function was taken from prot."
   :bind
   (("C-c e" . elfeed)))
 
-(load-theme 'wheatgrass t)
+(load-theme 'modus-vivendi t)
+
+(custom-set-faces
+ '(fixed-pitch ((t (:family "Iosevka 11")))))
 
 (add-to-list 'default-frame-alist '(font . "Iosevka medium extended 10"))
 (set-frame-font "Iosevka medium extended 10" nil t)
