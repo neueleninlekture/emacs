@@ -486,7 +486,8 @@ vein of =ido=, but offering much more extensibility.
     (completion-styles '(basic substring partial-completion flex initials orderless))
     (completion-ignore-case t)
     (read-file-name-completion-ignore-case t)
-    (read-buffer-completion-ignore-case t))
+    (read-buffer-completion-ignore-case t)
+    (enable-recursive-minibuffers t))
 
   (use-package selectrum-prescient
     :straight t
@@ -514,84 +515,14 @@ vein of =ido=, but offering much more extensibility.
        (which-key--show-keymap "Embark" map nil nil 'no-paging)
        #'which-key--hide-popup-ignore-command)
      embark-become-indicator embark-action-indicator))
-#+end_src
 
-** Icomplete
-
-#+begin_src emacs-lisp
-  (use-package orderless
+  (use-package marginalia
     :straight t
-    :custom
-    (completion-styles '(orderless))
-    ;; (completion-category-overrides '((file (styles basic substring))))
-    )
-
-  (use-package icomplete-vertical
-    :straight t
-    :defer nil
-    :custom
-    (read-file-name-completion-ignore-case t)
-    (read-buffer-completion-ignore-case t)
-    (completion-ignore-case t)
-    (icomplete-compute-delay 0)
-    :config
-    (icomplete-mode)
-    (icomplete-vertical-mode)
-    :bind (:map icomplete-minibuffer-map
-		("<down>" . icomplete-forward-completions)
-		("<up>" . icomplete-backward-completions)
-		("C-n" . icomplete-forward-completions)
-		("C-p" . icomplete-backward-completions)))
-#+end_src
-
-** Default completion
-
-#+begin_src emacs-lisp
-  (use-package live-completions
-    :straight t
+    :bind (:map minibuffer-local-map
+		("M-A" . marginalia-cycle))
     :init
-    (live-completions-mode)
-    (temp-buffer-resize-mode)
-    (live-completions-set-columns 'single)
-    :custom
-    (temp-buffer-max-height 10)
-    (completion-ignore-case t)
-    (read-file-name-completion-ignore-case t)
-    (read-buffer-completion-ignore-case t)
-    (completion-styles '(basic partial-completion substring flex)))
-#+end_src
-
-** Live completion + Icomplete
-
-Autism.
-
-#+begin_src emacs-lisp
-  (use-package orderless
-    :straight t)
-
-  (use-package live-completions
-    :straight t
-    :init
-    (live-completions-mode)
-    (temp-buffer-resize-mode)
-    (live-completions-set-columns 'single)
-    :custom
-    (temp-buffer-max-height 10)
-    (completion-ignore-case t)
-    (read-file-name-completion-ignore-case t)
-    (read-buffer-completion-ignore-case t)
-    (completion-styles '(basic partial-completion substring flex orderless)))
-
-  (use-package icomplete
-    :custom
-    (icomplete-compute-delay 0)
-    :config
-    (icomplete-mode)
-    :bind (:map icomplete-minibuffer-map
-		("<right>" . icomplete-forward-completions)
-		("<left>" . icomplete-backward-completions)
-		("C-s" . icomplete-forward-completions)
-		("C-r" . icomplete-backward-completions)))
+    (marginalia-mode)
+    (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 #+end_src
 
 * Programming modes
