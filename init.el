@@ -164,6 +164,17 @@
   (read-buffer-completion-ignore-case t)
   (completion-styles '(basic partial-completion substring flex)))
 
+(use-package icomplete
+  :custom
+  (icomplete-compute-delay 0)
+  :config
+  (icomplete-mode)
+  :bind (:map icomplete-minibuffer-map
+	      ("<right>" . icomplete-forward-completions)
+	      ("<left>" . icomplete-backward-completions)
+	      ("C-s" . icomplete-forward-completions)
+	      ("C-r" . icomplete-backward-completions)))
+
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 (use-package geiser
