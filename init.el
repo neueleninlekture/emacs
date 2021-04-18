@@ -201,6 +201,11 @@
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
+(use-package corfu
+  :straight t
+  :hook ((prog-mode-hook . corfu-mode)
+	 (eshell-mode-hook . corfu-mode)))
+
 (use-package geiser
   :straight geiser-guile
   :init

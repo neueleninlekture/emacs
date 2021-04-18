@@ -536,6 +536,15 @@ vein of =ido=, but offering much more extensibility.
    (add-hook 'prog-mode-hook #'display-line-numbers-mode)
  #+end_src
  
+*** Code completion
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package corfu
+    :straight t
+    :hook ((prog-mode-hook . corfu-mode)
+	   (eshell-mode-hook . corfu-mode)))
+#+end_src
+
 ** Scheme
 
 Here we include all the options for programming in the Scheme
