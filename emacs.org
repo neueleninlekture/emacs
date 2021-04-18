@@ -408,7 +408,7 @@ wrapped.
    (use-package olivetti
      :straight t
      :custom
-     (olivetti-body-width 90)
+     (olivetti-body-width 100)
      :bind
      (("C-c o" . olivetti-mode)))
  #+end_src
@@ -475,11 +475,18 @@ navigate your keybindings via prefixes.
 =Selectrum= offers minibuffer completion and visual selection in the
 vein of =ido=, but offering much more extensibility.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle init.el
+  (straight-use-package 'orderless)
+
   (use-package selectrum
     :straight t
     :init
-    (selectrum-mode))
+    (selectrum-mode)
+    :custom
+    (completion-styles '(basic substring partial-completion flex initials orderless))
+    (completion-ignore-case t)
+    (read-file-name-completion-ignore-case t)
+    (read-buffer-completion-ignore-case t))
 
   (use-package selectrum-prescient
     :straight t
@@ -496,6 +503,17 @@ vein of =ido=, but offering much more extensibility.
      ("C-x b" . consult-buffer)
      ("M-g g" . consult-goto-line)
      ("C-x r b" . consult-bookmark)))
+
+  (use-package embark
+    :straight t
+    :bind
+    (("C-," . embark-act))
+    :custom
+    (embark-action-indicator
+     (lambda (map &optional _target)
+       (which-key--show-keymap "Embark" map nil nil 'no-paging)
+       #'which-key--hide-popup-ignore-command)
+     embark-become-indicator embark-action-indicator))
 #+end_src
 
 ** Icomplete
@@ -547,7 +565,10 @@ vein of =ido=, but offering much more extensibility.
 
 Autism.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
+  (use-package orderless
+    :straight t)
+
   (use-package live-completions
     :straight t
     :init
@@ -559,7 +580,7 @@ Autism.
     (completion-ignore-case t)
     (read-file-name-completion-ignore-case t)
     (read-buffer-completion-ignore-case t)
-    (completion-styles '(basic partial-completion substring flex)))
+    (completion-styles '(basic partial-completion substring flex orderless)))
 
   (use-package icomplete
     :custom

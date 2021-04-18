@@ -151,29 +151,44 @@
   :custom
   (which-key-idle-delay 0.4))
 
-(use-package live-completions
+(straight-use-package 'orderless)
+
+(use-package selectrum
   :straight t
   :init
-  (live-completions-mode)
-  (temp-buffer-resize-mode)
-  (live-completions-set-columns 'single)
+  (selectrum-mode)
   :custom
-  (temp-buffer-max-height 10)
+  (completion-styles '(basic substring partial-completion flex initials orderless))
   (completion-ignore-case t)
   (read-file-name-completion-ignore-case t)
-  (read-buffer-completion-ignore-case t)
-  (completion-styles '(basic partial-completion substring flex)))
+  (read-buffer-completion-ignore-case t))
 
-(use-package icomplete
+(use-package selectrum-prescient
+  :straight t
   :custom
-  (icomplete-compute-delay 0)
+  (selectrum-prescient-enable-filtering nil)
   :config
-  (icomplete-mode)
-  :bind (:map icomplete-minibuffer-map
-	      ("<right>" . icomplete-forward-completions)
-	      ("<left>" . icomplete-backward-completions)
-	      ("C-s" . icomplete-forward-completions)
-	      ("C-r" . icomplete-backward-completions)))
+  (selectrum-prescient-mode)
+  (prescient-persist-mode))
+
+(use-package consult
+  :straight t
+  :bind
+  (("M-y" . consult-yank)
+   ("C-x b" . consult-buffer)
+   ("M-g g" . consult-goto-line)
+   ("C-x r b" . consult-bookmark)))
+
+(use-package embark
+  :straight t
+  :bind
+  (("C-," . embark-act))
+  :custom
+  (embark-action-indicator
+   (lambda (map &optional _target)
+     (which-key--show-keymap "Embark" map nil nil 'no-paging)
+     #'which-key--hide-popup-ignore-command)
+   embark-become-indicator embark-action-indicator))
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
