@@ -162,7 +162,9 @@
   (completion-ignore-case t)
   (read-file-name-completion-ignore-case t)
   (read-buffer-completion-ignore-case t)
-  (enable-recursive-minibuffers t))
+  (enable-recursive-minibuffers t)
+  :bind
+  (("C-x C-z" . selectrum-repeat)))
 
 (use-package selectrum-prescient
   :straight t
@@ -190,14 +192,6 @@
      (which-key--show-keymap "Embark" map nil nil 'no-paging)
      #'which-key--hide-popup-ignore-command)
    embark-become-indicator embark-action-indicator))
-
-(use-package marginalia
-  :straight t
-  :bind (:map minibuffer-local-map
-	      ("M-A" . marginalia-cycle))
-  :init
-  (marginalia-mode)
-  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
