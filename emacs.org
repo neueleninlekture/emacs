@@ -462,22 +462,39 @@ navigate your keybindings via prefixes.
     :custom
     (which-key-idle-delay 0.4))
 #+end_src
-** Ido mode
+** Selectrum
+
+=Selectrum= offers minibuffer completion and visual selection in the
+vein of =ido=, but offering much more extensibility.
 
 #+begin_src emacs-lisp :tangle init.el
-  (ido-mode t)
-
-  (use-package ido-vertical-mode
+  (use-package selectrum
     :straight t
     :init
-    (ido-vertical-mode))
+    (selectrum-mode))
 
-  (use-package amx
-    :straight ido-completing-read-plus
-    :init
-    (amx-mode)
+  (use-package orderless
+    :straight t
     :custom
-    (amx-backend 'ido))
+    (completion-styles '(orderless))
+    (orderless-skip-highlighting (lambda () selectrum-is-active))
+    (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+
+  (use-package selectrum-prescient
+    :straight t
+    :custom
+    (selectrum-prescient-enable-filtering nil)
+    :config
+    (selectrum-prescient-mode)
+    (prescient-persist-mode))
+
+  (use-package consult
+    :straight t
+    :bind
+    (("M-y" . consult-yank)
+     ("C-x b" . consult-buffer)
+     ("M-g g" . consult-goto-line)
+     ("C-x r b" . consult-bookmark)))
 #+end_src
 
 * Programming modes

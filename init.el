@@ -148,19 +148,33 @@
   :custom
   (which-key-idle-delay 0.4))
 
-(ido-mode t)
-
-(use-package ido-vertical-mode
+(use-package selectrum
   :straight t
   :init
-  (ido-vertical-mode))
+  (selectrum-mode))
 
-(use-package amx
+(use-package orderless
   :straight t
-  :init
-  (amx-mode)
   :custom
-  (amx-backend 'ido))
+  (completion-styles '(orderless))
+  (orderless-skip-highlighting (lambda () selectrum-is-active))
+  (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+
+(use-package selectrum-prescient
+  :straight t
+  :custom
+  (selectrum-prescient-enable-filtering nil)
+  :config
+  (selectrum-prescient-mode)
+  (prescient-persist-mode))
+
+(use-package consult
+  :straight t
+  :bind
+  (("M-y" . consult-yank)
+   ("C-x b" . consult-buffer)
+   ("M-g g" . consult-goto-line)
+   ("C-x r b" . consult-bookmark)))
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
