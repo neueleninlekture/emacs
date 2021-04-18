@@ -148,6 +148,20 @@
   :custom
   (which-key-idle-delay 0.4))
 
+(ido-mode t)
+
+(use-package ido-vertical-mode
+  :straight t
+  :init
+  (ido-vertical-mode))
+
+(use-package amx
+  :straight t
+  :init
+  (amx-mode)
+  :custom
+  (amx-backend 'ido))
+
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 (use-package geiser
@@ -286,6 +300,7 @@ This function was taken from prot."
 
 (use-package org-roam
   :straight t
+  :diminish org-roam-mode
   :config
   (org-roam-mode)
   :custom
@@ -306,7 +321,7 @@ This function was taken from prot."
       "#+date:%T\n#+startup: showall\n#+roam_alias:\n"
       :file-name "%<%Y%m%d%H%M%S>-${slug}"
       :head "#+title: ${title}\n"
-      :unnarrowed t)))
+      :unnarrowed t))) 
   :bind
   (("C-c n f" . org-roam-find-file)
    ("C-c n l" . org-roam-insert)

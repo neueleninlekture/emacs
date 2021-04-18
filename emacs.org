@@ -462,6 +462,23 @@ navigate your keybindings via prefixes.
     :custom
     (which-key-idle-delay 0.4))
 #+end_src
+** Ido mode
+
+#+begin_src emacs-lisp :tangle init.el
+  (ido-mode t)
+
+  (use-package ido-vertical-mode
+    :straight t
+    :init
+    (ido-vertical-mode))
+
+  (use-package amx
+    :straight t
+    :init
+    (amx-mode)
+    :custom
+    (amx-backend 'ido))
+#+end_src
 
 * Programming modes
 ** General options
@@ -704,6 +721,7 @@ files. All these packages can be acessed under the C-c n map.
 #+begin_src emacs-lisp :tangle init.el
   (use-package org-roam
     :straight t
+    :diminish org-roam-mode
     :config
     (org-roam-mode)
     :custom
@@ -724,7 +742,7 @@ files. All these packages can be acessed under the C-c n map.
 	"#+date:%T\n#+startup: showall\n#+roam_alias:\n"
 	:file-name "%<%Y%m%d%H%M%S>-${slug}"
 	:head "#+title: ${title}\n"
-	:unnarrowed t)))
+	:unnarrowed t))) 
     :bind
     (("C-c n f" . org-roam-find-file)
      ("C-c n l" . org-roam-insert)
