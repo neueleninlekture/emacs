@@ -473,7 +473,7 @@ navigate your keybindings via prefixes.
     (ido-vertical-mode))
 
   (use-package amx
-    :straight t
+    :straight ido-completing-read-plus
     :init
     (amx-mode)
     :custom
