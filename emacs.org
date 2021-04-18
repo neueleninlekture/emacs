@@ -552,6 +552,11 @@ A simpler keybinding for switching windows.
 
    (global-set-key (kbd "C-x k") 'kill-this-buffer+)
  #+end_src
+*** Ibuffer
+
+#+begin_src emacs-lisp :tangle init.el
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+#+end_src
 
 * Files and projects
 ** Dired

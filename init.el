@@ -193,6 +193,8 @@
 
 (global-set-key (kbd "C-x k") 'kill-this-buffer+)
 
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
 (use-package dired
   :custom
   (dired-listing-switches "-alNF --group-directories-first")
