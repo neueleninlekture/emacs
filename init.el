@@ -189,8 +189,7 @@
   :bind
   (("M-y" . consult-yank)
    ("C-x b" . consult-buffer)
-   ("M-g g" . consult-goto-line)
-   ("C-x r b" . consult-bookmark)))
+   ("M-g g" . consult-goto-line)))
 
 (use-package embark
   :straight t
@@ -255,6 +254,7 @@
 (use-package dired
   :custom
   (dired-listing-switches "-alNF --group-directories-first")
+  (dired-dwim-target t)
   (wdired-allow-to-change-permissions t)
   :config
   (defun dired-up-alternate-directory ()
