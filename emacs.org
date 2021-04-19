@@ -312,6 +312,14 @@ disable it.
   (setq auto-save-default nil)
 #+end_src
 
+** Others
+
+Disable asking to open a large file.
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq large-file-warning-threshold nil)
+#+end_src
+
 ** Change yes-or-no-p to y-or-n-p
 
 Emacs has a lot of annoying prompts asking for user confirmation that

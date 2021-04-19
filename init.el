@@ -80,6 +80,8 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
+(setq large-file-warning-threshold nil)
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (blink-cursor-mode -1)
