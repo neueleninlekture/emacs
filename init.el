@@ -127,11 +127,11 @@
   :bind
   (("C-c o" . olivetti-mode)))
 
-(define-minor-mode aabm/read-mode
+(define-minor-mode better-reading-mode
   "Minor Mode for better reading experience."
   :init-value nil
   :group aabm
-  (if aabm/read-mode
+  (if better-reading-mode
       (progn
 	(and (fboundp 'olivetti-mode) (olivetti-mode 1))
 	(and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode 1))
@@ -411,7 +411,7 @@ This function was taken from prot."
   :config
   (load-file (expand-file-name "personal/feeds.el" user-emacs-directory))
   :hook
-  ((elfeed-show-mode-hook . aabm/read-mode))
+  ((elfeed-show-mode-hook . better-reading-mdoe))
   :bind
   (("C-c e" . elfeed)))
 
