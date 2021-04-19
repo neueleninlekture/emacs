@@ -207,6 +207,8 @@
   :custom
   (corfu-cycle t))
 
+(add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
+
 (use-package geiser
   :straight geiser-guile
   :init

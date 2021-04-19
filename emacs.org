@@ -546,6 +546,14 @@ vein of =ido=, but offering much more extensibility.
     (corfu-cycle t))
 #+end_src
 
+** HTML and CSS
+
+Webshit.
+
+#+begin_src emacs-lisp :tangle init.el
+  (add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
+#+end_src
+
 ** Scheme
 
 Here we include all the options for programming in the Scheme
