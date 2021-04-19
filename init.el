@@ -265,6 +265,7 @@
 
 (use-package dired-hide-dotfiles
   :straight t
+  :diminish dired-hide-dotfiles-mode
   :hook
   ((dired-mode-hook . dired-hide-dotfiles-mode))
   :bind
