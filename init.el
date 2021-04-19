@@ -225,6 +225,85 @@
 
 (add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
 
+(use-package eshell
+  :init
+  (defvar eshell-minor-mode-map (make-sparse-keymap))
+
+  (define-minor-mode eshell-minor-mode
+    "Minor mode that enables various custom keybindings for `eshell'."
+    nil " esh" eshell-minor-mode-map)
+  :hook
+  ((eshell-mode-hook . eshell-minor-mode))
+  :custom
+  (eshell-cd-on-directory t)
+  (eshell-banner-message "In the beginning was the command line.\n")
+  :config
+  (defun eshell-find-file-at-point ()
+    "Finds file under point. Will open a dired buffer if file is a directory."
+    (interactive)
+    (let ((file (ffap-guess-file-name-at-point)))
+      (if file
+	  (find-file file)
+	(user-error "No file at point"))))
+
+  (defun eshell-copy-file-path-at-point ()
+    "Copies path to file at point to the kill ring"
+    (interactive)
+    (let ((file (ffap-guess-file-name-at-point)))
+      (if file
+	  (kill-new (concat (eshell/pwd) "/" file))
+	(user-error "No file at point"))))
+
+  (defun eshell-cat-file-at-point ()
+    "Outputs contents of file at point"
+    (interactive)
+    (let ((file (ffap-guess-file-name-at-point)))
+      (if file
+	  (progn
+	    (goto-char (point-max))
+	    (insert (concat "cat " file))
+	    (eshell-send-input)))))
+
+  (defun eshell-put-last-output-to-buffer ()
+    "Produces a buffer with output of last `eshell' command."
+    (interactive)
+    (let ((eshell-output (kill-ring-save (eshell-beginning-of-output)
+					 (eshell-end-of-output))))
+      (with-current-buffer (get-buffer-create  "*last-eshell-output*")
+	(erase-buffer)
+	(yank)
+	(switch-to-buffer-other-window (current-buffer)))))
+
+  (defun eshell-mkcd (dir)
+    "Make a directory, or path, and switch to it."
+    (interactive)
+    (eshell/mkdir "-p" dir)
+    (eshell/cd dir))
+
+  (defun eshell-sudo-open (filename)
+    "Open a file as root in Eshell, using TRAMP."
+    (let ((qual-filename (if (string-match "^/" filename)
+			     filename
+			   (concat (expand-file-name (eshell/pwd)) "/" filename))))
+      (switch-to-buffer
+       (find-file-noselect
+	(concat "/sudo::" qual-filename)))))
+
+    (defalias 'mkcd 'eshell-mkcd)
+    (defalias 'open 'find-file-other-window)
+    (defalias 'sopen 'eshell-sudo-open)
+    (defalias 'clean 'eshell/clear-scrollback)
+    (defalias 'mkcd 'eshell-mkcd)
+  :bind
+  (("C-x s" . eshell)
+   (:map eshell-minor-mode-map
+	 (("C-c C-f" . eshell-find-file-at-point)
+	  ("C-c C-w" . eshell-copy-file-path-at-point)
+	  ("C-c C-o" . eshell-cat-file-at-point)
+	  ("C-c C-b" . eshell-put-last-output-to-buffer)
+	  ("C-c C-m" . mkdir)
+	  ("C-c C-t" . chmod)))))
+
 (defun split-window-below-and-follow ()
   "A simple replacement for `split-window-below', which automatically focuses the new window."
   (interactive)
