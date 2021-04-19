@@ -82,6 +82,9 @@
 
 (setq large-file-warning-threshold nil)
 
+(auto-revert-mode 1)
+(diminish 'auto-revert-mode)
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (blink-cursor-mode -1)
@@ -111,6 +114,11 @@
   :straight t
   :bind
   (("M-s" . avy-goto-char-2)))
+
+(use-package expand-region
+  :straight t
+  :bind
+  (("C-=" . er/expand-region)))
 
 (use-package olivetti
   :straight t
@@ -301,6 +309,15 @@ This function was taken from prot."
   :bind
   (:map vc-prefix-map
 	(("S" . aabm-vc-git-log-grep))))
+
+(use-package magit
+  :straight t
+  :commands
+  (magit-status magit)
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  :bind
+  (("C-x g" . magit-status)))
 
 (defun delete-this-file ()
   (interactive)

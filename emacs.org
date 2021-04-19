@@ -320,6 +320,13 @@ Disable asking to open a large file.
   (setq large-file-warning-threshold nil)
 #+end_src
 
+Automatically update files when they change on disk.
+
+#+begin_src emacs-lisp :tangle init.el
+  (auto-revert-mode 1)
+  (diminish 'auto-revert-mode)
+#+end_src
+
 ** Change yes-or-no-p to y-or-n-p
 
 Emacs has a lot of annoying prompts asking for user confirmation that
@@ -406,6 +413,20 @@ wrapped.
     (("M-s" . avy-goto-char-2)))
 #+end_src
     
+** Region
+*** Expand region
+
+A neat little package that allows marking a region in increasing
+bounds with each call. Useful for selecting things inside parentheses,
+like in Lisp code, or quotes in prose.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package expand-region
+    :straight t
+    :bind
+    (("C-=" . er/expand-region)))
+#+end_src
+
 * Readers
 ** Olivetti
 
@@ -703,6 +724,21 @@ git logs.
     :bind
     (:map vc-prefix-map
 	  (("S" . aabm-vc-git-log-grep))))
+#+end_src
+
+** Magit
+
+A powerful git porcelain. For those times when =vc= simply won't do.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package magit
+    :straight t
+    :commands
+    (magit-status magit)
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+    :bind
+    (("C-x g" . magit-status)))
 #+end_src
 
 ** Custom functions
