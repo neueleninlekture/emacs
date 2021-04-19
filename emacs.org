@@ -575,12 +575,12 @@ vein of =ido=, but offering much more extensibility.
     (corfu-cycle t))
 #+end_src
 
-** HTML and CSS
+** Emacs Lisp
 
-Webshit.
+Here we configure Emacs for editing Emacs.
 
 #+begin_src emacs-lisp :tangle init.el
-  (add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
+  (diminish 'eldoc-mode)
 #+end_src
 
 ** Scheme
@@ -594,6 +594,14 @@ interactive Scheme sessions, and supports various implementations.
     :straight geiser-guile
     :init
     (setq geiser-active-implementations '(guile)))
+#+end_src
+
+** HTML and CSS
+
+Webshit.
+
+#+begin_src emacs-lisp :tangle init.el
+  (add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
 #+end_src
 
 * Window and buffer management

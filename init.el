@@ -217,12 +217,14 @@
   :custom
   (corfu-cycle t))
 
-(add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
+(diminish 'eldoc-mode)
 
 (use-package geiser
   :straight geiser-guile
   :init
   (setq geiser-active-implementations '(guile)))
+
+(add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
 
 (defun split-window-below-and-follow ()
   "A simple replacement for `split-window-below', which automatically focuses the new window."
