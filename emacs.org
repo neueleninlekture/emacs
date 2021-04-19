@@ -690,6 +690,14 @@ moves up a directory without invoking another buffer.
     :bind
     (:map dired-mode-map
 	  (("h" . dired-hide-dotfiles-mode))))
+
+  (use-package dired-subtree
+    :straight t
+    :bind
+    (:map dired-mode-map
+	  (("TAB" . dired-subtree-toggle)
+	   ("M-n" . dired-subtree-down)
+	   ("M-p" . dired-subtree-up))))
 #+end_src
 
 ** VC

@@ -284,6 +284,14 @@
   (:map dired-mode-map
 	(("h" . dired-hide-dotfiles-mode))))
 
+(use-package dired-subtree
+  :straight t
+  :bind
+  (:map dired-mode-map
+	(("TAB" . dired-subtree-toggle)
+	 ("M-n" . dired-subtree-down)
+	 ("M-p" . dired-subtree-up))))
+
 (use-package vc
   :config
   (defvar aabm-vc-shell-output "*aabm-vc-output*")
