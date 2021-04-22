@@ -490,7 +490,7 @@ This function was taken from prot."
   :config
   (load-file (expand-file-name "personal/feeds.el" user-emacs-directory))
   :hook
-  ((elfeed-show-mode-hook . better-reading-mdoe))
+  ((elfeed-show-mode-hook . better-reading-mode))
   :bind
   (("C-c e" . elfeed)))
 

@@ -1000,7 +1000,7 @@ program for reading and receiving news.
     :config
     (load-file (expand-file-name "personal/feeds.el" user-emacs-directory))
     :hook
-    ((elfeed-show-mode-hook . better-reading-mdoe))
+    ((elfeed-show-mode-hook . better-reading-mode))
     :bind
     (("C-c e" . elfeed)))
 #+end_src
