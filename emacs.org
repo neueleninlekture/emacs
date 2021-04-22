@@ -593,6 +593,9 @@ interactive Scheme sessions, and supports various implementations.
     :straight geiser-guile
     :init
     (setq geiser-active-implementations '(guile)))
+
+  (use-package sicp
+    :straight t)
 #+end_src
 
 ** HTML and CSS

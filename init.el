@@ -223,6 +223,9 @@
   :init
   (setq geiser-active-implementations '(guile)))
 
+(use-package sicp
+  :straight t)
+
 (add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
 
 (use-package eshell
