@@ -1015,6 +1015,7 @@ For now I'm just using one of the built-in themes.
 
 #+begin_src emacs-lisp :tangle init.el
   (load-theme 'modus-vivendi t)
+  (bind-key "<f7>" 'modus-themes-toggle)
 #+end_src
 
 ** Faces

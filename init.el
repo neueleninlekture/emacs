@@ -498,6 +498,7 @@ This function was taken from prot."
   (("C-c e" . elfeed)))
 
 (load-theme 'modus-vivendi t)
+(bind-key "<f7>" 'modus-themes-toggle)
 
 (custom-set-faces
  '(fixed-pitch ((t (:family "Iosevka 11")))))
