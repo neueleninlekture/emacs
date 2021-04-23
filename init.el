@@ -123,14 +123,15 @@
 (use-package olivetti
   :straight t
   :custom
-  (olivetti-body-width 100)
-  :bind
-  (("C-c o" . olivetti-mode)))
+  (olivetti-body-width 100))
+
+(defvar better-reading-mode-map (make-sparse-keymap))
 
 (define-minor-mode better-reading-mode
   "Minor Mode for better reading experience."
   :init-value nil
   :group aabm
+  :keymap better-reading-mode-map
   (if better-reading-mode
       (progn
 	(and (fboundp 'olivetti-mode) (olivetti-mode 1))
@@ -140,6 +141,10 @@
       (and (fboundp 'olivetti-mode) (olivetti-mode -1))
       (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode -1))
       (text-scale-set 0))))
+
+(global-set-key (kbd "C-c o") 'better-reading-mode)
+(define-key better-reading-mode-map (kbd "M-n") 'scroll-up-line)
+(define-key better-reading-mode-map (kbd "M-p") 'scroll-down-line)
 
 (use-package pdf-tools
   :straight t

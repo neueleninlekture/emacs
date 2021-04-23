@@ -437,9 +437,7 @@ like in Lisp code, or quotes in prose.
    (use-package olivetti
      :straight t
      :custom
-     (olivetti-body-width 100)
-     :bind
-     (("C-c o" . olivetti-mode)))
+     (olivetti-body-width 100))
  #+end_src
  
 ** Reader mode
@@ -448,10 +446,13 @@ A custom minor mode using olivetti and other extensions for optimal
 reading.
 
 #+begin_src emacs-lisp :tangle init.el
+  (defvar better-reading-mode-map (make-sparse-keymap))
+
   (define-minor-mode better-reading-mode
     "Minor Mode for better reading experience."
     :init-value nil
     :group aabm
+    :keymap better-reading-mode-map
     (if better-reading-mode
 	(progn
 	  (and (fboundp 'olivetti-mode) (olivetti-mode 1))
@@ -461,6 +462,10 @@ reading.
 	(and (fboundp 'olivetti-mode) (olivetti-mode -1))
 	(and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode -1))
 	(text-scale-set 0))))
+
+  (global-set-key (kbd "C-c o") 'better-reading-mode)
+  (define-key better-reading-mode-map (kbd "M-n") 'scroll-up-line)
+  (define-key better-reading-mode-map (kbd "M-p") 'scroll-down-line)
 #+end_src
 
 ** pdf-tools
