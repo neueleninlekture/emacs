@@ -412,7 +412,7 @@ wrapped.
     :bind
     (("M-s" . avy-goto-char-2)))
 #+end_src
-    
+
 ** Region
 *** Expand region
 
@@ -427,12 +427,14 @@ like in Lisp code, or quotes in prose.
     (("C-=" . er/expand-region)))
 #+end_src
 
-** Whitespace
+** Whitespace and indentation
 
 #+begin_src emacs-lisp :tangle init.el
-  (global-set-key (kbd "M-SPC") 'cycle-spacing) 
+ (global-set-key (kbd "M-SPC") 'cycle-spacing) 
+
+ (global-set-key (kbd "C-\\") 'indent-region)
 #+end_src
-   
+
 * Readers
 ** Olivetti
 

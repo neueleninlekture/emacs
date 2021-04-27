@@ -120,7 +120,9 @@
   :bind
   (("C-=" . er/expand-region)))
 
-(global-set-key (kbd "M-SPC") 'cycle-spacing)
+(global-set-key (kbd "M-SPC") 'cycle-spacing) 
+
+(global-set-key (kbd "C-\\") 'indent-region)
 
 (use-package olivetti
   :straight t
