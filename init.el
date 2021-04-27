@@ -120,6 +120,8 @@
   :bind
   (("C-=" . er/expand-region)))
 
+(global-set-key (kbd "M-SPC") 'cycle-spacing)
+
 (use-package olivetti
   :straight t
   :custom

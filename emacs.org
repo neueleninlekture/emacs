@@ -427,6 +427,12 @@ like in Lisp code, or quotes in prose.
     (("C-=" . er/expand-region)))
 #+end_src
 
+** Whitespace
+
+#+begin_src emacs-lisp :tangle init.el
+  (global-set-key (kbd "M-SPC") 'cycle-spacing) 
+#+end_src
+   
 * Readers
 ** Olivetti
 
