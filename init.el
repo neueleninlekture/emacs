@@ -82,7 +82,7 @@
 
 (setq large-file-warning-threshold nil)
 
-(auto-revert-mode 1)
+(auto-revert-mode t)
 (diminish 'auto-revert-mode)
 
 (defalias 'yes-or-no-p 'y-or-n-p)

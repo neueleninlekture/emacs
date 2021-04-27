@@ -301,8 +301,8 @@ This disables the default startup screen.
   (setq inhibit-startup-screen t)
 #+end_src
 
-** Disable creation of backup files
-
+** Files
+   
 Emacs tends to litter all your directories with backups of all files
 you visit. I find this behavior annoying and mostly useless. So we
 disable it.
@@ -311,8 +311,6 @@ disable it.
   (setq make-backup-files nil)
   (setq auto-save-default nil)
 #+end_src
-
-** Others
 
 Disable asking to open a large file.
 
@@ -323,7 +321,7 @@ Disable asking to open a large file.
 Automatically update files when they change on disk.
 
 #+begin_src emacs-lisp :tangle init.el
-  (auto-revert-mode 1)
+  (auto-revert-mode t)
   (diminish 'auto-revert-mode)
 #+end_src
 
