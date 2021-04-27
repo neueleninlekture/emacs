@@ -105,7 +105,7 @@
 
 (show-paren-mode t)
 
-(setq truncate-lines nil)
+(global-visual-line-mode t)
 
 (add-hook 'text-mode-hook #'auto-fill-mode)
 (diminish 'auto-fill-function)

@@ -382,14 +382,16 @@ change some cursor options.
  #+end_src
  
 ** Text wrapping and filling
-*** Line truncation
+*** Visual lines
 
 Emacs normally makes long lines extend off the edge of the screen. I
 dislike this behavior and would rather have lines be (visually)
-wrapped. 
+wrapped. Visual lines allow one to navigate lines just as they are
+displayed, so a long line that gets wrapped will be treated as two
+lines by most editing commands.
 
 #+begin_src emacs-lisp :tangle init.el
-  (setq truncate-lines nil)
+  (global-visual-line-mode t)
 #+end_src
    
 *** Auto fill text
