@@ -358,7 +358,7 @@ change some cursor options.
 #+end_src
 
 * Text editing functionality
-** Parens
+** Parens, brackets and quotes
 *** Electric pairs
 
  Electric pairs make it so that every opening character that you type
