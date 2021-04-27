@@ -390,6 +390,7 @@ lines by most editing commands.
 
 #+begin_src emacs-lisp :tangle init.el
   (global-visual-line-mode t)
+  (diminish 'visual-line-mode)
 #+end_src
    
 *** Auto fill text

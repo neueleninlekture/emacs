@@ -106,6 +106,7 @@
 (show-paren-mode t)
 
 (global-visual-line-mode t)
+(diminish 'visual-line-mode)
 
 (add-hook 'text-mode-hook #'auto-fill-mode)
 (diminish 'auto-fill-function)
