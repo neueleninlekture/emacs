@@ -115,6 +115,8 @@
   :bind
   (("M-s" . avy-goto-char-2)))
 
+(setq sentence-end-double-space nil)
+
 (use-package expand-region
   :straight t
   :bind

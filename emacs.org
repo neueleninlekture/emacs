@@ -415,7 +415,17 @@ lines by most editing commands.
     (("M-s" . avy-goto-char-2)))
 #+end_src
 
-** Region
+** Sentences and words
+
+A nice tweak to sentence navigation commands that makes them more
+usable. We change the definition of a sentence to a more reasonable
+"something that ends in a single space after punctuation".
+   
+#+begin_src emacs-lisp :tangle init.el
+  (setq sentence-end-double-space nil)
+#+end_src
+
+** Region selection
 *** Expand region
 
 A neat little package that allows marking a region in increasing
