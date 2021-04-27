@@ -447,6 +447,16 @@ like in Lisp code, or quotes in prose.
  (global-set-key (kbd "C-\\") 'indent-region)
 #+end_src
 
+** Clipboard and kill ring
+
+Make Emacs read the system clipboard and integrate it with the
+=kill-ring=.
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq select-enable-clipboard t)
+  (setq save-interprogram-paste-before-kill t)
+#+end_src
+
 * Readers
 ** Olivetti
 

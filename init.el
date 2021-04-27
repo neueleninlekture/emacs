@@ -126,6 +126,9 @@
 
 (global-set-key (kbd "C-\\") 'indent-region)
 
+(setq select-enable-clipboard t)
+(setq save-interprogram-paste-before-kill t)
+
 (use-package olivetti
   :straight t
   :custom
