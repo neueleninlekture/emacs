@@ -450,7 +450,7 @@ This function was taken from prot."
      ("ee" . "export")
      ("eh" . "export html")
      ("el" . "export latex")
-     ("E" . "example")     
+     ("E" . "example")
      ("q" . "quote")
      ("ss" . "src")
      ("se" . "src emacs-lisp :tangle init.el\n")
@@ -458,8 +458,9 @@ This function was taken from prot."
 
 (use-package org
   :bind
-  (("C-c w" . org-capture)))
-  ;; :custom
+  (("C-c w" . org-capture))
+  :custom
+  (org-capture-bookmark nil))
   ;; (org-capture-templates))
 
 (use-package org-roam

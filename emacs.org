@@ -927,7 +927,7 @@ org use the current window when opening dedicated edit buffers.
        ("ee" . "export")
        ("eh" . "export html")
        ("el" . "export latex")
-       ("E" . "example")     
+       ("E" . "example")
        ("q" . "quote")
        ("ss" . "src")
        ("se" . "src emacs-lisp :tangle init.el\n")
@@ -943,8 +943,9 @@ for its usage.
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
     :bind
-    (("C-c w" . org-capture)))
-    ;; :custom
+    (("C-c w" . org-capture))
+    :custom
+    (org-capture-bookmark nil))
     ;; (org-capture-templates))
 #+end_src
 
