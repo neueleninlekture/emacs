@@ -167,6 +167,21 @@
   (:map pdf-view-mode-map
 	(("M-g g" . pdf-view-goto-page))))
 
+(use-package nov
+  :straight t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+  :custom
+  (nov-text-width 80)
+  (nov-text-width t)
+  (visual-fill-column-center-text t)  
+  :hook
+  ((nov-mode-hook . better-reading-mode))
+  :bind
+  (:map nov-mode-map
+	((("M-n" . scroll-up-line)
+	  ("M-p" . scroll-down-line)))))
+
 (use-package which-key
   :straight t
   :diminish which-key-mode

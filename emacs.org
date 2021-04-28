@@ -515,6 +515,27 @@ replacement for docview, essentially.
 	  (("M-g g" . pdf-view-goto-page))))
 #+end_src
 
+** nov.el
+
+A simple epub reader in Emacs.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package nov
+    :straight t
+    :init
+    (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+    :custom
+    (nov-text-width 80)
+    (nov-text-width t)
+    (visual-fill-column-center-text t)  
+    :hook
+    ((nov-mode-hook . better-reading-mode))
+    :bind
+    (:map nov-mode-map
+	  ((("M-n" . scroll-up-line)
+	    ("M-p" . scroll-down-line)))))
+#+end_src
+
 * Minibuffer
 ** Which Key
 
