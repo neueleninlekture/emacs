@@ -539,6 +539,7 @@ This function was taken from prot."
   :custom
   (org-roam-directory "~/org/roam/")
   (org-roam-index-file "~/org/roam/index.org")
+  (org-roam-db-location (expand-file-name "roam.db" org-roam-directory))
   (org-roam-completion-system 'default)
   (org-roam-db-update-method 'immediate)
   (org-roam-graph-executable "/usr/bin/neato")
