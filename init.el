@@ -487,6 +487,15 @@ This function was taken from prot."
   (org-capture-bookmark nil))
   ;; (org-capture-templates))
 
+(use-package ox-epub
+  :straight t)
+
+(use-package org
+  :init
+  (setq org-export-backends '(ascii beamer epub html latex md))
+  :custom
+  (org-export-html-postamble nil))
+
 (use-package org-roam
   :straight t
   :diminish org-roam-mode
