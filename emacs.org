@@ -403,6 +403,35 @@ lines by most editing commands.
    (diminish 'auto-fill-function)
  #+end_src
  
+*** Fill or unfill text
+
+A couple nice functions for unfilling text. I often deal with filled
+text, yet sometimes find myself wanting to transform that into
+unfilled text. These functions by Sacha Chua help accomplish that. We
+also replace the default fill-paragraph function for one that supports
+both filling and unfilling according to prefix argument.
+
+#+begin_src emacs-lisp :tangle init.el
+  (defun unfill-paragraph (&optional region)
+    "Takes a multi-line paragraph and makes it into a single line of text."
+    (interactive (progn
+		   (barf-if-buffer-read-only)
+		   (list t)))
+    (let ((fill-column (point-max)))
+      (fill-paragraph nil region)))
+
+  (defun fill-or-unfill-paragraph (&optional unfill region)
+    "Fill paragraph (or REGION).
+  With the prefix argument UNFILL, unfill it instead."
+    (interactive (progn
+		   (barf-if-buffer-read-only)
+		   (list (if current-prefix-arg 'unfill) t)))
+    (let ((fill-column (if unfill (point-max) fill-column)))
+      (fill-paragraph nil region)))
+
+  (global-set-key (kbd "M-q") 'fill-or-unfill-paragraph)
+#+end_src
+
 ** Navigation
 *** Avy
 
