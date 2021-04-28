@@ -604,6 +604,14 @@ vein of =ido=, but offering much more extensibility.
        (which-key--show-keymap "Embark" map nil nil 'no-paging)
        #'which-key--hide-popup-ignore-command)
      embark-become-indicator embark-action-indicator))
+
+  (use-package marginalia
+    :straight t
+    :bind
+    ((:map minibuffer-local-map
+	   ("M-a" . marginalia-cycle))))
+#+end_src
+
 #+end_src
 
 * Programming modes

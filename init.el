@@ -236,6 +236,12 @@
      #'which-key--hide-popup-ignore-command)
    embark-become-indicator embark-action-indicator))
 
+(use-package marginalia
+  :straight t
+  :bind
+  ((:map minibuffer-local-map
+	 ("M-a" . marginalia-cycle))))
+
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 (use-package corfu
