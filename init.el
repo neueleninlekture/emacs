@@ -216,7 +216,7 @@ With the prefix argument UNFILL, unfill it instead."
   :init
   (selectrum-mode)
   :custom
-  (completion-styles '(basic substring partial-completion flex initials orderless))
+  (completion-styles '(orderless))
   (completion-ignore-case t)
   (read-file-name-completion-ignore-case t)
   (read-buffer-completion-ignore-case t)
