@@ -215,11 +215,15 @@
 
 (use-package consult
   :straight t
+  :custom
+  (consult-narrow-key "<")
   :bind
   (("M-y" . consult-yank)
    ("C-x b" . consult-buffer)
-   ("M-g g" . consult-goto-line)
-   ("M-g o" . consult-outline)))
+   ("M-g g" . consult-grep)
+   ("M-g o" . consult-outline)
+   ("M-g m" . consult-mark)
+   ("M-g M-g" . consult-goto-line)))
 
 (use-package embark
   :straight t
