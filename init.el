@@ -218,7 +218,8 @@
   :bind
   (("M-y" . consult-yank)
    ("C-x b" . consult-buffer)
-   ("M-g g" . consult-goto-line)))
+   ("M-g g" . consult-goto-line)
+   ("M-g o" . consult-outline)))
 
 (use-package embark
   :straight t
