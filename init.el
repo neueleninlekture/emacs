@@ -561,6 +561,21 @@ This function was taken from prot."
    ("C-c n r" . org-roam-random-note)
    ("C-c n w" . org-roam-capture)))
 
+(use-package org-roam-server
+  :straight t
+  :bind
+  (("C-c n g" . org-roam-server-mode)))
+
+(use-package deft
+  :straight t
+  :custom
+  (deft-recursive t)
+  (deft-use-filter-string-for-filename t)
+  (deft-default-extension "org")
+  (deft-directory "~/org/roam")
+  :bind
+  (("C-c n s" . deft)))
+
 (use-package elfeed
   :straight t
   :config
