@@ -96,7 +96,6 @@
       mouse-wheel-progressive-speed nil
       mouse-wheel-follow-mouse t
       scroll-step 1
-      scroll-conservatively 100
       disabled-command-function nil)
 
 (setq electric-pair-pairs '((?\{ . ?\}) (?\( . ?\))
