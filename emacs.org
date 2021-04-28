@@ -612,6 +612,17 @@ vein of =ido=, but offering much more extensibility.
 	   ("M-a" . marginalia-cycle))))
 #+end_src
 
+** Miniedit
+
+This package allows you to edit the contents of the minibuffer in a
+dedicated buffer. This provides a better experience for dealing with
+lots of content.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package miniedit
+    :straight t
+    :init
+    (miniedit-install))
 #+end_src
 
 * Programming modes

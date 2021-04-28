@@ -242,6 +242,11 @@
   ((:map minibuffer-local-map
 	 ("M-a" . marginalia-cycle))))
 
+(use-package miniedit
+  :straight t
+  :init
+  (miniedit-install))
+
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 (use-package corfu
