@@ -545,12 +545,12 @@ This function was taken from prot."
   (org-roam-graph-extra-config '(("overlap" . "false")))
   (org-roam-capture-templates
    '(("o" "Show: overview" plain (function org-roam--capture-get-point)
-      "#+date:%T\n#+startup: overview\n#+roam_alias:\n"
+      "#+date:%T\n#+startup: overview\n#+roam_tags:\n#+roam_alias:\n"
       :file-name "%<%Y%m%d%H%M%S>-${slug}"
       :head "#+title: ${title}\n"
       :unnarrowed t)
      ("a" "Show: all" plain (function org-roam--capture-get-point)
-      "#+date:%T\n#+startup: showall\n#+roam_alias:\n"
+      "#+date:%T\n#+startup: showall\n#+roam_tags:\n#+roam_alias:\n"
       :file-name "%<%Y%m%d%H%M%S>-${slug}"
       :head "#+title: ${title}\n"
       :unnarrowed t))) 
