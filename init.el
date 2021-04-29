@@ -517,7 +517,8 @@ This function was taken from prot."
 
 (use-package org
   :bind
-  (("C-c w" . org-capture))
+  (("C-c w" . org-capture)
+   ("C-c l" . org-store-link))
   :custom
   (org-capture-bookmark nil))
   ;; (org-capture-templates))
