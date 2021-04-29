@@ -592,8 +592,19 @@ This function was taken from prot."
 (load-theme 'modus-vivendi t)
 (bind-key "<f7>" 'modus-themes-toggle)
 
+(define-minor-mode serif-font-mode
+    "Minor mode which sets the default buffer face to the serif font, using `buffer-face-mode'."
+    :init-value nil
+    :group aabm
+    (if serif-font-mode
+	(progn
+	  (setq buffer-face-mode-face '(:family "IBM Plex Serif" :height 100))
+	  (and (fboundp 'buffer-face-mode) (buffer-face-mode 1)))
+      (and (fboundp 'buffer-face-mode) (buffer-face-mode -1))))
+
 (custom-set-faces
- '(fixed-pitch ((t (:family "Iosevka 11")))))
+ '(fixed-pitch ((t (:family "Iosevka 11"))))
+ '(variable-pitch ((t :family "IBM Plex Serif 10"))))
 
 (add-to-list 'default-frame-alist '(font . "Iosevka medium extended 10"))
 (set-frame-font "Iosevka medium extended 10" nil t)
