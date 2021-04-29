@@ -163,11 +163,11 @@ With the prefix argument UNFILL, unfill it instead."
   (if better-reading-mode
       (progn
 	(and (fboundp 'olivetti-mode) (olivetti-mode 1))
-	(and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode 1))
+	(and (fboundp 'variable-pitch-mode) (variable-pitch-mode 1))
 	(text-scale-set +1))
     (progn
       (and (fboundp 'olivetti-mode) (olivetti-mode -1))
-      (and (fboundp 'mixed-pitch-mode) (mixed-pitch-mode -1))
+      (and (fboundp 'variable-pitch-mode) (variable-pitch-mode -1))
       (text-scale-set 0))))
 
 (global-set-key (kbd "C-c o") 'better-reading-mode)
