@@ -535,6 +535,8 @@ This function was taken from prot."
 (use-package org-roam
   :straight t
   :diminish org-roam-mode
+  :init
+  (setq org-roam-directory "~/org/roam/")
   :config
   (org-roam-mode)
   :custom
