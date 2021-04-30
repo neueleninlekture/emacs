@@ -64,8 +64,8 @@
   (let ((default-directory (expand-file-name "elisp" user-emacs-directory)))
     (normal-top-level-add-subdirs-to-load-path)))
 
-(update-load-path)
-(add-subdirs-to-load-path)
+(add-hook 'emacs-startup-hook #'update-load-path)
+(add-hook 'emacs-startup-hook #'add-subdirs-to-load-path)
 
 (setq load-prefer-newer t)
 
@@ -87,16 +87,16 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(blink-cursor-mode -1)
-
-(setq focus-follows-mouse t
-      mouse-autoselect-window t)
-
 (setf mouse-wheel-scroll-amount '(3 ((shift) . 3))
       mouse-wheel-progressive-speed nil
       mouse-wheel-follow-mouse t
       scroll-step 1
       disabled-command-function nil)
+
+(setq focus-follows-mouse t
+      mouse-autoselect-window t)
+
+(blink-cursor-mode -1)
 
 (setq electric-pair-pairs '((?\{ . ?\}) (?\( . ?\))
 			    (?\[ . ?\]) (?\" . ?\")))
@@ -195,11 +195,7 @@ With the prefix argument UNFILL, unfill it instead."
   (nov-text-width t)
   (visual-fill-column-center-text t)  
   :hook
-  ((nov-mode-hook . better-reading-mode))
-  :bind
-  (:map nov-mode-map
-	((("M-n" . scroll-up-line)
-	  ("M-p" . scroll-down-line)))))
+  ((nov-mode-hook . better-reading-mode)))
 
 (use-package which-key
   :straight t
@@ -476,10 +472,12 @@ This function was taken from prot."
   (("C-x g" . magit-status)))
 
 (defun delete-this-file ()
+  "Delete the file accessed by the current buffer."
   (interactive)
   (delete-file (buffer-file-name)))
 
 (defun delete-this-file-and-buffer ()
+  "Like `delete-this-file', but kills the buffer as well."
   (interactive)
   (delete-file (buffer-file-name))
   (kill-buffer))
@@ -512,6 +510,7 @@ This function was taken from prot."
      ("E" . "example")
      ("q" . "quote")
      ("ss" . "src")
+     ("sS" . "src scheme\n")
      ("se" . "src emacs-lisp :tangle init.el\n")
      ("v" . "verse"))))
 
@@ -593,14 +592,14 @@ This function was taken from prot."
 (bind-key "<f7>" 'modus-themes-toggle)
 
 (define-minor-mode serif-font-mode
-    "Minor mode which sets the default buffer face to the serif font, using `buffer-face-mode'."
-    :init-value nil
-    :group aabm
-    (if serif-font-mode
-	(progn
-	  (setq buffer-face-mode-face '(:family "IBM Plex Serif" :height 100))
-	  (and (fboundp 'buffer-face-mode) (buffer-face-mode 1)))
-      (and (fboundp 'buffer-face-mode) (buffer-face-mode -1))))
+  "Minor mode which sets the default buffer face to the serif font, using `buffer-face-mode'."
+  :init-value nil
+  :group aabm
+  (if serif-font-mode
+      (progn
+	(setq buffer-face-mode-face '(:family "IBM Plex Serif" :height 100))
+	(and (fboundp 'buffer-face-mode) (buffer-face-mode 1)))
+    (and (fboundp 'buffer-face-mode) (buffer-face-mode -1))))
 
 (custom-set-faces
  '(fixed-pitch ((t (:family "Iosevka 11"))))

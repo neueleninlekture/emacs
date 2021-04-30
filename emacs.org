@@ -26,12 +26,44 @@ In line with the Emacs/GNU philosophy, this configuration is entirely
 =free software=. See the [[*License][License]] section/file for more
 details.
 
+As of recently (April 2021 as I write), I have deleted the entirety of
+my configuration, choosing to start from scratch and build my way up.
+I felt as if my old configuration was getting too big for my own good,
+with lots of packages I wasn't making good use of, or packages which
+were simply reimplementing things Emacs can do just fine by default.
+So, around the time of commit =6e4140b4=, I decided to nuke it all and
+start from scratch. I laid out a few ground rules for myself to
+follow during this process:
+
+- give the defaults a try, they're there for a reason
+- avoid external packages, prefer the built-ins
+- Emacs is extensible, make use of that. Write your own code.
+- when in doubt over two packages, choose the simplest one.
+- when in trouble, don't search online for a quick fix. RTFM.
+- seriously, RTFM, Emacs has great built-in documentation.
+
+After almost a month of this, I can say these rules have given me
+great insight into Emacs.
+
+One of the first things I did was take a profound look at all the
+minibuffer completion options, getting rid of my old Ivy configuration
+in favor of just giving the default minibuffer TAB completion a try. I
+can honestly say I will likely never go back to a heavier completion
+framework, and that the built-ins are by themselves very powerful.
+However, I chose to supplement this power with external tools such as
+=selectrum=, =orderless= and =embark=.
+
+I will also be replacing old external packages like the mu4e mail
+client with built-ins such as Gnus. Gnus is almost impenetrable for
+the quick-fix-seeking user, but rewards those who read the
+[[info:gnus#Top][documentation]].
+
 * License
 
 Copyright © 2019-2021 Aabm <aabm@disroot.org>
 
 Author: Aabm <aabm@disroot.org>
-Keywords: literate programming, Emacs configuration
+
 Homepage: https://gitlab.com/aabm/emacs
 
 This file is NOT part of GNU Emacs.
@@ -123,7 +155,13 @@ complete.
 
 These are settings for disabling =package.el=, Emacs' built-in package
 manager. Since Emacs 27, package.el is automatically started before
-loading init.el, so it must be disabled in early-init.
+loading init.el, so it must be disabled in early-init. We disable
+=package.el= for two reasons: first, it speeds up startup. It is
+preferable to explicitly load =package.el= later in the init process,
+as that is faster than letting it start up by itself. And second
+because I don't actually use =package.el=: I much prefer the
+alternative =straight=, which offers functional package management.
+See the [[*Bootstrap straight.el][Bootstrap straight.el]] section ahead.
 
 #+begin_src emacs-lisp :tangle early-init.el
   (setq package-enable-at-startup nil
@@ -132,8 +170,8 @@ loading init.el, so it must be disabled in early-init.
 
 *** Notify startup time
 
-We enable a simple hook to print a message stating the length of
-startup in the echo area.
+We enable a simple hook to print a message stating startup time and
+garbage collection information right after startup.
 
 #+begin_src emacs-lisp :tangle early-init.el
   (add-hook 'emacs-startup-hook
@@ -147,7 +185,8 @@ startup in the echo area.
 ** init.el
 
 Here we define all the initialization options, to be included in the
-=init.el= file.
+=init.el= file. This file is where all my configuration is extracted
+to. 
 
 *** Header
     
@@ -189,11 +228,15 @@ The license/package header for the =init.el= file.
 
 *** Check version
 
-This configuration, in its current state, is made for use with the
-Emacs master branch. It does not aim to support previous versions of
-Emacs. That said, this configuration /probably/ works with Emacs
-version 27.1+. We check the version number in init, and trigger an
-error if it is outdated.
+This configuration in its current state is made for use with the Emacs
+master branch. It does not aim to support previous versions of Emacs.
+That said, this configuration probably /mostly/ works with all Emacs
+versions 27.1+, as I include very few features which are Emacs 28
+exclusive. One thing I know will break on older Emacsen: the theme. I
+use the =modus= themes which are built into Emacs as of 28, but have
+to be fetched from ELPA in previous versions. In any case, we check
+the version number on startup, and trigger an error if it is too
+outdated.
 
 #+begin_src emacs-lisp :tangle init.el
   (when (version< emacs-version "27.1")
@@ -202,8 +245,10 @@ error if it is outdated.
 
 *** Bootstrap straight.el
 
- Here we bootstrap the =straight.el= package manager, which replaces
- package.el. This requires that =git= be installed on the system.
+Here we bootstrap the =straight.el= package manager, which replaces
+=package.el=. This requires that =git= be installed on the system. The
+code here is the official method for installing straight, taken from
+its [[https://github.com/emacsmirror/straight][github]].
 
  #+begin_src emacs-lisp :tangle init.el
    (defvar bootstrap-version)
@@ -224,8 +269,10 @@ error if it is outdated.
 
 In this section we install =use-package=, a collection of macros for
 making package management easier and more convenient. It provides
-great control over the process of loading a given package. It is used
-for configuring packages and lazy loading those configurations. 
+great control over the process of loading and customizing packages. It
+is used for configuring packages and lazy loading those
+configurations, to ensure performance and full control over
+configuration.
 
 #+begin_src emacs-lisp :tangle init.el
   (straight-use-package 'use-package)
@@ -236,6 +283,11 @@ for configuring packages and lazy loading those configurations.
 #+end_src
 
 *** Installing other use-package related packages
+
+Diminish is a simple tool. It allows you to hide minor modes from your
+modeline (because you don't always want to see all your minor modes).
+The nice part is that it has =use-package= integration, so you can
+call it from inside use-package declarations.
 
 #+begin_src emacs-lisp :tangle init.el
   (straight-use-package 'diminish)
@@ -257,8 +309,8 @@ load path. This allows us to make and load custom packages.
     (let ((default-directory (expand-file-name "elisp" user-emacs-directory)))
       (normal-top-level-add-subdirs-to-load-path)))
 
-  (update-load-path)
-  (add-subdirs-to-load-path)
+  (add-hook 'emacs-startup-hook #'update-load-path)
+  (add-hook 'emacs-startup-hook #'add-subdirs-to-load-path)
 #+end_src
 
 *** Ensuring auto-compilation
@@ -266,7 +318,10 @@ load path. This allows us to make and load custom packages.
 Here we make sure that Emacs always has access to compiled elisp
 instead of simple source files. The first setting here ensures that
 outdated compiled files do not get loaded, and instead get recompiled
-before being loaded.
+before being loaded. In older versions of Emacs, this implies
+byte-compilation. Since April 2021, the Emacs master branch has
+officially merged native compilation, so that will be used when
+available.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq load-prefer-newer t)
@@ -275,8 +330,11 @@ before being loaded.
 * Quality of life changes
 ** Disabled commands
 
-Here we make it so that no commands are disabled by Emacs. I want
-access to all of them.
+Emacs has this annoying behavior out of the box that makes some
+commands return a warning to the user. Apparently these are considered
+"too advanced" for new users so they're disabled. I want to be able to
+use all of those with no hassle, so here we make it so that no
+commands are disabled by Emacs.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq disabled-command-function nil)
@@ -295,7 +353,8 @@ way. So we disable those.
 
 ** Disable startup messages
 
-This disables the default startup screen.
+This disables the default startup screen. I would rather just start in
+the scratch buffer.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq inhibit-startup-screen t)
@@ -312,7 +371,9 @@ disable it.
   (setq auto-save-default nil)
 #+end_src
 
-Disable asking to open a large file.
+Emacs also usually asks you before opening files which are too large
+(as that could cause slowdowns depending on /how large/). I don't want
+that.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq large-file-warning-threshold nil)
@@ -327,9 +388,9 @@ Automatically update files when they change on disk.
 
 ** Change yes-or-no-p to y-or-n-p
 
-Emacs has a lot of annoying prompts asking for user confirmation that
-require you to type in "yes" everytime. This makes a simple "y"
-sufficient.
+Emacs has a lot of prompts asking for user confirmation that require
+you to type in "yes" everytime. This replaces the default "yes or no"
+prompt function with one that makes simple "y" or "n" sufficient.
 
 #+begin_src emacs-lisp :tangle init.el
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -338,30 +399,31 @@ sufficient.
 ** Mouse and cursor settings
 
 Default mouse behavior in Emacs is not ideal. I don't use the mouse
-very often, but when I do, I like having it feel decent. We also
-change some cursor options.
+very often, but when I do, I like having it feel decent. The first
+order of business is improving scrolling. Then we allow the mouse to
+aid in Emacs window management. We also change some cursor options.
 
 #+begin_src emacs-lisp :tangle init.el
-  (blink-cursor-mode -1)
-
-  (setq focus-follows-mouse t
-	mouse-autoselect-window t)
-
   (setf mouse-wheel-scroll-amount '(3 ((shift) . 3))
 	mouse-wheel-progressive-speed nil
 	mouse-wheel-follow-mouse t
 	scroll-step 1
 	disabled-command-function nil)
+
+  (setq focus-follows-mouse t
+	mouse-autoselect-window t)
+
+  (blink-cursor-mode -1)
 #+end_src
 
 * Text editing functionality
 ** Parens, brackets and quotes
 *** Electric pairs
 
- Electric pairs make it so that every opening character that you type
- (parentheses, braces, brackets, quotation marks) is automatically
- matched with the corresponding closing character. This is handy at all
- times when editing, but especially useful for programming in Lisp.
+Electric pairs make it so that every opening character that you type
+(parentheses, braces, brackets, quotation marks) is automatically
+matched with the corresponding closing character. This is handy at all
+times when editing, but especially useful for programming in Lisp.
 
  #+begin_src emacs-lisp :tangle init.el
    (setq electric-pair-pairs '((?\{ . ?\}) (?\( . ?\))
@@ -371,7 +433,7 @@ change some cursor options.
 
 *** Highlight matching parentheses
 
- This minor mode highlights the parentheses that matches the one
+ This minor mode highlights the parentheses corresponding to the one
  under/behind point. Useful for Lisp programming.
 
  #+begin_src emacs-lisp :tangle init.el
@@ -385,7 +447,8 @@ Emacs normally makes long lines extend off the edge of the screen. I
 dislike this behavior and would rather have lines be (visually)
 wrapped. Visual lines allow one to navigate lines just as they are
 displayed, so a long line that gets wrapped will be treated as two
-lines by most editing commands.
+lines by most editing commands, without forcing you to break them up
+into actual separate lines.
 
 #+begin_src emacs-lisp :tangle init.el
   (global-visual-line-mode t)
@@ -394,9 +457,14 @@ lines by most editing commands.
    
 *** Auto fill text
 
- When editing plain text files, I like my text to be automatically
- wrapped to a sane default. This avoids having to manually fill
- paragraphs.
+When editing plain text files, I like my text to be automatically
+wrapped to a sane default. I like having hard filling (that is, not
+just visual, as mentioned above) because it forces all text within a
+nice character-per-line limit, which is much nicer to read than text
+which wraps all the way accross a wide screen.
+
+Having text be automatically filled as I type avoids having to
+manually fill paragraphs with =M-q=.
 
  #+begin_src emacs-lisp :tangle init.el
    (add-hook 'text-mode-hook #'auto-fill-mode)
@@ -407,9 +475,9 @@ lines by most editing commands.
 
 A couple nice functions for unfilling text. I often deal with filled
 text, yet sometimes find myself wanting to transform that into
-unfilled text. These functions by Sacha Chua help accomplish that. We
+unfilled text. These functions by [[https://sachachua.com/dotemacs/][Sacha Chua]] help accomplish that. We
 also replace the default fill-paragraph function for one that supports
-both filling and unfilling according to prefix argument.
+both filling and unfilling according to prefix argument (that is, C-u).
 
 #+begin_src emacs-lisp :tangle init.el
   (defun unfill-paragraph (&optional region)
@@ -435,6 +503,10 @@ both filling and unfilling according to prefix argument.
 ** Navigation
 *** Avy
 
+Avy is a neat package for navigating text by quickly jumping around.
+It gives you various functions for different ways doing this, most
+involving some method of quasi-search.
+
 #+begin_src emacs-lisp :tangle init.el
   (use-package avy
     :straight t
@@ -446,7 +518,9 @@ both filling and unfilling according to prefix argument.
 
 A nice tweak to sentence navigation commands that makes them more
 usable. We change the definition of a sentence to a more reasonable
-"something that ends in a single space after punctuation".
+"something that ends in a single space after punctuation", instead of
+the normal double space. This is superior as quite literally no one
+double spaces sentences in ~'(current-year)~.
    
 #+begin_src emacs-lisp :tangle init.el
   (setq sentence-end-double-space nil)
@@ -456,8 +530,10 @@ usable. We change the definition of a sentence to a more reasonable
 *** Expand region
 
 A neat little package that allows marking a region in increasing
-bounds with each call. Useful for selecting things inside parentheses,
-like in Lisp code, or quotes in prose.
+bounds with each call. Think of this as a more dynamic version of
+Vim's "inside" or "around" commands such as =di(=. Useful for
+selecting things inside parentheses, like in Lisp code, or quotes in
+prose.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package expand-region
@@ -468,6 +544,13 @@ like in Lisp code, or quotes in prose.
 
 ** Whitespace and indentation
 
+When editing Lisp with the default editing scheme, it's easy to get
+hung up on deleting whitespace, which can be annoying. Previously, my
+solution to this problem was to have the package =hungry-delete-mode=
+act globally, but I have now taken a simpler approach to using
+built-in functions, like =cycle-spacing= or
+=delete-horizontal-whitespace=.
+
 #+begin_src emacs-lisp :tangle init.el
  (global-set-key (kbd "M-SPC") 'cycle-spacing) 
 
@@ -477,7 +560,8 @@ like in Lisp code, or quotes in prose.
 ** Clipboard and kill ring
 
 Make Emacs read the system clipboard and integrate it with the
-=kill-ring=.
+=kill-ring=. This way everything you copy in other programs will get
+stored in the kill ring.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq select-enable-clipboard t)
@@ -487,8 +571,9 @@ Make Emacs read the system clipboard and integrate it with the
 * Readers
 ** Olivetti
 
- Olivetti mode is a minor mode that centers text on the screen. Useful
- for reading and focusing on writing.
+Olivetti mode is a minor mode that centers text on the screen. Useful
+for reading and focusing on writing. We use it for building a custom
+minor mode which uses on centered text.
 
  #+begin_src emacs-lisp :tangle init.el
    (use-package olivetti
@@ -497,10 +582,11 @@ Make Emacs read the system clipboard and integrate it with the
      (olivetti-body-width 100))
  #+end_src
  
-** Reader mode
+** Better reading mode
 
-A custom minor mode using olivetti and other extensions for optimal
-reading.
+A custom minor mode for optimal reading. This one centers text on
+screen using =olivetti= and enables non-monospaced fonts. We also
+enable some nicer keybindings for scrolling through the buffer.
 
 #+begin_src emacs-lisp :tangle init.el
   (defvar better-reading-mode-map (make-sparse-keymap))
@@ -523,13 +609,13 @@ reading.
   (global-set-key (kbd "C-c o") 'better-reading-mode)
   (define-key better-reading-mode-map (kbd "M-n") 'scroll-up-line)
   (define-key better-reading-mode-map (kbd "M-p") 'scroll-down-line)
-
 #+end_src
 
 ** pdf-tools
 
 PDF Tools is a fast and convenient PDF Reader. It appears here as a
-replacement for docview, essentially.
+replacement for the built-in =docview=, essentially. I use pdf-tools
+as my primary PDF reader.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package pdf-tools
@@ -547,7 +633,8 @@ replacement for docview, essentially.
 
 ** nov.el
 
-A simple epub reader in Emacs.
+A simple epub reader in Emacs. We make sure that it always uses the
+=better-reading-mode= defined above.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package nov
@@ -559,11 +646,7 @@ A simple epub reader in Emacs.
     (nov-text-width t)
     (visual-fill-column-center-text t)  
     :hook
-    ((nov-mode-hook . better-reading-mode))
-    :bind
-    (:map nov-mode-map
-	  ((("M-n" . scroll-up-line)
-	    ("M-p" . scroll-down-line)))))
+    ((nov-mode-hook . better-reading-mode)))
 #+end_src
 
 * Minibuffer
@@ -571,7 +654,8 @@ A simple epub reader in Emacs.
 
 =which-key= uses the minibuffer to display a nice buffer showing you
 active keybindings in the currently typed prefix. It allows you to
-navigate your keybindings via prefixes.
+navigate your keybindings via prefixes. Nice for when you forget those
+cryptically long keychord sequences.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package which-key
@@ -587,6 +671,9 @@ navigate your keybindings via prefixes.
 
 =Selectrum= offers minibuffer completion and visual selection in the
 vein of =ido=, but offering much more extensibility.
+
+I need to document this part better, especially if I'm going to be
+posting my config on /​emg/. I wonder... are you reading this, anon?
 
 #+begin_src emacs-lisp :tangle init.el
   (straight-use-package 'orderless)
@@ -648,6 +735,10 @@ This package allows you to edit the contents of the minibuffer in a
 dedicated buffer. This provides a better experience for dealing with
 lots of content.
 
+It's a very interesting package if I may say so, but one that has a
+few flaws. Namely, there's no "cancel editing" button. I should
+implement that.
+
 #+begin_src emacs-lisp :tangle init.el
   (use-package miniedit
     :straight t
@@ -662,11 +753,20 @@ lots of content.
  Here we make it so that line numbers are displayed in every
  programming mode buffer.
 
- #+begin_src emacs-lisp :tangle init.el
-   (add-hook 'prog-mode-hook #'display-line-numbers-mode)
- #+end_src
+#+begin_src emacs-lisp :tangle init.el
+  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+#+end_src
  
 *** Code completion
+
+This is a simple package for code completion made by some guy on
+reddit. It follows the minimal, standards compliant philosophy of
+packages like selectrum and embark, which I (and many others in the
+Emacs world recently) have come to appreciate. This one unfortunately
+only supports manual completion, i.e. you have to type =M-TAB= to pull
+up the completion buffer. If I start doing heavier programming in the
+near future I may need to switch to =company=, which offers that and
+much more, but unfortunately is a bit bloated and slow.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package corfu
@@ -694,7 +794,10 @@ Here we configure Emacs for editing Emacs.
 
 Here we include all the options for programming in the Scheme
 language. We start with the Geiser package, which allows powerful
-interactive Scheme sessions, and supports various implementations.
+interactive Scheme sessions with full REPL integration, while
+supporting various implementations. We also install the =sicp=
+package, which allows one to read the classic book from the Emacs
+Info integration. Pretty comfy.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package geiser
@@ -709,6 +812,11 @@ interactive Scheme sessions, and supports various implementations.
 ** HTML and CSS
 
 Webshit.
+
+The only bit of customization here is ensuring my HTML code does not
+get automatically column-wrapped by =auto-fill-mode=. Apparently Emacs
+considers =mhtml-mode= to be a text editing mode, not a programming
+one. Interesting.
 
 #+begin_src emacs-lisp :tangle init.el
   (add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
@@ -726,15 +834,16 @@ There is also =eshell= which on the surface is similar to shell, but
 is, on the contrary, a much more powerful utility. =eshell= is a full
 reimplementation of a /mostly/ POSIX-compliant shell, meaning it uses
 its own version of programs like =ls=. This in turn means it is
-system-agnostic, and can provide shell utilities even in system that
+system-agnostic, and can provide shell utilities even in systems that
 do not have them. Besides that, it can also read normal expressions in
-=emacs lisp=, giving it a lot more flexibility. It is, as expected,
-highly customizable, and we take advantage of that here, writing a lot
-of custom functions to leverage eshell's power.
+=Emacs Lisp=, giving it a lot more flexibility, as you can mix Bash
+and Elisp expressions at will. It is, as expected, highly
+customizable, and we take advantage of that here, writing a lot of
+custom functions to leverage eshell's power.
 
 There are also /terminal/ emulation programs built into Emacs, namely
 =term= and =ansi-term=, which are honestly not very good. As a
-replacement, we install =vterm=, which fixes most of the flaws with
+replacement, one could use =vterm=, which fixes most of the flaws with
 the built-in ones, while also allowing use of TUI programs.
   
 ** Eshell
@@ -824,29 +933,32 @@ the built-in ones, while also allowing use of TUI programs.
 ** Windows
 *** Switch and focus window
 
- Here we make some custom functions for splitting windows. We replace
- the defaults with these.
+Here we make some custom functions for splitting windows. These make
+sure your focus is put on the newly created windows, instead of
+staying in the old ones and forcing you to switch manually. We replace
+the defaults with these.
 
 #+begin_src emacs-lisp :tangle init.el
-   (defun split-window-below-and-follow ()
-     "A simple replacement for `split-window-below', which automatically focuses the new window."
-     (interactive)
-     (split-window-below)
-     (other-window 1))
+  (defun split-window-below-and-follow ()
+    "A simple replacement for `split-window-below', which automatically focuses the new window."
+    (interactive)
+    (split-window-below)
+    (other-window 1))
 
-   (defun split-window-right-and-follow ()
-     "A simple replacement for `split-window-right', which automatically focuses the new window."
-     (interactive)
-     (split-window-right)
-     (other-window 1))
+  (defun split-window-right-and-follow ()
+    "A simple replacement for `split-window-right', which automatically focuses the new window."
+    (interactive)
+    (split-window-right)
+    (other-window 1))
 
-   (global-set-key (kbd "C-x 2") 'split-window-below-and-follow)
-   (global-set-key (kbd "C-x 3") 'split-window-right-and-follow)
+  (global-set-key (kbd "C-x 2") 'split-window-below-and-follow)
+  (global-set-key (kbd "C-x 3") 'split-window-right-and-follow)
 #+end_src
 
 *** Switch window
 
-A simpler keybinding for switching windows.
+A simpler keybinding for switching windows, as =C-x o= gets annoying
+fast. 
 
 #+begin_src emacs-lisp :tangle init.el
   (global-set-key (kbd "M-o") 'other-window)
@@ -855,9 +967,10 @@ A simpler keybinding for switching windows.
 ** Buffers
 *** Kill this buffer
 
- Here we make the =C-x k= key immediately kill the current buffer
- instead of prompting. We do this by making a custom function that is
- both simpler and more reliable than the built-in =kill-this-buffer=.
+Here we make the =C-x k= key immediately kill the current buffer
+instead of prompting. We do this by making a custom function that is
+both simpler and more reliable than the built-in =kill-this-buffer=. I
+don't know why exactly, but that built in never works properly.
 
  #+begin_src emacs-lisp :tangle init.el
    (defun kill-this-buffer+ ()
@@ -869,6 +982,11 @@ A simpler keybinding for switching windows.
  #+end_src
 
 *** Ibuffer
+    
+=Ibuffer= is a general utility for managing buffers, in a similar
+manner to the way =dired= handles files and directories. We use it as
+a replacement for the =list-buffers= command. =Ibuffer= is very
+extensible, more configurations are to come.
 
 #+begin_src emacs-lisp :tangle init.el
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -877,8 +995,27 @@ A simpler keybinding for switching windows.
 * Files and projects
 ** Dired
 
-Some simple changes to dired behavior. We make it so that pressing =l=
-moves up a directory without invoking another buffer.
+Big changes to =dired= behavior. First we change the flags it passes
+to the =ls= command, which in turn gives us better output to work
+with, like having directories be listed before regular files. Then we
+add other QoL changes, like faster copying and moving, as well as
+easier changing of permissions when in writeable dired mode.
+
+I don't like the way dired generates buffers by default, so we replace
+the file system navigation commands with ones that don't do that,
+instead preferring ones that simply replace the current buffer.
+
+I also add a function for opening just about any file from dired using
+its respective program, via =xdg-open=. This way you can open videos
+with an external video player and images with a proper image viewer.
+
+We also add some extra packages. First is =dired-hide-dotfiles-mode=,
+which does what the name suggests. It can be toggled by pressing =h=.
+Second is =dired-subtree=, which allows viewing subdirectories as
+subtrees to the current one. Press =TAB= over a directory to see how
+it works.
+
+More extensions to come.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package dired
@@ -927,9 +1064,13 @@ moves up a directory without invoking another buffer.
 
 ** VC
 
-The vc package is the built in version-control interaction library for
-Emacs. The function =aabm-vc-git-log-grep= allows searching through
-git logs.
+I've gained an appreciation for Emacs's default packages. One of my
+favorites is =vc=. It is the built in version-control interaction
+library for Emacs. I often use it in place of the more famous =magit=.
+VC is very extensible, so you can do all sorts of cool things with it.
+
+My custom function =aabm-vc-git-log-grep= allows searching through git
+logs using =git grep=.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package vc
@@ -961,7 +1102,9 @@ git logs.
 
 ** Magit
 
-A powerful git porcelain. For those times when =vc= simply won't do.
+A powerful git porcelain, and a very famous "killer app" for Emacs. It
+is indeed very powerful, but sometimes I find its UI gets in the way a
+bit. I keep it for those times when =vc= simply won't do.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package magit
@@ -980,10 +1123,12 @@ Functions for general file management.
 
 #+begin_src emacs-lisp :tangle init.el
   (defun delete-this-file ()
+    "Delete the file accessed by the current buffer."
     (interactive)
     (delete-file (buffer-file-name)))
 
   (defun delete-this-file-and-buffer ()
+    "Like `delete-this-file', but kills the buffer as well."
     (interactive)
     (delete-file (buffer-file-name))
     (kill-buffer))
@@ -993,8 +1138,8 @@ Functions for general file management.
 ** Navigating headings
 
 Some settings for better navigating org headings. First we make the
-TAB key cycle all headings when pressed while point on the first line
-of the buffer.
+TAB key cycle all headings when pressed while point is on the first
+line of the buffer. Good for getting an overview of a file.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
@@ -1015,7 +1160,8 @@ of the buffer.
 
 Here we define a few settings for the src blocks in org-mode. We force
 indentation and syntax highlighting to work as if natively and have
-org use the current window when opening dedicated edit buffers.
+org use the current window when opening dedicated edit buffers. We
+also set the structure templates to be used.
   
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
@@ -1033,6 +1179,7 @@ org use the current window when opening dedicated edit buffers.
        ("E" . "example")
        ("q" . "quote")
        ("ss" . "src")
+       ("sS" . "src scheme\n")
        ("se" . "src emacs-lisp :tangle init.el\n")
        ("v" . "verse"))))
 #+end_src
@@ -1041,7 +1188,7 @@ org use the current window when opening dedicated edit buffers.
 
 Org capture is a powerful tool for creating notes and quickly
 capturing information to be processed later. Here we define templates
-for its usage.
+for its usage. TODO.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
@@ -1054,6 +1201,12 @@ for its usage.
 #+end_src
 
 ** Export
+
+Here we configure org's abilities to export to other formats.
+Sometimes I make ebooks, and with =ox-epub=, org is the easiest tool
+for that due to it's simple and consistent syntax.
+
+We also set the export backends to be loaded by default.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package ox-epub
@@ -1078,8 +1231,8 @@ treat it as a second brain, in which I store all my information.
 We also install =org-roam-server=, which runs a simple local web
 server for displaying a visual representation of links between notes.
 
-The final package installed is =deft=, a search tool for org
-files. All these packages can be acessed under the C-c n map.
+The final package installed is =deft=, a search tool for org files.
+All these packages can be acessed under the =C-c n= prefix.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package org-roam
@@ -1136,7 +1289,9 @@ files. All these packages can be acessed under the C-c n map.
 ** Elfeed
 
 Elfeed is a complete RSS feed reader for Emacs. I use it as my main
-program for reading and receiving news.
+program for reading and receiving news. Here we ensure the article
+view buffers always use the =better-reading-mode=, and tell elfeed to
+load my private feeds file. 
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package elfeed
@@ -1152,7 +1307,11 @@ program for reading and receiving news.
 * Theming and customization
 ** Color theme
 
-For now I'm just using one of the built-in themes.
+I used to use very fancy themes with lots of customization. These
+days I've settled for themes that look simple and are functional. With
+Emacs 28, this means the modus themes, which are now built in. By
+default this will load the dark theme, but one can toggle between
+light and dark by pressing a key.
 
 #+begin_src emacs-lisp :tangle init.el
   (load-theme 'modus-vivendi t)
@@ -1160,17 +1319,20 @@ For now I'm just using one of the built-in themes.
 #+end_src
 
 ** Faces
-   
+
+Here we do all face customization. We also define a custom minor mode
+for making the current buffer use a serif font.
+
 #+begin_src emacs-lisp :tangle init.el
-    (define-minor-mode serif-font-mode
-      "Minor mode which sets the default buffer face to the serif font, using `buffer-face-mode'."
-      :init-value nil
-      :group aabm
-      (if serif-font-mode
-	  (progn
-	    (setq buffer-face-mode-face '(:family "IBM Plex Serif" :height 100))
-	    (and (fboundp 'buffer-face-mode) (buffer-face-mode 1)))
-	(and (fboundp 'buffer-face-mode) (buffer-face-mode -1))))
+  (define-minor-mode serif-font-mode
+    "Minor mode which sets the default buffer face to the serif font, using `buffer-face-mode'."
+    :init-value nil
+    :group aabm
+    (if serif-font-mode
+	(progn
+	  (setq buffer-face-mode-face '(:family "IBM Plex Serif" :height 100))
+	  (and (fboundp 'buffer-face-mode) (buffer-face-mode 1)))
+      (and (fboundp 'buffer-face-mode) (buffer-face-mode -1))))
 
   (custom-set-faces
    '(fixed-pitch ((t (:family "Iosevka 11"))))
@@ -1188,8 +1350,8 @@ Here we customize the font to be used by default by Emacs.
 
 ** Modeline
 
-Here we make it so that the current position of point is displayed in
-the modeline.
+Here we make it so that the current coordinates of point are displayed
+in the modeline.
 
 #+begin_src emacs-lisp :tangle init.el
   (line-number-mode t)
