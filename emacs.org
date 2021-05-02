@@ -349,6 +349,8 @@ way. So we disable those.
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
+
+  (setq ring-bell-function 'ignore)
 #+end_src
 
 ** Disable startup messages

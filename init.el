@@ -75,6 +75,8 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
+(setq ring-bell-function 'ignore)
+
 (setq inhibit-startup-screen t)
 
 (setq make-backup-files nil)
