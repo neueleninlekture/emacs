@@ -327,6 +327,19 @@ available.
   (setq load-prefer-newer t)
 #+end_src
 
+*** Get system information
+
+I like having slightly different configurations depending on which of
+my machines I'm currently using. Here we allow Emacs to check for which
+system it is running on. Later we will use the variables defined here
+to apply system-specific configuration.
+
+#+begin_src emacs-lisp :tangle init.el
+  (defvar machine-desktop-p (equal (system-name) "station"))
+  (defvar machine-laptop-p (equal (system-name) "deck"))
+  (defvar machine-phone-p (equal (system-name) "runner"))
+#+end_src
+
 * Quality of life changes
 ** Disabled commands
 

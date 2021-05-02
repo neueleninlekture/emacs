@@ -69,6 +69,10 @@
 
 (setq load-prefer-newer t)
 
+(defvar machine-desktop-p (equal (system-name) "station"))
+(defvar machine-laptop-p (equal (system-name) "deck"))
+(defvar machine-phone-p (equal (system-name) "runner"))
+
 (setq disabled-command-function nil)
 
 (menu-bar-mode -1)
