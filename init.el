@@ -393,6 +393,16 @@ With the prefix argument UNFILL, unfill it instead."
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+(defun restore-scratch-buffer ()
+  "Restores the scratch buffer, in case it has been killed."
+  (interactive)
+  (switch-to-buffer "*scratch*")
+  (get-buffer "*scratch*")
+  (with-current-buffer "*scratch*"
+    (when (zerop (buffer-size))
+      (insert (substitute-command-keys initial-scratch-message))
+      (set-buffer-modified-p nil))))
+
 (use-package dired
   :custom
   (dired-listing-switches "-alNF --group-directories-first")

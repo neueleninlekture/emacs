@@ -992,6 +992,24 @@ extensible, more configurations are to come.
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 
+*** Restore the scratch buffer
+
+I love the scratch buffer. I like having it around. Unfortunately,
+it's not uncommon for me to accidentally kill it. In case I do so, I
+have this handy function for restoring it.
+
+#+begin_src emacs-lisp :tangle init.el
+  (defun restore-scratch-buffer ()
+    "Restores the scratch buffer, in case it has been killed."
+    (interactive)
+    (switch-to-buffer "*scratch*")
+    (get-buffer "*scratch*")
+    (with-current-buffer "*scratch*"
+      (when (zerop (buffer-size))
+	(insert (substitute-command-keys initial-scratch-message))
+	(set-buffer-modified-p nil))))
+#+end_src
+
 * Files and projects
 ** Dired
 
