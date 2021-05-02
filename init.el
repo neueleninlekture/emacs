@@ -620,3 +620,6 @@ This function was taken from prot."
 
 (line-number-mode t)
 (column-number-mode t)
+
+(add-to-list 'default-frame-alist '(width . 100))
+(add-to-list 'default-frame-alist '(height . 40))

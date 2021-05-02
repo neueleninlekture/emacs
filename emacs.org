@@ -1376,3 +1376,13 @@ in the modeline.
   (column-number-mode t)
 #+end_src
 
+** Frame options
+
+Here we set the options to be used by all new frames, such as frame
+size.
+
+#+begin_src emacs-lisp :tangle init.el
+  (add-to-list 'default-frame-alist '(width . 100))
+  (add-to-list 'default-frame-alist '(height . 40))
+#+end_src
+
