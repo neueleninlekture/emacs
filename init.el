@@ -604,6 +604,15 @@ This function was taken from prot."
   :bind
   (("C-c e" . elfeed)))
 
+(defun ytdl ()
+  "Download videos from the web using the `youtube-dl' command line tool.
+
+Prompts you for a target directory and a url, downloading the url to the path."
+  (interactive)
+  (let ((default-directory (read-file-name "Download to: "))
+	(link (read-string "URL: " nil nil "https://youtu.be/dQw4w9WgXcQ")))
+    (start-process "ytdl" "*ytdl*" "youtube-dl" link)))
+
 (load-theme 'modus-vivendi t)
 (bind-key "<f7>" 'modus-themes-toggle)
 

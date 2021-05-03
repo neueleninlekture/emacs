@@ -1337,6 +1337,22 @@ load my private feeds file.
     (("C-c e" . elfeed)))
 #+end_src
 
+** Youtube-dl
+
+A simple custom function to download videos off the web using the
+command line tool =youtube-dl=.
+
+#+begin_src emacs-lisp :tangle init.el
+  (defun ytdl ()
+    "Download videos from the web using the `youtube-dl' command line tool.
+
+  Prompts you for a target directory and a url, downloading the url to the path."
+    (interactive)
+    (let ((default-directory (read-file-name "Download to: "))
+	  (link (read-string "URL: " nil nil "https://youtu.be/dQw4w9WgXcQ")))
+      (start-process "ytdl" "*ytdl*" "youtube-dl" link)))
+#+end_src
+
 * Theming and customization
 ** Color theme
 
