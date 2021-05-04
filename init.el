@@ -613,6 +613,40 @@ Prompts you for a target directory and a url, downloading the url to the path."
 	(link (read-string "URL: " nil nil "https://youtu.be/dQw4w9WgXcQ")))
     (start-process "ytdl" "*ytdl*" "youtube-dl" link)))
 
+(use-package mu4e
+  :straight t
+  :commands mu4e mu4e-compose-new
+  :custom
+  (mu4e-maildir "~/.mail/disroot/")
+  (mu4e-get-mail-command "/usr/bin/mbsync -a")
+  (mu4e-update-mail-and-index t)
+  (mu4e-update-interval 300)
+  (mu4e-view-show-images t)
+  (mu4e-view-show-addresses t)
+  (mu4e-use-fancy-chars nil)
+  (mu4e-drafts-folder "/drafts")
+  (mu4e-sent-folder "/sent")
+  (mu4e-trash-folder "/trash")
+  (message-send-mail-function 'message-send-mail-with-sendmail)
+  (sendmail-program "/usr/bin/msmtp")
+  (message-sendmail-extra-arguments '("--read-envelope-from"))
+  (message-sendmail-f-is-evil 't)
+  (mu4e-completing-read-function 'completing-read)
+  (mu4e-confirm-quit nil)
+  (message-kill-buffer-on-exit t)
+  (mu4e-html2text-command "/usr/bin/w3m -T text/html")
+  (mu4e-attachment-dir "~/")
+  (mu4e-compose-signature
+   '(user-full-name))
+  :hook
+  (message-send-hook .
+		     (lambda ()
+		       (unless (yes-or-no-p "Sure you want to send this?")
+			 (signal 'quit nil))))
+  :bind
+  ((("C-x m" . mu4e)
+    ("C-c m" . mu4e-compose-new))))
+
 (load-theme 'modus-vivendi t)
 (bind-key "<f7>" 'modus-themes-toggle)
 
