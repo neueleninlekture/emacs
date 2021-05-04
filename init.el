@@ -138,7 +138,8 @@ With the prefix argument UNFILL, unfill it instead."
 (use-package avy
   :straight t
   :bind
-  (("M-s" . avy-goto-char-2)))
+  (("M-s" . avy-goto-char-2)
+   ("C-." . avy-goto-char-timer)))
 
 (setq sentence-end-double-space nil)
 
