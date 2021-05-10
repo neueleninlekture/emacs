@@ -490,13 +490,8 @@ This function was taken from prot."
   :bind
   (("C-x g" . magit-status)))
 
-(defun delete-this-file ()
-  "Delete the file accessed by the current buffer."
-  (interactive)
-  (delete-file (buffer-file-name)))
-
 (defun delete-this-file-and-buffer ()
-  "Like `delete-this-file', but kills the buffer as well."
+  "Deletes the file visited by the current buffer, then kills the buffer."
   (interactive)
   (delete-file (buffer-file-name))
   (kill-buffer))

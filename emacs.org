@@ -1155,16 +1155,16 @@ bit. I keep it for those times when =vc= simply won't do.
 
 ** Custom functions
 
-Functions for general file management.
+Functions for general file management. I used to have a function
+called =delete-this-file= here, but it has since been removed. The
+reason being that you can simply call =delete-file= and use M-n to
+make the minibuffer future history automatically complete the current
+file. The function =delete-this-file-and-buffer= is stil here since I
+use it sometimes.
 
 #+begin_src emacs-lisp :tangle init.el
-  (defun delete-this-file ()
-    "Delete the file accessed by the current buffer."
-    (interactive)
-    (delete-file (buffer-file-name)))
-
   (defun delete-this-file-and-buffer ()
-    "Like `delete-this-file', but kills the buffer as well."
+    "Deletes the file visited by the current buffer, then kills the buffer."
     (interactive)
     (delete-file (buffer-file-name))
     (kill-buffer))
