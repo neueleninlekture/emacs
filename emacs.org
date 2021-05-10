@@ -1404,6 +1404,18 @@ around for its ease of use.
       ("C-c m" . mu4e-compose-new))))
 #+end_src
 
+** eww
+
+=eww=, the Emacs Web Wowser, is a simple web text-based browser built
+into Emacs. I like using it from time to time. Here we make it center
+all text, using olivetti-mode.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package eww
+    :hook
+    ((eww-mode-hook . olivetti-mode)))
+#+end_src
+
 * Theming and customization
 ** Color theme
 
