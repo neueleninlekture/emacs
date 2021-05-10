@@ -104,8 +104,10 @@
 
 (blink-cursor-mode -1)
 
-(setq electric-pair-pairs '((?\{ . ?\}) (?\( . ?\))
-			    (?\[ . ?\]) (?\" . ?\")))
+(setq electric-pair-pairs '((?\{ . ?\})
+			    (?\( . ?\))
+			    (?\[ . ?\])
+			    (?\" . ?\")))
 (electric-pair-mode t)
 
 (show-paren-mode t)
@@ -647,6 +649,10 @@ Prompts you for a target directory and a url, downloading the url to the path."
   :bind
   ((("C-x m" . mu4e)
     ("C-c m" . mu4e-compose-new))))
+
+(use-package eww
+  :hook
+  ((eww-mode-hook . olivetti-mode)))
 
 (load-theme 'modus-vivendi t)
 (bind-key "<f7>" 'modus-themes-toggle)

@@ -441,8 +441,10 @@ matched with the corresponding closing character. This is handy at all
 times when editing, but especially useful for programming in Lisp.
 
  #+begin_src emacs-lisp :tangle init.el
-   (setq electric-pair-pairs '((?\{ . ?\}) (?\( . ?\))
-			       (?\[ . ?\]) (?\" . ?\")))
+   (setq electric-pair-pairs '((?\{ . ?\})
+			       (?\( . ?\))
+			       (?\[ . ?\])
+			       (?\" . ?\")))
    (electric-pair-mode t)
  #+end_src
 
