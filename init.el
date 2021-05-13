@@ -649,7 +649,9 @@ Prompts you for a target directory and a url, downloading the url to the path."
   :hook
   ((eww-mode-hook . olivetti-mode)))
 
-(load-theme 'modus-vivendi t)
+(if machine-desktop-p
+    (load-theme 'modus-operandi t)
+  (load-theme 'modus-vivendi t))
 (bind-key "<f7>" 'modus-themes-toggle)
 
 (define-minor-mode serif-font-mode

@@ -1425,8 +1425,17 @@ Emacs 28, this means the modus themes, which are now built in. By
 default this will load the dark theme, but one can toggle between
 light and dark by pressing a key.
 
+The =modus-themes= package offers two different themes. The first is
+=modus-operandi=. This is the light theme, and I prefer using it on my
+desktop. The other is =modus-vivendi=, the dark theme, which I prefer
+using on my laptop. So we add a conditional clause to check the
+current system and load the according theme. We also bind =F7= to the
+theme switch function.
+
 #+begin_src emacs-lisp :tangle init.el
-  (load-theme 'modus-vivendi t)
+  (if machine-desktop-p
+      (load-theme 'modus-operandi t)
+    (load-theme 'modus-vivendi t))
   (bind-key "<f7>" 'modus-themes-toggle)
 #+end_src
 
