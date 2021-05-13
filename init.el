@@ -83,9 +83,8 @@
     (menu-bar-mode -1)
     (scroll-bar-mode -1)))
 
-
 (tool-bar-mode -1)
-(tool-tip-mode -1)
+(tooltip-mode -1)
 
 (setq use-dialog-box nil)
 (setq ring-bell-function 'ignore)
