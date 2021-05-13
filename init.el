@@ -166,7 +166,7 @@ With the prefix argument UNFILL, unfill it instead."
 (use-package olivetti
   :straight t
   :custom
-  (olivetti-body-width 100))
+  (olivetti-body-width 102))
 
 (defvar better-reading-mode-map (make-sparse-keymap))
 

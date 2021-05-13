@@ -600,14 +600,14 @@ stored in the kill ring.
 
 Olivetti mode is a minor mode that centers text on the screen. Useful
 for reading and focusing on writing. We use it for building a custom
-minor mode which uses on centered text.
+minor mode which uses centered text.
 
- #+begin_src emacs-lisp :tangle init.el
-   (use-package olivetti
-     :straight t
-     :custom
-     (olivetti-body-width 100))
- #+end_src
+#+begin_src emacs-lisp :tangle init.el
+  (use-package olivetti
+    :straight t
+    :custom
+    (olivetti-body-width 102))
+#+end_src
  
 ** Better reading mode
 
