@@ -671,11 +671,11 @@ Prompts you for a target directory and a url, downloading the url to the path."
     (and (fboundp 'buffer-face-mode) (buffer-face-mode -1))))
 
 (custom-set-faces
- '(fixed-pitch ((t (:family "Iosevka Medium" :height 110))))
+ '(fixed-pitch ((t (:family "Iosevka" :height 110))))
  '(variable-pitch ((t :family "IBM Plex Serif" :height 100))))
 
-(add-to-list 'default-frame-alist '(font . "Iosevka Medium 11"))
-(set-frame-font "Iosevka Medium 11" nil t)
+(add-to-list 'default-frame-alist '(font . "Iosevka 11"))
+(set-frame-font "Iosevka 11" nil t)
 
 (line-number-mode t)
 (column-number-mode t)
