@@ -75,9 +75,15 @@
 
 (setq disabled-command-function nil)
 
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(if machine-desktop-p
+    (progn
+      (menu-bar-mode 1)
+      (scroll-bar-mode 1)
+      (tool-bar-mode -1))
+  (progn
+    (menu-bar-mode -1)
+    (scroll-bar-mode -1)
+    (tool-bar-mode -1)))
 
 (setq ring-bell-function 'ignore)
 

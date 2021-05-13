@@ -356,12 +356,21 @@ commands are disabled by Emacs.
 ** Disable GUI elements
 
 Emacs has by default a few GTK GUI elements which I find get in the
-way. So we disable those.
+way. So we disable those. Here we make use of the host system checks
+we established earlier. I like having some of these GTK elements
+visible on my desktop system, but not on others. Using a conditional,
+we can enable and disable elements based on the host system.
 
 #+begin_src emacs-lisp :tangle init.el
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
+  (if machine-desktop-p
+      (progn
+	(menu-bar-mode 1)
+	(scroll-bar-mode 1)
+	(tool-bar-mode -1))
+    (progn
+      (menu-bar-mode -1)
+      (scroll-bar-mode -1)
+      (tool-bar-mode -1)))
 
   (setq ring-bell-function 'ignore)
 #+end_src
