@@ -675,4 +675,4 @@ Prompts you for a target directory and a url, downloading the url to the path."
 (column-number-mode t)
 
 (add-to-list 'default-frame-alist '(width . 100))
-(add-to-list 'default-frame-alist '(height . 40))
+(add-to-list 'default-frame-alist '(height . 35))
