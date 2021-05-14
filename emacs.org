@@ -340,6 +340,32 @@ to apply system-specific configuration.
   (defvar machine-phone-p (equal (system-name) "runner"))
 #+end_src
 
+*** Get user credentials
+
+This section loads my personal credentials file. This file contains
+personal information including my name, address, email address, and so
+on. This information is used by various packages inside Emacs, most
+notably the email system. The contents of the file are minimal, but
+are kept separate from the main configuration file so that
+distribution of this configuration does not leak any personal
+information about myself.
+
+#+begin_src emacs-lisp :tangle init.el
+  (load-file (expand-file-name "personal/creds.el" user-emacs-directory))
+#+end_src
+
+If you wish to use the above setting, simply create a file in the
+appropriate path with the name "creds.el.gpg" containing something
+like the example below:
+
+#+begin_src emacs-lisp 
+  (setq user-full-name "Your Name Here"
+	user-mail-address "your@email.here"
+	calendar-latitude 00.00
+	calendar-longitude 000.00
+	calendar-location-name "City, State")
+#+end_src
+
 * Quality of life changes
 ** Disabled commands
 

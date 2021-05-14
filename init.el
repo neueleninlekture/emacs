@@ -73,6 +73,8 @@
 (defvar machine-laptop-p (equal (system-name) "deck"))
 (defvar machine-phone-p (equal (system-name) "runner"))
 
+(load-file (expand-file-name "personal/creds.el" user-emacs-directory))
+
 (setq disabled-command-function nil)
 
 (if machine-desktop-p
