@@ -517,7 +517,8 @@ This function was taken from prot."
 	 ("C-M-n" . org-metadown)
 	 ("C-M-p" . org-metaup)
 	 ("C-M-f" . org-metaright)
-	 ("C-M-b" . org-metaleft))))
+	 ("C-M-b" . org-metaleft)
+	 ("<mouse-3>" . org-cycle))))
 
 (use-package org
   :custom

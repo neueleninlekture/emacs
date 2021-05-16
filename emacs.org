@@ -1232,7 +1232,8 @@ line of the buffer. Good for getting an overview of a file.
 	   ("C-M-n" . org-metadown)
 	   ("C-M-p" . org-metaup)
 	   ("C-M-f" . org-metaright)
-	   ("C-M-b" . org-metaleft))))
+	   ("C-M-b" . org-metaleft)
+	   ("<mouse-3>" . org-cycle))))
 #+end_src
 
 ** Source blocks
