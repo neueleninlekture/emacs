@@ -621,39 +621,76 @@ Prompts you for a target directory and a url, downloading the url to the path."
 	(link (read-string "URL: " nil nil "https://youtu.be/dQw4w9WgXcQ")))
     (start-process "ytdl" "*ytdl*" "youtube-dl" link)))
 
-(use-package mu4e
-  :straight t
-  :commands mu4e mu4e-compose-new
+(setq message-send-mail-function 'message-send-mail-with-sendmail)
+(setq sendmail-program "/usr/bin/msmtp")
+(setq message-sendmail-extra-arguments '("--read-envelope-from"))
+(setq message-sendmail-f-is-evil 't)
+
+(use-package gnus
   :custom
-  (mu4e-maildir "~/.mail/disroot/")
-  (mu4e-get-mail-command "/usr/bin/mbsync -a")
-  (mu4e-update-mail-and-index t)
-  (mu4e-update-interval 300)
-  (mu4e-view-show-images t)
-  (mu4e-view-show-addresses t)
-  (mu4e-use-fancy-chars nil)
-  (mu4e-drafts-folder "/drafts")
-  (mu4e-sent-folder "/sent")
-  (mu4e-trash-folder "/trash")
-  (message-send-mail-function 'message-send-mail-with-sendmail)
-  (sendmail-program "/usr/bin/msmtp")
-  (message-sendmail-extra-arguments '("--read-envelope-from"))
-  (message-sendmail-f-is-evil 't)
-  (mu4e-completing-read-function 'completing-read)
-  (mu4e-confirm-quit nil)
-  (message-kill-buffer-on-exit t)
-  (mu4e-html2text-command "/usr/bin/w3m -T text/html")
-  (mu4e-attachment-dir "~/")
-  (mu4e-compose-signature
-   '(user-full-name))
-  :hook
-  (message-send-hook .
-		     (lambda ()
-		       (unless (yes-or-no-p "Sure you want to send this?")
-			 (signal 'quit nil))))
+  (gnus-select-method '(nnnil ""))
+  (gnus-secondary-select-methods
+   '((nnmaildir "disroot"
+		(directory "~/.mail/disroot")
+		(nnmail-expiry-target "nnmaildir+disroot:trash"))))
+
+  (mm-text-html-renderer 'shr)
+  (gnus-inhibit-images nil)
+
+  (gnus-home-directory "~/.emacs.d/")
+  (nnfolder-directory "~/.cache/Mail/")
+  (gnus-directory "~/.cache/News/")
   :bind
-  ((("C-x m" . mu4e)
-    ("C-c m" . mu4e-compose-new))))
+  (("C-c m" . gnus)
+   ("C-x m" . compose-mail)))
+
+(use-package notmuch
+  :straight t
+  :custom
+  (notmuch-hello-auto-refresh t)
+  (notmuch-show-logo nil)
+  (notmuch-hello-recent-searches-max 5)
+  (notmuch-hello-thousands-separator ".")
+  (notmuch-archive-tags '("-inbox" "-unread" "+archived"))
+  (notmuch-message-replied-tags '("+replied" "-unread"))
+  (notmuch-show-mark-read-tags '("-unread"))
+  (notmuch-tagging-keys
+   `((,(kbd "a") notmuch-archive-tags "Archive (remove from inbox)")
+     (,(kbd "d") ("+deleted" "-inbox" "-unread") "Mark for deletion")
+     (,(kbd "r") notmuch-show-mark-read-tags "Mark as read")
+     (,(kbd "s") ("+spam" "-inbox") "Mark as spam")
+     (,(kbd "t") ("+todo" "-unread") "Todo")
+     (,(kbd "u") ("+unread") "Mark as unread")))
+  (notmuch-saved-searches
+   `(( :name "inbox"
+       :query "tag:inbox"
+       :sort-order newest-first
+       :key ,(kbd "i"))
+     ( :name "unread"
+       :query "tag:unread and tag:inbox"
+       :sort-order newest-first
+       :key ,(kbd "u"))
+     ( :name "todo"
+       :query "tag:todo"
+       :sort-order newest-first
+       :key ,(kbd "t"))
+     ( :name "mailing lists"
+       :query "tag:list"
+       :sort-order newest-first
+       :key ,(kbd "l"))
+     ( :name "emacs-devel"
+       :query "from:emacs-devel@gnu.org or to:emacs-devel@gnu.org or subject:[emacs-devel]"
+       :sort-order newest-first
+       :key ,(kbd "e d"))
+     ( :name "emacs-orgmode"
+       :query "from:emacs-orgmode@gnu.org or to:emacs-orgmode@gnu.org or subject:[emacs-orgmode]"
+       :sort-order newest-first
+       :key ,(kbd "e o"))
+     ( :name "emacs-humanities" 
+       :query "from:emacs-humanities@gnu.org or to:emacs-humanities@gnu.org or subject:[emacs-humanities]"
+       :sort-order newest-first :key ,(kbd "e h"))))  
+  :bind
+  (("C-c m" . notmuch)))
 
 (use-package eww
   :hook
