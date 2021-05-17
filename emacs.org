@@ -1484,7 +1484,7 @@ Emacs, such as usage of the external program =msmtp= for sending mail.
 
 *** Gnus
 
- #+begin_src emacs-lisp :tangle init.el
+ #+begin_src emacs-lisp
    (use-package gnus
      :custom
      (gnus-select-method '(nnnil ""))

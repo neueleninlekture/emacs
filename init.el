@@ -644,24 +644,6 @@ Prompts you for a target directory and a url, downloading the url to the path."
 (setq message-sendmail-extra-arguments '("--read-envelope-from"))
 (setq message-sendmail-f-is-evil 't)
 
-(use-package gnus
-  :custom
-  (gnus-select-method '(nnnil ""))
-  (gnus-secondary-select-methods
-   '((nnmaildir "disroot"
-		(directory "~/.mail/disroot")
-		(nnmail-expiry-target "nnmaildir+disroot:trash"))))
-
-  (mm-text-html-renderer 'shr)
-  (gnus-inhibit-images nil)
-
-  (gnus-home-directory "~/.emacs.d/")
-  (nnfolder-directory "~/.cache/Mail/")
-  (gnus-directory "~/.cache/News/")
-  :bind
-  (("C-c m" . gnus)
-   ("C-x m" . compose-mail)))
-
 (use-package notmuch
   :straight t
   :custom
