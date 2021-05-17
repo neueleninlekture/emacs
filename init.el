@@ -540,12 +540,29 @@ This function was taken from prot."
      ("v" . "verse"))))
 
 (use-package org
+  :custom
+  (org-agenda-files '("~/org/agenda/inbox.org"
+		      "~/org/agenda/projects.org"
+		      "~/org/agenda/time.org"))
+  (org-archive-location "~/org/agenda/archive.org::")
+  (org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "DROP(c)")))
+  (org-capture-bookmark nil)
+  (org-capture-templates
+   '(("t" "GTD Inbox"
+      entry
+      (file+headline "agenda/inbox.org" "Tasks")
+      "** TODO %?\n%i\n%a")
+     ("T" "GTD Time-sensitive"
+      entry
+      (file+headline "agenda/time.org" "Time-sensitive Tasks")
+      "** TODO %?\n%i\n%a")))
+  (org-refile-targets '(("~/org/agenda/projects.org" :maxlevel . 1)
+			("~/org/agenda/someday.org" :level . 1)
+			("~/org/agenda/time.org" :maxlevel . 2)))
   :bind
   (("C-c w" . org-capture)
-   ("C-c l" . org-store-link))
-  :custom
-  (org-capture-bookmark nil))
-  ;; (org-capture-templates))
+   ("C-c l" . org-store-link)
+   ("C-c a" . org-agenda)))
 
 (use-package ox-epub
   :straight t)

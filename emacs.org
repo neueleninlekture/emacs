@@ -1264,20 +1264,38 @@ also set the structure templates to be used.
        ("v" . "verse"))))
 #+end_src
 
-** Capture
-
+** Agenda, time and capture
+*** TODO add proper docs here
+    
 Org capture is a powerful tool for creating notes and quickly
 capturing information to be processed later. Here we define templates
 for its usage. TODO.
-
+   
 #+begin_src emacs-lisp :tangle init.el
   (use-package org
+    :custom
+    (org-agenda-files '("~/org/agenda/inbox.org"
+			"~/org/agenda/projects.org"
+			"~/org/agenda/time.org"))
+    (org-archive-location "~/org/agenda/archive.org::")
+    (org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "DROP(c)")))
+    (org-capture-bookmark nil)
+    (org-capture-templates
+     '(("t" "GTD Inbox"
+	entry
+	(file+headline "agenda/inbox.org" "Tasks")
+	"** TODO %?\n%i\n%a")
+       ("T" "GTD Time-sensitive"
+	entry
+	(file+headline "agenda/time.org" "Time-sensitive Tasks")
+	"** TODO %?\n%i\n%a")))
+    (org-refile-targets '(("~/org/agenda/projects.org" :maxlevel . 1)
+			  ("~/org/agenda/someday.org" :level . 1)
+			  ("~/org/agenda/time.org" :maxlevel . 2)))
     :bind
     (("C-c w" . org-capture)
-     ("C-c l" . org-store-link))
-    :custom
-    (org-capture-bookmark nil))
-    ;; (org-capture-templates))
+     ("C-c l" . org-store-link)
+     ("C-c a" . org-agenda)))
 #+end_src
 
 ** Export
