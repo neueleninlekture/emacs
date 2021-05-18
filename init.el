@@ -536,7 +536,7 @@ This function was taken from prot."
      ("q" . "quote")
      ("ss" . "src")
      ("sS" . "src scheme\n")
-     ("se" . "src emacs-lisp :tangle init.el\n")
+     ("se" . "src emacs-lisp\n")
      ("v" . "verse"))))
 
 (use-package org

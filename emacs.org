@@ -1261,7 +1261,7 @@ also set the structure templates to be used.
        ("q" . "quote")
        ("ss" . "src")
        ("sS" . "src scheme\n")
-       ("se" . "src emacs-lisp :tangle init.el\n")
+       ("se" . "src emacs-lisp\n")
        ("v" . "verse"))))
 #+end_src
 
