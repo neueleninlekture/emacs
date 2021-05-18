@@ -39,9 +39,9 @@
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
+	(url-retrieve-synchronously
+	 "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+	 'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
@@ -371,11 +371,11 @@ With the prefix argument UNFILL, unfill it instead."
        (find-file-noselect
 	(concat "/sudo::" qual-filename)))))
 
-    (defalias 'mkcd 'eshell-mkcd)
-    (defalias 'open 'find-file-other-window)
-    (defalias 'sopen 'eshell-sudo-open)
-    (defalias 'clean 'eshell/clear-scrollback)
-    (defalias 'mkcd 'eshell-mkcd)
+  (defalias 'mkcd 'eshell-mkcd)
+  (defalias 'open 'find-file-other-window)
+  (defalias 'sopen 'eshell-sudo-open)
+  (defalias 'clean 'eshell/clear-scrollback)
+  (defalias 'mkcd 'eshell-mkcd)
   :bind
   (("C-x s" . eshell)
    (:map eshell-minor-mode-map

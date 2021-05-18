@@ -38,8 +38,8 @@
 
 (defun startup-reset-defaults ()
   (setq gc-cons-threshold 16777216
-        gc-cons-percentage 0.1
-        file-name-handler-alist startup-file-name-handler-alist))
+	gc-cons-percentage 0.1
+	file-name-handler-alist startup-file-name-handler-alist))
 
 (add-hook 'emacs-startup-hook #'startup-reset-defaults)
 
@@ -49,6 +49,6 @@
 (add-hook 'emacs-startup-hook
 	  (lambda ()
 	    (message "Emacs ready in %s with %d garbage collections."
-	     (format "%.2f seconds"
-		     (float-time
-		      (time-subtract after-init-time before-init-time))) gcs-done)))
+		     (format "%.2f seconds"
+			     (float-time
+			      (time-subtract after-init-time before-init-time))) gcs-done)))
