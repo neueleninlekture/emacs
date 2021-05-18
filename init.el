@@ -39,9 +39,9 @@
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
-	(url-retrieve-synchronously
-	 "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-	 'silent 'inhibit-cookies)
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
@@ -115,9 +115,9 @@
 (blink-cursor-mode -1)
 
 (setq electric-pair-pairs '((?\{ . ?\})
-			    (?\( . ?\))
-			    (?\[ . ?\])
-			    (?\" . ?\")))
+                            (?\( . ?\))
+                            (?\[ . ?\])
+                            (?\" . ?\")))
 (electric-pair-mode t)
 
 (show-paren-mode t)
@@ -131,8 +131,8 @@
 (defun unfill-paragraph (&optional region)
   "Takes a multi-line paragraph and makes it into a single line of text."
   (interactive (progn
-		 (barf-if-buffer-read-only)
-		 (list t)))
+                 (barf-if-buffer-read-only)
+                 (list t)))
   (let ((fill-column (point-max)))
     (fill-paragraph nil region)))
 
@@ -140,8 +140,8 @@
   "Fill paragraph (or REGION).
 With the prefix argument UNFILL, unfill it instead."
   (interactive (progn
-		 (barf-if-buffer-read-only)
-		 (list (if current-prefix-arg 'unfill) t)))
+                 (barf-if-buffer-read-only)
+                 (list (if current-prefix-arg 'unfill) t)))
   (let ((fill-column (if unfill (point-max) fill-column)))
     (fill-paragraph nil region)))
 
@@ -181,9 +181,9 @@ With the prefix argument UNFILL, unfill it instead."
   :keymap better-reading-mode-map
   (if better-reading-mode
       (progn
-	(and (fboundp 'olivetti-mode) (olivetti-mode 1))
-	(and (fboundp 'variable-pitch-mode) (variable-pitch-mode 1))
-	(text-scale-set +1))
+        (and (fboundp 'olivetti-mode) (olivetti-mode 1))
+        (and (fboundp 'variable-pitch-mode) (variable-pitch-mode 1))
+        (text-scale-set +1))
     (progn
       (and (fboundp 'olivetti-mode) (olivetti-mode -1))
       (and (fboundp 'variable-pitch-mode) (variable-pitch-mode -1))
@@ -203,7 +203,7 @@ With the prefix argument UNFILL, unfill it instead."
   (pdf-view-display-size 'fit-page)
   :bind
   (:map pdf-view-mode-map
-	(("M-g g" . pdf-view-goto-page))))
+        (("M-g g" . pdf-view-goto-page))))
 
 (use-package nov
   :straight t
@@ -274,7 +274,7 @@ With the prefix argument UNFILL, unfill it instead."
   :straight t
   :bind
   ((:map minibuffer-local-map
-	 ("M-a" . marginalia-cycle))))
+         ("M-a" . marginalia-cycle))))
 
 (use-package miniedit
   :straight t
@@ -290,8 +290,8 @@ With the prefix argument UNFILL, unfill it instead."
    (eshell-mode-hook . corfu-mode))
   :bind
   (:map corfu-map
-	(("TAB" . corfu-next)
-	 ("S-TAB" . corfu-previous)))
+        (("TAB" . corfu-next)
+         ("S-TAB" . corfu-previous)))
   :custom
   (corfu-cycle t))
 
@@ -325,36 +325,36 @@ With the prefix argument UNFILL, unfill it instead."
     (interactive)
     (let ((file (ffap-guess-file-name-at-point)))
       (if file
-	  (find-file file)
-	(user-error "No file at point"))))
+          (find-file file)
+        (user-error "No file at point"))))
 
   (defun eshell-copy-file-path-at-point ()
     "Copies path to file at point to the kill ring"
     (interactive)
     (let ((file (ffap-guess-file-name-at-point)))
       (if file
-	  (kill-new (concat (eshell/pwd) "/" file))
-	(user-error "No file at point"))))
+          (kill-new (concat (eshell/pwd) "/" file))
+        (user-error "No file at point"))))
 
   (defun eshell-cat-file-at-point ()
     "Outputs contents of file at point"
     (interactive)
     (let ((file (ffap-guess-file-name-at-point)))
       (if file
-	  (progn
-	    (goto-char (point-max))
-	    (insert (concat "cat " file))
-	    (eshell-send-input)))))
+          (progn
+            (goto-char (point-max))
+            (insert (concat "cat " file))
+            (eshell-send-input)))))
 
   (defun eshell-put-last-output-to-buffer ()
     "Produces a buffer with output of last `eshell' command."
     (interactive)
     (let ((eshell-output (kill-ring-save (eshell-beginning-of-output)
-					 (eshell-end-of-output))))
+                                         (eshell-end-of-output))))
       (with-current-buffer (get-buffer-create  "*last-eshell-output*")
-	(erase-buffer)
-	(yank)
-	(switch-to-buffer-other-window (current-buffer)))))
+        (erase-buffer)
+        (yank)
+        (switch-to-buffer-other-window (current-buffer)))))
 
   (defun eshell-mkcd (dir)
     "Make a directory, or path, and switch to it."
@@ -365,11 +365,11 @@ With the prefix argument UNFILL, unfill it instead."
   (defun eshell-sudo-open (filename)
     "Open a file as root in Eshell, using TRAMP."
     (let ((qual-filename (if (string-match "^/" filename)
-			     filename
-			   (concat (expand-file-name (eshell/pwd)) "/" filename))))
+                             filename
+                           (concat (expand-file-name (eshell/pwd)) "/" filename))))
       (switch-to-buffer
        (find-file-noselect
-	(concat "/sudo::" qual-filename)))))
+        (concat "/sudo::" qual-filename)))))
 
   (defalias 'mkcd 'eshell-mkcd)
   (defalias 'open 'find-file-other-window)
@@ -379,12 +379,12 @@ With the prefix argument UNFILL, unfill it instead."
   :bind
   (("C-x s" . eshell)
    (:map eshell-minor-mode-map
-	 (("C-c C-f" . eshell-find-file-at-point)
-	  ("C-c C-w" . eshell-copy-file-path-at-point)
-	  ("C-c C-o" . eshell-cat-file-at-point)
-	  ("C-c C-b" . eshell-put-last-output-to-buffer)
-	  ("C-c C-m" . mkdir)
-	  ("C-c C-t" . chmod)))))
+         (("C-c C-f" . eshell-find-file-at-point)
+          ("C-c C-w" . eshell-copy-file-path-at-point)
+          ("C-c C-o" . eshell-cat-file-at-point)
+          ("C-c C-b" . eshell-put-last-output-to-buffer)
+          ("C-c C-m" . mkdir)
+          ("C-c C-t" . chmod)))))
 
 (defun split-window-below-and-follow ()
   "A simple replacement for `split-window-below', which automatically focuses the new window."
@@ -438,15 +438,15 @@ With the prefix argument UNFILL, unfill it instead."
     (let ((file-list (dired-get-marked-files)))
       (mapc
        (lambda (file-path)
-	 (let ((process-connection-type nil))
-	   (start-process "" nil "xdg-open" file-path)))
+         (let ((process-connection-type nil))
+           (start-process "" nil "xdg-open" file-path)))
        file-list)))
   :bind
   (:map dired-mode-map
-	(("l" . dired-up-alternate-directory)
-	 ("RET" . dired-find-alternate-file)
-	 ("M-RET" . dired-find-file)
-	 ("v" . dired-xdg-open))))
+        (("l" . dired-up-alternate-directory)
+         ("RET" . dired-find-alternate-file)
+         ("M-RET" . dired-find-file)
+         ("v" . dired-xdg-open))))
 
 (use-package dired-hide-dotfiles
   :straight t
@@ -455,15 +455,15 @@ With the prefix argument UNFILL, unfill it instead."
   ((dired-mode-hook . dired-hide-dotfiles-mode))
   :bind
   (:map dired-mode-map
-	(("h" . dired-hide-dotfiles-mode))))
+        (("h" . dired-hide-dotfiles-mode))))
 
 (use-package dired-subtree
   :straight t
   :bind
   (:map dired-mode-map
-	(("TAB" . dired-subtree-toggle)
-	 ("M-n" . dired-subtree-down)
-	 ("M-p" . dired-subtree-up))))
+        (("TAB" . dired-subtree-toggle)
+         ("M-n" . dired-subtree-down)
+         ("M-p" . dired-subtree-up))))
 
 (use-package vc
   :config
@@ -476,20 +476,20 @@ With the prefix argument UNFILL, unfill it instead."
 This function was taken from prot."
     (interactive
      (list (read-regexp "Search git log for PATTERN: ")
-	   current-prefix-arg))
+           current-prefix-arg))
     (let* ((buf-name aabm-vc-shell-output)
-	   (buf (get-buffer-create buf-name))
-	   (diffs (if diff "-p" ""))
-	   (type (if diff 'with-diff 'log-search))
-	   (resize-mini-windows nil))
+           (buf (get-buffer-create buf-name))
+           (diffs (if diff "-p" ""))
+           (type (if diff 'with-diff 'log-search))
+           (resize-mini-windows nil))
       (shell-command (format "git log %s --grep=%s -E --" diffs pattern) buf)
       (with-current-buffer buf
-	(setq-local vc-log-view-type type)
-	(setq-local revert-buffer-function nil)
-	(vc-git-region-history-mode))))
+        (setq-local vc-log-view-type type)
+        (setq-local revert-buffer-function nil)
+        (vc-git-region-history-mode))))
   :bind
   (:map vc-prefix-map
-	(("S" . aabm-vc-git-log-grep))))
+        (("S" . aabm-vc-git-log-grep))))
 
 (use-package magit
   :straight t
@@ -512,13 +512,15 @@ This function was taken from prot."
   (org-hide-leading-stars t)
   :bind
   (:map org-mode-map
-	(("M-n" . org-forward-element)
-	 ("M-p" . org-backward-element)
-	 ("C-M-n" . org-metadown)
-	 ("C-M-p" . org-metaup)
-	 ("C-M-f" . org-metaright)
-	 ("C-M-b" . org-metaleft)
-	 ("<mouse-3>" . org-cycle))))
+        (("M-n" . org-forward-element)
+         ("M-p" . org-backward-element)
+         ("C-M-n" . org-metadown)
+         ("C-M-p" . org-metaup)
+         ("C-M-f" . org-metaright)
+         ("C-M-b" . org-metaleft)
+         ("<mouse-3>" . org-cycle))))
+
+(setq org-adapt-indentation nil)
 
 (use-package org
   :custom
@@ -542,8 +544,8 @@ This function was taken from prot."
 (use-package org
   :custom
   (org-agenda-files '("~/org/agenda/inbox.org"
-		      "~/org/agenda/projects.org"
-		      "~/org/agenda/time.org"))
+                      "~/org/agenda/projects.org"
+                      "~/org/agenda/time.org"))
   (org-archive-location "~/org/agenda/archive.org::")
   (org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "DROP(c)")))
   (org-capture-bookmark nil)
@@ -557,8 +559,8 @@ This function was taken from prot."
       (file+headline "agenda/time.org" "Time-sensitive Tasks")
       "** TODO %?\n%i\n%a")))
   (org-refile-targets '(("~/org/agenda/projects.org" :maxlevel . 1)
-			("~/org/agenda/someday.org" :level . 1)
-			("~/org/agenda/time.org" :maxlevel . 2)))
+                        ("~/org/agenda/someday.org" :level . 1)
+                        ("~/org/agenda/time.org" :maxlevel . 2)))
   :bind
   (("C-c w" . org-capture)
    ("C-c l" . org-store-link)
@@ -636,7 +638,7 @@ This function was taken from prot."
 Prompts you for a target directory and a url, downloading the url to the path."
   (interactive)
   (let ((default-directory (read-file-name "Download to: "))
-	(link (read-string "URL: " nil nil "https://youtu.be/dQw4w9WgXcQ")))
+        (link (read-string "URL: " nil nil "https://youtu.be/dQw4w9WgXcQ")))
     (start-process "ytdl" "*ytdl*" "youtube-dl" link)))
 
 (setq message-send-mail-function 'message-send-mail-with-sendmail)
@@ -707,8 +709,8 @@ Prompts you for a target directory and a url, downloading the url to the path."
   :group aabm
   (if serif-font-mode
       (progn
-	(setq buffer-face-mode-face '(:family "IBM Plex Serif" :height 100))
-	(and (fboundp 'buffer-face-mode) (buffer-face-mode 1)))
+        (setq buffer-face-mode-face '(:family "IBM Plex Serif" :height 100))
+        (and (fboundp 'buffer-face-mode) (buffer-face-mode 1)))
     (and (fboundp 'buffer-face-mode) (buffer-face-mode -1))))
 
 (custom-set-faces
