@@ -2,6 +2,7 @@
 #+author: aabm
 #+email: aabm@disroot.org
 #+startup: overview
+#+property: header-args :tangle init.el
 
 * About
 
@@ -192,7 +193,7 @@ to.
     
 The license/package header for the =init.el= file.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   ;;; init.el --- Main Emacs configuration file
   ;; Copyright © 2019-2021 Aabm <aabm@disroot.org>
 
@@ -238,7 +239,7 @@ to be fetched from ELPA in previous versions. In any case, we check
 the version number on startup, and trigger an error if it is too
 outdated.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (when (version< emacs-version "27.1")
     (error "This requires Emacs 27.1 and above! Preferably 28 (master), but 27 should be fine..."))
 #+end_src
@@ -250,7 +251,7 @@ Here we bootstrap the =straight.el= package manager, which replaces
 code here is the official method for installing straight, taken from
 its [[https://github.com/emacsmirror/straight][github]].
 
- #+begin_src emacs-lisp :tangle init.el
+ #+begin_src emacs-lisp
    (defvar bootstrap-version)
    (let ((bootstrap-file
           (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -274,7 +275,7 @@ is used for configuring packages and lazy loading those
 configurations, to ensure performance and full control over
 configuration.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (straight-use-package 'use-package)
 
   (setq use-package-always-ensure nil)
@@ -289,7 +290,7 @@ modeline (because you don't always want to see all your minor modes).
 The nice part is that it has =use-package= integration, so you can
 call it from inside use-package declarations.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (straight-use-package 'diminish)
 #+end_src
 
@@ -298,7 +299,7 @@ call it from inside use-package declarations.
 Here we add the =elisp= directory and all its subdirectories to the
 load path. This allows us to make and load custom packages.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (defun update-load-path (&rest _)
     "Update `load-path'."
     (dolist (dir '("elisp"))
@@ -323,7 +324,7 @@ byte-compilation. Since April 2021, the Emacs master branch has
 officially merged native compilation, so that will be used when
 available.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (setq load-prefer-newer t)
 #+end_src
 
@@ -334,7 +335,7 @@ my machines I'm currently using. Here we allow Emacs to check for which
 system it is running on. Later we will use the variables defined here
 to apply system-specific configuration.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (defvar machine-desktop-p (equal (system-name) "station"))
   (defvar machine-laptop-p (equal (system-name) "deck"))
   (defvar machine-phone-p (equal (system-name) "runner"))
@@ -350,7 +351,7 @@ are kept separate from the main configuration file so that
 distribution of this configuration does not leak any personal
 information about myself.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (load-file (expand-file-name "personal/creds.el" user-emacs-directory))
 #+end_src
 
@@ -358,7 +359,7 @@ If you wish to use the above setting, simply create a file in the
 appropriate path with the name "creds.el.gpg" containing something
 like the example below:
 
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp :tangle no
   (setq user-full-name "Your Name Here"
 	user-mail-address "your@email.here"
 	calendar-latitude 00.00
@@ -375,7 +376,7 @@ commands return a warning to the user. Apparently these are considered
 use all of those with no hassle, so here we make it so that no
 commands are disabled by Emacs.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (setq disabled-command-function nil)
 #+end_src
 
@@ -393,7 +394,7 @@ the scroll and menu bars. So here we make use of the host system
 checks we established earlier. Using a conditional, we can enable and
 disable elements based on the host system.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (if machine-desktop-p
       (progn
 	(menu-bar-mode 1)
@@ -414,7 +415,7 @@ disable elements based on the host system.
 This disables the default startup screen. I would rather just start in
 the scratch buffer.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (setq inhibit-startup-screen t)
 #+end_src
 
@@ -424,7 +425,7 @@ Emacs tends to litter all your directories with backups of all files
 you visit. I find this behavior annoying and mostly useless. So we
 disable it.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (setq make-backup-files nil)
   (setq auto-save-default nil)
 #+end_src
@@ -433,13 +434,13 @@ Emacs also usually asks you before opening files which are too large
 (as that could cause slowdowns depending on /how large/). I don't want
 that.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (setq large-file-warning-threshold nil)
 #+end_src
 
 Automatically update files when they change on disk.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (auto-revert-mode t)
   (diminish 'auto-revert-mode)
 #+end_src
@@ -450,7 +451,7 @@ Emacs has a lot of prompts asking for user confirmation that require
 you to type in "yes" everytime. This replaces the default "yes or no"
 prompt function with one that makes simple "y" or "n" sufficient.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
 
@@ -461,7 +462,7 @@ very often, but when I do, I like having it feel decent. The first
 order of business is improving scrolling. Then we allow the mouse to
 aid in Emacs window management. We also change some cursor options.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (setf mouse-wheel-scroll-amount '(3 ((shift) . 3))
 	mouse-wheel-progressive-speed nil
 	mouse-wheel-follow-mouse t
@@ -483,7 +484,7 @@ Electric pairs make it so that every opening character that you type
 matched with the corresponding closing character. This is handy at all
 times when editing, but especially useful for programming in Lisp.
 
- #+begin_src emacs-lisp :tangle init.el
+ #+begin_src emacs-lisp
    (setq electric-pair-pairs '((?\{ . ?\})
 			       (?\( . ?\))
 			       (?\[ . ?\])
@@ -496,7 +497,7 @@ times when editing, but especially useful for programming in Lisp.
  This minor mode highlights the parentheses corresponding to the one
  under/behind point. Useful for Lisp programming.
 
- #+begin_src emacs-lisp :tangle init.el
+ #+begin_src emacs-lisp
    (show-paren-mode t)
  #+end_src
  
@@ -510,7 +511,7 @@ displayed, so a long line that gets wrapped will be treated as two
 lines by most editing commands, without forcing you to break them up
 into actual separate lines.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (global-visual-line-mode t)
   (diminish 'visual-line-mode)
 #+end_src
@@ -526,7 +527,7 @@ which wraps all the way accross a wide screen.
 Having text be automatically filled as I type avoids having to
 manually fill paragraphs with =M-q=.
 
- #+begin_src emacs-lisp :tangle init.el
+ #+begin_src emacs-lisp
    (add-hook 'text-mode-hook #'auto-fill-mode)
    (diminish 'auto-fill-function)
  #+end_src
@@ -539,7 +540,7 @@ unfilled text. These functions by [[https://sachachua.com/dotemacs/][Sacha Chua]
 also replace the default fill-paragraph function for one that supports
 both filling and unfilling according to prefix argument (that is, C-u).
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (defun unfill-paragraph (&optional region)
     "Takes a multi-line paragraph and makes it into a single line of text."
     (interactive (progn
@@ -567,7 +568,7 @@ Avy is a neat package for navigating text by quickly jumping around.
 It gives you various functions for different ways doing this, most
 involving some method of quasi-search.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package avy
     :straight t
     :bind
@@ -583,7 +584,7 @@ usable. We change the definition of a sentence to a more reasonable
 the normal double space. This is superior as quite literally no one
 double spaces sentences in ~'(current-year)~.
    
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (setq sentence-end-double-space nil)
 #+end_src
 
@@ -596,7 +597,7 @@ Vim's "inside" or "around" commands such as =di(=. Useful for
 selecting things inside parentheses, like in Lisp code, or quotes in
 prose.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package expand-region
     :straight t
     :bind
@@ -612,7 +613,7 @@ act globally, but I have now taken a simpler approach to using
 built-in functions, like =cycle-spacing= or
 =delete-horizontal-whitespace=.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
  (global-set-key (kbd "M-SPC") 'cycle-spacing) 
 
  (global-set-key (kbd "C-\\") 'indent-region)
@@ -624,7 +625,7 @@ Make Emacs read the system clipboard and integrate it with the
 =kill-ring=. This way everything you copy in other programs will get
 stored in the kill ring.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (setq select-enable-clipboard t)
   (setq save-interprogram-paste-before-kill t)
 #+end_src
@@ -636,7 +637,7 @@ Olivetti mode is a minor mode that centers text on the screen. Useful
 for reading and focusing on writing. We use it for building a custom
 minor mode which uses centered text.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package olivetti
     :straight t
     :custom
@@ -649,7 +650,7 @@ A custom minor mode for optimal reading. This one centers text on
 screen using =olivetti= and enables non-monospaced fonts. We also
 enable some nicer keybindings for scrolling through the buffer.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (defvar better-reading-mode-map (make-sparse-keymap))
 
   (define-minor-mode better-reading-mode
@@ -678,7 +679,7 @@ PDF Tools is a fast and convenient PDF Reader. It appears here as a
 replacement for the built-in =docview=, essentially. I use pdf-tools
 as my primary PDF reader.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package pdf-tools
     :straight t
     :init
@@ -697,7 +698,7 @@ as my primary PDF reader.
 A simple epub reader in Emacs. We make sure that it always uses the
 =better-reading-mode= defined above.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package nov
     :straight t
     :init
@@ -718,7 +719,7 @@ active keybindings in the currently typed prefix. It allows you to
 navigate your keybindings via prefixes. Nice for when you forget those
 cryptically long keychord sequences.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package which-key
     :straight t
     :diminish which-key-mode
@@ -736,7 +737,7 @@ vein of =ido=, but offering much more extensibility.
 I need to document this part better, especially if I'm going to be
 posting my config on /​emg/. I wonder... are you reading this, anon?
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (straight-use-package 'orderless)
 
   (use-package selectrum
@@ -800,7 +801,7 @@ It's a very interesting package if I may say so, but one that has a
 few flaws. Namely, there's no "cancel editing" button. I should
 implement that.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package miniedit
     :straight t
     :init
@@ -814,7 +815,7 @@ implement that.
  Here we make it so that line numbers are displayed in every
  programming mode buffer.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 #+end_src
  
@@ -829,7 +830,7 @@ up the completion buffer. If I start doing heavier programming in the
 near future I may need to switch to =company=, which offers that and
 much more, but unfortunately is a bit bloated and slow.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package corfu
     :straight t
     :hook
@@ -847,7 +848,7 @@ much more, but unfortunately is a bit bloated and slow.
 
 Here we configure Emacs for editing Emacs.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (diminish 'eldoc-mode)
 #+end_src
 
@@ -860,7 +861,7 @@ supporting various implementations. We also install the =sicp=
 package, which allows one to read the classic book from the Emacs
 Info integration. Pretty comfy.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package geiser
     :straight geiser-guile
     :init
@@ -879,7 +880,7 @@ get automatically column-wrapped by =auto-fill-mode=. Apparently Emacs
 considers =mhtml-mode= to be a text editing mode, not a programming
 one. Interesting.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
 #+end_src
 
@@ -909,7 +910,7 @@ the built-in ones, while also allowing use of TUI programs.
   
 ** Eshell
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package eshell
     :init
     (defvar eshell-minor-mode-map (make-sparse-keymap))
@@ -999,7 +1000,7 @@ sure your focus is put on the newly created windows, instead of
 staying in the old ones and forcing you to switch manually. We replace
 the defaults with these.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (defun split-window-below-and-follow ()
     "A simple replacement for `split-window-below', which automatically focuses the new window."
     (interactive)
@@ -1021,7 +1022,7 @@ the defaults with these.
 A simpler keybinding for switching windows, as =C-x o= gets annoying
 fast. 
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (global-set-key (kbd "M-o") 'other-window)
 #+end_src
     
@@ -1033,7 +1034,7 @@ instead of prompting. We do this by making a custom function that is
 both simpler and more reliable than the built-in =kill-this-buffer=. I
 don't know why exactly, but that built in never works properly.
 
- #+begin_src emacs-lisp :tangle init.el
+ #+begin_src emacs-lisp
    (defun kill-this-buffer+ ()
      "Kill the current buffer. More reliable alternative to `kill-this-buffer'"
      (interactive)
@@ -1049,7 +1050,7 @@ manner to the way =dired= handles files and directories. We use it as
 a replacement for the =list-buffers= command. =Ibuffer= is very
 extensible, more configurations are to come.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 
@@ -1059,7 +1060,7 @@ I love the scratch buffer. I like having it around. Unfortunately,
 it's not uncommon for me to accidentally kill it. In case I do so, I
 have this handy function for restoring it.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (defun restore-scratch-buffer ()
     "Restores the scratch buffer, in case it has been killed."
     (interactive)
@@ -1096,7 +1097,7 @@ it works.
 
 More extensions to come.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package dired
     :custom
     (dired-listing-switches "-alNF --group-directories-first")
@@ -1151,7 +1152,7 @@ VC is very extensible, so you can do all sorts of cool things with it.
 My custom function =aabm-vc-git-log-grep= allows searching through git
 logs using =git grep=.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package vc
     :config
     (defvar aabm-vc-shell-output "*aabm-vc-output*")
@@ -1185,7 +1186,7 @@ A powerful git porcelain, and a very famous "killer app" for Emacs. It
 is indeed very powerful, but sometimes I find its UI gets in the way a
 bit. I keep it for those times when =vc= simply won't do.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package magit
     :straight t
     :commands
@@ -1205,7 +1206,7 @@ make the minibuffer future history automatically complete the current
 file. The function =delete-this-file-and-buffer= is stil here since I
 use it sometimes.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (defun delete-this-file-and-buffer ()
     "Deletes the file visited by the current buffer, then kills the buffer."
     (interactive)
@@ -1220,7 +1221,7 @@ Some settings for better navigating org headings. First we make the
 TAB key cycle all headings when pressed while point is on the first
 line of the buffer. Good for getting an overview of a file.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package org
     :custom
     (org-cycle-global-at-bob t)
@@ -1243,7 +1244,7 @@ indentation and syntax highlighting to work as if natively and have
 org use the current window when opening dedicated edit buffers. We
 also set the structure templates to be used.
   
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package org
     :custom
     (org-src-tab-acts-natively t)
@@ -1271,7 +1272,7 @@ Org capture is a powerful tool for creating notes and quickly
 capturing information to be processed later. Here we define templates
 for its usage. TODO.
    
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package org
     :custom
     (org-agenda-files '("~/org/agenda/inbox.org"
@@ -1306,7 +1307,7 @@ for that due to it's simple and consistent syntax.
 
 We also set the export backends to be loaded by default.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package ox-epub
     :straight t)
 
@@ -1332,7 +1333,7 @@ server for displaying a visual representation of links between notes.
 The final package installed is =deft=, a search tool for org files.
 All these packages can be acessed under the =C-c n= prefix.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package org-roam
     :straight t
     :diminish org-roam-mode
@@ -1391,7 +1392,7 @@ program for reading and receiving news. Here we ensure the article
 view buffers always use the =better-reading-mode=, and tell elfeed to
 load my private feeds file. 
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package elfeed
     :straight t
     :config
@@ -1407,7 +1408,7 @@ load my private feeds file.
 A simple custom function to download videos off the web using the
 command line tool =youtube-dl=.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (defun ytdl ()
     "Download videos from the web using the `youtube-dl' command line tool.
 
@@ -1424,7 +1425,7 @@ command line tool =youtube-dl=.
 Here we include global, client-independent settings for Email in
 Emacs, such as usage of the external program =msmtp= for sending mail.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
   (setq sendmail-program "/usr/bin/msmtp")
   (setq message-sendmail-extra-arguments '("--read-envelope-from"))
@@ -1446,7 +1447,7 @@ Emacs, such as usage of the external program =msmtp= for sending mail.
  move towards Gnus or Notmuch as my mail reader. See the configuration
  for those below.
 
- #+begin_src emacs-lisp
+ #+begin_src emacs-lisp :tangle no
    (use-package mu4e
      :straight t
      :commands mu4e mu4e-compose-new
@@ -1484,7 +1485,7 @@ Emacs, such as usage of the external program =msmtp= for sending mail.
 
 *** Gnus
 
- #+begin_src emacs-lisp
+ #+begin_src emacs-lisp :tangle no
    (use-package gnus
      :custom
      (gnus-select-method '(nnnil ""))
@@ -1506,7 +1507,7 @@ Emacs, such as usage of the external program =msmtp= for sending mail.
 
 *** Notmuch
 
- #+begin_src emacs-lisp :tangle init.el
+ #+begin_src emacs-lisp
    (use-package notmuch
      :straight t
      :custom
@@ -1562,7 +1563,7 @@ Emacs, such as usage of the external program =msmtp= for sending mail.
 into Emacs. I like using it from time to time. Here we make it center
 all text, using olivetti-mode.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package eww
     :hook
     ((eww-mode-hook . olivetti-mode)))
@@ -1584,7 +1585,7 @@ using on my laptop. So we add a conditional clause to check the
 current system and load the according theme. We also bind =F7= to the
 theme switch function.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (if machine-desktop-p
       (load-theme 'modus-operandi t)
     (load-theme 'modus-vivendi t))
@@ -1596,7 +1597,7 @@ theme switch function.
 Here we do all face customization. We also define a custom minor mode
 for making the current buffer use a serif font.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (define-minor-mode serif-font-mode
     "Minor mode which sets the default buffer face to the serif font, using `buffer-face-mode'."
     :init-value nil
@@ -1616,7 +1617,7 @@ for making the current buffer use a serif font.
 
 Here we customize the font to be used by default by Emacs.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
   (set-frame-font "Iosevka 11" nil t)
 #+end_src
@@ -1626,7 +1627,7 @@ Here we customize the font to be used by default by Emacs.
 Here we make it so that the current coordinates of point are displayed
 in the modeline.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (line-number-mode t)
   (column-number-mode t)
 #+end_src
@@ -1636,7 +1637,7 @@ in the modeline.
 Here we set the options to be used by all new frames, such as frame
 size.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(width . 100))
   (add-to-list 'default-frame-alist '(height . 35))
 #+end_src
