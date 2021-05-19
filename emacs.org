@@ -679,8 +679,14 @@ enable some nicer keybindings for scrolling through the buffer.
 ** pdf-tools
 
 PDF Tools is a fast and convenient PDF Reader. It appears here as a
-replacement for the built-in =docview=, essentially. I use pdf-tools
-as my primary PDF reader.
+replacement for the built-in =docview=, essentially. I find it very
+convenient to be able to open PDFs (i) from Emacs (ii) in Emacs.
+
+I tend to use pdf-tools as my primary PDF reader, but occasionally it
+simply won't do, as it lacks a few features other pdf viewers have,
+such as page rotation (for those horrible horizontal book scans). So,
+we define a function that will allow pdf-tools to send files to my
+second favorite pdf viewer, =zathura=.
 
 #+begin_src emacs-lisp
   (use-package pdf-tools
@@ -691,9 +697,20 @@ as my primary PDF reader.
     (pdf-view-resize-factor 1.1)
     (pdf-view-continuous nil)
     (pdf-view-display-size 'fit-page)
+    :config
+    (defun pdf-view-open-in-zathura ()
+      "Open the current PDF with ‘zathura’."
+      (interactive)
+      (save-window-excursion
+	(let ((current-file (buffer-file-name))
+	      (current-page (number-to-string (pdf-view-current-page))))
+	  (async-shell-command
+	   (format "zathura -P %s \"%s\"" current-page current-file))))
+      (message "Sent to Zathura"))
     :bind
     (:map pdf-view-mode-map
-          (("M-g g" . pdf-view-goto-page))))
+	  (("M-g g" . pdf-view-goto-page)
+	   ("C-c C-z" . pdf-view-open-in-zathura))))
 #+end_src
 
 ** nov.el

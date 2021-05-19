@@ -201,9 +201,20 @@ With the prefix argument UNFILL, unfill it instead."
   (pdf-view-resize-factor 1.1)
   (pdf-view-continuous nil)
   (pdf-view-display-size 'fit-page)
+  :config
+  (defun pdf-view-open-in-zathura ()
+    "Open the current PDF with ‘zathura’."
+    (interactive)
+    (save-window-excursion
+      (let ((current-file (buffer-file-name))
+	    (current-page (number-to-string (pdf-view-current-page))))
+	(async-shell-command
+	 (format "zathura -P %s \"%s\"" current-page current-file))))
+    (message "Sent to Zathura"))
   :bind
   (:map pdf-view-mode-map
-        (("M-g g" . pdf-view-goto-page))))
+	(("M-g g" . pdf-view-goto-page)
+	 ("C-c C-z" . pdf-view-open-in-zathura))))
 
 (use-package nov
   :straight t
