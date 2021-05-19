@@ -511,6 +511,11 @@ This function was taken from prot."
   :bind
   (("C-x g" . magit-status)))
 
+(defun git-commit-all ()
+  (interactive)
+  (let ((command (format "git commit -a -m '%s'" (read-string "Commit message: "))))
+    (shell-command command)))
+
 (defun delete-this-file-and-buffer ()
   "Deletes the file visited by the current buffer, then kills the buffer."
   (interactive)

@@ -1217,6 +1217,15 @@ bit. I keep it for those times when =vc= simply won't do.
     (("C-x g" . magit-status)))
 #+end_src
 
+** Other version control features
+
+#+begin_src emacs-lisp
+  (defun git-commit-all ()
+    (interactive)
+    (let ((command (format "git commit -a -m '%s'" (read-string "Commit message: "))))
+      (shell-command command)))
+#+end_src
+
 ** Custom functions
 
 Functions for general file management. I used to have a function
