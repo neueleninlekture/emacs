@@ -1169,14 +1169,14 @@ favorites is =vc=. It is the built in version-control interaction
 library for Emacs. I often use it in place of the more famous =magit=.
 VC is very extensible, so you can do all sorts of cool things with it.
 
-My custom function =aabm-vc-git-log-grep= allows searching through git
+The custom function =vc-git-log-grep= allows searching through git
 logs using =git grep=.
 
 #+begin_src emacs-lisp
   (use-package vc
     :config
-    (defvar aabm-vc-shell-output "*aabm-vc-output*")
-    (defun aabm-vc-git-log-grep (pattern &optional diff)
+    (defvar vc-shell-output "*vc-output*")
+    (defun vc-git-log-grep (pattern &optional diff)
       "Run ’git log --grep’ for PATTERN.
     With optional DIFF as a prefix (\\[universal-argument])
     argument, also show the corresponding diffs. 
@@ -1184,20 +1184,20 @@ logs using =git grep=.
   This function was taken from prot."
       (interactive
        (list (read-regexp "Search git log for PATTERN: ")
-             current-prefix-arg))
-      (let* ((buf-name aabm-vc-shell-output)
-             (buf (get-buffer-create buf-name))
-             (diffs (if diff "-p" ""))
-             (type (if diff 'with-diff 'log-search))
-             (resize-mini-windows nil))
-        (shell-command (format "git log %s --grep=%s -E --" diffs pattern) buf)
-        (with-current-buffer buf
-          (setq-local vc-log-view-type type)
-          (setq-local revert-buffer-function nil)
-          (vc-git-region-history-mode))))
+	     current-prefix-arg))
+      (let* ((buf-name vc-shell-output)
+	     (buf (get-buffer-create buf-name))
+	     (diffs (if diff "-p" ""))
+	     (type (if diff 'with-diff 'log-search))
+	     (resize-mini-windows nil))
+	(shell-command (format "git log %s --grep=%s -E --" diffs pattern) buf)
+	(with-current-buffer buf
+	  (setq-local vc-log-view-type type)
+	  (setq-local revert-buffer-function nil)
+	  (vc-git-region-history-mode))))
     :bind
     (:map vc-prefix-map
-          (("S" . aabm-vc-git-log-grep))))
+	  (("S" . vc-git-log-grep))))
 #+end_src
 
 ** Magit
@@ -1217,13 +1217,22 @@ bit. I keep it for those times when =vc= simply won't do.
     (("C-x g" . magit-status)))
 #+end_src
 
-** Other version control features
+** Version control functions
+
+When working with =git= repositories, I often find myself simply
+wanting to commit all the changes I've made, without being forced into
+reviewing diffs or changes like =vc= and =magit= force you to do. This
+simple function allows one to do that. We bind it to a key in the vc
+map.
 
 #+begin_src emacs-lisp
   (defun git-commit-all ()
     (interactive)
-    (let ((command (format "git commit -a -m '%s'" (read-string "Commit message: "))))
-      (shell-command command)))
+    (start-process-shell-command
+     "" nil
+     (format "git commit -a -m '%s'" (read-string "Commit message: "))))
+
+  (bind-key "C-x v c" 'git-commit-all)
 #+end_src
 
 ** Custom functions
