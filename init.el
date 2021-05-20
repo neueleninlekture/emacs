@@ -563,8 +563,8 @@ This function was taken from prot."
 (use-package org
   :custom
   (org-agenda-files '("~/org/agenda/inbox.org"
-                      "~/org/agenda/projects.org"
-                      "~/org/agenda/time.org"))
+		      "~/org/agenda/projects.org"
+		      "~/org/agenda/time.org"))
   (org-archive-location "~/org/agenda/archive.org::")
   (org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "DROP(c)")))
   (org-capture-bookmark nil)
@@ -578,12 +578,14 @@ This function was taken from prot."
       (file+headline "agenda/time.org" "Time-sensitive Tasks")
       "** TODO %?\n%i\n%a")))
   (org-refile-targets '(("~/org/agenda/projects.org" :maxlevel . 1)
-                        ("~/org/agenda/someday.org" :level . 1)
-                        ("~/org/agenda/time.org" :maxlevel . 2)))
+			("~/org/agenda/someday.org" :level . 1)
+			("~/org/agenda/time.org" :maxlevel . 2)))
   :bind
   (("C-c w" . org-capture)
    ("C-c l" . org-store-link)
-   ("C-c a" . org-agenda)))
+   ("C-c a" . org-agenda)
+   (:map org-mode-map
+	 ("C-," . nil))))
 
 (use-package ox-epub
   :straight t)
