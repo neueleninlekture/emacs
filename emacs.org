@@ -1586,32 +1586,38 @@ for those below.
        (,(kbd "u") ("+unread") "Mark as unread")))
     (notmuch-saved-searches
      `(( :name "inbox"
-         :query "tag:inbox"
-         :sort-order newest-first
-         :key ,(kbd "i"))
+	 :query "tag:inbox"
+	 :sort-order newest-first
+	 :key ,(kbd "i"))
        ( :name "unread"
-         :query "tag:unread and tag:inbox"
-         :sort-order newest-first
-         :key ,(kbd "u"))
+	 :query "tag:unread and tag:inbox"
+	 :sort-order newest-first
+	 :key ,(kbd "u"))
        ( :name "todo"
-         :query "tag:todo"
-         :sort-order newest-first
-         :key ,(kbd "t"))
+	 :query "tag:todo"
+	 :sort-order newest-first
+	 :key ,(kbd "t"))
        ( :name "mailing lists"
-         :query "tag:list"
-         :sort-order newest-first
-         :key ,(kbd "l"))
+	 :query "tag:list"
+	 :sort-order newest-first
+	 :key ,(kbd "l"))
        ( :name "emacs-devel"
-         :query "from:emacs-devel@gnu.org or to:emacs-devel@gnu.org or subject:[emacs-devel]"
-         :sort-order newest-first
-         :key ,(kbd "e d"))
+	 :query "from:emacs-devel@gnu.org or to:emacs-devel@gnu.org or subject:[emacs-devel]"
+	 :sort-order newest-first
+	 :key ,(kbd "e d"))
        ( :name "emacs-orgmode"
-         :query "from:emacs-orgmode@gnu.org or to:emacs-orgmode@gnu.org or subject:[emacs-orgmode]"
-         :sort-order newest-first
-         :key ,(kbd "e o"))
+	 :query "from:emacs-orgmode@gnu.org or to:emacs-orgmode@gnu.org or subject:[emacs-orgmode]"
+	 :sort-order newest-first
+	 :key ,(kbd "e o"))
        ( :name "emacs-humanities" 
-         :query "from:emacs-humanities@gnu.org or to:emacs-humanities@gnu.org or subject:[emacs-humanities]"
-         :sort-order newest-first :key ,(kbd "e h"))))  
+	 :query "from:emacs-humanities@gnu.org or to:emacs-humanities@gnu.org or subject:[emacs-humanities]"
+	 :sort-order newest-first :key ,(kbd "e h"))))
+    :config
+    (defun notmuch-delete-mail ()
+      (interactive)
+      (start-process-shell-command
+       "notmuch-delete" nil
+       "notmuch search --output=files --format=text0 tag:del | xargs -r0 rm"))
     :bind
     (("C-c m" . notmuch)))
 #+end_src

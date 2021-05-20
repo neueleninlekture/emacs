@@ -711,7 +711,13 @@ Prompts you for a target directory and a url, downloading the url to the path."
        :key ,(kbd "e o"))
      ( :name "emacs-humanities" 
        :query "from:emacs-humanities@gnu.org or to:emacs-humanities@gnu.org or subject:[emacs-humanities]"
-       :sort-order newest-first :key ,(kbd "e h"))))  
+       :sort-order newest-first :key ,(kbd "e h"))))
+  :config
+  (defun notmuch-delete-mail ()
+    (interactive)
+    (start-process-shell-command
+     "notmuch-delete" nil
+     "notmuch search --output=files --format=text0 tag:del | xargs -r0 rm"))
   :bind
   (("C-c m" . notmuch)))
 
