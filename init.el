@@ -717,7 +717,7 @@ Prompts you for a target directory and a url, downloading the url to the path."
     (interactive)
     (start-process-shell-command
      "notmuch-delete" nil
-     "notmuch search --output=files --format=text0 tag:del | xargs -r0 rm"))
+     "notmuch search --output=files --format=text0 tag:deleted | xargs -r0 rm"))
   :bind
   (("C-c m" . notmuch)))
 
