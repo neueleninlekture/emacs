@@ -736,13 +736,14 @@ Prompts you for a target directory and a url, downloading the url to the path."
   :group aabm
   (if serif-font-mode
       (progn
-        (setq buffer-face-mode-face '(:family "IBM Plex Serif" :height 100))
-        (and (fboundp 'buffer-face-mode) (buffer-face-mode 1)))
+	(setq buffer-face-mode-face '(:family "IBM Plex Serif" :height 100))
+	(and (fboundp 'buffer-face-mode) (buffer-face-mode 1)))
     (and (fboundp 'buffer-face-mode) (buffer-face-mode -1))))
 
 (custom-set-faces
  '(fixed-pitch ((t (:family "Iosevka" :height 110))))
- '(variable-pitch ((t :family "IBM Plex Serif" :height 100))))
+ '(variable-pitch ((t :family "IBM Plex Serif" :height 100)))
+ '(bookmark-face ((t :background nil))))
 
 (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
 (set-frame-font "Iosevka 11" nil t)
