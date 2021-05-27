@@ -512,15 +512,8 @@ This function was taken from prot."
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   :bind
-  (("C-x g" . magit-status)))
-
-(defun git-commit-all ()
-  (interactive)
-  (start-process-shell-command
-   "" nil
-   (format "git commit -a -m '%s'" (read-string "Commit message: "))))
-
-(bind-key "C-x v c" 'git-commit-all)
+  (("C-x g" . magit-status)
+   ("C-x v c" . magit-commit-create)))
 
 (defun delete-this-file-and-buffer ()
   "Deletes the file visited by the current buffer, then kills the buffer."

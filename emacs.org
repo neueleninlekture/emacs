@@ -1225,25 +1225,8 @@ bit. I keep it for those times when =vc= simply won't do.
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
     :bind
-    (("C-x g" . magit-status)))
-#+end_src
-
-** Version control functions
-
-When working with =git= repositories, I often find myself simply
-wanting to commit all the changes I've made, without being forced into
-reviewing diffs or changes like =vc= and =magit= force you to do. This
-simple function allows one to do that. We bind it to a key in the vc
-map.
-
-#+begin_src emacs-lisp
-  (defun git-commit-all ()
-    (interactive)
-    (start-process-shell-command
-     "" nil
-     (format "git commit -a -m '%s'" (read-string "Commit message: "))))
-
-  (bind-key "C-x v c" 'git-commit-all)
+    (("C-x g" . magit-status)
+     ("C-x v c" . magit-commit-create)))
 #+end_src
 
 ** Custom functions
@@ -1718,4 +1701,5 @@ size.
   (add-to-list 'default-frame-alist '(width . 100))
   (add-to-list 'default-frame-alist '(height . 35))
 #+end_src
+
 
