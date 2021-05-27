@@ -904,6 +904,17 @@ one. Interesting.
   (add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
 #+end_src
 
+** R and statistic programming
+
+The =ESS=, or =Emacs Speaks Statistics= package provides a proper
+programming environment for statistical languages and packages, such
+as R.
+
+#+begin_src emacs-lisp
+  (use-package ess
+    :straight t)
+#+end_src
+
 * Shell and Terminal emulation
 
 Emacs comes with a few different solutions for shell and terminal

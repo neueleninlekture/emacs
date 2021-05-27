@@ -318,6 +318,9 @@ With the prefix argument UNFILL, unfill it instead."
 
 (add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
 
+(use-package ess
+  :straight t)
+
 (use-package eshell
   :init
   (defvar eshell-minor-mode-map (make-sparse-keymap))
