@@ -511,9 +511,15 @@ This function was taken from prot."
   (magit-status magit)
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  :config
+  (defun magit-commit-all ()
+    (interactive)
+    (start-process-shell-command
+     "" nil "git add .")
+    (magit-commit-create))
   :bind
   (("C-x g" . magit-status)
-   ("C-x v c" . magit-commit-create)
+   ("C-x v c" . magit-commit-all)
    ("C-x v P" . magit-push-current)))
 
 (defun delete-this-file-and-buffer ()
