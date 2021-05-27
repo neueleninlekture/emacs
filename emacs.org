@@ -1233,7 +1233,7 @@ bit. I keep it for those times when =vc= simply won't do.
     :bind
     (("C-x g" . magit-status)
      ("C-x v c" . magit-commit-all)
-     ("C-x v P" . magit-push-current)))
+     ("C-x v P" . magit-push-current-to-pushremote)))
 #+end_src
 
 ** Custom functions

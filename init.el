@@ -520,7 +520,7 @@ This function was taken from prot."
   :bind
   (("C-x g" . magit-status)
    ("C-x v c" . magit-commit-all)
-   ("C-x v P" . magit-push-current)))
+   ("C-x v P" . magit-push-current-to-pushremote)))
 
 (defun delete-this-file-and-buffer ()
   "Deletes the file visited by the current buffer, then kills the buffer."
