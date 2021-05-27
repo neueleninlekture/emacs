@@ -513,7 +513,8 @@ This function was taken from prot."
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   :bind
   (("C-x g" . magit-status)
-   ("C-x v c" . magit-commit-create)))
+   ("C-x v c" . magit-commit-create)
+   ("C-x v P" . magit-push-current)))
 
 (defun delete-this-file-and-buffer ()
   "Deletes the file visited by the current buffer, then kills the buffer."

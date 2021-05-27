@@ -1226,7 +1226,8 @@ bit. I keep it for those times when =vc= simply won't do.
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
     :bind
     (("C-x g" . magit-status)
-     ("C-x v c" . magit-commit-create)))
+     ("C-x v c" . magit-commit-create)
+     ("C-x v P" . magit-push-current)))
 #+end_src
 
 ** Custom functions
