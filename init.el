@@ -294,19 +294,31 @@ With the prefix argument UNFILL, unfill it instead."
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
-(use-package corfu
-  :straight t
-  :hook
-  ((prog-mode-hook . corfu-mode)
-   (eshell-mode-hook . corfu-mode))
-  :bind
-  (:map corfu-map
-        (("TAB" . corfu-next)
-         ("S-TAB" . corfu-previous)))
-  :custom
-  (corfu-cycle t))
-
 (diminish 'eldoc-mode)
+
+(use-package company
+  :straight t
+  :custom
+  (company-minimum-prefix-length 3)
+  :hook
+  ((prog-mode-hook . company-mode))
+  :bind
+  (:map company-active-map
+	(("SPC" .
+	  (lambda ()
+	    (interactive)
+	    (progn
+	      (company-abort)
+	      (insert " ")))))))
+
+(use-package eglot
+  :straight t
+  :bind
+  (:map eglot-mode-map
+	(("C-c r" . eglot-rename)
+	 ("C-c o" . eglot-code-actions)
+	 ("C-c f" . eglot-format)
+	 ("C-c h" . eldoc))))
 
 (use-package geiser
   :straight geiser-guile
@@ -316,10 +328,15 @@ With the prefix argument UNFILL, unfill it instead."
 (use-package sicp
   :straight t)
 
-(add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
+(add-hook 'mhtml-mode-hook
+	  (lambda ()
+	    (interactive)
+	    (auto-fill-mode -1)))
 
 (use-package ess
-  :straight t)
+  :straight t
+  :hook
+  ((ess-r-mode-hook . eglot-ensure)))
 
 (use-package eshell
   :init

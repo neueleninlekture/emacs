@@ -839,37 +839,94 @@ programming mode buffer.
   (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 #+end_src
  
-*** Code completion
+*** Eldoc
 
-This is a simple package for code completion made by some guy on
-reddit. It follows the minimal, standards compliant philosophy of
-packages like selectrum and embark, which I (and many others in the
-Emacs world recently) have come to appreciate. This one unfortunately
-only supports manual completion, i.e. you have to type =M-TAB= to pull
-up the completion buffer. If I start doing heavier programming in the
-near future I may need to switch to =company=, which offers that and
-much more, but unfortunately is a bit bloated and slow.
+A minor mode that displays documentation on the symbol at point in the
+echo area. Can integrate with =eglot= for providing documentation over
+LSP. Here we hide it from the modeline.
 
 #+begin_src emacs-lisp
+  (diminish 'eldoc-mode)
+#+end_src
+
+*** Corfu
+
+This is a simple package for code completion made by some guy on
+r*ddit. It follows the minimal, standards compliant philosophy of
+packages like =selectrum= and =embark=, which I (and many others in
+the Emacs world recently) have come to appreciate. This one
+unfortunately only supports manual completion, i.e. you have to type
+=M-TAB= to pull up the completion buffer. I've started using =company=
+for more serious programming, but I still keep corfu here as legacy
+code.
+
+#+begin_src emacs-lisp :tangle no
   (use-package corfu
     :straight t
+    :diminish corfu-mode
     :hook
     ((prog-mode-hook . corfu-mode)
      (eshell-mode-hook . corfu-mode))
     :bind
     (:map corfu-map
-          (("TAB" . corfu-next)
-           ("S-TAB" . corfu-previous)))
+	  (("TAB" . corfu-next)
+	   ("S-TAB" . corfu-previous)))
     :custom
     (corfu-cycle t))
 #+end_src
 
-** Emacs Lisp
+*** Company
 
-Here we configure Emacs for editing Emacs.
+The larger code completion package. This one allows customizing both
+the backend and frontend, and does real time completion (as opposed to
+corfu's on-demand completion). Integrates well with LSP clients.
+
+Here we enable company for all programming modes, tell it to only
+complete symbols after 3 characters have been typed, and make the
+Space key not only cancel completion but also insert a space, which is
+nicer when typing.
 
 #+begin_src emacs-lisp
-  (diminish 'eldoc-mode)
+  (use-package company
+    :straight t
+    :custom
+    (company-minimum-prefix-length 3)
+    :hook
+    ((prog-mode-hook . company-mode))
+    :bind
+    (:map company-active-map
+	  (("SPC" .
+	    (lambda ()
+	      (interactive)
+	      (progn
+		(company-abort)
+		(insert " ")))))))
+#+end_src
+
+*** Eglot
+
+The Emacs Polyglot package. Eglot is a =Language Server Protocol=
+client that stays out of your way. Eglot is as simple as LSP
+implementations get, as it does not reinvent features already built
+into Emacs and its features hook into the already available
+mechanisms. It integrates with code completion packages like =corfu=
+and =company=, documentation systems like =eldoc= and code checking
+packages like =flymake=. All of this is enabled by default, with no
+configuration needed. Note that =eldoc= and =flymake= are built in.
+
+*Note*: I do not like enabling Eglot on all programming modes by
+default. I prefer to add a hook for each individual programming mode
+that I'd like to use LSP on.
+
+#+begin_src emacs-lisp
+  (use-package eglot
+    :straight t
+    :bind
+    (:map eglot-mode-map
+	  (("C-c r" . eglot-rename)
+	   ("C-c o" . eglot-code-actions)
+	   ("C-c f" . eglot-format)
+	   ("C-c h" . eldoc))))
 #+end_src
 
 ** Scheme
@@ -901,7 +958,10 @@ considers =mhtml-mode= to be a text editing mode, not a programming
 one. Interesting.
 
 #+begin_src emacs-lisp
-  (add-hook 'mhtml-mode-hook (lambda () (interactive) (auto-fill-mode -1)))
+  (add-hook 'mhtml-mode-hook
+	    (lambda ()
+	      (interactive)
+	      (auto-fill-mode -1)))
 #+end_src
 
 ** R and statistic programming
@@ -912,7 +972,9 @@ as R.
 
 #+begin_src emacs-lisp
   (use-package ess
-    :straight t)
+    :straight t
+    :hook
+    ((ess-r-mode-hook . eglot-ensure)))
 #+end_src
 
 * Shell and Terminal emulation
