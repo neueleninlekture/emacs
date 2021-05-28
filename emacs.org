@@ -819,7 +819,7 @@ lots of content.
 
 It's a very interesting package if I may say so, but one that has a
 few flaws. Namely, there's no "cancel editing" button. I should
-implement that.
+implement that. Currently, to access Miniedit, press C-M-e.
 
 #+begin_src emacs-lisp
   (use-package miniedit
