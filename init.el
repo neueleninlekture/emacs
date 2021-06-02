@@ -551,13 +551,14 @@ This function was taken from prot."
   (org-hide-leading-stars t)
   :bind
   (:map org-mode-map
-        (("M-n" . org-forward-element)
-         ("M-p" . org-backward-element)
-         ("C-M-n" . org-metadown)
-         ("C-M-p" . org-metaup)
-         ("C-M-f" . org-metaright)
-         ("C-M-b" . org-metaleft)
-         ("<mouse-3>" . org-cycle))))
+	(("M-n" . org-forward-element)
+	 ("M-p" . org-backward-element)
+	 ("C-M-n" . org-metadown)
+	 ("C-M-p" . org-metaup)
+	 ("C-M-f" . org-metaright)
+	 ("C-M-b" . org-metaleft)
+	 ("<mouse-3>" . org-cycle)
+	 ("C-c C-x l" . org-cycle-list-bullet))))
 
 (setq org-adapt-indentation nil)
 
