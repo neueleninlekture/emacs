@@ -160,6 +160,12 @@ With the prefix argument UNFILL, unfill it instead."
   :bind
   (("C-=" . er/expand-region)))
 
+(use-package move-text
+  :straight t
+  :bind
+  (("C-S-p" . move-text-up)
+   ("C-S-n" . move-text-down)))
+
 (global-set-key (kbd "M-SPC") 'cycle-spacing) 
 
 (global-set-key (kbd "C-\\") 'indent-region)

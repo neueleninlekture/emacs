@@ -591,7 +591,7 @@ double spaces sentences in ~'(current-year)~.
   (setq sentence-end-double-space nil)
 #+end_src
 
-** Region selection
+** Operating on regions
 *** Expand region
 
 A neat little package that allows marking a region in increasing
@@ -605,6 +605,18 @@ prose.
     :straight t
     :bind
     (("C-=" . er/expand-region)))
+#+end_src
+
+*** Move text
+
+Allows you to move lines or regions of text around the buffer.
+
+#+begin_src emacs-lisp
+  (use-package move-text
+    :straight t
+    :bind
+    (("C-S-p" . move-text-up)
+     ("C-S-n" . move-text-down)))
 #+end_src
 
 ** Whitespace and indentation
