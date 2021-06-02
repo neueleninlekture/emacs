@@ -166,6 +166,12 @@ With the prefix argument UNFILL, unfill it instead."
   (("C-S-p" . move-text-up)
    ("C-S-n" . move-text-down)))
 
+(use-package isearch-mb
+  :straight t
+  :diminish isearch-mb-mode
+  :init
+  (isearch-mb-mode))
+
 (global-set-key (kbd "M-SPC") 'cycle-spacing) 
 
 (global-set-key (kbd "C-\\") 'indent-region)

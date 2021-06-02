@@ -619,6 +619,20 @@ Allows you to move lines or regions of text around the buffer.
      ("C-S-n" . move-text-down)))
 #+end_src
 
+** Searching
+
+This package allows one to edit the isearch query much like any other
+minibuffer prompt. Cursor motion commands won't get you out of
+isearch.
+
+#+begin_src emacs-lisp
+  (use-package isearch-mb
+    :straight t
+    :diminish isearch-mb-mode
+    :init
+    (isearch-mb-mode))
+#+end_src
+
 ** Whitespace and indentation
 
 When editing Lisp with the default editing scheme, it's easy to get
