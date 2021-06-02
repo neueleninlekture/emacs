@@ -593,6 +593,16 @@ This function was taken from prot."
      ("se" . "src emacs-lisp\n")
      ("v" . "verse"))))
 
+(setq org-babel-confirm-babel-evaluate nil)
+(setq org-babel-load-languages
+      '((R . t)
+	(python . t)
+	(emacs-lisp . t)
+	(scheme . t)
+	(shell . t)
+	(org . t)
+	(latex . t))))
+
 (use-package org
   :custom
   (org-agenda-files '("~/org/agenda/inbox.org"

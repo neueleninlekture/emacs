@@ -1384,7 +1384,9 @@ whitespace gets added before paragraphs of text.
   (setq org-adapt-indentation nil)
 #+end_src
 
-** Source blocks
+** Literate programming
+
+*** Structure templates
 
 Here we define a few settings for the src blocks in org-mode. We force
 indentation and syntax highlighting to work as if natively and have
@@ -1410,6 +1412,24 @@ also set the structure templates to be used.
        ("sS" . "src scheme\n")
        ("se" . "src emacs-lisp\n")
        ("v" . "verse"))))
+#+end_src
+
+
+*** Babel
+
+Here we tell Org Babel which languages to use, and make it evaluate
+code blocks without asking first.
+
+#+begin_src emacs-lisp
+  (setq org-babel-confirm-babel-evaluate nil)
+  (setq org-babel-load-languages
+	'((R . t)
+	  (python . t)
+	  (emacs-lisp . t)
+	  (scheme . t)
+	  (shell . t)
+	  (org . t)
+	  (latex . t))))
 #+end_src
 
 ** Agenda, time and capture
