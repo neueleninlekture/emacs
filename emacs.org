@@ -1430,7 +1430,7 @@ code blocks without asking first.
 	  (scheme . t)
 	  (shell . t)
 	  (org . t)
-	  (latex . t))))
+	  (latex . t)))
 #+end_src
 
 ** Agenda, time and capture

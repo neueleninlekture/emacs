@@ -602,7 +602,7 @@ This function was taken from prot."
 	(scheme . t)
 	(shell . t)
 	(org . t)
-	(latex . t))))
+	(latex . t)))
 
 (use-package org
   :custom
