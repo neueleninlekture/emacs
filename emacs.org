@@ -913,20 +913,21 @@ Space key not only cancel completion but also insert a space, which is
 nicer when typing.
 
 #+begin_src emacs-lisp
-  (use-package company
-    :straight t
-    :custom
-    (company-minimum-prefix-length 3)
-    :hook
-    ((prog-mode-hook . company-mode))
-    :bind
-    (:map company-active-map
-	  (("SPC" .
-	    (lambda ()
-	      (interactive)
-	      (progn
-		(company-abort)
-		(insert " ")))))))
+    (use-package company
+      :straight t
+      :diminish company-mode
+      :custom
+      (company-minimum-prefix-length 3)
+      :hook
+      ((prog-mode-hook . company-mode))
+      :bind
+      (:map company-active-map
+	    (("SPC" .
+	      (lambda ()
+		(interactive)
+		(progn
+		  (company-abort)
+		  (insert " ")))))))
 #+end_src
 
 *** Eglot

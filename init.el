@@ -310,6 +310,7 @@ With the prefix argument UNFILL, unfill it instead."
 
 (use-package company
   :straight t
+  :diminish company-mode
   :custom
   (company-minimum-prefix-length 3)
   :hook
