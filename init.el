@@ -260,14 +260,6 @@ With the prefix argument UNFILL, unfill it instead."
   (read-buffer-completion-ignore-case t)
   (enable-recursive-minibuffers t))
 
-(use-package selectrum-prescient
-  :straight t
-  :custom
-  (selectrum-prescient-enable-filtering nil)
-  :config
-  (selectrum-prescient-mode)
-  (prescient-persist-mode))
-
 (use-package consult
   :straight t
   :custom

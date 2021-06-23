@@ -52,7 +52,7 @@ follow during this process:
   can honestly say I will likely never go back to a heavier completion
   framework, and that the built-ins are by themselves very powerful.
   However, I chose to supplement this power with external tools such as
-  =selectrum=, =orderless= and =embark=.
+  =vertico=, =orderless= and =embark=.
 
   I will also be replacing old external packages like the mu4e mail
   client with built-ins such as Gnus. Gnus is almost impenetrable for
@@ -775,9 +775,9 @@ cryptically long keychord sequences.
     (which-key-idle-delay 0.4))
 #+end_src
 
-** Selectrum
+** Vertico, orderless, embark
 
-=Selectrum= offers minibuffer completion and visual selection in the
+=Vertico= offers minibuffer completion and visual selection in the
 vein of =ido=, but offering much more extensibility.
 
 I need to document this part better, especially if I'm going to be
@@ -798,14 +798,6 @@ posting my config on /​emg/. I wonder... are you reading this, anon?
     (read-file-name-completion-ignore-case t)
     (read-buffer-completion-ignore-case t)
     (enable-recursive-minibuffers t))
-
-  (use-package selectrum-prescient
-    :straight t
-    :custom
-    (selectrum-prescient-enable-filtering nil)
-    :config
-    (selectrum-prescient-mode)
-    (prescient-persist-mode))
 
   (use-package consult
     :straight t
@@ -879,7 +871,7 @@ LSP. Here we hide it from the modeline.
 
 This is a simple package for code completion made by some guy on
 r*ddit. It follows the minimal, standards compliant philosophy of
-packages like =selectrum= and =embark=, which I (and many others in
+packages like =vertico= and =embark=, which I (and many others in
 the Emacs world recently) have come to appreciate. This one
 unfortunately only supports manual completion, i.e. you have to type
 =M-TAB= to pull up the completion buffer. I've started using =company=
