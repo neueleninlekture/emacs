@@ -1162,8 +1162,19 @@ manner to the way =dired= handles files and directories. We use it as
 a replacement for the =list-buffers= command. =Ibuffer= is very
 extensible, more configurations are to come.
 
+Here we install the =ibuffer-project= package which provides
+integration with the built-in =project.el= library. This makes ibuffer
+group buffers based on the projects they belong to.
+
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+  (use-package ibuffer-project
+    :straight t
+    :hook
+    (ibuffer-mode-hook . (lambda ()
+			   (setq ibuffer-filter-groups
+				 (ibuffer-project-generate-filter-groups)))))
 #+end_src
 
 *** Restore the scratch buffer

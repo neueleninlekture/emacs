@@ -446,6 +446,13 @@ With the prefix argument UNFILL, unfill it instead."
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+(use-package ibuffer-project
+  :straight t
+  :hook
+  (ibuffer-mode-hook . (lambda ()
+			 (setq ibuffer-filter-groups
+			       (ibuffer-project-generate-filter-groups)))))
+
 (defun restore-scratch-buffer ()
   "Restores the scratch buffer, in case it has been killed."
   (interactive)
