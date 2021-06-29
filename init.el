@@ -628,6 +628,17 @@ This function was taken from prot."
    (:map org-mode-map
 	 ("C-," . nil))))
 
+(defun tomato ()
+  (interactive)
+  (let ((org-timer-countdown-timer-title "Tomato"))
+    (org-timer-set-timer tomato-next-time))
+  (if (= tomato-next-time 5)
+      (setq tomato-next-time 25)
+    (setq tomato-next-time 5)))
+
+(defvar tomato-next-time 5)
+(add-hook 'org-timer-done-hook 'tomato)
+
 (use-package org
   :config
   (defun org-insert-link-dwim ()
