@@ -947,6 +947,14 @@ that I'd like to use LSP on.
 	   ("C-c f" . eglot-format)
 	   ("C-c h" . eldoc))))
 #+end_src
+** Markup and config modes
+
+*** Markdown
+
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :straight t)
+#+end_src
 
 ** Scheme
 

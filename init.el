@@ -323,6 +323,9 @@ With the prefix argument UNFILL, unfill it instead."
 	 ("C-c f" . eglot-format)
 	 ("C-c h" . eldoc))))
 
+(use-package markdown-mode
+  :straight t)
+
 (use-package geiser
   :straight geiser-guile
   :init
