@@ -683,41 +683,27 @@ This function was taken from prot."
 
 (use-package org-roam
   :straight t
-  :diminish org-roam-mode
   :init
   (setq org-roam-directory "~/org/roam/")
-  :config
-  (org-roam-mode)
   :custom
-  (org-roam-directory "~/org/roam/")
-  (org-roam-index-file "~/org/roam/index.org")
-  (org-roam-db-location (expand-file-name "roam.db" org-roam-directory))
-  (org-roam-completion-system 'default)
-  (org-roam-db-update-method 'immediate)
-  (org-roam-graph-executable "/usr/bin/neato")
-  (org-roam-graph-extra-config '(("overlap" . "false")))
-  (org-roam-capture-templates
-   '(("o" "Show: overview" plain (function org-roam--capture-get-point)
-      "#+date:%T\n#+startup: overview\n#+roam_tags:\n#+roam_alias:\n"
-      :file-name "%<%Y%m%d%H%M%S>-${slug}"
-      :head "#+title: ${title}\n"
-      :unnarrowed t)
-     ("a" "Show: all" plain (function org-roam--capture-get-point)
-      "#+date:%T\n#+startup: showall\n#+roam_tags:\n#+roam_alias:\n"
-      :file-name "%<%Y%m%d%H%M%S>-${slug}"
-      :head "#+title: ${title}\n"
-      :unnarrowed t))) 
+  (org-roam-db-location
+   (expand-file-name "roam.db" org-roam-directory))
   :bind
-  (("C-c n f" . org-roam-find-file)
-   ("C-c n l" . org-roam-insert)
-   ("C-c n L" . org-roam-insert-immediate)
-   ("C-c n r" . org-roam-random-note)
+  (("C-c n f" . org-roam-node-find)
+   ("C-c n l" . org-roam-node-insert)
+   ("C-c n o" . org-roam-buffer-toggle)
    ("C-c n w" . org-roam-capture)))
 
-(use-package org-roam-server
-  :straight t
-  :bind
-  (("C-c n g" . org-roam-server-mode)))
+(use-package org-roam-ui
+  :straight
+  (:host github :repo "org-roam/org-roam-ui"
+	 :branch "main" :files ("*.el" "out"))
+    :after org-roam
+    :custom
+    (org-roam-ui-sync-theme t)
+    (org-roam-ui-follow t)
+    (org-roam-ui-update-on-save t)
+    (org-roam-ui-open-on-start t))
 
 (use-package deft
   :straight t
