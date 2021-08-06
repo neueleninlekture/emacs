@@ -685,13 +685,15 @@ This function was taken from prot."
   :straight t
   :init
   (setq org-roam-directory "~/org/roam/")
+  :config
+  (org-roam-setup)
   :custom
   (org-roam-db-location
    (expand-file-name "roam.db" org-roam-directory))
   :bind
   (("C-c n f" . org-roam-node-find)
-   ("C-c n l" . org-roam-node-insert)
-   ("C-c n o" . org-roam-buffer-toggle)
+   ("C-c n i" . org-roam-node-insert)
+   ("C-c n l" . org-roam-buffer-toggle)
    ("C-c n w" . org-roam-capture)))
 
 (use-package org-roam-ui
