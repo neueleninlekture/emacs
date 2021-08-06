@@ -1598,16 +1598,6 @@ All these packages can be acessed under the =C-c n= prefix.
       (org-roam-ui-follow t)
       (org-roam-ui-update-on-save t)
       (org-roam-ui-open-on-start t))
-
-  (use-package deft
-    :straight t
-    :custom
-    (deft-recursive t)
-    (deft-use-filter-string-for-filename t)
-    (deft-default-extension "org")
-    (deft-directory "~/org/roam")
-    :bind
-    (("C-c n s" . deft)))
 #+end_src
 
 * Web, news, mail, etc

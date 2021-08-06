@@ -707,16 +707,6 @@ This function was taken from prot."
     (org-roam-ui-update-on-save t)
     (org-roam-ui-open-on-start t))
 
-(use-package deft
-  :straight t
-  :custom
-  (deft-recursive t)
-  (deft-use-filter-string-for-filename t)
-  (deft-default-extension "org")
-  (deft-directory "~/org/roam")
-  :bind
-  (("C-c n s" . deft)))
-
 (use-package elfeed
   :straight t
   :config
