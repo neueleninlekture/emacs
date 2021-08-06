@@ -760,6 +760,10 @@ Prompts you for a target directory and a url, downloading the url to the path."
        :query "tag:inbox"
        :sort-order newest-first
        :key ,(kbd "i"))
+     ( :name "archived"
+       :query "tag:archived"
+       :sort-order newest-first
+       :key ,(kbd "a"))
      ( :name "unread"
        :query "tag:unread and tag:inbox"
        :sort-order newest-first
