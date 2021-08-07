@@ -690,6 +690,7 @@ This function was taken from prot."
   :custom
   (org-roam-db-location
    (expand-file-name "roam.db" org-roam-directory))
+  (org-roam-v2-ack t)
   :bind
   (("C-c n f" . org-roam-node-find)
    ("C-c n i" . org-roam-node-insert)
