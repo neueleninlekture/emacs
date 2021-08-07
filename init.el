@@ -562,6 +562,7 @@ This function was taken from prot."
   :custom
   (org-cycle-global-at-bob t)
   (org-hide-leading-stars t)
+  (org-startup-folded t)
   :bind
   (:map org-mode-map
 	(("M-n" . org-forward-element)
@@ -691,11 +692,17 @@ This function was taken from prot."
   (org-roam-db-location
    (expand-file-name "roam.db" org-roam-directory))
   (org-roam-v2-ack t)
+  (org-roam-capture-templates
+   '(("d" "default" plain "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+			 "#+title: ${title}\n#+date: %t\n#+filetags: \n")
+      :unnarrowed t)))
   :bind
   (("C-c n f" . org-roam-node-find)
    ("C-c n i" . org-roam-node-insert)
    ("C-c n l" . org-roam-buffer-toggle)
-   ("C-c n w" . org-roam-capture)))
+   ("C-c n w" . org-roam-capture)
+   ("C-c n o" . org-roam-buffer-display-dedicated)))
 
 (use-package org-roam-ui
   :straight
@@ -706,7 +713,9 @@ This function was taken from prot."
     (org-roam-ui-sync-theme t)
     (org-roam-ui-follow t)
     (org-roam-ui-update-on-save t)
-    (org-roam-ui-open-on-start t))
+    (org-roam-ui-open-on-start t)
+    :bind
+    (("C-c n g" . org-roam-ui-mode)))
 
 (use-package elfeed
   :straight t
