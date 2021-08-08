@@ -703,7 +703,8 @@ This function was taken from prot."
    ("C-c n l" . org-roam-buffer-toggle)
    ("C-c n w" . org-roam-capture)
    ("C-c n o" . org-roam-buffer-display-dedicated)
-   ("C-c n c" . org-id-get-create)))
+   ("C-c n c" . org-id-get-create)
+   ("C-c n a" . org-roam-alias-add)))
 
 (use-package org-roam-ui
   :straight
