@@ -686,12 +686,12 @@ This function was taken from prot."
   :straight t
   :init
   (setq org-roam-directory "~/org/roam/")
+  (setq org-roam-v2-ack t)
   :config
   (org-roam-setup)
   :custom
   (org-roam-db-location
    (expand-file-name "roam.db" org-roam-directory))
-  (org-roam-v2-ack t)
   (org-roam-capture-templates
    '(("d" "default" plain "%?"
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"

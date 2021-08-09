@@ -1578,12 +1578,12 @@ All these packages can be acessed under the =C-c n= prefix.
     :straight t
     :init
     (setq org-roam-directory "~/org/roam/")
+    (setq org-roam-v2-ack t)
     :config
     (org-roam-setup)
     :custom
     (org-roam-db-location
      (expand-file-name "roam.db" org-roam-directory))
-    (org-roam-v2-ack t)
     (org-roam-capture-templates
      '(("d" "default" plain "%?"
 	:if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
@@ -1597,7 +1597,7 @@ All these packages can be acessed under the =C-c n= prefix.
      ("C-c n o" . org-roam-buffer-display-dedicated)
      ("C-c n c" . org-id-get-create)
      ("C-c n a" . org-roam-alias-add)))
-
+  
   (use-package org-roam-ui
     :straight
     (:host github :repo "org-roam/org-roam-ui"
