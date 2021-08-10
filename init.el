@@ -697,6 +697,7 @@ This function was taken from prot."
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 			 "#+title: ${title}\n#+date: %t\n#+filetags: \n")
       :unnarrowed t)))
+  (org-roam-db-update-on-save nil)
   :bind
   (("C-c n f" . org-roam-node-find)
    ("C-c n i" . org-roam-node-insert)
@@ -704,7 +705,8 @@ This function was taken from prot."
    ("C-c n w" . org-roam-capture)
    ("C-c n o" . org-roam-buffer-display-dedicated)
    ("C-c n c" . org-id-get-create)
-   ("C-c n a" . org-roam-alias-add)))
+   ("C-c n a" . org-roam-alias-add)
+   ("C-c n u" . org-roam-db-sync)))
 
 (use-package org-roam-ui
   :straight
