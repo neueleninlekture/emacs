@@ -1641,11 +1641,11 @@ command line tool =youtube-dl=.
 #+begin_src emacs-lisp
   (defun ytdl ()
     "Download videos from the web using the `youtube-dl' command line tool.
-
+  
   Prompts you for a target directory and a url, downloading the url to the path."
     (interactive)
     (let ((default-directory (read-file-name "Download to: "))
-          (link (read-string "URL: " nil nil "https://youtu.be/dQw4w9WgXcQ")))
+	  (link (read-string "URL: " nil nil "https://youtu.be/dQw4w9WgXcQ")))
       (start-process "ytdl" "*ytdl*" "youtube-dl" link)))
 #+end_src
 
@@ -1662,82 +1662,20 @@ Emacs, such as usage of the external program =msmtp= for sending mail.
   (setq message-sendmail-f-is-evil 't)
 #+end_src
 
-*** mu4e
-
-=mu4e= is a mail client for Emacs. It has a fairly simple UI and is
-easy to get into, at least compared to Gnus. It requires use of an
-external tool such as =isync= for keeping your mailbox synced.
-   
-This is here as a temporary measure: I have this mu4e configuration
-from before I nuked my entire Emacs config. Since doing that, I've
-been planning on switching to Gnus, but for now I'll keep =mu4e=
-around for its ease of use.
-
-=Note=: This is currently here for legacy purposes. I'm undergoing a
-move towards Gnus or Notmuch as my mail reader. See the configuration
-for those below.
-
-#+begin_src emacs-lisp :tangle no
-  (use-package mu4e
-    :straight t
-    :commands mu4e mu4e-compose-new
-    :custom
-    (mu4e-maildir "~/.mail/disroot/")
-    (mu4e-get-mail-command "/usr/bin/mbsync -a")
-    (mu4e-update-mail-and-index t)
-    (mu4e-update-interval 300)
-    (mu4e-view-show-images t)
-    (mu4e-view-show-addresses t)
-    (mu4e-use-fancy-chars nil)
-    (mu4e-drafts-folder "/drafts")
-    (mu4e-sent-folder "/sent")
-    (mu4e-trash-folder "/trash")
-    (message-send-mail-function 'message-send-mail-with-sendmail)
-    (sendmail-program "/usr/bin/msmtp")
-    (message-sendmail-extra-arguments '("--read-envelope-from"))
-    (message-sendmail-f-is-evil 't)
-    (mu4e-completing-read-function 'completing-read)
-    (mu4e-confirm-quit nil)
-    (message-kill-buffer-on-exit t)
-    (mu4e-html2text-command "/usr/bin/w3m -T text/html")
-    (mu4e-attachment-dir "~/")
-    (mu4e-compose-signature
-     '(user-full-name))
-    :hook
-    (message-send-hook .
-                       (lambda ()
-                         (unless (yes-or-no-p "Sure you want to send this?")
-                           (signal 'quit nil))))
-    :bind
-    ((("C-x m" . mu4e)
-      ("C-c m" . mu4e-compose-new))))
-#+end_src
-
-*** Gnus
-
-#+begin_src emacs-lisp :tangle no
-  (use-package gnus
-    :custom
-    (gnus-select-method '(nnnil ""))
-    (gnus-secondary-select-methods
-     '((nnmaildir "disroot"
-                  (directory "~/.mail/disroot")
-                  (nnmail-expiry-target "nnmaildir+disroot:trash"))))
-
-    (mm-text-html-renderer 'shr)
-    (gnus-inhibit-images nil)
-
-    (gnus-home-directory "~/.emacs.d/")
-    (nnfolder-directory "~/.cache/Mail/")
-    (gnus-directory "~/.cache/News/")
-    :bind
-    (("C-c m" . gnus)
-     ("C-x m" . compose-mail)))
-#+end_src
-
 *** Notmuch
 
+=notmuch= is a mail client for Emacs. It requires use of an external
+tool such as =isync= for keeping your mailbox synced. We use the
+=mbsync= package for interfacing with =isync=.
+
 #+begin_src emacs-lisp
+  (use-package mbsync
+    :straight t
+    :custom
+    (mbsync-verbose 'verbose)
+    :hook
+    ((mbsync-exit-hook . notmuch-poll-and-refresh-this-buffer)))
+  
   (use-package notmuch
     :straight t
     :custom
@@ -1794,7 +1732,9 @@ for those below.
        "notmuch-delete" nil
        "notmuch search --output=files --format=text0 tag:deleted | xargs -r0 rm"))
     :bind
-    (("C-c m" . notmuch)))
+    (("C-c m" . notmuch)
+     (:map notmuch-hello-mode-map
+	   ("U" . mbsync))))
 #+end_src
 
 ** eww

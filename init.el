@@ -736,13 +736,20 @@ This function was taken from prot."
 Prompts you for a target directory and a url, downloading the url to the path."
   (interactive)
   (let ((default-directory (read-file-name "Download to: "))
-        (link (read-string "URL: " nil nil "https://youtu.be/dQw4w9WgXcQ")))
+	(link (read-string "URL: " nil nil "https://youtu.be/dQw4w9WgXcQ")))
     (start-process "ytdl" "*ytdl*" "youtube-dl" link)))
 
 (setq message-send-mail-function 'message-send-mail-with-sendmail)
 (setq sendmail-program "/usr/bin/msmtp")
 (setq message-sendmail-extra-arguments '("--read-envelope-from"))
 (setq message-sendmail-f-is-evil 't)
+
+(use-package mbsync
+  :straight t
+  :custom
+  (mbsync-verbose 'verbose)
+  :hook
+  ((mbsync-exit-hook . notmuch-poll-and-refresh-this-buffer)))
 
 (use-package notmuch
   :straight t
@@ -800,7 +807,9 @@ Prompts you for a target directory and a url, downloading the url to the path."
      "notmuch-delete" nil
      "notmuch search --output=files --format=text0 tag:deleted | xargs -r0 rm"))
   :bind
-  (("C-c m" . notmuch)))
+  (("C-c m" . notmuch)
+   (:map notmuch-hello-mode-map
+	 ("U" . mbsync))))
 
 (use-package eww
   :hook
