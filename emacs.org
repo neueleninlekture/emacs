@@ -1737,7 +1737,7 @@ tool such as =isync= for keeping your mailbox synced. We use the
 	   ("U" . mbsync))))
 #+end_src
 
-** eww
+** Eww
 
 =eww=, the Emacs Web Wowser, is a simple web text-based browser built
 into Emacs. I like using it from time to time. Here we make it center
@@ -1747,6 +1747,17 @@ all text, using olivetti-mode.
   (use-package eww
     :hook
     ((eww-mode-hook . olivetti-mode)))
+#+end_src
+
+** ERC
+
+#+begin_src emacs-lisp
+  (use-package erc
+    :custom
+    (erc-nick '("aabm" "aaabm"))
+    (erc-default-server "irc.rizon.net")
+    :bind
+    (("C-c i" . erc)))
 #+end_src
 
 * Theming and customization

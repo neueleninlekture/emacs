@@ -815,6 +815,13 @@ Prompts you for a target directory and a url, downloading the url to the path."
   :hook
   ((eww-mode-hook . olivetti-mode)))
 
+(use-package erc
+  :custom
+  (erc-nick '("aabm" "aaabm"))
+  (erc-default-server "irc.rizon.net")
+  :bind
+  (("C-c i" . erc)))
+
 (if machine-desktop-p
     (load-theme 'modus-operandi t)
   (load-theme 'modus-vivendi t))
