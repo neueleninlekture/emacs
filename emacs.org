@@ -872,13 +872,9 @@ LSP. Here we hide it from the modeline.
 This is a simple package for code completion made by some guy on
 r*ddit. It follows the minimal, standards compliant philosophy of
 packages like =vertico= and =embark=, which I (and many others in
-the Emacs world recently) have come to appreciate. This one
-unfortunately only supports manual completion, i.e. you have to type
-=M-TAB= to pull up the completion buffer. I've started using =company=
-for more serious programming, but I still keep corfu here as legacy
-code.
+the Emacs world recently) have come to appreciate.
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package corfu
     :straight t
     :diminish corfu-mode
@@ -890,36 +886,8 @@ code.
 	  (("TAB" . corfu-next)
 	   ("S-TAB" . corfu-previous)))
     :custom
-    (corfu-cycle t))
-#+end_src
-
-*** Company
-
-The larger code completion package. This one allows customizing both
-the backend and frontend, and does real time completion (as opposed to
-corfu's on-demand completion). Integrates well with LSP clients.
-
-Here we enable company for all programming modes, tell it to only
-complete symbols after 3 characters have been typed, and make the
-Space key not only cancel completion but also insert a space, which is
-nicer when typing.
-
-#+begin_src emacs-lisp
-    (use-package company
-      :straight t
-      :diminish company-mode
-      :custom
-      (company-minimum-prefix-length 3)
-      :hook
-      ((prog-mode-hook . company-mode))
-      :bind
-      (:map company-active-map
-	    (("SPC" .
-	      (lambda ()
-		(interactive)
-		(progn
-		  (company-abort)
-		  (insert " ")))))))
+    (corfu-cycle t)
+    (corfu-auto t))
 #+end_src
 
 *** Eglot

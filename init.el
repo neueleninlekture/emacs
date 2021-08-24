@@ -298,21 +298,19 @@ With the prefix argument UNFILL, unfill it instead."
 
 (diminish 'eldoc-mode)
 
-(use-package company
+(use-package corfu
   :straight t
-  :diminish company-mode
-  :custom
-  (company-minimum-prefix-length 3)
+  :diminish corfu-mode
   :hook
-  ((prog-mode-hook . company-mode))
+  ((prog-mode-hook . corfu-mode)
+   (eshell-mode-hook . corfu-mode))
   :bind
-  (:map company-active-map
-	(("SPC" .
-	  (lambda ()
-	    (interactive)
-	    (progn
-	      (company-abort)
-	      (insert " ")))))))
+  (:map corfu-map
+	(("TAB" . corfu-next)
+	 ("S-TAB" . corfu-previous)))
+  :custom
+  (corfu-cycle t)
+  (corfu-auto t))
 
 (use-package eglot
   :straight t
