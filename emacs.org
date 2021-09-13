@@ -591,6 +591,17 @@ double spaces sentences in ~'(current-year)~.
   (setq sentence-end-double-space nil)
 #+end_src
 
+** Casing
+
+Here we replace the normal capitalization functions with their
+slightly more useful =dwim= counterparts.
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-c") 'capitalize-dwim)
+  (global-set-key (kbd "M-u") 'upcase-dwim)
+  (global-set-key (kbd "M-l") 'downcase-dwim)
+#+end_src
+
 ** Operating on regions
 *** Expand region
 

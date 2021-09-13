@@ -155,6 +155,10 @@ With the prefix argument UNFILL, unfill it instead."
 
 (setq sentence-end-double-space nil)
 
+(global-set-key (kbd "M-c") 'capitalize-dwim)
+(global-set-key (kbd "M-u") 'upcase-dwim)
+(global-set-key (kbd "M-l") 'downcase-dwim)
+
 (use-package expand-region
   :straight t
   :bind
