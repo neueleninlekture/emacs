@@ -824,10 +824,14 @@ Prompts you for a target directory and a url, downloading the url to the path."
   :bind
   (("C-c i" . erc)))
 
+(use-package doom-themes
+  :straight t)
+
 (if machine-desktop-p
-    (load-theme 'modus-operandi t)
-  (load-theme 'modus-vivendi t))
-(bind-key "<f7>" 'modus-themes-toggle)
+    (progn
+      (load-theme 'modus-operandi t)
+      (bind-key "<f7>" 'modus-themes-toggle))
+  (load-theme 'doom-Iosvkem t))
 
 (define-minor-mode serif-font-mode
   "Minor mode which sets the default buffer face to the serif font, using `buffer-face-mode'."
@@ -849,6 +853,11 @@ Prompts you for a target directory and a url, downloading the url to the path."
 
 (line-number-mode t)
 (column-number-mode t)
+
+(if machine-laptop-p
+    (progn
+      (add-to-list 'default-frame-alist '(alpha 95 93))
+      (set-frame-parameter (selected-frame) 'alpha '(95 93))))
 
 (add-to-list 'default-frame-alist '(width . 100))
 (add-to-list 'default-frame-alist '(height . 35))

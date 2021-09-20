@@ -1756,10 +1756,14 @@ current system and load the according theme. We also bind =F7= to the
 theme switch function.
 
 #+begin_src emacs-lisp
+  (use-package doom-themes
+    :straight t)
+  
   (if machine-desktop-p
-      (load-theme 'modus-operandi t)
-    (load-theme 'modus-vivendi t))
-  (bind-key "<f7>" 'modus-themes-toggle)
+      (progn
+	(load-theme 'modus-operandi t)
+	(bind-key "<f7>" 'modus-themes-toggle))
+    (load-theme 'doom-Iosvkem t))
 #+end_src
 
 ** Faces
@@ -1809,6 +1813,11 @@ Here we set the options to be used by all new frames, such as frame
 size.
 
 #+begin_src emacs-lisp
+  (if machine-laptop-p
+      (progn
+	(add-to-list 'default-frame-alist '(alpha 95 93))
+	(set-frame-parameter (selected-frame) 'alpha '(95 93))))
+  
   (add-to-list 'default-frame-alist '(width . 100))
   (add-to-list 'default-frame-alist '(height . 35))
 #+end_src
