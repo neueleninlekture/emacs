@@ -935,6 +935,13 @@ that I'd like to use LSP on.
     :straight t)
 #+end_src
 
+*** Muse
+
+#+begin_src emacs-lisp
+  (use-package muse
+    :straight t)
+#+end_src
+
 ** Scheme
 
 Here we include all the options for programming in the Scheme

@@ -328,6 +328,9 @@ With the prefix argument UNFILL, unfill it instead."
 (use-package markdown-mode
   :straight t)
 
+(use-package muse
+  :straight t)
+
 (use-package geiser
   :straight geiser-guile
   :init
