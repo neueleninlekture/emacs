@@ -487,15 +487,16 @@ With the prefix argument UNFILL, unfill it instead."
     (let ((file-list (dired-get-marked-files)))
       (mapc
        (lambda (file-path)
-         (let ((process-connection-type nil))
-           (start-process "" nil "xdg-open" file-path)))
+	 (let ((process-connection-type nil))
+	   (start-process "" nil "xdg-open" file-path)))
        file-list)))
   :bind
   (:map dired-mode-map
-        (("l" . dired-up-alternate-directory)
-         ("RET" . dired-find-alternate-file)
-         ("M-RET" . dired-find-file)
-         ("v" . dired-xdg-open))))
+	(("l" . dired-up-alternate-directory)
+	 ("RET" . dired-find-alternate-file)
+	 ("M-RET" . dired-find-file)
+	 ("v" . dired-xdg-open)
+	 ("<mouse-2>" . dired-mouse-find-file))))
 
 (use-package dired-hide-dotfiles
   :straight t
@@ -504,15 +505,15 @@ With the prefix argument UNFILL, unfill it instead."
   ((dired-mode-hook . dired-hide-dotfiles-mode))
   :bind
   (:map dired-mode-map
-        (("h" . dired-hide-dotfiles-mode))))
+	(("h" . dired-hide-dotfiles-mode))))
 
 (use-package dired-subtree
   :straight t
   :bind
   (:map dired-mode-map
-        (("TAB" . dired-subtree-toggle)
-         ("M-n" . dired-subtree-down)
-         ("M-p" . dired-subtree-up))))
+	(("TAB" . dired-subtree-toggle)
+	 ("M-n" . dired-subtree-down)
+	 ("M-p" . dired-subtree-up))))
 
 (use-package vc
   :config
