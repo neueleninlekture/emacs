@@ -79,7 +79,7 @@
 
 (if machine-desktop-p
     (progn
-      (menu-bar-mode 1)
+      (menu-bar-mode -1)
       (scroll-bar-mode 1))
   (progn
     (menu-bar-mode -1)
@@ -832,7 +832,7 @@ Prompts you for a target directory and a url, downloading the url to the path."
 
 (if machine-desktop-p
     (progn
-      (load-theme 'modus-operandi t)
+      (load-theme 'doom-Iosvkem t)
       (bind-key "<f7>" 'modus-themes-toggle))
   (load-theme 'doom-Iosvkem t))
 
