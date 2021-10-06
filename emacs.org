@@ -1643,7 +1643,7 @@ Emacs, such as usage of the external program =msmtp= for sending mail.
 tool such as =isync= for keeping your mailbox synced. We use the
 =mbsync= package for interfacing with =isync=.
 
-#+begin_src emacs-lisp
+#+begin_example emacs-lisp
   (use-package mbsync
     :straight t
     :custom
@@ -1711,6 +1711,57 @@ tool such as =isync= for keeping your mailbox synced. We use the
      (:map notmuch-hello-mode-map
 	   ("U" . mbsync))))
 #+end_src
+
+*** mu4e
+
+ =mu4e= is a mail client for Emacs. It has a fairly simple UI and is
+ easy to get into, at least compared to Gnus. It requires use of an
+ external tool such as =isync= for keeping your mailbox synced.
+   
+ This is here as a temporary measure: I have this mu4e configuration
+ from before I nuked my entire Emacs config. Since doing that, I've
+ been planning on switching to Gnus, but for now I'll keep =mu4e=
+ around for its ease of use.
+
+ =Note=: This is currently here for legacy purposes. I'm undergoing a
+ move towards Gnus or Notmuch as my mail reader. See the configuration
+ for those below.
+
+ #+begin_src emacs-lisp
+   (use-package mu4e
+     :straight t
+     :commands mu4e mu4e-compose-new
+     :custom
+     (mu4e-maildir "~/.mail/disroot/")
+     (mu4e-get-mail-command "/usr/bin/mbsync -a")
+     (mu4e-update-mail-and-index t)
+     (mu4e-update-interval 300)
+     (mu4e-view-show-images t)
+     (mu4e-view-show-addresses t)
+     (mu4e-use-fancy-chars nil)
+     (mu4e-drafts-folder "/drafts")
+     (mu4e-sent-folder "/sent")
+     (mu4e-trash-folder "/trash")
+     (message-send-mail-function 'message-send-mail-with-sendmail)
+     (sendmail-program "/usr/bin/msmtp")
+     (message-sendmail-extra-arguments '("--read-envelope-from"))
+     (message-sendmail-f-is-evil 't)
+     (mu4e-completing-read-function 'completing-read)
+     (mu4e-confirm-quit nil)
+     (message-kill-buffer-on-exit t)
+     (mu4e-html2text-command "/usr/bin/w3m -T text/html")
+     (mu4e-attachment-dir "~/")
+     (mu4e-compose-signature
+      '(user-full-name))
+     :hook
+     (message-send-hook .
+			(lambda ()
+			  (unless (yes-or-no-p "Sure you want to send this?")
+			    (signal 'quit nil))))
+     :bind
+     ((("C-x m" . mu4e)
+       ("C-c m" . mu4e-compose-new))))
+ #+end_src
 
 ** Eww
 

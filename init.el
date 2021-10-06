@@ -744,72 +744,39 @@ Prompts you for a target directory and a url, downloading the url to the path."
 (setq message-sendmail-extra-arguments '("--read-envelope-from"))
 (setq message-sendmail-f-is-evil 't)
 
-(use-package mbsync
+(use-package mu4e
   :straight t
+  :commands mu4e mu4e-compose-new
   :custom
-  (mbsync-verbose 'verbose)
+  (mu4e-maildir "~/.mail/disroot/")
+  (mu4e-get-mail-command "/usr/bin/mbsync -a")
+  (mu4e-update-mail-and-index t)
+  (mu4e-update-interval 300)
+  (mu4e-view-show-images t)
+  (mu4e-view-show-addresses t)
+  (mu4e-use-fancy-chars nil)
+  (mu4e-drafts-folder "/drafts")
+  (mu4e-sent-folder "/sent")
+  (mu4e-trash-folder "/trash")
+  (message-send-mail-function 'message-send-mail-with-sendmail)
+  (sendmail-program "/usr/bin/msmtp")
+  (message-sendmail-extra-arguments '("--read-envelope-from"))
+  (message-sendmail-f-is-evil 't)
+  (mu4e-completing-read-function 'completing-read)
+  (mu4e-confirm-quit nil)
+  (message-kill-buffer-on-exit t)
+  (mu4e-html2text-command "/usr/bin/w3m -T text/html")
+  (mu4e-attachment-dir "~/")
+  (mu4e-compose-signature
+   '(user-full-name))
   :hook
-  ((mbsync-exit-hook . notmuch-poll-and-refresh-this-buffer)))
-
-(use-package notmuch
-  :straight t
-  :custom
-  (notmuch-hello-auto-refresh t)
-  (notmuch-show-logo nil)
-  (notmuch-hello-recent-searches-max 5)
-  (notmuch-hello-thousands-separator ".")
-  (notmuch-archive-tags '("-inbox" "-unread" "+archived"))
-  (notmuch-message-replied-tags '("+replied" "-unread"))
-  (notmuch-show-mark-read-tags '("-unread"))
-  (notmuch-tagging-keys
-   `((,(kbd "a") notmuch-archive-tags "Archive (remove from inbox)")
-     (,(kbd "d") ("+deleted" "-inbox" "-unread") "Mark for deletion")
-     (,(kbd "r") notmuch-show-mark-read-tags "Mark as read")
-     (,(kbd "s") ("+spam" "-inbox") "Mark as spam")
-     (,(kbd "t") ("+todo" "-unread") "Todo")
-     (,(kbd "u") ("+unread") "Mark as unread")))
-  (notmuch-saved-searches
-   `(( :name "inbox"
-       :query "tag:inbox"
-       :sort-order newest-first
-       :key ,(kbd "i"))
-     ( :name "archived"
-       :query "tag:archived"
-       :sort-order newest-first
-       :key ,(kbd "a"))
-     ( :name "unread"
-       :query "tag:unread and tag:inbox"
-       :sort-order newest-first
-       :key ,(kbd "u"))
-     ( :name "todo"
-       :query "tag:todo"
-       :sort-order newest-first
-       :key ,(kbd "t"))
-     ( :name "mailing lists"
-       :query "tag:list"
-       :sort-order newest-first
-       :key ,(kbd "l"))
-     ( :name "emacs-devel"
-       :query "from:emacs-devel@gnu.org or to:emacs-devel@gnu.org or subject:[emacs-devel]"
-       :sort-order newest-first
-       :key ,(kbd "e d"))
-     ( :name "emacs-orgmode"
-       :query "from:emacs-orgmode@gnu.org or to:emacs-orgmode@gnu.org or subject:[emacs-orgmode]"
-       :sort-order newest-first
-       :key ,(kbd "e o"))
-     ( :name "emacs-humanities" 
-       :query "from:emacs-humanities@gnu.org or to:emacs-humanities@gnu.org or subject:[emacs-humanities]"
-       :sort-order newest-first :key ,(kbd "e h"))))
-  :config
-  (defun notmuch-delete-mail ()
-    (interactive)
-    (start-process-shell-command
-     "notmuch-delete" nil
-     "notmuch search --output=files --format=text0 tag:deleted | xargs -r0 rm"))
+  (message-send-hook .
+		     (lambda ()
+		       (unless (yes-or-no-p "Sure you want to send this?")
+			 (signal 'quit nil))))
   :bind
-  (("C-c m" . notmuch)
-   (:map notmuch-hello-mode-map
-	 ("U" . mbsync))))
+  ((("C-x m" . mu4e)
+    ("C-c m" . mu4e-compose-new))))
 
 (use-package eww
   :hook
