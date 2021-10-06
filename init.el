@@ -825,7 +825,7 @@ Prompts you for a target directory and a url, downloading the url to the path."
 (use-package doom-themes
   :straight t)
 
-(load-theme 'doom-Iosvkem t))
+(load-theme 'doom-Iosvkem t)
 
 (define-minor-mode serif-font-mode
   "Minor mode which sets the default buffer face to the serif font, using `buffer-face-mode'."

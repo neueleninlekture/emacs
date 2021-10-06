@@ -391,12 +391,6 @@ way. So we disable those. These are: the menu, tool and scroll bars,
 +area), the GTK dialog box (disabling this will use =yes-or-no-p= in
 the minibuffer, and the bell ring.
 
-Now, I don't like having these settings for all my systems. When using
-my desktop, I enjoy having access to some of the GTK elements such as
-the scroll and menu bars. So here we make use of the host system
-checks we established earlier. Using a conditional, we can enable and
-disable elements based on the host system.
-
 #+begin_src emacs-lisp
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
@@ -1748,7 +1742,7 @@ all text, using olivetti-mode.
   (use-package doom-themes
     :straight t)
 
-  (load-theme 'doom-Iosvkem t))
+  (load-theme 'doom-Iosvkem t)
 #+end_src
 
 ** Faces
