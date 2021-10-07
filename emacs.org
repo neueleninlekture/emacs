@@ -1759,8 +1759,8 @@ tool such as =isync= for keeping your mailbox synced. We use the
 			  (unless (yes-or-no-p "Sure you want to send this?")
 			    (signal 'quit nil))))
      :bind
-     ((("C-x m" . mu4e)
-       ("C-c m" . mu4e-compose-new))))
+     ((("C-c m" . mu4e)
+       ("C-x m" . mu4e-compose-new))))
  #+end_src
 
 ** Eww

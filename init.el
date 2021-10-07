@@ -775,8 +775,8 @@ Prompts you for a target directory and a url, downloading the url to the path."
 		       (unless (yes-or-no-p "Sure you want to send this?")
 			 (signal 'quit nil))))
   :bind
-  ((("C-x m" . mu4e)
-    ("C-c m" . mu4e-compose-new))))
+  ((("C-c m" . mu4e)
+    ("C-x m" . mu4e-compose-new))))
 
 (use-package eww
   :hook
