@@ -1808,13 +1808,13 @@ for making the current buffer use a serif font.
     :group aabm
     (if serif-font-mode
 	(progn
-	  (setq buffer-face-mode-face '(:family "IBM Plex Serif" :height 100))
+	  (setq buffer-face-mode-face '(:family "IBM Plex Serif" :height 110))
 	  (and (fboundp 'buffer-face-mode) (buffer-face-mode 1)))
       (and (fboundp 'buffer-face-mode) (buffer-face-mode -1))))
 
   (custom-set-faces
    '(fixed-pitch ((t (:family "Iosevka" :height 110))))
-   '(variable-pitch ((t :family "IBM Plex Serif" :height 100)))
+   '(variable-pitch ((t :family "IBM Plex Sans" :height 110)))
    '(bookmark-face ((t :background nil))))
 #+end_src
 
