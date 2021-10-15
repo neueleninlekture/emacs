@@ -748,6 +748,7 @@ Prompts you for a target directory and a url, downloading the url to the path."
   :straight t
   :commands mu4e mu4e-compose-new
   :custom
+  (mail-user-agent 'mu4e-user-agent)
   (mu4e-maildir "~/.mail/disroot/")
   (mu4e-get-mail-command "/usr/bin/mbsync -a")
   (mu4e-update-mail-and-index t)
@@ -761,11 +762,10 @@ Prompts you for a target directory and a url, downloading the url to the path."
   (message-send-mail-function 'message-send-mail-with-sendmail)
   (sendmail-program "/usr/bin/msmtp")
   (message-sendmail-extra-arguments '("--read-envelope-from"))
-  (message-sendmail-f-is-evil 't)
+  (message-sendmail-f-is-evil t)
   (mu4e-completing-read-function 'completing-read)
   (mu4e-confirm-quit nil)
   (message-kill-buffer-on-exit t)
-  (mu4e-html2text-command "/usr/bin/w3m -T text/html")
   (mu4e-attachment-dir "~/")
   (mu4e-compose-signature
    '(user-full-name))
