@@ -609,7 +609,8 @@ This function was taken from prot."
   :custom
   (org-agenda-files '("~/org/agenda/inbox.org"
 		      "~/org/agenda/projects.org"
-		      "~/org/agenda/time.org"))
+		      "~/org/agenda/time.org"
+		      "~/org/agenda/journal.org"))
   (org-archive-location "~/org/agenda/archive.org::")
   (org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "DROP(c)")))
   (org-capture-bookmark nil)
@@ -621,7 +622,13 @@ This function was taken from prot."
      ("T" "GTD Time-sensitive"
       entry
       (file+headline "agenda/time.org" "Time-sensitive Tasks")
-      "** TODO %?\n%i\n%a")))
+      "** TODO %?\n%i\n%a")
+     ("j" "Journal entry"
+      entry
+      (file+datetree "agenda/journal.org")
+      "* %?"
+      :empty-lines 1)))
+
   (org-refile-targets '(("~/org/agenda/projects.org" :maxlevel . 1)
 			("~/org/agenda/someday.org" :level . 1)
 			("~/org/agenda/time.org" :maxlevel . 2)))
