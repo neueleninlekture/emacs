@@ -1421,8 +1421,7 @@ code blocks without asking first.
 #+end_src
 
 ** Agenda, time and capture
-*** TODO add proper docs here
-    
+
 Org capture is a powerful tool for creating notes and quickly
 capturing information to be processed later. Here we define templates
 for its usage. TODO.
@@ -1461,23 +1460,6 @@ for its usage. TODO.
      ("C-c a" . org-agenda)
      (:map org-mode-map
 	   ("C-," . nil))))
-#+end_src
-
-*** Pomodoro
-
-A very rough and hacky implementation of a pomodoro timer.
-
-#+begin_src emacs-lisp
-  (defun tomato ()
-    (interactive)
-    (let ((org-timer-countdown-timer-title "Tomato"))
-      (org-timer-set-timer tomato-next-time))
-    (if (= tomato-next-time 5)
-	(setq tomato-next-time 25)
-      (setq tomato-next-time 5)))
-
-  (defvar tomato-next-time 5)
-  (add-hook 'org-timer-done-hook 'tomato)
 #+end_src
 
 ** Links
