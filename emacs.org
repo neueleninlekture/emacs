@@ -669,7 +669,9 @@ minor mode which uses centered text.
   (use-package olivetti
     :straight t
     :custom
-    (olivetti-body-width 102))
+    (olivetti-body-width 102)
+    :bind
+    (("C-c o" . olivetti-mode)))
 #+end_src
  
 ** Better reading mode
@@ -680,23 +682,22 @@ enable some nicer keybindings for scrolling through the buffer.
 
 #+begin_src emacs-lisp
   (defvar better-reading-mode-map (make-sparse-keymap))
-
+  
   (define-minor-mode better-reading-mode
     "Minor Mode for better reading experience."
     :init-value nil
     :group aabm
     :keymap better-reading-mode-map
     (if better-reading-mode
-        (progn
-          (and (fboundp 'olivetti-mode) (olivetti-mode 1))
-          (and (fboundp 'variable-pitch-mode) (variable-pitch-mode 1))
-          (text-scale-set +1))
+	(progn
+	  (and (fboundp 'olivetti-mode) (olivetti-mode 1))
+	  (and (fboundp 'variable-pitch-mode) (variable-pitch-mode 1))
+	  (text-scale-set +1))
       (progn
-        (and (fboundp 'olivetti-mode) (olivetti-mode -1))
-        (and (fboundp 'variable-pitch-mode) (variable-pitch-mode -1))
-        (text-scale-set 0))))
-
-  (global-set-key (kbd "C-c o") 'better-reading-mode)
+	(and (fboundp 'olivetti-mode) (olivetti-mode -1))
+	(and (fboundp 'variable-pitch-mode) (variable-pitch-mode -1))
+	(text-scale-set 0))))
+  
   (define-key better-reading-mode-map (kbd "M-n") 'scroll-up-line)
   (define-key better-reading-mode-map (kbd "M-p") 'scroll-down-line)
 #+end_src

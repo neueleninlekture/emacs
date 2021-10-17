@@ -180,7 +180,9 @@ With the prefix argument UNFILL, unfill it instead."
 (use-package olivetti
   :straight t
   :custom
-  (olivetti-body-width 102))
+  (olivetti-body-width 102)
+  :bind
+  (("C-c o" . olivetti-mode)))
 
 (defvar better-reading-mode-map (make-sparse-keymap))
 
@@ -191,15 +193,14 @@ With the prefix argument UNFILL, unfill it instead."
   :keymap better-reading-mode-map
   (if better-reading-mode
       (progn
-        (and (fboundp 'olivetti-mode) (olivetti-mode 1))
-        (and (fboundp 'variable-pitch-mode) (variable-pitch-mode 1))
-        (text-scale-set +1))
+	(and (fboundp 'olivetti-mode) (olivetti-mode 1))
+	(and (fboundp 'variable-pitch-mode) (variable-pitch-mode 1))
+	(text-scale-set +1))
     (progn
       (and (fboundp 'olivetti-mode) (olivetti-mode -1))
       (and (fboundp 'variable-pitch-mode) (variable-pitch-mode -1))
       (text-scale-set 0))))
 
-(global-set-key (kbd "C-c o") 'better-reading-mode)
 (define-key better-reading-mode-map (kbd "M-n") 'scroll-up-line)
 (define-key better-reading-mode-map (kbd "M-p") 'scroll-down-line)
 
