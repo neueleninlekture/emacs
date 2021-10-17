@@ -694,7 +694,7 @@ This function was taken from prot."
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 			 "#+title: ${title}\n#+date: %t\n#+filetags: \n")
       :unnarrowed t)))
-  (org-roam-db-update-on-save nil)
+  (org-roam-db-update-on-save t)
   :bind
   (("C-c n f" . org-roam-node-find)
    ("C-c n i" . org-roam-node-insert)
