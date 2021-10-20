@@ -674,7 +674,8 @@ This function was taken from prot."
 		       ("y" "y" t "&y" "y" "y" "𝓎")
 		       ("n" "n" t "$n" "n" "n" "𝓃")
 		       ("a" "a" t "$a" "a" "a" "𝒶")
-		       ("b" "b" t "$b" "b" "b" "𝒷"))))
+		       ("b" "b" t "$b" "b" "b" "𝒷")
+		       ("box" "" t "" "|__|" "|__|" "▭"))))
 
 (use-package ox-epub
   :straight t)
