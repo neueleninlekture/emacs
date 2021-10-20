@@ -594,6 +594,7 @@ This function was taken from prot."
      ("ss" . "src")
      ("sS" . "src scheme\n")
      ("se" . "src emacs-lisp\n")
+     ("sg" . "src gnuplot :exports results :file plot.png\n")
      ("v" . "verse"))))
 
 (setq org-babel-confirm-babel-evaluate nil)

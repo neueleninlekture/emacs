@@ -1400,9 +1400,9 @@ also set the structure templates to be used.
        ("ss" . "src")
        ("sS" . "src scheme\n")
        ("se" . "src emacs-lisp\n")
+       ("sg" . "src gnuplot :exports results :file plot.png\n")
        ("v" . "verse"))))
 #+end_src
-
 
 *** Babel
 
