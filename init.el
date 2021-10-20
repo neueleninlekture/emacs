@@ -672,14 +672,16 @@ This function was taken from prot."
   :custom
   (org-pretty-entities t)
   (org-startup-with-latex-preview t)
-  (org-entities-user '(("x" "x" t "$x" "x" "x" "𝓍")
-		       ("y" "y" t "&y" "y" "y" "𝓎")
-		       ("n" "n" t "$n" "n" "n" "𝓃")
-		       ("a" "a" t "$a" "a" "a" "𝒶")
-		       ("b" "b" t "$b" "b" "b" "𝒷")
+  (org-startup-with-inline-images t)
+  (org-entities-user '(("mathx" "x" t "$x" "x" "x" "𝓍")
+		       ("mathy" "y" t "&y" "y" "y" "𝓎")
+		       ("mathz" "z" t "&z" "z" "z" "𝓏")
+		       ("mathn" "n" t "$n" "n" "n" "𝓃")
+		       ("matha" "a" t "$a" "a" "a" "𝒶")
+		       ("mathb" "b" t "$b" "b" "b" "𝒷")
 		       ("box" "" t "" "|__|" "|__|" "▭")))
   :config
-  (plist-put org-format-latex-options :scale 2))
+  (plist-put org-format-latex-options :scale 1.5))
 
 (use-package ox-epub
   :straight t)
