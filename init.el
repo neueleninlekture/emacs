@@ -669,7 +669,12 @@ This function was taken from prot."
 (use-package org
   :custom
   (org-pretty-entities t)
-  (org-startup-with-latex-preview t))
+  (org-startup-with-latex-preview t)
+  (org-entities-user '(("x" "x" t "$x" "x" "x" "𝓍")
+		       ("y" "y" t "&y" "y" "y" "𝓎")
+		       ("n" "n" t "$n" "n" "n" "𝓃")
+		       ("a" "a" t "$a" "a" "a" "𝒶")
+		       ("b" "b" t "$b" "b" "b" "𝒷"))))
 
 (use-package ox-epub
   :straight t)

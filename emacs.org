@@ -1504,11 +1504,17 @@ This function was taken from [[https://xenodium.com/emacs-dwim-do-what-i-mean/][
 My notetaking workflow has recently been more math oriented. Here are
 some options for making that easier using Org's LaTeX input options.
 
+\x
 #+begin_src emacs-lisp
   (use-package org
     :custom
     (org-pretty-entities t)
-    (org-startup-with-latex-preview t))
+    (org-startup-with-latex-preview t)
+    (org-entities-user '(("x" "x" t "$x" "x" "x" "𝓍")
+			 ("y" "y" t "&y" "y" "y" "𝓎")
+			 ("n" "n" t "$n" "n" "n" "𝓃")
+			 ("a" "a" t "$a" "a" "a" "𝒶")
+			 ("b" "b" t "$b" "b" "b" "𝒷"))))
 #+end_src
 
 ** Export
