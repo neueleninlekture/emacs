@@ -608,10 +608,7 @@ This function was taken from prot."
 
 (use-package org
   :custom
-  (org-agenda-files '("~/org/agenda/inbox.org"
-		      "~/org/agenda/projects.org"
-		      "~/org/agenda/time.org"
-		      "~/org/agenda/journal.org"))
+  (org-agenda-files '("~/org/agenda/"))
   (org-archive-location "~/org/agenda/archive.org::")
   (org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "DROP(c)")))
   (org-capture-bookmark nil)
@@ -619,7 +616,11 @@ This function was taken from prot."
    '(("t" "Todo"
       entry
       (file+headline "agenda/inbox.org" "Tasks")
-      "** TODO %?\n%i\n%a\n%T\n")
+      "** TODO %?\n%T\n")
+     ("d" "Deadline"
+      entry
+      (file+headline "agenda/inbox.org" "Assignments")
+      "** TODO %?\nDEADLINE: %^{Deadline}t\n")
      ("j" "Journal"
       entry
       (file+datetree "agenda/journal.org")
