@@ -1438,23 +1438,18 @@ for its usage. TODO.
     (org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "DROP(c)")))
     (org-capture-bookmark nil)
     (org-capture-templates
-     '(("t" "GTD Inbox"
+     '(("t" "Todo"
 	entry
 	(file+headline "agenda/inbox.org" "Tasks")
-	"** TODO %?\n%i\n%a")
-       ("T" "GTD Time-sensitive"
-	entry
-	(file+headline "agenda/time.org" "Time-sensitive Tasks")
-	"** TODO %?\n%i\n%a")
-       ("j" "Journal entry"
+	"** TODO %?\n%i\n%a\n%T\n")
+       ("j" "Journal"
 	entry
 	(file+datetree "agenda/journal.org")
 	"* %?"
 	:empty-lines 1)))
-  
-    (org-refile-targets '(("~/org/agenda/projects.org" :maxlevel . 1)
-			  ("~/org/agenda/someday.org" :level . 1)
-			  ("~/org/agenda/time.org" :maxlevel . 2)))
+
+    (org-refile-targets '(("~/org/agenda/archive.org" :level . 1)
+			  ("~/org/agenda/uni.org" :level . 1)))
     :bind
     (("C-c w" . org-capture)
      ("C-c l" . org-store-link)
