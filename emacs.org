@@ -1499,6 +1499,18 @@ This function was taken from [[https://xenodium.com/emacs-dwim-do-what-i-mean/][
 	  (("C-c C-l" . org-insert-link-dwim))))
 #+end_src
 
+** LaTeX input
+
+My notetaking workflow has recently been more math oriented. Here are
+some options for making that easier using Org's LaTeX input options.
+
+#+begin_src emacs-lisp
+  (use-package org
+    :custom
+    (org-pretty-entities t)
+    (org-startup-with-latex-preview t))
+#+end_src
+
 ** Export
 
 Here we configure org's abilities to export to other formats.

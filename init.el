@@ -666,6 +666,11 @@ This function was taken from prot."
   (:map org-mode-map
 	(("C-c C-l" . org-insert-link-dwim))))
 
+(use-package org
+  :custom
+  (org-pretty-entities t)
+  (org-startup-with-latex-preview t))
+
 (use-package ox-epub
   :straight t)
 
