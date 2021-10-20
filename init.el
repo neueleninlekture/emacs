@@ -675,7 +675,9 @@ This function was taken from prot."
 		       ("n" "n" t "$n" "n" "n" "𝓃")
 		       ("a" "a" t "$a" "a" "a" "𝒶")
 		       ("b" "b" t "$b" "b" "b" "𝒷")
-		       ("box" "" t "" "|__|" "|__|" "▭"))))
+		       ("box" "" t "" "|__|" "|__|" "▭")))
+  :config
+  (plist-put org-format-latex-options :scale 2))
 
 (use-package ox-epub
   :straight t)
