@@ -594,10 +594,11 @@ This function was taken from prot."
      ("ss" . "src")
      ("sS" . "src scheme\n")
      ("se" . "src emacs-lisp\n")
-     ("sg" . "src gnuplot :exports results :file plot.png\n")
+     ("sg" . "src gnuplot :exports results :file ~/.cache/gnuplot/plot.png\n")
      ("v" . "verse"))))
 
 (setq org-babel-confirm-babel-evaluate nil)
+(setq org-confirm-babel-evaluate nil)
 (setq org-babel-load-languages
       '((R . t)
 	(python . t)
@@ -672,7 +673,7 @@ This function was taken from prot."
   :custom
   (org-pretty-entities t)
   (org-startup-with-latex-preview t)
-  (org-startup-with-inline-images t)
+  (org-preview-latex-image-directory "~/.cache/ltximg/")
   (org-entities-user '(("mathx" "x" t "$x" "x" "x" "𝓍")
 		       ("mathy" "y" t "&y" "y" "y" "𝓎")
 		       ("mathz" "z" t "&z" "z" "z" "𝓏")

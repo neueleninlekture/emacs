@@ -1400,7 +1400,7 @@ also set the structure templates to be used.
        ("ss" . "src")
        ("sS" . "src scheme\n")
        ("se" . "src emacs-lisp\n")
-       ("sg" . "src gnuplot :exports results :file plot.png\n")
+       ("sg" . "src gnuplot :exports results :file ~/.cache/gnuplot/plot.png\n")
        ("v" . "verse"))))
 #+end_src
 
@@ -1411,6 +1411,7 @@ code blocks without asking first.
 
 #+begin_src emacs-lisp
   (setq org-babel-confirm-babel-evaluate nil)
+  (setq org-confirm-babel-evaluate nil)
   (setq org-babel-load-languages
 	'((R . t)
 	  (python . t)
@@ -1510,7 +1511,7 @@ some options for making that easier using Org's LaTeX input options.
     :custom
     (org-pretty-entities t)
     (org-startup-with-latex-preview t)
-    (org-startup-with-inline-images t)
+    (org-preview-latex-image-directory "~/.cache/ltximg/")
     (org-entities-user '(("mathx" "x" t "$x" "x" "x" "𝓍")
 			 ("mathy" "y" t "&y" "y" "y" "𝓎")
 			 ("mathz" "z" t "&z" "z" "z" "𝓏")
