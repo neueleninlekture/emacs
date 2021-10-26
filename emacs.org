@@ -1523,6 +1523,20 @@ some options for making that easier using Org's LaTeX input options.
     (plist-put org-format-latex-options :scale 1.5))
 #+end_src
 
+** Inline images
+
+These options make viewing inlined images more convenient. It
+automatically (re)displays them when and limits their size.
+
+#+begin_src emacs-lisp
+  (use-package org
+    :custom
+    (org-startup-with-inline-images t)
+    (org-image-actual-width '(400))
+    :hook
+    (org-babel-after-execute-hook . org-redisplay-inline-images))
+#+end_src
+
 ** Export
 
 Here we configure org's abilities to export to other formats.

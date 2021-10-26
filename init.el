@@ -684,6 +684,13 @@ This function was taken from prot."
   :config
   (plist-put org-format-latex-options :scale 1.5))
 
+(use-package org
+  :custom
+  (org-startup-with-inline-images t)
+  (org-image-actual-width '(400))
+  :hook
+  (org-babel-after-execute-hook . org-redisplay-inline-images))
+
 (use-package ox-epub
   :straight t)
 
