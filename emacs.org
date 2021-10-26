@@ -1867,7 +1867,11 @@ Here we set the options to be used by all new frames, such as frame
 size.
 
 #+begin_src emacs-lisp
-  (add-to-list 'default-frame-alist '(alpha 95 93))
+  (setq default-frame-alist '((width . 120)
+			      (height . 40)
+			      (font . "Iosevka 11")
+			      (alpha 95 93)))
+
   (set-frame-parameter (selected-frame) 'alpha '(95 93))
 #+end_src
 

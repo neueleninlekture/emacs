@@ -833,5 +833,9 @@ Prompts you for a target directory and a url, downloading the url to the path."
 (line-number-mode t)
 (column-number-mode t)
 
-(add-to-list 'default-frame-alist '(alpha 95 93))
+(setq default-frame-alist '((width . 120)
+			    (height . 40)
+			    (font . "Iosevka 11")
+			    (alpha 95 93)))
+
 (set-frame-parameter (selected-frame) 'alpha '(95 93))
