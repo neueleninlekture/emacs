@@ -839,3 +839,12 @@ Prompts you for a target directory and a url, downloading the url to the path."
 			    (alpha 95 93)))
 
 (set-frame-parameter (selected-frame) 'alpha '(95 93))
+
+(defun toggle-transparency ()
+  (interactive)
+  (if (/=
+       (cadr (frame-parameter nil 'alpha))
+       100)
+      (set-frame-parameter nil 'alpha '(100 100))
+    (set-frame-parameter nil 'alpha '(95 93))))
+(global-set-key (kbd "C-c t") 'toggle-transparency)
