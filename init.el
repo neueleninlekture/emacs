@@ -333,6 +333,9 @@ With the prefix argument UNFILL, unfill it instead."
 (use-package sicp
   :straight t)
 
+(use-package cider
+  :straight t)
+
 (add-hook 'mhtml-mode-hook
 	  (lambda ()
 	    (interactive)

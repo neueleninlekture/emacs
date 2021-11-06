@@ -949,6 +949,13 @@ Info integration. Pretty comfy.
     :straight t)
 #+end_src
 
+** Clojure
+
+#+begin_src emacs-lisp
+  (use-package cider
+    :straight t)
+#+end_src
+
 ** HTML and CSS
 
 Webshit.
