@@ -31,7 +31,7 @@
 ;; file.
 
 (when (version< emacs-version "27.1")
-  (error "This requires Emacs 27.1 and above! Preferably 28 (master), but 27 should be fine..."))
+  (error "This requires Emacs 27.1 and above! Preferably 29 (master), but 27 should be fine..."))
 
 (defvar bootstrap-version)
 (let ((bootstrap-file

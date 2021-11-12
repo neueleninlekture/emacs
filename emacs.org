@@ -43,21 +43,16 @@ follow during this process:
 - when in trouble, don't search online for a quick fix. RTFM.
 - seriously, RTFM, Emacs has great built-in documentation.
 
-  After almost a month of this, I can say these rules have given me
-  great insight into Emacs.
+After almost a month of this, I can say these rules have given me
+great insight into Emacs.
 
-  One of the first things I did was take a profound look at all the
-  minibuffer completion options, getting rid of my old Ivy configuration
-  in favor of just giving the default minibuffer TAB completion a try. I
-  can honestly say I will likely never go back to a heavier completion
-  framework, and that the built-ins are by themselves very powerful.
-  However, I chose to supplement this power with external tools such as
-  =vertico=, =orderless= and =embark=.
-
-  I will also be replacing old external packages like the mu4e mail
-  client with built-ins such as Gnus. Gnus is almost impenetrable for
-  the quick-fix-seeking user, but rewards those who read the
-  [[info:gnus#Top][documentation]].
+One of the first things I did was take a profound look at all the
+minibuffer completion options, getting rid of my old Ivy configuration
+in favor of just giving the default minibuffer TAB completion a try. I
+can honestly say I will likely never go back to a heavier completion
+framework, and that the built-ins are by themselves very powerful.
+However, I chose to supplement this power with external tools such as
+=vertico=, =orderless= and =embark=.
 
 * License
 
@@ -244,7 +239,7 @@ outdated.
 
 #+begin_src emacs-lisp
   (when (version< emacs-version "27.1")
-    (error "This requires Emacs 27.1 and above! Preferably 28 (master), but 27 should be fine..."))
+    (error "This requires Emacs 27.1 and above! Preferably 29 (master), but 27 should be fine..."))
 #+end_src
 
 *** Bootstrap straight.el
