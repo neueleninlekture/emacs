@@ -944,6 +944,16 @@ Info integration. Pretty comfy.
     :straight t)
 #+end_src
 
+** Common Lisp
+
+#+begin_src emacs-lisp
+  (use-package slime
+    :straight t
+    :config
+    (load (expand-file-name "~/src/quicklisp/slime-helper.el"))
+    (setq inferior-lisp-program "sbcl"))
+#+end_src
+
 ** Clojure
 
 #+begin_src emacs-lisp

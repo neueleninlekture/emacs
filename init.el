@@ -333,6 +333,12 @@ With the prefix argument UNFILL, unfill it instead."
 (use-package sicp
   :straight t)
 
+(use-package slime
+  :straight t
+  :config
+  (load (expand-file-name "~/src/quicklisp/slime-helper.el"))
+  (setq inferior-lisp-program "sbcl"))
+
 (use-package cider
   :straight t)
 
