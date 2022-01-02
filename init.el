@@ -512,6 +512,7 @@ With the prefix argument UNFILL, unfill it instead."
 
 (use-package dired-subtree
   :straight t
+  :after dired
   :bind
   (:map dired-mode-map
 	(("TAB" . dired-subtree-toggle)

@@ -1224,7 +1224,7 @@ More extensions to come.
     (defun dired-up-alternate-directory ()
       (interactive)
       (find-alternate-file ".."))
-
+  
     (defun dired-xdg-open ()
       "Open the marked files using xdg-open."
       (interactive)
@@ -1241,7 +1241,7 @@ More extensions to come.
 	   ("M-RET" . dired-find-file)
 	   ("v" . dired-xdg-open)
 	   ("<mouse-2>" . dired-mouse-find-file))))
-
+  
   (use-package dired-hide-dotfiles
     :straight t
     :diminish dired-hide-dotfiles-mode
@@ -1250,9 +1250,10 @@ More extensions to come.
     :bind
     (:map dired-mode-map
 	  (("h" . dired-hide-dotfiles-mode))))
-
+  
   (use-package dired-subtree
     :straight t
+    :after dired
     :bind
     (:map dired-mode-map
 	  (("TAB" . dired-subtree-toggle)
