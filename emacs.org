@@ -1217,7 +1217,7 @@ More extensions to come.
 #+begin_src emacs-lisp
   (use-package dired
     :custom
-    (dired-listing-switches "-alNF --group-directories-first")
+    (dired-listing-switches "-alhNF --group-directories-first")
     (dired-dwim-target t)
     (wdired-allow-to-change-permissions t)
     :config
