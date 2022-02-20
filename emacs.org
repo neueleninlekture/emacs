@@ -70,7 +70,7 @@ Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 ** Theme
 
 #+begin_src emacs-lisp :tangle init.el
-  (load-theme 'wheatgrass t)
+  (load-theme 'modus-vivendi t)
 #+end_src
 
 * Quality of life

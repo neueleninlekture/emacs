@@ -4,7 +4,7 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(load-theme 'wheatgrass t)
+(load-theme 'modus-vivendi t)
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
