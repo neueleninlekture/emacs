@@ -922,7 +922,9 @@ that I'd like to use LSP on.
 
 #+begin_src emacs-lisp
   (use-package muse
-    :straight t)
+    :straight t
+    :hook
+    (muse-mode-hook . (lambda () (auto-fill-mode -1))))
 #+end_src
 
 ** Scheme

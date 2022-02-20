@@ -323,7 +323,9 @@ With the prefix argument UNFILL, unfill it instead."
   :straight t)
 
 (use-package muse
-  :straight t)
+  :straight t
+  :hook
+  (muse-mode-hook . (lambda () (auto-fill-mode -1))))
 
 (use-package geiser
   :straight geiser-guile
