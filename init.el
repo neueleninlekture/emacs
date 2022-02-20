@@ -5,3 +5,6 @@
 (scroll-bar-mode -1)
 
 (load-theme 'wheatgrass t)
+
+(setq make-backup-files nil)
+(setq auto-save-default nil)

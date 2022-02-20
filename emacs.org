@@ -73,3 +73,14 @@ Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
   (load-theme 'wheatgrass t)
 #+end_src
 
+* Quality of life
+
+** Disabling backup files
+
+By default, Emacs litters your directories with backups of files
+you edit. I find this behavior not only useless but also irritating.
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
+#+end_src
