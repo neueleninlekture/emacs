@@ -2,6 +2,8 @@
 #+author: aabm
 #+email: aabm@disroot.org
 #+startup: overview
+#+property: header-args :tangle init.el
+
 
 * About
 
@@ -263,13 +265,13 @@ source files.
 * Basic appearance
 ** Font
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
 #+end_src
 
 ** Bars
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
@@ -277,7 +279,7 @@ source files.
 
 ** Theme
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (load-theme 'modus-vivendi t)
 #+end_src
 
@@ -287,7 +289,7 @@ source files.
 By default, Emacs litters your directories with backups of files
 you edit. I find this behavior not only useless but also irritating.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (setq make-backup-files nil)
   (setq auto-save-default nil)
 #+end_src
@@ -301,7 +303,7 @@ reader inside Emacs. It appears here as a replacement for the built-in
 to read PDFs from within Emacs, even if the experience is not as good
 as that of a dedicated PDF reader.
 
-#+begin_src emacs-lisp :tangle init.el
+#+begin_src emacs-lisp
   (use-package pdf-tools
     :straight t
     :init
@@ -313,6 +315,5 @@ as that of a dedicated PDF reader.
     :bind
     (:map pdf-view-mode-map
 	  (("M-g g" . pdf-view-goto-page))))
-
 #+end_src
 
