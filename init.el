@@ -87,6 +87,10 @@
 
 (show-paren-mode t)
 
+(global-set-key (kbd "M-c") 'capitalize-dwim)
+(global-set-key (kbd "M-u") 'upcase-dwim)
+(global-set-key (kbd "M-l") 'downcase-dwim)
+
 (use-package pdf-tools
   :straight t
   :init

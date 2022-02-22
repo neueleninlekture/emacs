@@ -366,6 +366,17 @@ under/behind point. Useful for Lisp programming.
   (show-paren-mode t)
 #+end_src
  
+** Casing and capitalization
+
+Here we replace the normal capitalization functions with their
+more flexible useful =dwim= counterparts.
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-c") 'capitalize-dwim)
+  (global-set-key (kbd "M-u") 'upcase-dwim)
+  (global-set-key (kbd "M-l") 'downcase-dwim)
+#+end_src
+
 * Reading
 ** PDFs
 
