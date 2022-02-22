@@ -455,6 +455,16 @@ window.
   (setq org-src-window-setup 'current-window)
 #+end_src
 
+*** Navigating headings
+
+Make it so that headings are wrapped by default and that pressing TAB
+at the file header cycles all headings.
+
+#+begin_src emacs-lisp
+  (setq org-cycle-global-at-bob t)
+  (setq org-startup-folded t)
+#+end_src
+
 * Reading
 ** PDFs
 

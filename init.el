@@ -113,6 +113,9 @@
 
 (setq org-src-window-setup 'current-window)
 
+(setq org-cycle-global-at-bob t)
+(setq org-startup-folded t)
+
 (use-package pdf-tools
   :straight t
   :init
