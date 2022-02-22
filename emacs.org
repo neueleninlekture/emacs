@@ -389,6 +389,17 @@ double spaces sentences in ~'(current-year)~.
   (setq sentence-end-double-space nil)
 #+end_src
 
+** Whitespace and indentation
+
+Here we set up some useful keys for handling whitespace and
+indentation. =indent-region= is normally bound to C-M-\, which I find
+to be too complex of a keybinding for a function I use so frequently.
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-SPC") 'cycle-spacing) 
+
+  (global-set-key (kbd "C-\\") 'indent-region)
+#+end_src
 
 * Reading
 ** PDFs

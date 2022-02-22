@@ -93,6 +93,10 @@
 
 (setq sentence-end-double-space nil)
 
+(global-set-key (kbd "M-SPC") 'cycle-spacing) 
+
+(global-set-key (kbd "C-\\") 'indent-region)
+
 (use-package pdf-tools
   :straight t
   :init
