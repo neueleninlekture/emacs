@@ -81,14 +81,49 @@
   :custom
   (which-key-idle-delay 0.4))
 
-(setq completion-styles '(substring flex shorthand initials))
-(setq completion-ignore-case t)
-(setq read-file-name-completion-ignore-case t)
-(setq read-buffer-completion-ignore-case t)
-(setq enable-recursive-minibuffers t)
+(straight-use-package 'orderless)
 
-(icomplete-mode t)
-(icomplete-vertical-mode t)
+(use-package vertico
+  :straight t
+  :init
+  (vertico-mode)
+  :custom
+  (completion-styles '(substring orderless))
+  (completion-ignore-case t)
+  (read-file-name-completion-ignore-case t)
+  (read-buffer-completion-ignore-case t)
+  (enable-recursive-minibuffers t))
+
+(use-package consult
+  :straight t
+  :custom
+  (consult-narrow-key "<")
+  :bind
+  (("M-y" . consult-yank-replace)
+   ("C-x b" . consult-buffer)
+   ("M-g g" . consult-grep)
+   ("M-g o" . consult-outline)
+   ("M-g m" . consult-mark)
+   ("M-g M-g" . consult-goto-line)))
+
+(use-package embark
+  :straight t
+  :bind
+  (("C-," . embark-act))
+  :custom
+  (embark-action-indicator
+   (lambda (map &optional _target)
+     (which-key--show-keymap "Embark" map nil nil 'no-paging)
+     #'which-key--hide-popup-ignore-command)
+   embark-become-indicator embark-action-indicator))
+
+(use-package marginalia
+  :straight t
+  :init
+  (marginalia-mode)
+  :bind
+  ((:map minibuffer-local-map
+	 ("M-a" . marginalia-cycle))))
 
 (add-hook 'text-mode-hook #'auto-fill-mode)
 (diminish 'auto-fill-function)

@@ -358,15 +358,70 @@ cryptically long keychord sequences.
 The Emacs minibuffer is a surprisingly powerful tool. Here we improve
 its completion capabilities as well as its interface.
 
-#+begin_src emacs-lisp
-  (setq completion-styles '(substring flex shorthand initials))
-  (setq completion-ignore-case t)
-  (setq read-file-name-completion-ignore-case t)
-  (setq read-buffer-completion-ignore-case t)
-  (setq enable-recursive-minibuffers t)
+The packages introduced here are:
 
-  (icomplete-mode t)
-  (icomplete-vertical-mode t)
+- =orderless=, a more advanced completion style, which I find provides
+  a better matching experience. So much better, in fact, that we use
+  it as the only completion style.
+  
+- =vertico=, which provides a completion interface similar to Ivy or
+  Helm, that is, vertically ordered and which can be navigated by
+  pressing C-n and C-p.
+
+- =consult=, which provides advanced completion functions, improving
+  upon already existing uses. Powerful functions for switching
+  buffers, finding bookmarks, searching files, etc.
+
+- =embark=, which allows one to perform arbitrary actions on
+  minibuffer candidates
+
+- =marginalia=, which displays handy extra information in the
+  minibuffer.
+
+#+begin_src emacs-lisp
+  (straight-use-package 'orderless)
+
+  (use-package vertico
+    :straight t
+    :init
+    (vertico-mode)
+    :custom
+    (completion-styles '(substring orderless))
+    (completion-ignore-case t)
+    (read-file-name-completion-ignore-case t)
+    (read-buffer-completion-ignore-case t)
+    (enable-recursive-minibuffers t))
+
+  (use-package consult
+    :straight t
+    :custom
+    (consult-narrow-key "<")
+    :bind
+    (("M-y" . consult-yank-replace)
+     ("C-x b" . consult-buffer)
+     ("M-g g" . consult-grep)
+     ("M-g o" . consult-outline)
+     ("M-g m" . consult-mark)
+     ("M-g M-g" . consult-goto-line)))
+
+  (use-package embark
+    :straight t
+    :bind
+    (("C-," . embark-act))
+    :custom
+    (embark-action-indicator
+     (lambda (map &optional _target)
+       (which-key--show-keymap "Embark" map nil nil 'no-paging)
+       #'which-key--hide-popup-ignore-command)
+     embark-become-indicator embark-action-indicator))
+
+  (use-package marginalia
+    :straight t
+    :init
+    (marginalia-mode)
+    :bind
+    ((:map minibuffer-local-map
+	   ("M-a" . marginalia-cycle))))
 #+end_src
 
 * Writing
