@@ -341,6 +341,31 @@ wrapped to a certain threshold. Here we make it so that
   (add-hook 'text-mode-hook #'auto-fill-mode)
 #+end_src
  
+** Parens, brackets and quotes
+*** Electric pairs
+
+Electric pairs make it so that any opening characters you type
+(parentheses, braces, brackets, quotation marks) are automatically
+matched with their corresponding closing character. This is handy at all
+times when editing, but especially useful for programming in Lisp.
+
+#+begin_src emacs-lisp
+  (setq electric-pair-pairs '((?\{ . ?\})
+                              (?\( . ?\))
+                              (?\[ . ?\])
+                              (?\" . ?\")))
+  (electric-pair-mode t)
+#+end_src
+
+*** Highlight matching parentheses
+
+This minor mode highlights the parentheses corresponding to the one
+under/behind point. Useful for Lisp programming.
+
+#+begin_src emacs-lisp
+  (show-paren-mode t)
+#+end_src
+ 
 * Reading
 ** PDFs
 

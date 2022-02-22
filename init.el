@@ -79,6 +79,14 @@
 
 (add-hook 'text-mode-hook #'auto-fill-mode)
 
+(setq electric-pair-pairs '((?\{ . ?\})
+                            (?\( . ?\))
+                            (?\[ . ?\])
+                            (?\" . ?\")))
+(electric-pair-mode t)
+
+(show-paren-mode t)
+
 (use-package pdf-tools
   :straight t
   :init
