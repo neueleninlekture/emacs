@@ -97,6 +97,9 @@
 
 (global-set-key (kbd "C-\\") 'indent-region)
 
+(line-number-mode t)
+(column-number-mode t)
+
 (use-package pdf-tools
   :straight t
   :init

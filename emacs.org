@@ -401,6 +401,16 @@ to be too complex of a keybinding for a function I use so frequently.
   (global-set-key (kbd "C-\\") 'indent-region)
 #+end_src
 
+** Point position
+
+Enabling the following minor modes makes it so that the position of
+point is always displayed in the modeline, as coordinates.
+
+#+begin_src emacs-lisp
+  (line-number-mode t)
+  (column-number-mode t)
+#+end_src
+
 * Reading
 ** PDFs
 
