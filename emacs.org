@@ -331,6 +331,10 @@ its completion capabilities as well as its interface.
 #+end_src
 
 * Writing
+
+All packages and settings relating to writing, from simple text
+editing features to complex modes like Org.
+
 ** Auto Fill
 
 When dealing with plain text, I like having my lines automatically
