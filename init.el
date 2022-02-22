@@ -70,6 +70,9 @@
 
 (setq ring-bell-function 'ignore)
 
+(global-auto-revert-mode t)
+(setq global-auto-revert-non-file-buffers t)
+
 (use-package which-key
   :straight t
   :diminish which-key-mode

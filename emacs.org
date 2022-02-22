@@ -324,6 +324,17 @@ Here we disable them.
   (setq ring-bell-function 'ignore)
 #+end_src
 
+** Auto revert
+
+Enabling the following minor mode makes Emacs automatically account
+for changes in visited files. We enable this feature for other buffers
+such as =dired= buffers as well.
+
+#+begin_src emacs-lisp
+  (global-auto-revert-mode t)
+  (setq global-auto-revert-non-file-buffers t)
+#+end_src
+
 * Minibuffer
 ** Which Key
 
