@@ -54,16 +54,30 @@
 
 (setq load-prefer-newer t)
 
-(add-to-list 'default-frame-alist '(font . "Iosevka 11"))
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+
+(setq disabled-command-function nil)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(load-theme 'modus-vivendi t)
+(tooltip-mode -1)
+(setq use-dialog-box nil)
 
-(setq make-backup-files nil)
-(setq auto-save-default nil)
+(setq ring-bell-function 'ignore)
+
+(setq completion-styles '(substring flex shorthand initials))
+(setq completion-ignore-case t)
+(setq read-file-name-completion-ignore-case t)
+(setq read-buffer-completion-ignore-case t)
+(setq enable-recursive-minibuffers t)
+
+(icomplete-mode t)
+(icomplete-vertical-mode t)
+
+(add-hook 'text-mode-hook #'auto-fill-mode)
 
 (use-package pdf-tools
   :straight t
@@ -76,3 +90,7 @@
   :bind
   (:map pdf-view-mode-map
 	(("M-g g" . pdf-view-goto-page))))
+
+(add-to-list 'default-frame-alist '(font . "Iosevka 11"))
+
+(load-theme 'modus-vivendi t)

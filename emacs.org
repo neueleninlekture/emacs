@@ -4,7 +4,6 @@
 #+startup: overview
 #+property: header-args :tangle init.el
 
-
 * About
 
 Yet another complete rewrite!
@@ -68,6 +67,11 @@ Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301, USA.
 
 * Startup
+
+Here we modify some things about Emacs' startup process, in order to
+make it faster and set up some basic options that will later be used
+by other packages.
+
 ** early-init.el
 
 Here we define all the options to be included in the =early-init.el=
@@ -262,28 +266,10 @@ source files.
   (setq load-prefer-newer t)
 #+end_src
 
-* Basic appearance
-** Font
-
-#+begin_src emacs-lisp
-  (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
-#+end_src
-
-** Bars
-
-#+begin_src emacs-lisp
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-#+end_src
-
-** Theme
-
-#+begin_src emacs-lisp
-  (load-theme 'modus-vivendi t)
-#+end_src
-
 * Quality of life
+
+Small changes that make big differences!
+
 ** Disabling backup files
 
 By default, Emacs litters your directories with backups of files
@@ -294,6 +280,67 @@ you edit. I find this behavior not only useless but also irritating.
   (setq auto-save-default nil)
 #+end_src
 
+** Disabled commands
+
+By default, Emacs has some commands "disabled". This means that, when
+invoked, instead of being executed normally, they return a warning to
+the user. This is because they are considered too advanced or
+confusing for new users. Well I know my way around Emacs, so here we
+get rid of this behavior.
+
+#+begin_src emacs-lisp
+  (setq disabled-command-function nil)
+#+end_src
+
+** Disabling GUI elements
+
+Emacs comes with a few GUI elements I would rather get rid of. These
+are:
+
+- Tool, menu and scroll bars
+- Graphical tooltips and dialog boxes
+- The bell ring
+
+Here we disable them.
+
+#+begin_src emacs-lisp
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+
+  (tooltip-mode -1)
+  (setq use-dialog-box nil)
+  
+  (setq ring-bell-function 'ignore)
+#+end_src
+
+* Minibuffer
+
+The Emacs minibuffer is a surprisingly powerful tool. Here we improve
+its completion capabilities as well as its interface.
+
+#+begin_src emacs-lisp
+  (setq completion-styles '(substring flex shorthand initials))
+  (setq completion-ignore-case t)
+  (setq read-file-name-completion-ignore-case t)
+  (setq read-buffer-completion-ignore-case t)
+  (setq enable-recursive-minibuffers t)
+
+  (icomplete-mode t)
+  (icomplete-vertical-mode t)
+#+end_src
+
+* Writing
+** Auto Fill
+
+When dealing with plain text, I like having my lines automatically
+wrapped to a certain threshold. Here we make it so that
+=auto-fill-mode= is used in all plain text editing modes.
+
+#+begin_src emacs-lisp
+  (add-hook 'text-mode-hook #'auto-fill-mode)
+#+end_src
+ 
 * Reading
 ** PDFs
 
@@ -315,5 +362,18 @@ as that of a dedicated PDF reader.
     :bind
     (:map pdf-view-mode-map
 	  (("M-g g" . pdf-view-goto-page))))
+#+end_src
+
+* Appearance
+** Font
+
+#+begin_src emacs-lisp
+  (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
+#+end_src
+
+** Theme
+
+#+begin_src emacs-lisp
+  (load-theme 'modus-vivendi t)
 #+end_src
 
