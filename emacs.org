@@ -257,6 +257,16 @@ great control over the process of loading and customizing packages.
   (setq use-package-hook-name-suffix nil)
 #+end_src
 
+*** Additions to use-package
+
+Here we install the =diminish= package. By integrating with
+=use-package= macros, =diminish= allows one to hide certain minor
+modes from the modeline.
+
+#+begin_src emacs-lisp
+  (straight-use-package 'diminish)
+#+end_src
+
 *** Ensuring auto-compilation
 
 Here we make sure Emacs prefers to load compiled files over uncompiled
@@ -353,7 +363,8 @@ its completion capabilities as well as its interface.
 All packages and settings relating to writing, from simple text
 editing features to complex modes like Org.
 
-** Auto Fill
+** Text editing features
+*** Auto Fill
 
 When dealing with plain text, I like having my lines automatically
 wrapped to a certain threshold. Here we make it so that
@@ -363,8 +374,8 @@ wrapped to a certain threshold. Here we make it so that
   (add-hook 'text-mode-hook #'auto-fill-mode)
 #+end_src
  
-** Parens, brackets and quotes
-*** Electric pairs
+*** Parens, brackets and quotes
+**** Electric pairs
 
 Electric pairs make it so that any opening characters you type
 (parentheses, braces, brackets, quotation marks) are automatically
@@ -379,7 +390,7 @@ times when editing, but especially useful for programming in Lisp.
   (electric-pair-mode t)
 #+end_src
 
-*** Highlight matching parentheses
+**** Highlight matching parentheses
 
 This minor mode highlights the parentheses corresponding to the one
 under/behind point. Useful for Lisp programming.
@@ -388,7 +399,7 @@ under/behind point. Useful for Lisp programming.
   (show-paren-mode t)
 #+end_src
  
-** Casing and capitalization
+*** Casing and capitalization
 
 Here we replace the normal capitalization functions with their
 more flexible useful =dwim= counterparts.
@@ -399,7 +410,7 @@ more flexible useful =dwim= counterparts.
   (global-set-key (kbd "M-l") 'downcase-dwim)
 #+end_src
 
-** Sentence navigation
+*** Sentence navigation
 
 A nice tweak to sentence navigation commands that makes them more
 usable. We change the definition of a sentence to a more reasonable
@@ -411,7 +422,7 @@ double spaces sentences in ~'(current-year)~.
   (setq sentence-end-double-space nil)
 #+end_src
 
-** Whitespace and indentation
+*** Whitespace and indentation
 
 Here we set up some useful keys for handling whitespace and
 indentation. =indent-region= is normally bound to C-M-\, which I find
@@ -423,7 +434,7 @@ to be too complex of a keybinding for a function I use so frequently.
   (global-set-key (kbd "C-\\") 'indent-region)
 #+end_src
 
-** Point position
+*** Point position
 
 Enabling the following minor modes makes it so that the position of
 point is always displayed in the modeline, as coordinates.
@@ -431,6 +442,16 @@ point is always displayed in the modeline, as coordinates.
 #+begin_src emacs-lisp
   (line-number-mode t)
   (column-number-mode t)
+#+end_src
+
+** Org Mode
+*** Editing code blocks
+
+Here we make it so that editing a code block is done in the current
+window.
+
+#+begin_src emacs-lisp
+  (setq org-src-window-setup 'current-window)
 #+end_src
 
 * Reading

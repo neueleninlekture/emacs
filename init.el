@@ -52,6 +52,8 @@
 (setq use-package-always-defer t)
 (setq use-package-hook-name-suffix nil)
 
+(straight-use-package 'diminish)
+
 (setq load-prefer-newer t)
 
 (setq make-backup-files nil)
@@ -107,6 +109,8 @@
 
 (line-number-mode t)
 (column-number-mode t)
+
+(setq org-src-window-setup 'current-window)
 
 (use-package pdf-tools
   :straight t
