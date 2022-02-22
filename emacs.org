@@ -377,6 +377,19 @@ more flexible useful =dwim= counterparts.
   (global-set-key (kbd "M-l") 'downcase-dwim)
 #+end_src
 
+** Sentence navigation
+
+A nice tweak to sentence navigation commands that makes them more
+usable. We change the definition of a sentence to a more reasonable
+"something that ends in a single space after punctuation", instead of
+the normal double space. This is superior as quite literally no one
+double spaces sentences in ~'(current-year)~.
+   
+#+begin_src emacs-lisp
+  (setq sentence-end-double-space nil)
+#+end_src
+
+
 * Reading
 ** PDFs
 

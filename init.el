@@ -91,6 +91,8 @@
 (global-set-key (kbd "M-u") 'upcase-dwim)
 (global-set-key (kbd "M-l") 'downcase-dwim)
 
+(setq sentence-end-double-space nil)
+
 (use-package pdf-tools
   :straight t
   :init
