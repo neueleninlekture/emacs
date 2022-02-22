@@ -68,6 +68,14 @@
 
 (setq ring-bell-function 'ignore)
 
+(use-package which-key
+  :straight t
+  :diminish which-key-mode
+  :init
+  (which-key-mode)
+  :custom
+  (which-key-idle-delay 0.4))
+
 (setq completion-styles '(substring flex shorthand initials))
 (setq completion-ignore-case t)
 (setq read-file-name-completion-ignore-case t)

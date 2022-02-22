@@ -315,6 +315,24 @@ Here we disable them.
 #+end_src
 
 * Minibuffer
+** Which Key
+
+The =which-key= package uses the minibuffer to display all active
+keybindings in the currently typed prefix. It allows you to navigate
+your keybindings via prefixes. Nice for when you forget those
+cryptically long keychord sequences.
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :straight t
+    :diminish which-key-mode
+    :init
+    (which-key-mode)
+    :custom
+    (which-key-idle-delay 0.4))
+#+end_src
+
+** Completion and interface
 
 The Emacs minibuffer is a surprisingly powerful tool. Here we improve
 its completion capabilities as well as its interface.
