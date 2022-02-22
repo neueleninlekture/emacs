@@ -372,6 +372,7 @@ wrapped to a certain threshold. Here we make it so that
 
 #+begin_src emacs-lisp
   (add-hook 'text-mode-hook #'auto-fill-mode)
+  (diminish 'auto-fill-function)
 #+end_src
  
 *** Parens, brackets and quotes

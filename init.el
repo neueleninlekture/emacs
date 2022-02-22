@@ -88,6 +88,7 @@
 (icomplete-vertical-mode t)
 
 (add-hook 'text-mode-hook #'auto-fill-mode)
+(diminish 'auto-fill-function)
 
 (setq electric-pair-pairs '((?\{ . ?\})
                             (?\( . ?\))
