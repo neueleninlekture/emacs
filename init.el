@@ -236,7 +236,8 @@
        file-list)))
   :bind
   (:map dired-mode-map
-	(("v" . dired-xdg-open))))
+	(("v" . dired-xdg-open)
+	 ("l" . dired-up-directory))))
 
 (use-package dired-hide-dotfiles
   :straight t

@@ -680,7 +680,8 @@ which does what the name suggests. It can be toggled by pressing =h=.
 	 file-list)))
     :bind
     (:map dired-mode-map
-	  (("v" . dired-xdg-open))))
+	  (("v" . dired-xdg-open)
+	   ("l" . dired-up-directory))))
 
   (use-package dired-hide-dotfiles
     :straight t
