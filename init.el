@@ -107,7 +107,7 @@
    ("M-g o" . consult-outline)
    ("M-g m" . consult-mark)
    ("M-g M-g" . consult-goto-line)
-   ("C-c C-f" . consult-file-externally)))
+   ("M-g f" . consult-file-externally)))
 
 (use-package embark
   :straight t
