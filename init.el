@@ -107,6 +107,7 @@
    ("M-g o" . consult-outline)
    ("M-g m" . consult-mark)
    ("M-g M-g" . consult-goto-line)
+   ("M-g s" . consult-line)
    ("M-g f" . consult-file-externally)))
 
 (use-package embark
