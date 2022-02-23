@@ -152,6 +152,11 @@
 (line-number-mode t)
 (column-number-mode t)
 
+(use-package expand-region
+  :straight t
+  :bind
+  (("C-=" . er/expand-region)))
+
 (setq org-src-window-setup 'current-window)
 
 (setq org-cycle-global-at-bob t)

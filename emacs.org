@@ -522,6 +522,21 @@ point is always displayed in the modeline, as coordinates.
   (column-number-mode t)
 #+end_src
 
+*** Expand region
+
+A neat little package that allows marking a region in increasing
+bounds with each call. Think of this as a more dynamic version of
+Vim's "inside" or "around" commands such as =di(=. Useful for
+selecting things inside parentheses, like in Lisp code, or quotes in
+prose.
+
+#+begin_src emacs-lisp
+  (use-package expand-region
+    :straight t
+    :bind
+    (("C-=" . er/expand-region)))
+#+end_src
+
 ** Org Mode
 *** Editing code blocks
 
