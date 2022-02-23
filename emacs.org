@@ -579,6 +579,26 @@ writing and reading sessions.
     (display-time-default-load-average nil))
 #+end_src
 
+** World Clock
+
+I like having access to the =world-clock=. Here we set up a little
+list of locations I would sometimes like to know the time for.
+
+#+begin_src emacs-lisp
+  (use-package time
+    :custom
+    (world-clock-list
+     '(("America/Los_Angeles" "Seattle")
+       ("America/New_York" "New York")
+       ("America/Sao_Paulo" "São Paulo")
+       ("Europe/London" "London")
+       ("Europe/Paris" "Paris")
+       ("Africa/Cairo" "Cairo")
+       ("Asia/Baghdad" "Baghdad")
+       ("Asia/Dushanbe" "Malé")
+       ("Asia/Beijing" "Beijing"))))
+#+end_src
+
 * Buffers and windows
 ** Ibuffer
 

@@ -175,6 +175,19 @@
   (display-time-format "%a, %b %d %H:%M")
   (display-time-default-load-average nil))
 
+(use-package time
+  :custom
+  (world-clock-list
+   '(("America/Los_Angeles" "Seattle")
+     ("America/New_York" "New York")
+     ("America/Sao_Paulo" "São Paulo")
+     ("Europe/London" "London")
+     ("Europe/Paris" "Paris")
+     ("Africa/Cairo" "Cairo")
+     ("Asia/Baghdad" "Baghdad")
+     ("Asia/Dushanbe" "Malé")
+     ("Asia/Beijing" "Beijing"))))
+
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
