@@ -219,6 +219,34 @@
    ("C-x v c" . magit-commit-all)
    ("C-x v P" . magit-push-current-to-pushremote)))
 
+(use-package dired
+  :custom
+  (dired-listing-switches "-alhNF --group-directories-first")
+  (dired-dwim-target t)
+  (wdired-allow-to-change-permissions t)
+  :config
+  (defun dired-xdg-open ()
+    "Open the marked files using xdg-open."
+    (interactive)
+    (let ((file-list (dired-get-marked-files)))
+      (mapc
+       (lambda (file-path)
+	 (let ((process-connection-type nil))
+	   (start-process "" nil "xdg-open" file-path)))
+       file-list)))
+  :bind
+  (:map dired-mode-map
+	(("v" . dired-xdg-open))))
+
+(use-package dired-hide-dotfiles
+  :straight t
+  :diminish dired-hide-dotfiles-mode
+  :hook
+  ((dired-mode-hook . dired-hide-dotfiles-mode))
+  :bind
+  (:map dired-mode-map
+	(("h" . dired-hide-dotfiles-mode))))
+
 (use-package time
   :init
   (display-time-mode)

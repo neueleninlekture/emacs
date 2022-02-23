@@ -647,6 +647,51 @@ bit. I keep it for those times when =vc= simply won't do.
      ("C-x v P" . magit-push-current-to-pushremote)))
 #+end_src
 
+** Dired
+
+Big changes to =dired= behavior. First we change the flags it passes
+to the =ls= command, which in turn gives us better output to work
+with, like having directories be listed before regular files. Then we
+add other QoL changes, like faster copying and moving, as well as
+easier changing of permissions when in writeable dired mode.
+
+I also add a function for opening just about any file from dired using
+its respective program, via =xdg-open=. This way you can open videos
+with an external video player and images with a proper image viewer.
+
+We also add some extra packages. First is =dired-hide-dotfiles-mode=,
+which does what the name suggests. It can be toggled by pressing =h=.
+
+#+begin_src emacs-lisp
+  (use-package dired
+    :custom
+    (dired-listing-switches "-alhNF --group-directories-first")
+    (dired-dwim-target t)
+    (wdired-allow-to-change-permissions t)
+    :config
+    (defun dired-xdg-open ()
+      "Open the marked files using xdg-open."
+      (interactive)
+      (let ((file-list (dired-get-marked-files)))
+	(mapc
+	 (lambda (file-path)
+	   (let ((process-connection-type nil))
+	     (start-process "" nil "xdg-open" file-path)))
+	 file-list)))
+    :bind
+    (:map dired-mode-map
+	  (("v" . dired-xdg-open))))
+
+  (use-package dired-hide-dotfiles
+    :straight t
+    :diminish dired-hide-dotfiles-mode
+    :hook
+    ((dired-mode-hook . dired-hide-dotfiles-mode))
+    :bind
+    (:map dired-mode-map
+	  (("h" . dired-hide-dotfiles-mode))))
+#+end_src
+
 * Utilities
 ** Display time on the modeline
 
