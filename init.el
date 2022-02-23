@@ -198,6 +198,23 @@
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+(global-set-key (kbd "M-o") 'other-window)
+
+(defun split-window-below-and-switch ()
+  "A simple replacement for `split-window-below', which automatically focuses the new window."
+  (interactive)
+  (split-window-below)
+  (other-window 1))
+
+(defun split-window-right-and-switch ()
+  "A simple replacement for `split-window-right', which automatically focuses the new window."
+  (interactive)
+  (split-window-right)
+  (other-window 1))
+
+(global-set-key (kbd "C-x 2") 'split-window-below-and-switch)
+(global-set-key (kbd "C-x 3") 'split-window-right-and-switch)
+
 (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
 
 (load-theme 'modus-vivendi t)
