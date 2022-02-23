@@ -542,6 +542,20 @@ at the file header cycles all headings.
 #+end_src
 
 * Reading
+** Olivetti
+
+=olivetti-mode= is a minor mode which centers text on the screen.
+Simple as.
+
+#+begin_src emacs-lisp
+  (use-package olivetti
+    :straight t
+    :custom
+    (olivetti-body-width 0.7)
+    :bind
+    (("C-c o" . olivetti-mode)))
+#+end_src
+
 ** PDFs
 
 Here we install the =pdf-tools= package, which provides a nice PDF

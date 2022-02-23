@@ -156,6 +156,13 @@
 (setq org-cycle-global-at-bob t)
 (setq org-startup-folded t)
 
+(use-package olivetti
+  :straight t
+  :custom
+  (olivetti-body-width 0.7)
+  :bind
+  (("C-c o" . olivetti-mode)))
+
 (use-package pdf-tools
   :straight t
   :init
