@@ -564,6 +564,21 @@ as that of a dedicated PDF reader.
 	  (("M-g g" . pdf-view-goto-page))))
 #+end_src
 
+* Utilities
+** Display time on the modeline
+
+I like having a little clock on my modeline for those fullscreen
+writing and reading sessions. 
+
+#+begin_src emacs-lisp
+  (use-package time
+    :init
+    (display-time-mode)
+    :custom
+    (display-time-format "%a, %b %d %H:%M")
+    (display-time-default-load-average nil))
+#+end_src
+
 * Buffers and windows
 ** Ibuffer
 

@@ -168,6 +168,13 @@
   (:map pdf-view-mode-map
 	(("M-g g" . pdf-view-goto-page))))
 
+(use-package time
+  :init
+  (display-time-mode)
+  :custom
+  (display-time-format "%a, %b %d %H:%M")
+  (display-time-default-load-average nil))
+
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
