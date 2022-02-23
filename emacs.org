@@ -579,6 +579,36 @@ as that of a dedicated PDF reader.
 	  (("M-g g" . pdf-view-goto-page))))
 #+end_src
 
+* Projects
+
+Settings and packages for managing files, projects and version
+control.
+
+** Magit
+
+A powerful git porcelain, and a very famous "killer app" for Emacs. It
+is indeed very powerful, but sometimes I find its UI gets in the way a
+bit. I keep it for those times when =vc= simply won't do.
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :straight t
+    :commands
+    (magit-status magit)
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+    :config
+    (defun magit-commit-all ()
+      (interactive)
+      (start-process-shell-command
+       "" nil "git add .")
+      (magit-commit-create))
+    :bind
+    (("C-x g" . magit-status)
+     ("C-x v c" . magit-commit-all)
+     ("C-x v P" . magit-push-current-to-pushremote)))
+#+end_src
+
 * Utilities
 ** Display time on the modeline
 

@@ -176,6 +176,23 @@
   (:map pdf-view-mode-map
 	(("M-g g" . pdf-view-goto-page))))
 
+(use-package magit
+  :straight t
+  :commands
+  (magit-status magit)
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  :config
+  (defun magit-commit-all ()
+    (interactive)
+    (start-process-shell-command
+     "" nil "git add .")
+    (magit-commit-create))
+  :bind
+  (("C-x g" . magit-status)
+   ("C-x v c" . magit-commit-all)
+   ("C-x v P" . magit-push-current-to-pushremote)))
+
 (use-package time
   :init
   (display-time-mode)
