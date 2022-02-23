@@ -564,6 +564,17 @@ as that of a dedicated PDF reader.
 	  (("M-g g" . pdf-view-goto-page))))
 #+end_src
 
+* Buffers and windows
+** Ibuffer
+
+=Ibuffer= is an interface for managing buffers, not too different from
+what =dired= does for files. We replace the default =list-buffers=
+with it.
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+#+end_src
+
 * Appearance
 ** Font
 

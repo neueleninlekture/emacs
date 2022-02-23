@@ -168,6 +168,8 @@
   (:map pdf-view-mode-map
 	(("M-g g" . pdf-view-goto-page))))
 
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
 (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
 
 (load-theme 'modus-vivendi t)
