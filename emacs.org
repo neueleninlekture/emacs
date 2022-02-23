@@ -735,8 +735,19 @@ list of locations I would sometimes like to know the time for.
 what =dired= does for files. We replace the default =list-buffers=
 with it.
 
+We also install the =ibuffer-project= package which provides
+integration with the built-in =project.el= library. This makes ibuffer
+group buffers based on the projects they belong to.
+
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+  (use-package ibuffer-project
+    :straight t
+    :hook
+    (ibuffer-mode-hook . (lambda ()
+			   (setq ibuffer-filter-groups
+				 (ibuffer-project-generate-filter-groups)))))
 #+end_src
 
 ** Easier window switching

@@ -270,6 +270,13 @@
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+(use-package ibuffer-project
+  :straight t
+  :hook
+  (ibuffer-mode-hook . (lambda ()
+			 (setq ibuffer-filter-groups
+			       (ibuffer-project-generate-filter-groups)))))
+
 (global-set-key (kbd "M-o") 'other-window)
 
 (defun split-window-below-and-switch ()
