@@ -584,6 +584,44 @@ as that of a dedicated PDF reader.
 Settings and packages for managing files, projects and version
 control.
 
+** vc
+
+=vc= is Emacs' built-in tool for interfacing with version control
+systems. By default it is system agnostic - it works with =git=,
+=mercurial=, and various others.
+
+The main addition here is a custom function, =vc-git-log-grep=. It
+prompts the user for a string, and searches it through the git log,
+returning valid commit logs.
+
+#+begin_src emacs-lisp
+  (use-package vc
+    :config
+    (defvar vc-shell-output "*vc-output*")
+    (defun vc-git-log-grep (pattern &optional diff)
+      "Run ’git log --grep’ for PATTERN.
+      With optional DIFF as a prefix (\\[universal-argument])
+      argument, also show the corresponding diffs. 
+
+    This function was taken from prot."
+      (interactive
+       (list (read-regexp "Search git log for PATTERN: ")
+	     current-prefix-arg))
+      (let* ((buf-name vc-shell-output)
+	     (buf (get-buffer-create buf-name))
+	     (diffs (if diff "-p" ""))
+	     (type (if diff 'with-diff 'log-search))
+	     (resize-mini-windows nil))
+	(shell-command (format "git log %s --grep=%s -i -E --" diffs pattern) buf)
+	(with-current-buffer buf
+	  (setq-local vc-log-view-type type)
+	  (setq-local revert-buffer-function nil)
+	  (vc-git-region-history-mode))))
+    :bind
+    (:map vc-prefix-map
+	  (("S" . vc-git-log-grep))))
+#+end_src
+
 ** Magit
 
 A powerful git porcelain, and a very famous "killer app" for Emacs. It
