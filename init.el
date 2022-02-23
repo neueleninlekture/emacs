@@ -73,6 +73,8 @@
 (global-auto-revert-mode t)
 (setq global-auto-revert-non-file-buffers t)
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 (use-package which-key
   :straight t
   :diminish which-key-mode

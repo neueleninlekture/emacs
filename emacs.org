@@ -335,6 +335,16 @@ such as =dired= buffers as well.
   (setq global-auto-revert-non-file-buffers t)
 #+end_src
 
+** Yes or No prompts
+
+Emacs has a lot of prompts asking for user confirmation that require
+you to type in "yes" everytime. This replaces the default "yes or no"
+prompt function with one that makes simple "y" or "n" sufficient.
+
+#+begin_src emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
 * Minibuffer
 ** Which Key
 
