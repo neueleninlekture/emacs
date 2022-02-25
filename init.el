@@ -160,8 +160,58 @@
 
 (setq org-src-window-setup 'current-window)
 
-(setq org-cycle-global-at-bob t)
-(setq org-startup-folded t)
+(use-package org
+  :custom
+  (org-cycle-global-at-bob t)
+  (org-startup-folded t)
+  :bind
+  (:map org-mode-map
+	(("M-n" . org-forward-element)
+	 ("M-p" . org-backward-element)
+	 ("C-M-n" . org-metadown)
+	 ("C-M-p" . org-metaup)
+	 ("C-M-f" . org-metaright)
+	 ("C-M-b" . org-metaleft)
+	 ("C-c C-x l" . org-cycle-list-bullet))))
+
+(use-package org-roam
+  :straight t
+  :init
+  (setq org-roam-directory "~/org/roam/")
+  (setq org-roam-v2-ack t)
+  :config
+  (org-roam-setup)
+  :custom
+  (org-roam-db-location
+   (expand-file-name "roam.db" org-roam-directory))
+  (org-roam-capture-templates
+   '(("d" "default" plain "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+			 "#+title: ${title}\n#+date: %t\n#+filetags: \n")
+      :unnarrowed t)))
+  (org-roam-db-update-on-save t)
+  :bind
+  (("C-c n f" . org-roam-node-find)
+   ("C-c n i" . org-roam-node-insert)
+   ("C-c n l" . org-roam-buffer-toggle)
+   ("C-c n w" . org-roam-capture)
+   ("C-c n o" . org-roam-buffer-display-dedicated)
+   ("C-c n c" . org-id-get-create)
+   ("C-c n a" . org-roam-alias-add)
+   ("C-c n u" . org-roam-db-sync)))
+
+(use-package org-roam-ui
+  :straight
+  (:host github :repo "org-roam/org-roam-ui"
+	 :branch "main" :files ("*.el" "out"))
+    :after org-roam
+    :custom
+    (org-roam-ui-sync-theme t)
+    (org-roam-ui-follow t)
+    (org-roam-ui-update-on-save t)
+    (org-roam-ui-open-on-start t)
+    :bind
+    (("C-c n g" . org-roam-ui-mode)))
 
 (use-package olivetti
   :straight t
