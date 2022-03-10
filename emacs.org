@@ -864,13 +864,31 @@ the newly created windows.
 * Appearance
 ** Font
 
+I like the Iosevka font.
+
 #+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
+  (set-frame-font "Iosevka 11" nil t)
 #+end_src
 
 ** Theme
 
+Here we install =doom-themes=, the theme pack from Doom Emacs, and
+enable my preferred theme, =doom-Iosvkem=.
+
 #+begin_src emacs-lisp
-  (load-theme 'modus-vivendi t)
+  (use-package doom-themes
+    :straight t)
+
+  (load-theme 'doom-Iosvkem t)
+#+end_src
+
+** Transparency
+
+Make the frame a little transparent.
+
+#+begin_src emacs-lisp
+  (add-to-list 'default-frame-alist '(alpha 97 95))
+  (set-frame-parameter (selected-frame) 'alpha '(97 95))
 #+end_src
 

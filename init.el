@@ -189,6 +189,7 @@
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 			 "#+title: ${title}\n#+date: %t\n#+filetags: \n")
       :unnarrowed t)))
+  (org-capture-bookmark nil)
   (org-roam-db-update-on-save t)
   :bind
   (("C-c n f" . org-roam-node-find)
@@ -351,5 +352,12 @@
 (global-set-key (kbd "C-x 3") 'split-window-right-and-switch)
 
 (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
+(set-frame-font "Iosevka 11" nil t)
 
-(load-theme 'modus-vivendi t)
+(use-package doom-themes
+  :straight t)
+
+(load-theme 'doom-Iosvkem t)
+
+(add-to-list 'default-frame-alist '(alpha 97 95))
+(set-frame-parameter (selected-frame) 'alpha '(97 95))
