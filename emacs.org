@@ -624,6 +624,20 @@ use this for my agenda and TODO lists as well as my personal journal.
     (("C-c w" . org-capture)))
 #+end_src
 
+*** Custom bullets
+
+To make Org look a bit nicer, we use the =org-superstar= package. This
+replaces the heading asterisks with custom UTF-8 bullet characters.
+
+#+begin_src emacs-lisp
+  (use-package org-superstar
+    :straight t
+    :custom
+    (org-hide-leading-stars nil)
+    :hook
+    (org-mode-hook . org-superstar-mode))
+#+end_src
+
 *** Org Roam
 
 =org-roam= is a very powerful extension to org-mode. Essentially, it

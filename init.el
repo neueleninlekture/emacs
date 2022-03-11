@@ -189,6 +189,13 @@
   :bind
   (("C-c w" . org-capture)))
 
+(use-package org-superstar
+  :straight t
+  :custom
+  (org-hide-leading-stars nil)
+  :hook
+  (org-mode-hook . org-superstar-mode))
+
 (use-package org-roam
   :straight t
   :init
