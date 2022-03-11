@@ -33,3 +33,4 @@ projects
 /network-security.data
 /.org-id-locations
 auth.el
+/custom.el
