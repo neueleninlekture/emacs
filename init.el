@@ -193,8 +193,6 @@
 
 (use-package org-superstar
   :straight t
-  :custom
-  (org-hide-leading-stars nil)
   :hook
   (org-mode-hook . org-superstar-mode))
 
