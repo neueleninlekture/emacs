@@ -56,6 +56,8 @@
 
 (setq load-prefer-newer t)
 
+(load-file (expand-file-name "personal/auth.el" user-emacs-directory))
+
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
@@ -174,6 +176,17 @@
 	 ("C-M-b" . org-metaleft)
 	 ("C-c C-x l" . org-cycle-list-bullet))))
 
+(use-package org
+  :custom
+  (org-capture-templates
+   '(("j" "Journal entry"
+      entry
+      (file+datetree "agenda/journal.org")
+      "* %?"
+      :empty-lines 1)))
+  :bind
+  (("C-c w" . org-capture)))
+
 (use-package org-roam
   :straight t
   :init
@@ -232,6 +245,45 @@
   :bind
   (:map pdf-view-mode-map
 	(("M-g g" . pdf-view-goto-page))))
+
+(setq message-send-mail-function 'message-send-mail-with-sendmail)
+(setq sendmail-program "/usr/bin/msmtp")
+(setq message-sendmail-extra-arguments '("--read-envelope-from"))
+(setq message-sendmail-f-is-evil 't)
+
+(use-package mu4e
+  :straight t
+  :commands mu4e mu4e-compose-new
+  :custom
+  (mail-user-agent 'mu4e-user-agent)
+  (mu4e-maildir "~/.mail/disroot/")
+  (mu4e-get-mail-command "/usr/bin/mbsync -a")
+  (mu4e-update-mail-and-index t)
+  (mu4e-update-interval 300)
+  (mu4e-view-show-images t)
+  (mu4e-view-show-addresses t)
+  (mu4e-use-fancy-chars nil)
+  (mu4e-drafts-folder "/drafts")
+  (mu4e-sent-folder "/sent")
+  (mu4e-trash-folder "/trash")
+  (message-send-mail-function 'message-send-mail-with-sendmail)
+  (sendmail-program "/usr/bin/msmtp")
+  (message-sendmail-extra-arguments '("--read-envelope-from"))
+  (message-sendmail-f-is-evil t)
+  (mu4e-completing-read-function 'completing-read)
+  (mu4e-confirm-quit nil)
+  (message-kill-buffer-on-exit t)
+  (mu4e-attachment-dir "~/")
+  (mu4e-compose-signature
+   '(user-full-name))
+  :hook
+  (message-send-hook .
+		     (lambda ()
+		       (unless (yes-or-no-p "Sure you want to send this?")
+			 (signal 'quit nil))))
+  :bind
+  ((("C-c m" . mu4e)
+    ("C-x m" . mu4e-compose-new))))
 
 (use-package vc
   :config

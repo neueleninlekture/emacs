@@ -32,3 +32,4 @@ projects
 /.newsrc.eld
 /network-security.data
 /.org-id-locations
+auth.el
