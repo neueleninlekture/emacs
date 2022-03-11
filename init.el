@@ -74,6 +74,8 @@
 
 (setq ring-bell-function 'ignore)
 
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+
 (global-auto-revert-mode t)
 (setq global-auto-revert-non-file-buffers t)
 

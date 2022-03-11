@@ -359,6 +359,14 @@ Here we disable them.
   (setq ring-bell-function 'ignore)
 #+end_src
 
+** Custom file
+
+Make Emacs store customizations in a separate file.
+
+#+begin_src emacs-lisp
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+#+end_src
+
 ** Auto revert
 
 Enabling the following minor mode makes Emacs automatically account
