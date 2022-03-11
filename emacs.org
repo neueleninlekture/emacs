@@ -328,6 +328,15 @@ get rid of this behavior.
   (setq disabled-command-function nil)
 #+end_src
 
+** Disable startup messages
+
+This disables the default startup screen. I would rather just start in
+the scratch buffer.
+
+#+begin_src emacs-lisp
+  (setq inhibit-startup-screen t)
+#+end_src
+
 ** Disabling GUI elements
 
 Emacs comes with a few GUI elements I would rather get rid of. These
