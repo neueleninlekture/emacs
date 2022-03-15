@@ -255,6 +255,15 @@
   (:map pdf-view-mode-map
 	(("M-g g" . pdf-view-goto-page))))
 
+(use-package elfeed
+  :straight t
+  :config
+  (load-file (expand-file-name "personal/feeds.el" user-emacs-directory))
+  :hook
+  ((elfeed-show-mode-hook . olivetti-mode))
+  :bind
+  (("C-c e" . elfeed)))
+
 (setq message-send-mail-function 'message-send-mail-with-sendmail)
 (setq sendmail-program "/usr/bin/msmtp")
 (setq message-sendmail-extra-arguments '("--read-envelope-from"))

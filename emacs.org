@@ -737,12 +737,31 @@ as that of a dedicated PDF reader.
 	  (("M-g g" . pdf-view-goto-page))))
 #+end_src
 
-* Mail
+* Web and Mail
 
-I like using Emacs as a mail reader. Here we set up basic email
-funcionality and the =mu4e= interface.
+Emacs is actually a great interface for some web-related tasks, such
+as reading emails, newsfeeds and even occasional web browsing.
 
-** General
+** News
+
+Using =elfeed= we can read RSS feeds in Emacs. Here we apply minor
+tweaks to it: first, make it load my personal RSS feeds file, and
+second, make it use =olivetti-mode= for a more comfortable reading
+experience.
+
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :straight t
+    :config
+    (load-file (expand-file-name "personal/feeds.el" user-emacs-directory))
+    :hook
+    ((elfeed-show-mode-hook . olivetti-mode))
+    :bind
+    (("C-c e" . elfeed)))
+#+end_src
+
+** Mail
+*** General
 
 Here we include global, client-independent settings for Email in
 Emacs, such as usage of the external program =msmtp= for sending mail.
@@ -756,7 +775,7 @@ we instead opt for an external, more universal tool.
   (setq message-sendmail-f-is-evil 't)
 #+end_src
 
-** mu4e
+*** mu4e
 
 =mu4e= is a mail client for Emacs. It has a fairly simple UI and is
 easy to get into, at least compared to Gnus. It requires use of an
