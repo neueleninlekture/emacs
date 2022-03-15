@@ -1063,7 +1063,7 @@ enable my preferred theme, =doom-Iosvkem=.
 Make the frame a little transparent.
 
 #+begin_src emacs-lisp
-  (add-to-list 'default-frame-alist '(alpha 97 95))
-  (set-frame-parameter (selected-frame) 'alpha '(97 95))
+  (add-to-list 'default-frame-alist '(alpha 100 100))
+  (set-frame-parameter (selected-frame) 'alpha '(100 100))
 #+end_src
 

@@ -435,5 +435,5 @@
 
 (load-theme 'doom-Iosvkem t)
 
-(add-to-list 'default-frame-alist '(alpha 97 95))
-(set-frame-parameter (selected-frame) 'alpha '(97 95))
+(add-to-list 'default-frame-alist '(alpha 100 100))
+(set-frame-parameter (selected-frame) 'alpha '(100 100))
