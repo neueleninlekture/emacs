@@ -427,6 +427,13 @@
 (global-set-key (kbd "C-x 2") 'split-window-below-and-switch)
 (global-set-key (kbd "C-x 3") 'split-window-right-and-switch)
 
+(defun kill-this-buffer+ ()
+  "Kill the current buffer. More reliable alternative to `kill-this-buffer'"
+  (interactive)
+  (kill-buffer))
+
+(global-set-key (kbd "C-x k") 'kill-this-buffer+)
+
 (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
 (set-frame-font "Iosevka 11" nil t)
 

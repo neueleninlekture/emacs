@@ -1036,6 +1036,22 @@ the newly created windows.
   (global-set-key (kbd "C-x 3") 'split-window-right-and-switch)
 #+end_src
 
+** Kill this buffer
+
+Here we make the =C-x k= key immediately kill the current buffer
+instead of prompting. We do this by making a custom function that is
+both simpler and more reliable than the built-in =kill-this-buffer=. I
+don't know why exactly, but that built in never works properly.
+
+#+begin_src emacs-lisp
+  (defun kill-this-buffer+ ()
+    "Kill the current buffer. More reliable alternative to `kill-this-buffer'"
+    (interactive)
+    (kill-buffer))
+
+  (global-set-key (kbd "C-x k") 'kill-this-buffer+)
+#+end_src
+
 * Appearance
 ** Font
 
