@@ -164,6 +164,12 @@
   :bind
   (("C-=" . er/expand-region)))
 
+(use-package multiple-cursors
+  :straight t
+  :bind
+  ("C-x /" . mc/edit-lines)
+  ("C-x ." . mc/mark-next-like-this))
+
 (setq org-src-window-setup 'current-window)
 
 (use-package org

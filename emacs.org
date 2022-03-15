@@ -581,6 +581,19 @@ prose.
     (("C-=" . er/expand-region)))
 #+end_src
 
+*** Multiple cursors
+
+This handy package allows simultaneous editing of multiple lines. It's
+particularly useful for batch-renaming files in Dired.
+
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :straight t
+    :bind
+    ("C-x /" . mc/edit-lines)
+    ("C-x ." . mc/mark-next-like-this))
+#+end_src
+
 ** Org Mode
 *** Editing code blocks
 
