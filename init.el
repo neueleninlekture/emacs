@@ -348,7 +348,7 @@
 
 (use-package dired
   :custom
-  (dired-listing-switches "-alhNF --group-directories-first")
+  (dired-listing-switches "-alh --group-directories-first")
   (dired-dwim-target t)
   (wdired-allow-to-change-permissions t)
   :config
