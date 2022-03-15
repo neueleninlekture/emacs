@@ -114,7 +114,8 @@
    ("M-g m" . consult-mark)
    ("M-g M-g" . consult-goto-line)
    ("M-g s" . consult-line)
-   ("M-g f" . consult-file-externally)))
+   ("M-g f" . consult-file-externally)
+   ("C-x r b" . consult-bookmark)))
 
 (use-package embark
   :straight t
