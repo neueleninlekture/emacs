@@ -109,7 +109,7 @@
   :bind
   (("M-y" . consult-yank-replace)
    ("C-x b" . consult-buffer)
-   ("M-g g" . consult-grep)
+   ("M-g g" . consult-ripgrep)
    ("M-g o" . consult-outline)
    ("M-g m" . consult-mark)
    ("M-g M-g" . consult-goto-line)
