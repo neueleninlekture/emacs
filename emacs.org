@@ -636,6 +636,7 @@ use this for my agenda and TODO lists as well as my personal journal.
 #+begin_src emacs-lisp
   (use-package org
     :custom
+    (org-capture-bookmark nil)
     (org-capture-templates
      '(("j" "Journal entry"
 	entry
@@ -688,7 +689,6 @@ fancy.
 	:if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 			   "#+title: ${title}\n#+date: %t\n#+filetags: \n")
 	:unnarrowed t)))
-    (org-capture-bookmark nil)
     (org-roam-db-update-on-save t)
     :bind
     (("C-c n f" . org-roam-node-find)

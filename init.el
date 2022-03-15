@@ -189,6 +189,7 @@
 
 (use-package org
   :custom
+  (org-capture-bookmark nil)
   (org-capture-templates
    '(("j" "Journal entry"
       entry
@@ -218,7 +219,6 @@
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 			 "#+title: ${title}\n#+date: %t\n#+filetags: \n")
       :unnarrowed t)))
-  (org-capture-bookmark nil)
   (org-roam-db-update-on-save t)
   :bind
   (("C-c n f" . org-roam-node-find)
