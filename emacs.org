@@ -724,11 +724,10 @@ Simple as.
   (use-package olivetti
     :straight t
     :custom
-    (olivetti-body-width 0.7)
+    (olivetti-body-width 0.72)
     :bind
     (("C-c o" . olivetti-mode)))
 #+end_src
-
 ** PDFs
 
 Here we install the =pdf-tools= package, which provides a nice PDF
