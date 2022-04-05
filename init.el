@@ -189,7 +189,7 @@
 
 (use-package org
   :custom
-  (org-capture-bookmark nil)
+  (org-bookmark-names-plist nil)
   (org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "DROP(c)")))
   (org-refile-targets nil)
   (org-archive-location (format "archive.org::* %s" (format-time-string "%Y")))
