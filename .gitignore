@@ -34,3 +34,4 @@ projects
 /.org-id-locations
 auth.el
 /custom.el
+/multisession/
