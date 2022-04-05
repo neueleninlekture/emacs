@@ -671,6 +671,7 @@ use this for my agenda and TODO lists as well as my personal journal.
       (org-save-all-org-buffers))
     :bind
     (("C-c w" . org-capture)
+     ("C-c a" . org-agenda)
      ("C-c C-x C-s" . aabm/mark-done-and-archive)))
 #+end_src
 

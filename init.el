@@ -224,6 +224,7 @@ save the Org buffers."
     (org-save-all-org-buffers))
   :bind
   (("C-c w" . org-capture)
+   ("C-c a" . org-agenda)
    ("C-c C-x C-s" . aabm/mark-done-and-archive)))
 
 (use-package org-superstar
