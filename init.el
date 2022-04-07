@@ -187,6 +187,8 @@
 	 ("C-M-b" . org-metaleft)
 	 ("C-c C-x l" . org-cycle-list-bullet))))
 
+(global-set-key (kbd "C-c b") 'org-switchb)
+
 (use-package org
   :custom
   (org-bookmark-names-plist nil)

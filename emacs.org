@@ -628,6 +628,12 @@ keybindings that allow us to avoid pressing the arrow keys too much.
 	   ("C-c C-x l" . org-cycle-list-bullet))))
 #+end_src
 
+*** Handling org buffers
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c b") 'org-switchb)
+#+end_src
+
 *** Capture
 
 With =org-capture= I can quickly store thoughts in plain text files. I
