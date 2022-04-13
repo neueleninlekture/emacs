@@ -465,6 +465,7 @@ save the Org buffers."
   (kill-buffer))
 
 (global-set-key (kbd "C-x k") 'kill-this-buffer+)
+(global-set-key (kbd "H-k") 'kill-this-buffer+)
 
 (defun aabm/other-buffer ()
   (interactive)

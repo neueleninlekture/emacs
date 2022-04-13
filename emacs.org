@@ -1085,6 +1085,7 @@ don't know why exactly, but that built in never works properly.
     (kill-buffer))
 
   (global-set-key (kbd "C-x k") 'kill-this-buffer+)
+  (global-set-key (kbd "H-k") 'kill-this-buffer+)
 #+end_src
 
 ** Switch to other buffer
