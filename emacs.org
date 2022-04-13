@@ -1087,6 +1087,16 @@ don't know why exactly, but that built in never works properly.
   (global-set-key (kbd "C-x k") 'kill-this-buffer+)
 #+end_src
 
+** Switch to other buffer
+
+#+begin_src emacs-lisp
+  (defun aabm/other-buffer ()
+    (interactive)
+    (switch-to-buffer nil))
+
+  (global-set-key (kbd "H-b") 'aabm/other-buffer)
+#+end_src
+
 * Appearance
 ** Font
 

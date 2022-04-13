@@ -466,6 +466,12 @@ save the Org buffers."
 
 (global-set-key (kbd "C-x k") 'kill-this-buffer+)
 
+(defun aabm/other-buffer ()
+  (interactive)
+  (switch-to-buffer nil))
+
+(global-set-key (kbd "H-b") 'aabm/other-buffer)
+
 (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
 (set-frame-font "Iosevka 11" nil t)
 
