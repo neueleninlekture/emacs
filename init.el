@@ -469,6 +469,8 @@ save the Org buffers."
 (global-set-key (kbd "C-x 2") 'split-window-below-and-switch)
 (global-set-key (kbd "C-x 3") 'split-window-right-and-switch)
 
+(global-set-key (kbd "H-0") 'delete-window)
+
 (defun kill-this-buffer+ ()
   "Kill the current buffer. More reliable alternative to `kill-this-buffer'"
   (interactive)
