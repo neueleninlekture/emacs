@@ -451,3 +451,11 @@ save the Org buffers."
   :straight t)
 
 (load-theme 'doom-Iosvkem t)
+
+(use-package doom-modeline
+  :straight t
+  :init
+  (doom-modeline-mode)
+  :custom
+  (doom-modeline-enable-word-count t)
+  (doom-modeline-minor-modes nil))

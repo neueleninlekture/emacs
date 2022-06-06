@@ -822,10 +822,24 @@ Here we install ~doom-themes~, the theme pack from Doom Emacs, and
 enable my preferred theme, ~doom-Iosvkem~.
 
 #+begin_src emacs-lisp
-  (use-package doom-themes
-    :straight t)
+    (use-package doom-themes
+      :straight t
+      :custom
+      (doom-gruvbox-dark-variant 'hard))
 
-  (load-theme 'doom-Iosvkem t)
+    (load-theme 'doom-gruvbox t)
 #+end_src
 
+** Modeline
 
+Fancy looking modeline!
+
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :straight t
+    :init
+    (doom-modeline-mode)
+    :custom
+    (doom-modeline-enable-word-count t)
+    (doom-modeline-minor-modes nil))
+#+end_src
