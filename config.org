@@ -1,0 +1,790 @@
+#+title: Aabm's literate configuration for GNU Emacs
+#+author: aabm
+#+email: aabm@disroot.org
+#+startup: overview
+#+property: header-args :tangle config.el
+
+* About
+
+2022 rewrite edition!
+
+This is my personal configuration for GNU Emacs. It is written in a
+literate style, combining code snippets and documentation in the same
+file.
+
+I use Emacs as my primary computing interface. I write personal notes
+and documents with it, and it is central my academic work. This
+configuration is where I set all of that up.
+
+In line with the GNU philosophy, this configuration is entirely Free
+Software. See the [[file:LICENSE][LICENSE]] file in this repository for more
+information.
+
+Some of the major features and characteristics of this configuration
+are:
+
+- Declarative package management with ~straight.el~
+- Powerful writing workflows with ~org-mode~
+- Notetaking according to the /zettelkasten/ method
+- Mail, RSS feeds and more!
+  
+* Minibuffer
+** Which Key
+
+The ~which-key~ package uses the minibuffer to display all active
+keybindings in the currently typed prefix. It allows you to navigate
+your keybindings via prefixes. Nice for when you forget those
+cryptically long keychord sequences.
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :straight t
+    :diminish which-key-mode
+    :init
+    (which-key-mode)
+    :custom
+    (which-key-idle-delay 0.4))
+#+end_src
+
+** Completion and interface
+
+The Emacs minibuffer is a surprisingly powerful tool. Here we improve
+its completion capabilities as well as its interface.
+
+The packages introduced here are:
+
+- ~orderless~, a more advanced completion style, which I find provides
+  a better matching experience. So much better, in fact, that we use
+  it as the only completion style.
+  
+- ~vertico~, which provides a completion interface similar to Ivy or
+  Helm, that is, vertically ordered and which can be navigated by
+  pressing C-n and C-p.
+
+- ~consult~, which provides advanced completion functions, improving
+  upon already existing uses. Powerful functions for switching
+  buffers, finding bookmarks, searching files, etc.
+
+- ~embark~, which allows one to perform arbitrary actions on
+  minibuffer candidates
+
+- ~marginalia~, which displays handy extra information in the
+  minibuffer.
+
+#+begin_src emacs-lisp
+  (straight-use-package 'orderless)
+
+  (use-package vertico
+    :straight t
+    :init
+    (vertico-mode)
+    :custom
+    (completion-styles '(substring orderless))
+    (completion-ignore-case t)
+    (read-file-name-completion-ignore-case t)
+    (read-buffer-completion-ignore-case t)
+    (enable-recursive-minibuffers t))
+
+  (use-package consult
+    :straight t
+    :custom
+    (consult-narrow-key "<")
+    :bind
+    (("M-y" . consult-yank-replace)
+     ("C-x b" . consult-buffer)
+     ("M-g g" . consult-ripgrep)
+     ("M-g o" . consult-outline)
+     ("M-g m" . consult-mark)
+     ("M-g M-g" . consult-goto-line)
+     ("M-g s" . consult-line)
+     ("M-g f" . consult-file-externally)
+     ("C-x r b" . consult-bookmark)))
+
+  (use-package embark
+    :straight t
+    :bind
+    (("C-," . embark-act))
+    :custom
+    (embark-action-indicator
+     (lambda (map &optional _target)
+       (which-key--show-keymap "Embark" map nil nil 'no-paging)
+       #'which-key--hide-popup-ignore-command)
+     embark-become-indicator embark-action-indicator))
+
+  (use-package marginalia
+    :straight t
+    :init
+    (marginalia-mode)
+    :bind
+    ((:map minibuffer-local-map
+	   ("M-a" . marginalia-cycle))))
+#+end_src
+
+** Isearch editing
+
+This package allows one to edit the isearch query much like any other
+minibuffer prompt. Cursor motion commands won't get you out of
+isearch.
+
+#+begin_src emacs-lisp
+  (use-package isearch-mb
+    :straight t
+    :diminish isearch-mb-mode
+    :init
+    (isearch-mb-mode))
+#+end_src
+
+* Writing
+
+All packages and settings relating to writing, from simple text
+editing features to complex modes like Org.
+
+** Text editing features
+*** Auto Fill
+
+When dealing with plain text, I like having my lines automatically
+wrapped to a certain threshold. Here we make it so that
+~auto-fill-mode~ is used in all plain text editing modes.
+
+#+begin_src emacs-lisp
+  (add-hook 'text-mode-hook #'auto-fill-mode)
+  (diminish 'auto-fill-function)
+#+end_src
+ 
+*** Parens, brackets and quotes
+**** Electric pairs
+
+Electric pairs make it so that any opening characters you type
+(parentheses, braces, brackets, quotation marks) are automatically
+matched with their corresponding closing character. This is handy at all
+times when editing, but especially useful for programming in Lisp.
+
+#+begin_src emacs-lisp
+  (setq electric-pair-pairs '((?\{ . ?\})
+                              (?\( . ?\))
+                              (?\[ . ?\])
+                              (?\" . ?\")))
+  (electric-pair-mode t)
+#+end_src
+
+**** Highlight matching parentheses
+
+This minor mode highlights the parentheses corresponding to the one
+under/behind point. Useful for Lisp programming.
+
+#+begin_src emacs-lisp
+  (show-paren-mode t)
+#+end_src
+ 
+*** Casing and capitalization
+
+Here we replace the normal capitalization functions with their
+more flexible useful ~dwim~ counterparts.
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-c") 'capitalize-dwim)
+  (global-set-key (kbd "M-u") 'upcase-dwim)
+  (global-set-key (kbd "M-l") 'downcase-dwim)
+#+end_src
+
+*** Sentence navigation
+
+A nice tweak to sentence navigation commands that makes them more
+usable. We change the definition of a sentence to a more reasonable
+"something that ends in a single space after punctuation", instead of
+the normal double space. This is superior as quite literally no one
+double spaces sentences in ~'(current-year)~.
+   
+#+begin_src emacs-lisp
+  (setq sentence-end-double-space nil)
+#+end_src
+
+*** Whitespace and indentation
+
+Here we set up some useful keys for handling whitespace and
+indentation. ~indent-region~ is normally bound to C-M-\, which I find
+to be too complex of a keybinding for a function I use so frequently.
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-SPC") 'cycle-spacing) 
+
+  (global-set-key (kbd "C-\\") 'indent-region)
+#+end_src
+
+*** Point position
+
+Enabling the following minor modes makes it so that the position of
+point is always displayed in the modeline, as coordinates. It also
+enables display of the line numbers on the left of the frame.
+
+#+begin_src emacs-lisp
+  (line-number-mode t)
+  (column-number-mode t)
+  
+  (setq display-line-numbers-type 'relative)
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+#+end_src
+
+
+*** Expand region
+
+A neat little package that allows marking a region in increasing
+bounds with each call. Think of this as a more dynamic version of
+Vim's "inside" or "around" commands such as ~di(~. Useful for
+selecting things inside parentheses, like in Lisp code, or quotes in
+prose.
+
+#+begin_src emacs-lisp
+  (use-package expand-region
+    :straight t
+    :bind
+    (("C-=" . er/expand-region)))
+#+end_src
+
+*** Multiple cursors
+
+This handy package allows simultaneous editing of multiple lines. It's
+particularly useful for batch-renaming files in Dired.
+
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :straight t
+    :bind
+    ("C-x /" . mc/edit-lines)
+    ("C-x ." . mc/mark-next-like-this))
+#+end_src
+
+** Org Mode
+*** Editing code blocks
+
+Here we make it so that editing a code block is done in the current
+window.
+
+#+begin_src emacs-lisp
+  (setq org-src-window-setup 'current-window)
+#+end_src
+
+*** Navigating headings
+
+Some settings which make handling Org headings easier: first we make
+it so that headings are wrapped by default and that pressing TAB at
+the file header cycles all headings. Then we add some convenient
+keybindings that allow us to avoid pressing the arrow keys too much.
+
+#+begin_src emacs-lisp
+  (use-package org
+    :custom
+    (org-cycle-global-at-bob t)
+    (org-startup-folded t)
+    :bind
+    (:map org-mode-map
+	  (("M-n" . org-forward-element)
+	   ("M-p" . org-backward-element)
+	   ("C-M-n" . org-metadown)
+	   ("C-M-p" . org-metaup)
+	   ("C-M-f" . org-metaright)
+	   ("C-M-b" . org-metaleft)
+	   ("C-c C-x l" . org-cycle-list-bullet))))
+#+end_src
+
+*** Handling org buffers
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c b") 'org-switchb)
+#+end_src
+
+*** Capture
+
+With ~org-capture~ I can quickly store thoughts in plain text files. I
+use this for my agenda and TODO lists as well as my personal journal.
+
+#+begin_src emacs-lisp
+      (use-package org
+	:custom
+	(org-bookmark-names-plist nil)
+	(org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "DROP(c)")))
+	(org-refile-targets nil)
+	(org
+	 -agenda-files '("agenda.org" "journal.org"))
+	(org-archive-location (format "archive.org::* %s" (format-time-string "%Y")))
+	(org-capture-templates
+	 '(("j" "Journal entry"
+	    entry
+	    (file+datetree "journal.org")
+	    "* %?"
+	    :empty-lines 1)
+	   ("t" "TODO"
+	    entry
+	    (file+headline "agenda.org" "Inbox")
+	    "* TODO %?"
+	    :empty-lines 1)
+	   ("d" "Deadline TODO"
+	    entry
+	    (file+headline "agenda.org" "Inbox")
+	    "* TODO %?\nDEADLINE: %^{Deadline: }T"
+	    :empty-lines 1)
+	   ("s" "Scheduled TODO"
+	    entry
+	    (file+headline "agenda.org" "Inbox")
+	    "* TODO %?\nSCHEDULED: %^{Scheduled: }T"
+	    :empty-lines 1)))
+	:config
+	(defun aabm/mark-done-and-archive ()
+	  "Mark the state of an org-mode item as DONE, archive it, and
+      save the Org buffers."
+	  (interactive)
+	  (org-todo 'done)
+	  (org-archive-subtree)
+	  (org-save-all-org-buffers))
+	:bind
+	(("C-c w" . org-capture)
+	 ("C-c a" . org-agenda)
+	 ("C-c C-x C-s" . aabm/mark-done-and-archive)))
+#+end_src
+
+*** Custom bullets
+
+To make Org look a bit nicer, we use the ~org-superstar~ package. This
+replaces the heading asterisks with custom UTF-8 bullet characters.
+
+#+begin_src emacs-lisp
+  (use-package org-superstar
+    :straight t
+    :hook
+    (org-mode-hook . org-superstar-mode))
+#+end_src
+
+*** Pretty entities
+
+Prettify some characters.
+
+#+begin_src emacs-lisp
+  (use-package org
+    :custom
+    (org-pretty-entities t))
+#+end_src
+
+*** Org Roam
+
+~org-roam~ is a very powerful extension to org-mode. Essentially, it
+is a package that maintains a relational database of links between
+files, and allows navigation of this database using links and
+backlinks. Org Roam is made as a tool for notetaking following the
+~zettelkasten~ method. It is incredibly useful tool. I personally
+treat it as a second brain, in which I store all the information I
+would like to later recall.
+
+We also install ~org-roam-ui~, which runs a local web server for
+displaying a visual representation of links between notes. It's quite
+fancy.
+
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :straight t
+    :init
+    (setq org-roam-directory "~/org/")
+    (setq org-roam-v2-ack t)
+    :config
+    (org-roam-setup)
+    :custom
+    (org-roam-db-location
+     (expand-file-name "roam.db" org-roam-directory))
+    (org-roam-capture-templates
+     '(("d" "default" plain "%?"
+	:if-new (file+head "${slug}.org"
+			   "#+title: ${title}\n#+date: %t\n")
+	:unnarrowed t)))
+    (org-roam-db-update-on-save t)
+    :bind
+    (("C-c n f" . org-roam-node-find)
+     ("C-c n i" . org-roam-node-insert)
+     ("C-c n l" . org-roam-buffer-toggle)
+     ("C-c n w" . org-roam-capture)
+     ("C-c n o" . org-roam-buffer-display-dedicated)
+     ("C-c n c" . org-id-get-create)
+     ("C-c n a" . org-roam-alias-add)
+     ("C-c n u" . org-roam-db-sync)))
+
+  (use-package org-roam-ui
+    :straight
+    (:host github :repo "org-roam/org-roam-ui"
+	   :branch "main" :files ("*.el" "out"))
+      :after org-roam
+      :custom
+      (org-roam-ui-sync-theme t)
+      (org-roam-ui-follow t)
+      (org-roam-ui-update-on-save t)
+      (org-roam-ui-open-on-start t)
+      :bind
+      (("C-c n g" . org-roam-ui-mode)))
+#+end_src
+
+** Citations
+* Reading
+** Olivetti
+
+~olivetti-mode~ is a minor mode which centers text on the screen.
+Simple as.
+
+#+begin_src emacs-lisp
+  (use-package olivetti
+    :straight t
+    :custom
+    (olivetti-body-width 0.72)
+    :bind
+    (("C-c o" . olivetti-mode)))
+#+end_src
+** PDFs
+
+Here we install the ~pdf-tools~ package, which provides a nice PDF
+reader inside Emacs. It appears here as a replacement for the built-in
+~docview~, which is quite clunky. I find it very convenient to be able
+to read PDFs from within Emacs, even if the experience is not as good
+as that of a dedicated PDF reader.
+
+#+begin_src emacs-lisp
+  (use-package pdf-tools
+    :straight t
+    :init
+    (pdf-loader-install)
+    :custom
+    (pdf-view-resize-factor 1.1)
+    (pdf-view-continuous nil)
+    (pdf-view-display-size 'fit-page)
+    :bind
+    (:map pdf-view-mode-map
+	  (("M-g g" . pdf-view-goto-page))))
+#+end_src
+* Web and Mail
+
+Emacs is actually a great interface for some web-related tasks, such
+as reading emails, newsfeeds and even occasional web browsing.
+
+** News
+
+Using ~elfeed~ we can read RSS feeds in Emacs. Here we apply minor
+tweaks to it: first, make it load my personal RSS feeds file, and
+second, make it use ~olivetti-mode~ for a more comfortable reading
+experience.
+
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :straight t
+    :config
+    (load-file (expand-file-name "personal/feeds.el" user-emacs-directory))
+    :hook
+    ((elfeed-show-mode-hook . olivetti-mode))
+    :bind
+    (("C-c e" . elfeed)))
+#+end_src
+
+** Mail
+*** General
+
+Here we include global, client-independent settings for Email in
+Emacs, such as usage of the external program ~msmtp~ for sending mail.
+Emacs is capable of sending mail on its own, but it is quite slow, so
+we instead opt for an external, more universal tool.
+
+#+begin_src emacs-lisp
+  (setq message-send-mail-function 'message-send-mail-with-sendmail)
+  (setq sendmail-program "/usr/bin/msmtp")
+  (setq message-sendmail-extra-arguments '("--read-envelope-from"))
+  (setq message-sendmail-f-is-evil 't)
+#+end_src
+
+*** mu4e
+
+~mu4e~ is a mail client for Emacs. It has a fairly simple UI and is
+easy to get into, compared to some alternatives. It requires use of an
+external tool such as ~isync~ for keeping your mailbox synced.
+   
+#+begin_src emacs-lisp
+  (use-package mu4e
+    :straight t
+    :commands mu4e mu4e-compose-new
+    :custom
+    (mail-user-agent 'mu4e-user-agent)
+    (mu4e-maildir "~/.mail/disroot/")
+    (mu4e-get-mail-command "/usr/bin/mbsync -a")
+    (mu4e-update-mail-and-index t)
+    (mu4e-update-interval 300)
+    (mu4e-view-show-images t)
+    (mu4e-view-show-addresses t)
+    (mu4e-use-fancy-chars nil)
+    (mu4e-drafts-folder "/drafts")
+    (mu4e-sent-folder "/sent")
+    (mu4e-trash-folder "/trash")
+    (message-send-mail-function 'message-send-mail-with-sendmail)
+    (sendmail-program "/usr/bin/msmtp")
+    (message-sendmail-extra-arguments '("--read-envelope-from"))
+    (message-sendmail-f-is-evil t)
+    (mu4e-completing-read-function 'completing-read)
+    (mu4e-confirm-quit nil)
+    (message-kill-buffer-on-exit t)
+    (mu4e-attachment-dir "~/")
+    (mu4e-compose-signature
+     '(user-full-name))
+    :hook
+    (message-send-hook .
+		       (lambda ()
+			 (unless (yes-or-no-p "Sure you want to send this?")
+			   (signal 'quit nil))))
+    :bind
+    ((("C-c m" . mu4e)
+      ("C-x m" . mu4e-compose-new))))
+#+end_src
+
+* Projects
+
+Settings and packages for managing files, projects and version
+control.
+
+** vc
+
+~vc~ is Emacs' built-in tool for interfacing with version control
+systems. By default it is system agnostic - it works with ~git~,
+~mercurial~, and various others.
+
+The main addition here is a custom function, ~vc-git-log-grep~. It
+prompts the user for a string, and searches it through the git log,
+returning valid commit logs.
+
+#+begin_src emacs-lisp
+  (use-package vc
+    :config
+    (defvar vc-shell-output "*vc-output*")
+    (defun vc-git-log-grep (pattern &optional diff)
+      "Run ’git log --grep’ for PATTERN.
+      With optional DIFF as a prefix (\\[universal-argument])
+      argument, also show the corresponding diffs. 
+
+    This function was taken from prot."
+      (interactive
+       (list (read-regexp "Search git log for PATTERN: ")
+	     current-prefix-arg))
+      (let* ((buf-name vc-shell-output)
+	     (buf (get-buffer-create buf-name))
+	     (diffs (if diff "-p" ""))
+	     (type (if diff 'with-diff 'log-search))
+	     (resize-mini-windows nil))
+	(shell-command (format "git log %s --grep=%s -i -E --" diffs pattern) buf)
+	(with-current-buffer buf
+	  (setq-local vc-log-view-type type)
+	  (setq-local revert-buffer-function nil)
+	  (vc-git-region-history-mode))))
+    :bind
+    (:map vc-prefix-map
+	  (("S" . vc-git-log-grep))))
+#+end_src
+
+** Magit
+
+A powerful git porcelain, and a very famous "killer app" for Emacs. It
+is indeed very powerful, but sometimes I find its UI gets in the way a
+bit. I keep it for those times when ~vc~ simply won't do.
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :straight t
+    :commands
+    (magit-status magit)
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+    :config
+    (defun magit-commit-all ()
+      (interactive)
+      (start-process-shell-command
+       "" nil "git add .")
+      (magit-commit-create))
+    :bind
+    (("C-x g" . magit-status)
+     ("C-x v c" . magit-commit-all)
+     ("C-x v P" . magit-push-current-to-pushremote)))
+#+end_src
+
+** Dired
+
+Big changes to ~dired~ behavior. First we change the flags it passes
+to the ~ls~ command, which in turn gives us better output to work
+with, like having directories be listed before regular files. Then we
+add other QoL changes, like faster copying and moving, as well as
+easier changing of permissions when in writeable dired mode.
+
+I also add a function for opening just about any file from dired using
+its respective program, via ~xdg-open~. This way you can open videos
+with an external video player and images with a proper image viewer.
+
+We also add some extra packages. First is ~dired-hide-dotfiles-mode~,
+which does what the name suggests. It can be toggled by pressing ~h~.
+
+#+begin_src emacs-lisp
+  (use-package dired
+    :custom
+    (dired-listing-switches "-alh --group-directories-first")
+    (dired-dwim-target t)
+    (wdired-allow-to-change-permissions t)
+    :config
+    (defun dired-xdg-open ()
+      "Open the marked files using xdg-open."
+      (interactive)
+      (let ((file-list (dired-get-marked-files)))
+	(mapc
+	 (lambda (file-path)
+	   (let ((process-connection-type nil))
+	     (start-process "" nil "xdg-open" file-path)))
+	 file-list)))
+    :bind
+    (:map dired-mode-map
+	  (("v" . dired-xdg-open)
+	   ("l" . dired-up-directory))))
+
+  (use-package dired-hide-dotfiles
+    :straight t
+    :diminish dired-hide-dotfiles-mode
+    :hook
+    ((dired-mode-hook . dired-hide-dotfiles-mode))
+    :bind
+    (:map dired-mode-map
+	  (("h" . dired-hide-dotfiles-mode))))
+#+end_src
+
+* Utilities
+** Display time on the modeline
+
+I like having a little clock on my modeline for those fullscreen
+writing and reading sessions. 
+
+#+begin_src emacs-lisp
+  (use-package time
+    :init
+    (display-time-mode)
+    :custom
+    (display-time-format "%a, %b %d %H:%M")
+    (display-time-default-load-average nil))
+#+end_src
+
+** World Clock
+
+I like having access to the ~world-clock~. Here we set up a little
+list of locations I would sometimes like to know the time for.
+
+#+begin_src emacs-lisp
+  (use-package time
+    :custom
+    (world-clock-list
+     '(("America/Los_Angeles" "Seattle")
+       ("America/New_York" "New York")
+       ("America/Sao_Paulo" "São Paulo")
+       ("Europe/London" "London")
+       ("Europe/Paris" "Paris")
+       ("Africa/Cairo" "Cairo")
+       ("Asia/Baghdad" "Baghdad")
+       ("Asia/Dushanbe" "Malé")
+       ("Asia/Beijing" "Beijing"))))
+#+end_src
+
+* Buffers and windows
+** Ibuffer
+
+~Ibuffer~ is an interface for managing buffers, not too different from
+what ~dired~ does for files. We replace the default ~list-buffers~
+with it.
+
+We also install the ~ibuffer-project~ package which provides
+integration with the built-in ~project.el~ library. This makes ibuffer
+group buffers based on the projects they belong to.
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+  (use-package ibuffer-project
+    :straight t
+    :hook
+    (ibuffer-mode-hook . (lambda ()
+			   (setq ibuffer-filter-groups
+				 (ibuffer-project-generate-filter-groups)))))
+#+end_src
+
+** Easier window switching
+
+A few commands for easier window switching! First, a better keybinding
+for the common ~other-window~ command. Then, we replace the basic
+window splitting functions for versions which automatically switch to
+the newly created windows.
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-o") 'other-window)
+
+  (defun split-window-below-and-switch ()
+    "A simple replacement for `split-window-below', which automatically focuses the new window."
+    (interactive)
+    (split-window-below)
+    (other-window 1))
+
+  (defun split-window-right-and-switch ()
+    "A simple replacement for `split-window-right', which automatically focuses the new window."
+    (interactive)
+    (split-window-right)
+    (other-window 1))
+
+  (global-set-key (kbd "C-x 2") 'split-window-below-and-switch)
+  (global-set-key (kbd "C-x 3") 'split-window-right-and-switch)
+#+end_src
+
+** Easier delete window
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "H-0") 'delete-window)
+#+end_src
+
+** Kill this buffer
+
+Here we make the ~C-x k~ key immediately kill the current buffer
+instead of prompting. We do this by making a custom function that is
+both simpler and more reliable than the built-in ~kill-this-buffer~. I
+don't know why exactly, but that built in never works properly.
+
+#+begin_src emacs-lisp
+  (defun kill-this-buffer+ ()
+    "Kill the current buffer. More reliable alternative to `kill-this-buffer'"
+    (interactive)
+    (kill-buffer))
+
+  (global-set-key (kbd "C-x k") 'kill-this-buffer+)
+  (global-set-key (kbd "H-k") 'kill-this-buffer+)
+#+end_src
+
+** Switch to other buffer
+
+#+begin_src emacs-lisp
+  (defun aabm/other-buffer ()
+    (interactive)
+    (switch-to-buffer nil))
+
+  (global-set-key (kbd "H-b") 'aabm/other-buffer)
+#+end_src
+
+* Appearance
+** Font
+
+I like the Iosevka font.
+
+#+begin_src emacs-lisp
+  (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
+  (set-frame-font "Iosevka 11" nil t)
+#+end_src
+
+** Theme
+
+Here we install ~doom-themes~, the theme pack from Doom Emacs, and
+enable my preferred theme, ~doom-Iosvkem~.
+
+#+begin_src emacs-lisp
+  (use-package doom-themes
+    :straight t)
+
+  (load-theme 'doom-Iosvkem t)
+#+end_src
+
+
