@@ -708,6 +708,16 @@ replaces the heading asterisks with custom UTF-8 bullet characters.
     (org-mode-hook . org-superstar-mode))
 #+end_src
 
+*** Pretty entities
+
+Prettify some characters.
+
+#+begin_src emacs-lisp
+  (use-package org
+    :custom
+    (org-pretty-entities t))
+#+end_src
+
 *** Org Roam
 
 =org-roam= is a very powerful extension to org-mode. Essentially, it
@@ -1083,6 +1093,12 @@ the newly created windows.
 
   (global-set-key (kbd "C-x 2") 'split-window-below-and-switch)
   (global-set-key (kbd "C-x 3") 'split-window-right-and-switch)
+#+end_src
+
+** Easier delete window
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "H-0") 'delete-window)
 #+end_src
 
 ** Kill this buffer

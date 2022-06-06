@@ -241,6 +241,10 @@ save the Org buffers."
   :hook
   (org-mode-hook . org-superstar-mode))
 
+(use-package org
+  :custom
+  (org-pretty-entities t))
+
 (use-package org-roam
   :straight t
   :init
