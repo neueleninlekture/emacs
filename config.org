@@ -456,6 +456,19 @@ as that of a dedicated PDF reader.
     (:map pdf-view-mode-map
 	  (("M-g g" . pdf-view-goto-page))))
 #+end_src
+
+* Programming
+** Rainbow delimiters
+
+Makes it easier to tell pairs of delimiters apart. Also looks nice.
+
+#+begin_src emacs-lisp
+  (use-package rainbow-delimiters
+    :straight t
+    :hook
+    ((prog-mode-hook . rainbow-delimiters-mode)))
+#+end_src
+
 * Web and Mail
 
 Emacs is actually a great interface for some web-related tasks, such
@@ -648,6 +661,11 @@ which does what the name suggests. It can be toggled by pressing ~h~.
     :bind
     (:map dired-mode-map
 	  (("h" . dired-hide-dotfiles-mode))))
+
+  (use-package diredfl
+    :straight t
+    :hook
+    ((dired-mode-hook . diredfl-mode)))
 #+end_src
 
 * Utilities

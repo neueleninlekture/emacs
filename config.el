@@ -225,6 +225,11 @@ save the Org buffers."
   (:map pdf-view-mode-map
 	(("M-g g" . pdf-view-goto-page))))
 
+(use-package rainbow-delimiters
+  :straight t
+  :hook
+  ((prog-mode-hook . rainbow-delimiters-mode)))
+
 (use-package elfeed
   :straight t
   :config
@@ -344,6 +349,11 @@ save the Org buffers."
   :bind
   (:map dired-mode-map
 	(("h" . dired-hide-dotfiles-mode))))
+
+(use-package diredfl
+  :straight t
+  :hook
+  ((dired-mode-hook . diredfl-mode)))
 
 (use-package time
   :init
