@@ -366,6 +366,8 @@ fancy.
 #+end_src
 
 ** Citations
+
+**
 * Reading
 ** Olivetti
 
@@ -760,7 +762,8 @@ Finally migrating to Vim keys.
     "fo" 'consult-file-externally
     ;; buffers
     "bb" 'consult-buffer
-    "bk" 'kill-buffer
+    "bk" 'kill-this-buffer+
+    "bK" 'kill-buffer
     "bm" 'consult-bookmark
     "bi" 'ibuffer
     "bo" 'aabm/other-buffer

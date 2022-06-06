@@ -359,13 +359,13 @@ save the Org buffers."
   :custom
   (evil-undo-system 'undo-redo))
 
+(use-package evil-collection
+  :straight t)
+
 (use-package evil-surround
   :straight t
   :hook
   ((evil-mode-hook . evil-surround-mode)))
-
-(use-package evil-magit
-  :straight t)
 
 (use-package org-evil
   :straight t)
@@ -399,7 +399,8 @@ save the Org buffers."
   "fo" 'consult-file-externally
   ;; buffers
   "bb" 'consult-buffer
-  "bk" 'kill-buffer
+  "bk" 'kill-this-buffer+
+  "bK" 'kill-buffer
   "bm" 'consult-bookmark
   "bi" 'ibuffer
   "bo" 'aabm/other-buffer
