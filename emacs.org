@@ -480,6 +480,20 @@ The packages introduced here are:
 	   ("M-a" . marginalia-cycle))))
 #+end_src
 
+** Isearch editing
+
+This package allows one to edit the isearch query much like any other
+minibuffer prompt. Cursor motion commands won't get you out of
+isearch.
+
+#+begin_src emacs-lisp
+  (use-package isearch-mb
+    :straight t
+    :diminish isearch-mb-mode
+    :init
+    (isearch-mb-mode))
+#+end_src
+
 * Writing
 
 All packages and settings relating to writing, from simple text

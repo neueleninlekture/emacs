@@ -136,6 +136,12 @@
   ((:map minibuffer-local-map
 	 ("M-a" . marginalia-cycle))))
 
+(use-package isearch-mb
+  :straight t
+  :diminish isearch-mb-mode
+  :init
+  (isearch-mb-mode))
+
 (add-hook 'text-mode-hook #'auto-fill-mode)
 (diminish 'auto-fill-function)
 
