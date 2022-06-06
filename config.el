@@ -22,17 +22,7 @@
 (use-package consult
   :straight t
   :custom
-  (consult-narrow-key "<")
-  :bind
-  (("M-y" . consult-yank-replace)
-   ("C-x b" . consult-buffer)
-   ("M-g g" . consult-ripgrep)
-   ("M-g o" . consult-outline)
-   ("M-g m" . consult-mark)
-   ("M-g M-g" . consult-goto-line)
-   ("M-g s" . consult-line)
-   ("M-g f" . consult-file-externally)
-   ("C-x r b" . consult-bookmark)))
+  (consult-narrow-key "<"))
 
 (use-package embark
   :straight t
@@ -76,10 +66,6 @@
 
 (setq sentence-end-double-space nil)
 
-(global-set-key (kbd "M-SPC") 'cycle-spacing) 
-
-(global-set-key (kbd "C-\\") 'indent-region)
-
 (line-number-mode t)
 (column-number-mode t)
 
@@ -93,28 +79,14 @@
   (("C-=" . er/expand-region)))
 
 (use-package multiple-cursors
-  :straight t
-  :bind
-  ("C-x /" . mc/edit-lines)
-  ("C-x ." . mc/mark-next-like-this))
+  :straight t)
 
 (setq org-src-window-setup 'current-window)
 
 (use-package org
   :custom
   (org-cycle-global-at-bob t)
-  (org-startup-folded t)
-  :bind
-  (:map org-mode-map
-	(("M-n" . org-forward-element)
-	 ("M-p" . org-backward-element)
-	 ("C-M-n" . org-metadown)
-	 ("C-M-p" . org-metaup)
-	 ("C-M-f" . org-metaright)
-	 ("C-M-b" . org-metaleft)
-	 ("C-c C-x l" . org-cycle-list-bullet))))
-
-(global-set-key (kbd "C-c b") 'org-switchb)
+  (org-startup-folded t))
 
 (use-package org
   :custom
@@ -152,11 +124,7 @@ save the Org buffers."
     (interactive)
     (org-todo 'done)
     (org-archive-subtree)
-    (org-save-all-org-buffers))
-  :bind
-  (("C-c w" . org-capture)
-   ("C-c a" . org-agenda)
-   ("C-c C-x C-s" . aabm/mark-done-and-archive)))
+    (org-save-all-org-buffers)))
 
 (use-package org-superstar
   :straight t
@@ -182,16 +150,7 @@ save the Org buffers."
       :if-new (file+head "${slug}.org"
 			 "#+title: ${title}\n#+date: %t\n")
       :unnarrowed t)))
-  (org-roam-db-update-on-save t)
-  :bind
-  (("C-c n f" . org-roam-node-find)
-   ("C-c n i" . org-roam-node-insert)
-   ("C-c n l" . org-roam-buffer-toggle)
-   ("C-c n w" . org-roam-capture)
-   ("C-c n o" . org-roam-buffer-display-dedicated)
-   ("C-c n c" . org-id-get-create)
-   ("C-c n a" . org-roam-alias-add)
-   ("C-c n u" . org-roam-db-sync)))
+  (org-roam-db-update-on-save t))
 
 (use-package org-roam-ui
   :straight
@@ -202,16 +161,12 @@ save the Org buffers."
     (org-roam-ui-sync-theme t)
     (org-roam-ui-follow t)
     (org-roam-ui-update-on-save t)
-    (org-roam-ui-open-on-start t)
-    :bind
-    (("C-c n g" . org-roam-ui-mode)))
+    (org-roam-ui-open-on-start t))
 
 (use-package olivetti
   :straight t
   :custom
-  (olivetti-body-width 0.72)
-  :bind
-  (("C-c o" . olivetti-mode)))
+  (olivetti-body-width 0.72))
 
 (use-package pdf-tools
   :straight t
@@ -235,9 +190,7 @@ save the Org buffers."
   :config
   (load-file (expand-file-name "personal/feeds.el" user-emacs-directory))
   :hook
-  ((elfeed-show-mode-hook . olivetti-mode))
-  :bind
-  (("C-c e" . elfeed)))
+  ((elfeed-show-mode-hook . olivetti-mode)))
 
 (setq message-send-mail-function 'message-send-mail-with-sendmail)
 (setq sendmail-program "/usr/bin/msmtp")
@@ -273,10 +226,7 @@ save the Org buffers."
   (message-send-hook .
 		     (lambda ()
 		       (unless (yes-or-no-p "Sure you want to send this?")
-			 (signal 'quit nil))))
-  :bind
-  ((("C-c m" . mu4e)
-    ("C-x m" . mu4e-compose-new))))
+			 (signal 'quit nil)))))
 
 (use-package vc
   :config
@@ -299,10 +249,7 @@ save the Org buffers."
       (with-current-buffer buf
 	(setq-local vc-log-view-type type)
 	(setq-local revert-buffer-function nil)
-	(vc-git-region-history-mode))))
-  :bind
-  (:map vc-prefix-map
-	(("S" . vc-git-log-grep))))
+	(vc-git-region-history-mode)))))
 
 (use-package magit
   :straight t
@@ -315,11 +262,7 @@ save the Org buffers."
     (interactive)
     (start-process-shell-command
      "" nil "git add .")
-    (magit-commit-create))
-  :bind
-  (("C-x g" . magit-status)
-   ("C-x v c" . magit-commit-all)
-   ("C-x v P" . magit-push-current-to-pushremote)))
+    (magit-commit-create)))
 
 (use-package dired
   :custom
@@ -338,8 +281,7 @@ save the Org buffers."
        file-list)))
   :bind
   (:map dired-mode-map
-	(("v" . dired-xdg-open)
-	 ("l" . dired-up-directory))))
+	(("v" . dired-xdg-open))))
 
 (use-package dired-hide-dotfiles
   :straight t
@@ -348,7 +290,7 @@ save the Org buffers."
   ((dired-mode-hook . dired-hide-dotfiles-mode))
   :bind
   (:map dired-mode-map
-	(("h" . dired-hide-dotfiles-mode))))
+	(("H" . dired-hide-dotfiles-mode))))
 
 (use-package diredfl
   :straight t
@@ -375,8 +317,6 @@ save the Org buffers."
      ("Asia/Dushanbe" "Malé")
      ("Asia/Beijing" "Beijing"))))
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
 (use-package ibuffer-project
   :straight t
   :hook
@@ -401,21 +341,108 @@ save the Org buffers."
 (global-set-key (kbd "C-x 2") 'split-window-below-and-switch)
 (global-set-key (kbd "C-x 3") 'split-window-right-and-switch)
 
-(global-set-key (kbd "H-0") 'delete-window)
-
 (defun kill-this-buffer+ ()
   "Kill the current buffer. More reliable alternative to `kill-this-buffer'"
   (interactive)
   (kill-buffer))
 
 (global-set-key (kbd "C-x k") 'kill-this-buffer+)
-(global-set-key (kbd "H-k") 'kill-this-buffer+)
 
 (defun aabm/other-buffer ()
   (interactive)
   (switch-to-buffer nil))
 
-(global-set-key (kbd "H-b") 'aabm/other-buffer)
+(use-package evil
+  :straight t
+  :init
+  (evil-mode)
+  :custom
+  (evil-undo-system 'undo-redo))
+
+(use-package evil-surround
+  :straight t
+  :hook
+  ((evil-mode-hook . evil-surround-mode)))
+
+(use-package evil-magit
+  :straight t)
+
+(use-package org-evil
+  :straight t)
+
+(use-package evil-org
+  :straight t
+  :hook
+  ((org-mode-hook . evil-org-mode))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
+(use-package evil-escape
+  :straight t
+  :custom
+  (evil-escape-key-sequence "jk"))
+
+(use-package general
+  :straight t)
+
+(general-evil-setup)
+
+(general-nmap
+  :prefix "SPC"
+  :prefix-map 'leader-map
+  ;; files
+  "ff" 'find-file
+  "fd" 'dired
+  "fj" 'dired-jump
+  "fc" 'find-emacs-config
+  "fo" 'consult-file-externally
+  ;; buffers
+  "bb" 'consult-buffer
+  "bk" 'kill-buffer
+  "bm" 'consult-bookmark
+  "bi" 'ibuffer
+  "bo" 'aabm/other-buffer
+  ;; git
+  "gg" 'magit-status
+  "gc" 'magit-commit-all
+  "gp" 'magit-push-current-to-pushremote
+  "gs" 'vc-git-log-grep
+  ;; search
+  "sr" 'consult-ripgrep
+  "so" 'consult-outline
+  "sm" 'consult-mark
+  "ss" 'consult-line
+  "sl" 'consult-goto-line
+  ;; text editing
+  "ti" 'indent-region
+  "ty" 'consult-yank-from-kill-ring
+  ;; windows
+  "wo" 'other-window
+  "wd" 'delete-other-windows
+  "wk" 'delete-window
+  "wj" 'split-window-below-and-switch
+  "wl" 'split-window-right-and-switch
+  ;; major modes
+  "xe" 'elfeed
+  ;; mail
+  "mm" 'mu4e
+  "mc" 'mu4e-compose-new
+  ;;; notes
+  ;; basic org
+  "nw" 'org-capture
+  "na" 'org-agenda
+  "nb" 'org-switchb
+  ;; roam
+  "nf" 'org-roam-node-find
+  "ni" 'org-roam-node-insert
+  "nB" 'org-roam-buffer-toggle
+  "nc" 'org-roam-capture
+  "no" 'org-roam-buffer-display-dedicated
+  "nI" 'org-id-get-create
+  "nA" 'org-roam-alias-add
+  "nu" 'org-roam-db-sync
+  "ng" 'org-roam-ui-mode)
 
 (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
 (set-frame-font "Iosevka 11" nil t)
