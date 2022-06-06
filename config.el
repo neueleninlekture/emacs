@@ -84,6 +84,7 @@
 (column-number-mode t)
 
 (setq display-line-numbers-type 'relative)
+(add-hook 'text-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 (use-package expand-region
