@@ -367,7 +367,20 @@ fancy.
 
 ** Citations
 
-**
+#+begin_src emacs-lisp
+  (use-package org
+    :custom
+    (org-cite-global-bibliography "~/doc/tex/bib/main.bib"))
+
+  (use-package citar
+    :straight t
+    :custom
+    (org-cite-insert-processor 'citar)
+    (org-cite-follow-processor 'citar)
+    (org-cite-activate-processor 'citar)
+    (citar-bibliography org-cite-global-bibliography))
+#+end_src
+
 * Reading
 ** Olivetti
 

@@ -163,6 +163,18 @@ save the Org buffers."
     (org-roam-ui-update-on-save t)
     (org-roam-ui-open-on-start t))
 
+(use-package org
+  :custom
+  (org-cite-global-bibliography "~/doc/tex/bib/main.bib"))
+
+(use-package citar
+  :straight t
+  :custom
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  (citar-bibliography org-cite-global-bibliography))
+
 (use-package olivetti
   :straight t
   :custom
