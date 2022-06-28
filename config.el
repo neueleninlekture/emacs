@@ -26,14 +26,14 @@
 
 (use-package embark
   :straight t
-  :bind
-  (("C-," . embark-act))
   :custom
-  (embark-action-indicator
-   (lambda (map &optional _target)
-     (which-key--show-keymap "Embark" map nil nil 'no-paging)
-     #'which-key--hide-popup-ignore-command)
-   embark-become-indicator embark-action-indicator))
+  (embark-indicators
+   '(embark-highlight-indicator
+     embark-verbose-indicator
+     embark-isearch-highlight-indicator)))
+
+(use-package embark-consult
+  :straight t)
 
 (use-package marginalia
   :straight t
