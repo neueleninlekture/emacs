@@ -770,6 +770,8 @@ Finally migrating to Vim keys.
   (general-evil-setup)
 
   (general-nmap
+    :states 'normal
+    :keymaps 'override
     :prefix "SPC"
     :prefix-map 'leader-map
     ;; files
@@ -799,6 +801,7 @@ Finally migrating to Vim keys.
     ;; text editing
     "ti" 'indent-region
     "ty" 'consult-yank-from-kill-ring
+    "to" 'olivetti-mode
     ;; windows
     "wo" 'other-window
     "wd" 'delete-other-windows
@@ -824,7 +827,9 @@ Finally migrating to Vim keys.
     "nI" 'org-id-get-create
     "nA" 'org-roam-alias-add
     "nu" 'org-roam-db-sync
-    "ng" 'org-roam-ui-mode)
+    "ng" 'org-roam-ui-mode
+    ;; other
+    "." 'embark-act)
 #+end_src
 
 * Appearance
@@ -848,7 +853,7 @@ enable my preferred theme, ~doom-Iosvkem~.
       :custom
       (doom-gruvbox-dark-variant 'hard))
 
-    (load-theme 'doom-gruvbox t)
+    (load-theme 'doom-Iosvkem t)
 #+end_src
 
 ** Modeline

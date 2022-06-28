@@ -406,6 +406,8 @@ save the Org buffers."
 (general-evil-setup)
 
 (general-nmap
+  :states 'normal
+  :keymaps 'override
   :prefix "SPC"
   :prefix-map 'leader-map
   ;; files
@@ -435,6 +437,7 @@ save the Org buffers."
   ;; text editing
   "ti" 'indent-region
   "ty" 'consult-yank-from-kill-ring
+  "to" 'olivetti-mode
   ;; windows
   "wo" 'other-window
   "wd" 'delete-other-windows
@@ -460,13 +463,17 @@ save the Org buffers."
   "nI" 'org-id-get-create
   "nA" 'org-roam-alias-add
   "nu" 'org-roam-db-sync
-  "ng" 'org-roam-ui-mode)
+  "ng" 'org-roam-ui-mode
+  ;; other
+  "." 'embark-act)
 
 (add-to-list 'default-frame-alist '(font . "Iosevka 11"))
 (set-frame-font "Iosevka 11" nil t)
 
 (use-package doom-themes
-  :straight t)
+  :straight t
+  :custom
+  (doom-gruvbox-dark-variant 'hard))
 
 (load-theme 'doom-Iosvkem t)
 
