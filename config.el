@@ -367,12 +367,17 @@ save the Org buffers."
 (use-package evil
   :straight t
   :init
+  (setq evil-want-keybinding nil)
   (evil-mode)
   :custom
-  (evil-undo-system 'undo-redo))
+  (evil-undo-system 'undo-redo)
+  :hook
+  (with-editor-mode-hook . evil-insert-state))
 
 (use-package evil-collection
-  :straight t)
+  :straight t
+  :init
+  (evil-collection-init))
 
 (use-package evil-surround
   :straight t

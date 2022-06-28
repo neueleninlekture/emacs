@@ -724,36 +724,41 @@ don't know why exactly, but that built in never works properly.
 Finally migrating to Vim keys.
 
 #+begin_src emacs-lisp
-  (use-package evil
-    :straight t
-    :init
-    (evil-mode)
-    :custom
-    (evil-undo-system 'undo-redo))
+      (use-package evil
+	:straight t
+	:init
+	(setq evil-want-keybinding nil)
+	(evil-mode)
+	:custom
+	(evil-undo-system 'undo-redo)
+	:hook
+	(with-editor-mode-hook . evil-insert-state))
 
-  (use-package evil-collection
-    :straight t)
+      (use-package evil-collection
+	:straight t
+	:init
+	(evil-collection-init))
 
-  (use-package evil-surround
-    :straight t
-    :hook
-    ((evil-mode-hook . evil-surround-mode)))
+      (use-package evil-surround
+	:straight t
+	:hook
+	((evil-mode-hook . evil-surround-mode)))
 
-  (use-package org-evil
-    :straight t)
+      (use-package org-evil
+	:straight t)
 
-  (use-package evil-org
-    :straight t
-    :hook
-    ((org-mode-hook . evil-org-mode))
-    :config
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys))
+      (use-package evil-org
+	:straight t
+	:hook
+	((org-mode-hook . evil-org-mode))
+	:config
+	(require 'evil-org-agenda)
+	(evil-org-agenda-set-keys))
 
-  (use-package evil-escape
-    :straight t
-    :custom
-    (evil-escape-key-sequence "jk"))
+      (use-package evil-escape
+	:straight t
+	:custom
+	(evil-escape-key-sequence "jk"))
 #+end_src
 
 ** General
