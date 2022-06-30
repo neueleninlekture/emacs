@@ -321,6 +321,14 @@ Prettify some characters.
     (org-pretty-entities t))
 #+end_src
 
+*** Find notes file
+
+#+begin_src emacs-lisp
+  (defun org-find-notes-index-file ()
+    (interactive)
+    (find-file (expand-file-name "index.org" org-directory)))
+#+end_src
+
 *** Org Roam
 
 ~org-roam~ is a very powerful extension to org-mode. Essentially, it
@@ -819,6 +827,7 @@ Finally migrating to Vim keys.
     "na" 'org-agenda
     "nb" 'org-switchb
     ;; roam
+    "nn" 'org-find-notes-index-file
     "nf" 'org-roam-node-find
     "ni" 'org-roam-node-insert
     "nB" 'org-roam-buffer-toggle

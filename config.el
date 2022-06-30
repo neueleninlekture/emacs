@@ -135,6 +135,10 @@ save the Org buffers."
   :custom
   (org-pretty-entities t))
 
+(defun org-find-notes-index-file ()
+  (interactive)
+  (find-file (expand-file-name "index.org" org-directory)))
+
 (use-package org-roam
   :straight t
   :init
@@ -455,6 +459,7 @@ save the Org buffers."
   "na" 'org-agenda
   "nb" 'org-switchb
   ;; roam
+  "nn" 'org-find-notes-index-file
   "nf" 'org-roam-node-find
   "ni" 'org-roam-node-insert
   "nB" 'org-roam-buffer-toggle
