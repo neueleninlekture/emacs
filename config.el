@@ -385,8 +385,8 @@ save the Org buffers."
 
 (use-package evil-surround
   :straight t
-  :hook
-  ((evil-mode-hook . evil-surround-mode)))
+  :config
+  (global-evil-surround-mode t))
 
 (use-package org-evil
   :straight t)
