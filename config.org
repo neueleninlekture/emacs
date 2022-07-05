@@ -441,6 +441,7 @@ compliant with the standard completion and sorting tools, and
 therefore with other packages such as ~orderless~.
 #+begin_src emacs-lisp
   (use-package corfu
+    :straight t
     :custom
     (corfu-cycle t)
     (corfu-auto t)

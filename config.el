@@ -202,6 +202,7 @@ save the Org buffers."
   ((prog-mode-hook . rainbow-delimiters-mode)))
 
 (use-package corfu
+  :straight t
   :custom
   (corfu-cycle t)
   (corfu-auto t)
