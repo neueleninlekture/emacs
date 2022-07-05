@@ -391,7 +391,8 @@ save the Org buffers."
   :custom
   (evil-undo-system 'undo-redo)
   :hook
-  (with-editor-mode-hook . evil-insert-state))
+  (with-editor-mode-hook . evil-insert-state)
+  (org-src-mode-hook . evil-insert-state))
 
 (use-package evil-collection
   :straight t
