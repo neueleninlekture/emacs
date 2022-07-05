@@ -26,11 +26,15 @@
 
 (use-package embark
   :straight t
+  :defer nil
   :custom
   (embark-indicators
    '(embark-highlight-indicator
      embark-verbose-indicator
-     embark-isearch-highlight-indicator)))
+     embark-isearch-highlight-indicator))
+   :bind
+   (:map minibuffer-local-map
+	 ("C-." . embark-act)))
 
 (use-package embark-consult
   :straight t)
