@@ -201,6 +201,16 @@ save the Org buffers."
   :hook
   ((prog-mode-hook . rainbow-delimiters-mode)))
 
+(use-package corfu
+  :custom
+  (corfu-cycle t)
+  (corfu-auto t)
+  (corfu-preselect-first nil)
+  :hook
+  ((prog-mode-hook . corfu-mode)
+   (shell-mode-hook . corfu-mode)
+   (eshell-mode-hook . corfu-mode)))
+
 (use-package elfeed
   :straight t
   :config

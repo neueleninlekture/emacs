@@ -434,6 +434,22 @@ Makes it easier to tell pairs of delimiters apart. Also looks nice.
     :hook
     ((prog-mode-hook . rainbow-delimiters-mode)))
 #+end_src
+** Autocompletion
+
+The ~corfu~ package provides us a simple autocompletion UI that is
+compliant with the standard completion and sorting tools, and
+therefore with other packages such as ~orderless~.
+#+begin_src emacs-lisp
+  (use-package corfu
+    :custom
+    (corfu-cycle t)
+    (corfu-auto t)
+    (corfu-preselect-first nil)
+    :hook
+    ((prog-mode-hook . corfu-mode)
+     (shell-mode-hook . corfu-mode)
+     (eshell-mode-hook . corfu-mode)))
+#+end_src
 
 * Web and Mail
 
