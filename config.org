@@ -208,7 +208,6 @@ enables display of the line numbers on the left of the frame.
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+end_src
 
-
 *** Expand region
 
 A neat little package that allows marking a region in increasing
@@ -375,6 +374,13 @@ fancy.
       (org-roam-ui-follow t)
       (org-roam-ui-update-on-save t)
       (org-roam-ui-open-on-start t))
+#+end_src
+
+** Other formats
+
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :straight t)
 #+end_src
 
 ** Citations
