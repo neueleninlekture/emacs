@@ -100,11 +100,11 @@
   (org-agenda-files '("journal.org"))
   (org-archive-location (format "archive.org::* %s" (format-time-string "%Y")))
   (org-capture-templates
-   '(("t" "Today"
+   '(("t" "Daily TODO"
       entry
       (file+datetree "journal.org")
       "* %?\n%t")
-     ("f" "Future entry"
+     ("f" "Future TODO"
       entry
       (file+datetree+prompt "journal.org")
       "* %?\n%t"
