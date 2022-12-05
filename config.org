@@ -264,43 +264,22 @@ With ~org-capture~ I can quickly store thoughts in plain text files. I
 use this for my agenda and TODO lists as well as my personal journal.
 
 #+begin_src emacs-lisp
-      (use-package org
-	:custom
-	(org-bookmark-names-plist nil)
-	(org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d)" "MOVE(m)" "DROP(c)")))
-	(org-refile-targets nil)
-	(org
-	 -agenda-files '("agenda.org" "journal.org"))
-	(org-archive-location (format "archive.org::* %s" (format-time-string "%Y")))
-	(org-capture-templates
-	 '(("j" "Journal entry"
-	    entry
-	    (file+datetree "journal.org")
-	    "* %?"
-	    :empty-lines 1)
-	   ("t" "TODO"
-	    entry
-	    (file+headline "agenda.org" "Inbox")
-	    "* TODO %?"
-	    :empty-lines 1)
-	   ("d" "Deadline TODO"
-	    entry
-	    (file+headline "agenda.org" "Inbox")
-	    "* TODO %?\nDEADLINE: %^{Deadline: }T"
-	    :empty-lines 1)
-	   ("s" "Scheduled TODO"
-	    entry
-	    (file+headline "agenda.org" "Inbox")
-	    "* TODO %?\nSCHEDULED: %^{Scheduled: }T"
-	    :empty-lines 1)))
-	:config
-	(defun aabm/mark-done-and-archive ()
-	  "Mark the state of an org-mode item as DONE, archive it, and
-      save the Org buffers."
-	  (interactive)
-	  (org-todo 'done)
-	  (org-archive-subtree)
-	  (org-save-all-org-buffers)))
+  (use-package org
+    :custom
+    (org-bookmark-names-plist nil)
+    (org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d)" "MOVE(m)" "DROP(c)")))
+    (org-refile-targets nil)
+    (org-agenda-files '("journal.org"))
+    (org-archive-location (format "archive.org::* %s" (format-time-string "%Y")))
+    (org-capture-templates
+     '(("t" "Today"
+	entry
+	(file+datetree "journal.org")
+	"* %?\n%t")
+       ("f" "Future entry"
+	entry
+	(file+datetree+prompt "journal.org")
+	"* %?"))))
 #+end_src
 
 *** Custom bullets
@@ -308,12 +287,12 @@ use this for my agenda and TODO lists as well as my personal journal.
 To make Org look a bit nicer, we use the ~org-superstar~ package. This
 replaces the heading asterisks with custom UTF-8 bullet characters.
 
-#+begin_src emacs-lisp
+#+begin_example emacs-lisp
   (use-package org-superstar
     :straight t
     :hook
     (org-mode-hook . org-superstar-mode))
-#+end_src
+#+end_example
 
 *** Pretty entities
 

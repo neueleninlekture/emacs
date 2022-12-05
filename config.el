@@ -97,43 +97,17 @@
   (org-bookmark-names-plist nil)
   (org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d)" "MOVE(m)" "DROP(c)")))
   (org-refile-targets nil)
-  (org
-   -agenda-files '("agenda.org" "journal.org"))
+  (org-agenda-files '("journal.org"))
   (org-archive-location (format "archive.org::* %s" (format-time-string "%Y")))
   (org-capture-templates
-   '(("j" "Journal entry"
+   '(("t" "Today"
       entry
       (file+datetree "journal.org")
-      "* %?"
-      :empty-lines 1)
-     ("t" "TODO"
+      "* %?\n%t")
+     ("f" "Future entry"
       entry
-      (file+headline "agenda.org" "Inbox")
-      "* TODO %?"
-      :empty-lines 1)
-     ("d" "Deadline TODO"
-      entry
-      (file+headline "agenda.org" "Inbox")
-      "* TODO %?\nDEADLINE: %^{Deadline: }T"
-      :empty-lines 1)
-     ("s" "Scheduled TODO"
-      entry
-      (file+headline "agenda.org" "Inbox")
-      "* TODO %?\nSCHEDULED: %^{Scheduled: }T"
-      :empty-lines 1)))
-  :config
-  (defun aabm/mark-done-and-archive ()
-    "Mark the state of an org-mode item as DONE, archive it, and
-save the Org buffers."
-    (interactive)
-    (org-todo 'done)
-    (org-archive-subtree)
-    (org-save-all-org-buffers)))
-
-(use-package org-superstar
-  :straight t
-  :hook
-  (org-mode-hook . org-superstar-mode))
+      (file+datetree+prompt "journal.org")
+      "* %?"))))
 
 (use-package org
   :custom
