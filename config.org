@@ -26,6 +26,7 @@ are:
 - Declarative package management with ~straight.el~
 - Powerful writing workflows with ~org-mode~
 - Notetaking according to the /zettelkasten/ method
+- Journaling and personal organizing adapted from the /bullet journal/ method.
 - Mail, RSS feeds and more!
   
 * Minibuffer
@@ -266,7 +267,7 @@ use this for my agenda and TODO lists as well as my personal journal.
       (use-package org
 	:custom
 	(org-bookmark-names-plist nil)
-	(org-todo-keywords '((sequence "TODO(t)" "WAIT(w)" "|" "DONE(d)" "DROP(c)")))
+	(org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d)" "MOVE(m)" "DROP(c)")))
 	(org-refile-targets nil)
 	(org
 	 -agenda-files '("agenda.org" "journal.org"))
@@ -444,6 +445,7 @@ Makes it easier to tell pairs of delimiters apart. Also looks nice.
     :hook
     ((prog-mode-hook . rainbow-delimiters-mode)))
 #+end_src
+
 ** Autocompletion
 
 The ~corfu~ package provides us a simple autocompletion UI that is
@@ -461,6 +463,7 @@ therefore with other packages such as ~orderless~.
      (shell-mode-hook . corfu-mode)
      (eshell-mode-hook . corfu-mode)))
 #+end_src
+
 ** Eshell
 
 #+begin_src emacs-lisp
