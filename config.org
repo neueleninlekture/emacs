@@ -279,7 +279,8 @@ use this for my agenda and TODO lists as well as my personal journal.
        ("f" "Future entry"
 	entry
 	(file+datetree+prompt "journal.org")
-	"* %?"))))
+	"* %?\n%t"
+	:time-prompt t))))
 #+end_src
 
 *** Custom bullets
@@ -310,6 +311,10 @@ Prettify some characters.
   (defun org-find-notes-index-file ()
     (interactive)
     (find-file (expand-file-name "index.org" org-directory)))
+
+  (defun org-find-notes-journal-file ()
+    (interactive)
+    (find-file (expand-file-name "journal.org" org-directory)))
 #+end_src
 
 *** Org Roam
@@ -935,6 +940,7 @@ Finally migrating to Vim keys.
     "nb" 'org-switchb
     ;; roam
     "nn" 'org-find-notes-index-file
+    "nj" 'org-find-notes-journal-file
     "nf" 'org-roam-node-find
     "ni" 'org-roam-node-insert
     "nB" 'org-roam-buffer-toggle

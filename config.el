@@ -107,7 +107,8 @@
      ("f" "Future entry"
       entry
       (file+datetree+prompt "journal.org")
-      "* %?"))))
+      "* %?\n%t"
+      :time-prompt t))))
 
 (use-package org
   :custom
@@ -116,6 +117,10 @@
 (defun org-find-notes-index-file ()
   (interactive)
   (find-file (expand-file-name "index.org" org-directory)))
+
+(defun org-find-notes-journal-file ()
+  (interactive)
+  (find-file (expand-file-name "journal.org" org-directory)))
 
 (use-package org-roam
   :straight t
@@ -547,6 +552,7 @@
   "nb" 'org-switchb
   ;; roam
   "nn" 'org-find-notes-index-file
+  "nj" 'org-find-notes-journal-file
   "nf" 'org-roam-node-find
   "ni" 'org-roam-node-insert
   "nB" 'org-roam-buffer-toggle
