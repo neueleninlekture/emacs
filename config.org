@@ -273,7 +273,7 @@ use this for my agenda and TODO lists as well as my personal journal.
   (use-package org
     :custom
     (org-bookmark-names-plist nil)
-    (org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d)" "MOVE(m)" "DROP(c)")))
+    (org-todo-keywords '((sequence "TODO(t)" "MOVE(m)" "WAIT(w)" "|" "DONE(d)" "DROP(c)")))
     (org-refile-targets nil)
     (org-agenda-files '("journal.org"))
     (org-archive-location (format "archive.org::* %s" (format-time-string "%Y")))
