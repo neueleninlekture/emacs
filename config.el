@@ -85,6 +85,8 @@
 (use-package multiple-cursors
   :straight t)
 
+(setq org-directory "~/org/")
+
 (setq org-src-window-setup 'current-window)
 
 (use-package org
@@ -109,6 +111,15 @@
       (file+datetree+prompt "journal.org")
       "* %?\n%t"
       :time-prompt t))))
+
+(use-package org-superstar
+  :straight t
+  :hook
+  (org-mode-hook . org-superstar-mode)
+  :custom
+  (org-superstar-cycle-headline-bullets 2)
+  (org-superstar-leading-bullet ".")
+  (org-superstar-special-todo-items t))
 
 (use-package org
   :custom

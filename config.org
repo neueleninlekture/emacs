@@ -235,6 +235,12 @@ particularly useful for batch-renaming files in Dired.
 #+end_src
 
 ** Org Mode
+*** Basic
+
+#+begin_src emacs-lisp
+  (setq org-directory "~/org/")
+#+end_src
+
 *** Editing code blocks
 
 Here we make it so that editing a code block is done in the current
@@ -288,12 +294,16 @@ use this for my agenda and TODO lists as well as my personal journal.
 To make Org look a bit nicer, we use the ~org-superstar~ package. This
 replaces the heading asterisks with custom UTF-8 bullet characters.
 
-#+begin_example emacs-lisp
+#+begin_src emacs-lisp
   (use-package org-superstar
     :straight t
     :hook
-    (org-mode-hook . org-superstar-mode))
-#+end_example
+    (org-mode-hook . org-superstar-mode)
+    :custom
+    (org-superstar-cycle-headline-bullets 2)
+    (org-superstar-leading-bullet ".")
+    (org-superstar-special-todo-items t))
+#+end_src
 
 *** Pretty entities
 
