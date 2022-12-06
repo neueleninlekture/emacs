@@ -297,12 +297,12 @@ replaces the heading asterisks with custom UTF-8 bullet characters.
 #+begin_src emacs-lisp
   (use-package org-superstar
     :straight t
-    :hook
-    (org-mode-hook . org-superstar-mode)
     :custom
     (org-superstar-cycle-headline-bullets 2)
     (org-superstar-leading-bullet ".")
-    (org-superstar-special-todo-items t))
+    (org-superstar-special-todo-items t)
+    :hook
+    (org-mode-hook . org-superstar-mode))
 #+end_src
 
 *** Pretty entities
@@ -945,12 +945,14 @@ Finally migrating to Vim keys.
     "mc" 'mu4e-compose-new
     ;;; notes
     ;; basic org
-    "nw" 'org-capture
-    "na" 'org-agenda
-    "nb" 'org-switchb
+    "ow" 'org-capture
+    "oa" 'org-agenda
+    "ob" 'org-switchb
+    "oj" 'org-find-notes-journal-file
+    "oi" 'org-find-notes-index-file
+    "of" 'org-roam-node-find
     ;; roam
     "nn" 'org-find-notes-index-file
-    "nj" 'org-find-notes-journal-file
     "nf" 'org-roam-node-find
     "ni" 'org-roam-node-insert
     "nB" 'org-roam-buffer-toggle
@@ -964,6 +966,7 @@ Finally migrating to Vim keys.
     "kk" 'kill-this-buffer+
     "kb" 'kill-buffer
     "kw" 'delete-window
+    "kK" 'kill-buffer-and-window
     ;; other
     "." 'embark-act)
 

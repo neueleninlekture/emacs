@@ -114,12 +114,12 @@
 
 (use-package org-superstar
   :straight t
-  :hook
-  (org-mode-hook . org-superstar-mode)
   :custom
   (org-superstar-cycle-headline-bullets 2)
   (org-superstar-leading-bullet ".")
-  (org-superstar-special-todo-items t))
+  (org-superstar-special-todo-items t)
+  :hook
+  (org-mode-hook . org-superstar-mode))
 
 (use-package org
   :custom
@@ -558,12 +558,14 @@
   "mc" 'mu4e-compose-new
   ;;; notes
   ;; basic org
-  "nw" 'org-capture
-  "na" 'org-agenda
-  "nb" 'org-switchb
+  "ow" 'org-capture
+  "oa" 'org-agenda
+  "ob" 'org-switchb
+  "oj" 'org-find-notes-journal-file
+  "oi" 'org-find-notes-index-file
+  "of" 'org-roam-node-find
   ;; roam
   "nn" 'org-find-notes-index-file
-  "nj" 'org-find-notes-journal-file
   "nf" 'org-roam-node-find
   "ni" 'org-roam-node-insert
   "nB" 'org-roam-buffer-toggle
@@ -577,6 +579,7 @@
   "kk" 'kill-this-buffer+
   "kb" 'kill-buffer
   "kw" 'delete-window
+  "kK" 'kill-buffer-and-window
   ;; other
   "." 'embark-act)
 
