@@ -35,4 +35,4 @@ projects
 auth.el
 /custom.el
 /multisession/
-config.el
+/config.el
