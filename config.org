@@ -6,29 +6,21 @@
 
 * About
 
-2022 rewrite edition!
+2023 refix edition!
 
 This is my personal configuration for GNU Emacs. It is written in a
 literate style, combining code snippets and documentation in the same
 file.
 
-I use Emacs as my primary computing interface. I write personal notes
-and documents with it, and it is central my academic work. This
-configuration is where I set all of that up.
+These days I use Emacs a lot less than I used to when this
+configuration was originally written. This means a lot of big features
+I used to have are now disabled, and a lot of complexity has been
+stripped down. 
 
 In line with the GNU philosophy, this configuration is entirely Free
 Software. See the [[file:LICENSE][LICENSE]] file in this repository for more
 information.
 
-Some of the major features and characteristics of this configuration
-are:
-
-- Declarative package management with ~straight.el~
-- Powerful writing workflows with ~org-mode~
-- Notetaking according to the /zettelkasten/ method
-- Journaling and personal organizing adapted from the /bullet journal/ method.
-- Mail, RSS feeds and more!
-  
 * Minibuffer
 ** Which Key
 
@@ -144,6 +136,7 @@ wrapped to a certain threshold. Here we make it so that
 #+begin_src emacs-lisp
   (add-hook 'text-mode-hook #'auto-fill-mode)
   (diminish 'auto-fill-function)
+  (add-hook 'html-mode-hook #'turn-off-auto-fill)
 #+end_src
  
 *** Parens, brackets and quotes
@@ -238,7 +231,7 @@ particularly useful for batch-renaming files in Dired.
 *** Basic
 
 #+begin_src emacs-lisp
-  (setq org-directory "~/org/")
+  (setq org-directory "~/Documents/Org/")
 #+end_src
 
 *** Editing code blocks
@@ -294,7 +287,7 @@ use this for my agenda and TODO lists as well as my personal journal.
 To make Org look a bit nicer, we use the ~org-superstar~ package. This
 replaces the heading asterisks with custom UTF-8 bullet characters.
 
-#+begin_src emacs-lisp
+#+begin_example emacs-lisp
   (use-package org-superstar
     :straight t
     :custom
@@ -303,7 +296,7 @@ replaces the heading asterisks with custom UTF-8 bullet characters.
     (org-superstar-special-todo-items t)
     :hook
     (org-mode-hook . org-superstar-mode))
-#+end_src
+#+end_example
 
 *** Pretty entities
 
@@ -345,7 +338,7 @@ fancy.
   (use-package org-roam
     :straight t
     :init
-    (setq org-roam-directory "~/org/")
+    (setq org-roam-directory org-directory)
     (setq org-roam-v2-ack t)
     :config
     (org-roam-setup)
@@ -383,7 +376,7 @@ fancy.
 #+begin_src emacs-lisp
   (use-package org
     :custom
-    (org-cite-global-bibliography "~/doc/tex/bib/main.bib"))
+    (org-cite-global-bibliography "~/Documents/tex/bib/main.bib"))
 
   (use-package citar
     :straight t
@@ -406,27 +399,6 @@ Simple as.
     :custom
     (olivetti-body-width 0.72))
 #+end_src
-** PDFs
-
-Here we install the ~pdf-tools~ package, which provides a nice PDF
-reader inside Emacs. It appears here as a replacement for the built-in
-~docview~, which is quite clunky. I find it very convenient to be able
-to read PDFs from within Emacs, even if the experience is not as good
-as that of a dedicated PDF reader.
-
-#+begin_src emacs-lisp
-  (use-package pdf-tools
-    :straight t
-    :init
-    (pdf-loader-install)
-    :custom
-    (pdf-view-resize-factor 1.1)
-    (pdf-view-continuous nil)
-    (pdf-view-display-size 'fit-page)
-    :bind
-    (:map pdf-view-mode-map
-	  (("M-g g" . pdf-view-goto-page))))
-#+end_src
 
 * Programming
 ** Rainbow delimiters
@@ -440,235 +412,10 @@ Makes it easier to tell pairs of delimiters apart. Also looks nice.
     ((prog-mode-hook . rainbow-delimiters-mode)))
 #+end_src
 
-** Autocompletion
-
-The ~corfu~ package provides us a simple autocompletion UI that is
-compliant with the standard completion and sorting tools, and
-therefore with other packages such as ~orderless~.
-#+begin_src emacs-lisp
-  (use-package corfu
-    :straight t
-    :custom
-    (corfu-cycle t)
-    (corfu-auto t)
-    (corfu-preselect-first nil)
-    :hook
-    ((prog-mode-hook . corfu-mode)
-     (shell-mode-hook . corfu-mode)
-     (eshell-mode-hook . corfu-mode)))
-#+end_src
-
-** Eshell
-
-#+begin_src emacs-lisp
-  (use-package esh-mode
-    :commands eshell eshell-toggle
-    :config
-    (defun with-face (str &rest face-plist)
-      (propertize str 'face face-plist))
-
-    (defun eshell-sudo-open (filename)
-      "Open a file as root in Eshell, using TRAMP."
-      (let ((qual-filename (if (string-match "^/" filename)
-			       filename
-			     (concat (expand-file-name (eshell/pwd)) "/" filename))))
-	(switch-to-buffer
-	 (find-file-noselect
-	  (concat "/sudo::" qual-filename)))))
-
-    (defun eshell-copy-file-path-at-point ()
-      "Copies path to file at point to the kill ring"
-      (interactive)
-      (let ((file (ffap-file-at-point)))
-	(if file
-	    (kill-new (concat (eshell/pwd) "/" file))
-	  (user-error "No file at point"))))
-
-    (defun eshell-find-file-at-point ()
-      "Finds file under point. Will open a dired buffer if file is a directory."
-      (interactive)
-      (let ((file (ffap-file-at-point)))
-	(if file
-	    (find-file file)
-	  (user-error "No file at point"))))
-
-    (defun eshell-cat-file-at-point ()
-      "Outputs contents of file at point"
-      (interactive)
-      (let ((file (ffap-file-at-point)))
-	(if file
-	    (progn
-	      (goto-char (point-max))
-	      (insert (concat "cat " file))
-	      (eshell-send-input)))))
-
-    (defun eshell-mkcd (dir)
-      "Make a directory, or path, and switch to it."
-      (interactive)
-      (eshell/mkdir "-p" dir)
-      (eshell/cd dir))
-
-    (defun eshell-put-last-output-to-buffer ()
-      "Produces a buffer with output of last `eshell' command."
-      (interactive)
-      (let ((eshell-output (kill-ring-save (eshell-beginning-of-output)
-					   (eshell-end-of-output))))
-	(with-current-buffer (get-buffer-create  "*last-eshell-output*")
-	  (erase-buffer)
-	  (yank)
-	  (switch-to-buffer-other-window (current-buffer)))))
-
-    (defun dired-here ()
-      (interactive)
-      (dired "."))
-
-    (defalias 'open 'find-file-other-window)
-    (defalias 'clean 'eshell/clear-scrollback)
-    (defalias 'mkcd 'eshell-mkcd)
-    (defalias 'sopen 'eshell-sudo-open)
-    (defalias 'dr 'dired-here)
-
-    :custom
-    (eshell-prompt-regexp "^[^αλ\n]*[αλ] ")
-    (eshell-prompt-function
-     (lambda ()
-       (let ((header-bg "#1d1d1e"))
-	 (concat
-	  (if (string= (eshell/pwd) (getenv "HOME"))
-	      (propertize "~" 'face `(:foreground "#FC20BB"))
-	    (replace-regexp-in-string
-	     (getenv "HOME")
-	     (propertize "~" 'face `(:foreground "#6688AA"))
-	     (propertize (eshell/pwd) 'face `(:foreground "#6688AA"))))
-	  (if (= (user-uid) 0)
-	      (with-face " #" :foreground "#FC20BB"))
-	  (with-face " λ" :foreground "#FC20BB")
-	  " "))))
-    (eshell-highlight-prompt nil)
-    (eshell-cd-on-directory t))
-
-  (use-package eshell-toggle
-    :straight t
-    :custom
-    (eshell-toggle-run-command nil)
-    :bind
-    (("C-c e" . eshell-toggle)))
-#+end_src
-
-* Web and Mail
-
-Emacs is actually a great interface for some web-related tasks, such
-as reading emails, newsfeeds and even occasional web browsing.
-
-** News
-
-Using ~elfeed~ we can read RSS feeds in Emacs. Here we apply minor
-tweaks to it: first, make it load my personal RSS feeds file, and
-second, make it use ~olivetti-mode~ for a more comfortable reading
-experience.
-
-#+begin_src emacs-lisp
-  (use-package elfeed
-    :straight t
-    :config
-    (load-file (expand-file-name "personal/feeds.el" user-emacs-directory))
-    :hook
-    ((elfeed-show-mode-hook . olivetti-mode)))
-#+end_src
-
-** Mail
-*** General
-
-Here we include global, client-independent settings for Email in
-Emacs, such as usage of the external program ~msmtp~ for sending mail.
-Emacs is capable of sending mail on its own, but it is quite slow, so
-we instead opt for an external, more universal tool.
-
-#+begin_src emacs-lisp
-  (setq message-send-mail-function 'message-send-mail-with-sendmail)
-  (setq sendmail-program "/usr/bin/msmtp")
-  (setq message-sendmail-extra-arguments '("--read-envelope-from"))
-  (setq message-sendmail-f-is-evil 't)
-#+end_src
-
-*** mu4e
-
-~mu4e~ is a mail client for Emacs. It has a fairly simple UI and is
-easy to get into, compared to some alternatives. It requires use of an
-external tool such as ~isync~ for keeping your mailbox synced.
-   
-#+begin_src emacs-lisp
-  (use-package mu4e
-    :straight t
-    :commands mu4e mu4e-compose-new
-    :custom
-    (mail-user-agent 'mu4e-user-agent)
-    (mu4e-maildir "~/.mail/disroot/")
-    (mu4e-get-mail-command "/usr/bin/mbsync -a")
-    (mu4e-update-mail-and-index t)
-    (mu4e-update-interval 300)
-    (mu4e-view-show-images t)
-    (mu4e-view-show-addresses t)
-    (mu4e-use-fancy-chars nil)
-    (mu4e-drafts-folder "/drafts")
-    (mu4e-sent-folder "/sent")
-    (mu4e-trash-folder "/trash")
-    (message-send-mail-function 'message-send-mail-with-sendmail)
-    (sendmail-program "/usr/bin/msmtp")
-    (message-sendmail-extra-arguments '("--read-envelope-from"))
-    (message-sendmail-f-is-evil t)
-    (mu4e-completing-read-function 'completing-read)
-    (mu4e-confirm-quit nil)
-    (message-kill-buffer-on-exit t)
-    (mu4e-attachment-dir "~/")
-    (mu4e-compose-signature
-     '(user-full-name))
-    :hook
-    (message-send-hook .
-		       (lambda ()
-			 (unless (yes-or-no-p "Sure you want to send this?")
-			   (signal 'quit nil)))))
-#+end_src
-
 * Projects
 
 Settings and packages for managing files, projects and version
 control.
-
-** vc
-
-~vc~ is Emacs' built-in tool for interfacing with version control
-systems. By default it is system agnostic - it works with ~git~,
-~mercurial~, and various others.
-
-The main addition here is a custom function, ~vc-git-log-grep~. It
-prompts the user for a string, and searches it through the git log,
-returning valid commit logs.
-
-#+begin_src emacs-lisp
-  (use-package vc
-    :config
-    (defvar vc-shell-output "*vc-output*")
-    (defun vc-git-log-grep (pattern &optional diff)
-      "Run ’git log --grep’ for PATTERN.
-      With optional DIFF as a prefix (\\[universal-argument])
-      argument, also show the corresponding diffs. 
-
-    This function was taken from prot."
-      (interactive
-       (list (read-regexp "Search git log for PATTERN: ")
-	     current-prefix-arg))
-      (let* ((buf-name vc-shell-output)
-	     (buf (get-buffer-create buf-name))
-	     (diffs (if diff "-p" ""))
-	     (type (if diff 'with-diff 'log-search))
-	     (resize-mini-windows nil))
-	(shell-command (format "git log %s --grep=%s -i -E --" diffs pattern) buf)
-	(with-current-buffer buf
-	  (setq-local vc-log-view-type type)
-	  (setq-local revert-buffer-function nil)
-	  (vc-git-region-history-mode)))))
-#+end_src
 
 ** Magit
 
@@ -741,41 +488,6 @@ which does what the name suggests. It can be toggled by pressing ~h~.
     ((dired-mode-hook . diredfl-mode)))
 #+end_src
 
-* Utilities
-** Display time on the modeline
-
-I like having a little clock on my modeline for those fullscreen
-writing and reading sessions. 
-
-#+begin_src emacs-lisp
-  (use-package time
-    :init
-    (display-time-mode)
-    :custom
-    (display-time-format "%a, %b %d %H:%M")
-    (display-time-default-load-average nil))
-#+end_src
-
-** World Clock
-
-I like having access to the ~world-clock~. Here we set up a little
-list of locations I would sometimes like to know the time for.
-
-#+begin_src emacs-lisp
-  (use-package time
-    :custom
-    (world-clock-list
-     '(("America/Los_Angeles" "Seattle")
-       ("America/New_York" "New York")
-       ("America/Sao_Paulo" "São Paulo")
-       ("Europe/London" "London")
-       ("Europe/Paris" "Paris")
-       ("Africa/Cairo" "Cairo")
-       ("Asia/Baghdad" "Baghdad")
-       ("Asia/Dushanbe" "Malé")
-       ("Asia/Beijing" "Beijing"))))
-#+end_src
-
 * Buffers and windows
 ** Ibuffer
 
@@ -794,6 +506,8 @@ group buffers based on the projects they belong to.
     (ibuffer-mode-hook . (lambda ()
 			   (setq ibuffer-filter-groups
 				 (ibuffer-project-generate-filter-groups)))))
+
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 
 ** Easier window switching
@@ -883,11 +597,6 @@ Finally migrating to Vim keys.
     :config
     (require 'evil-org-agenda)
     (evil-org-agenda-set-keys))
-
-  (use-package evil-escape
-    :straight t
-    :custom
-    (evil-escape-key-sequence "jk"))
 #+end_src
 
 ** General

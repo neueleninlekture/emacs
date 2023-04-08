@@ -55,6 +55,7 @@
 
 (add-hook 'text-mode-hook #'auto-fill-mode)
 (diminish 'auto-fill-function)
+(add-hook 'html-mode-hook #'turn-off-auto-fill)
 
 (setq electric-pair-pairs '((?\{ . ?\})
                             (?\( . ?\))
@@ -85,7 +86,7 @@
 (use-package multiple-cursors
   :straight t)
 
-(setq org-directory "~/org/")
+(setq org-directory "~/Documents/Org/")
 
 (setq org-src-window-setup 'current-window)
 
@@ -112,15 +113,6 @@
       "* %?\n%t"
       :time-prompt t))))
 
-(use-package org-superstar
-  :straight t
-  :custom
-  (org-superstar-cycle-headline-bullets 2)
-  (org-superstar-leading-bullet ".")
-  (org-superstar-special-todo-items t)
-  :hook
-  (org-mode-hook . org-superstar-mode))
-
 (use-package org
   :custom
   (org-pretty-entities t))
@@ -136,7 +128,7 @@
 (use-package org-roam
   :straight t
   :init
-  (setq org-roam-directory "~/org/")
+  (setq org-roam-directory org-directory)
   (setq org-roam-v2-ack t)
   :config
   (org-roam-setup)
@@ -166,7 +158,7 @@
 
 (use-package org
   :custom
-  (org-cite-global-bibliography "~/doc/tex/bib/main.bib"))
+  (org-cite-global-bibliography "~/Documents/tex/bib/main.bib"))
 
 (use-package citar
   :straight t
@@ -181,192 +173,10 @@
   :custom
   (olivetti-body-width 0.72))
 
-(use-package pdf-tools
-  :straight t
-  :init
-  (pdf-loader-install)
-  :custom
-  (pdf-view-resize-factor 1.1)
-  (pdf-view-continuous nil)
-  (pdf-view-display-size 'fit-page)
-  :bind
-  (:map pdf-view-mode-map
-	(("M-g g" . pdf-view-goto-page))))
-
 (use-package rainbow-delimiters
   :straight t
   :hook
   ((prog-mode-hook . rainbow-delimiters-mode)))
-
-(use-package corfu
-  :straight t
-  :custom
-  (corfu-cycle t)
-  (corfu-auto t)
-  (corfu-preselect-first nil)
-  :hook
-  ((prog-mode-hook . corfu-mode)
-   (shell-mode-hook . corfu-mode)
-   (eshell-mode-hook . corfu-mode)))
-
-(use-package esh-mode
-  :commands eshell eshell-toggle
-  :config
-  (defun with-face (str &rest face-plist)
-    (propertize str 'face face-plist))
-
-  (defun eshell-sudo-open (filename)
-    "Open a file as root in Eshell, using TRAMP."
-    (let ((qual-filename (if (string-match "^/" filename)
-			     filename
-			   (concat (expand-file-name (eshell/pwd)) "/" filename))))
-      (switch-to-buffer
-       (find-file-noselect
-	(concat "/sudo::" qual-filename)))))
-
-  (defun eshell-copy-file-path-at-point ()
-    "Copies path to file at point to the kill ring"
-    (interactive)
-    (let ((file (ffap-file-at-point)))
-      (if file
-	  (kill-new (concat (eshell/pwd) "/" file))
-	(user-error "No file at point"))))
-
-  (defun eshell-find-file-at-point ()
-    "Finds file under point. Will open a dired buffer if file is a directory."
-    (interactive)
-    (let ((file (ffap-file-at-point)))
-      (if file
-	  (find-file file)
-	(user-error "No file at point"))))
-
-  (defun eshell-cat-file-at-point ()
-    "Outputs contents of file at point"
-    (interactive)
-    (let ((file (ffap-file-at-point)))
-      (if file
-	  (progn
-	    (goto-char (point-max))
-	    (insert (concat "cat " file))
-	    (eshell-send-input)))))
-
-  (defun eshell-mkcd (dir)
-    "Make a directory, or path, and switch to it."
-    (interactive)
-    (eshell/mkdir "-p" dir)
-    (eshell/cd dir))
-
-  (defun eshell-put-last-output-to-buffer ()
-    "Produces a buffer with output of last `eshell' command."
-    (interactive)
-    (let ((eshell-output (kill-ring-save (eshell-beginning-of-output)
-					 (eshell-end-of-output))))
-      (with-current-buffer (get-buffer-create  "*last-eshell-output*")
-	(erase-buffer)
-	(yank)
-	(switch-to-buffer-other-window (current-buffer)))))
-
-  (defun dired-here ()
-    (interactive)
-    (dired "."))
-
-  (defalias 'open 'find-file-other-window)
-  (defalias 'clean 'eshell/clear-scrollback)
-  (defalias 'mkcd 'eshell-mkcd)
-  (defalias 'sopen 'eshell-sudo-open)
-  (defalias 'dr 'dired-here)
-
-  :custom
-  (eshell-prompt-regexp "^[^αλ\n]*[αλ] ")
-  (eshell-prompt-function
-   (lambda ()
-     (let ((header-bg "#1d1d1e"))
-       (concat
-	(if (string= (eshell/pwd) (getenv "HOME"))
-	    (propertize "~" 'face `(:foreground "#FC20BB"))
-	  (replace-regexp-in-string
-	   (getenv "HOME")
-	   (propertize "~" 'face `(:foreground "#6688AA"))
-	   (propertize (eshell/pwd) 'face `(:foreground "#6688AA"))))
-	(if (= (user-uid) 0)
-	    (with-face " #" :foreground "#FC20BB"))
-	(with-face " λ" :foreground "#FC20BB")
-	" "))))
-  (eshell-highlight-prompt nil)
-  (eshell-cd-on-directory t))
-
-(use-package eshell-toggle
-  :straight t
-  :custom
-  (eshell-toggle-run-command nil)
-  :bind
-  (("C-c e" . eshell-toggle)))
-
-(use-package elfeed
-  :straight t
-  :config
-  (load-file (expand-file-name "personal/feeds.el" user-emacs-directory))
-  :hook
-  ((elfeed-show-mode-hook . olivetti-mode)))
-
-(setq message-send-mail-function 'message-send-mail-with-sendmail)
-(setq sendmail-program "/usr/bin/msmtp")
-(setq message-sendmail-extra-arguments '("--read-envelope-from"))
-(setq message-sendmail-f-is-evil 't)
-
-(use-package mu4e
-  :straight t
-  :commands mu4e mu4e-compose-new
-  :custom
-  (mail-user-agent 'mu4e-user-agent)
-  (mu4e-maildir "~/.mail/disroot/")
-  (mu4e-get-mail-command "/usr/bin/mbsync -a")
-  (mu4e-update-mail-and-index t)
-  (mu4e-update-interval 300)
-  (mu4e-view-show-images t)
-  (mu4e-view-show-addresses t)
-  (mu4e-use-fancy-chars nil)
-  (mu4e-drafts-folder "/drafts")
-  (mu4e-sent-folder "/sent")
-  (mu4e-trash-folder "/trash")
-  (message-send-mail-function 'message-send-mail-with-sendmail)
-  (sendmail-program "/usr/bin/msmtp")
-  (message-sendmail-extra-arguments '("--read-envelope-from"))
-  (message-sendmail-f-is-evil t)
-  (mu4e-completing-read-function 'completing-read)
-  (mu4e-confirm-quit nil)
-  (message-kill-buffer-on-exit t)
-  (mu4e-attachment-dir "~/")
-  (mu4e-compose-signature
-   '(user-full-name))
-  :hook
-  (message-send-hook .
-		     (lambda ()
-		       (unless (yes-or-no-p "Sure you want to send this?")
-			 (signal 'quit nil)))))
-
-(use-package vc
-  :config
-  (defvar vc-shell-output "*vc-output*")
-  (defun vc-git-log-grep (pattern &optional diff)
-    "Run ’git log --grep’ for PATTERN.
-    With optional DIFF as a prefix (\\[universal-argument])
-    argument, also show the corresponding diffs. 
-
-  This function was taken from prot."
-    (interactive
-     (list (read-regexp "Search git log for PATTERN: ")
-	   current-prefix-arg))
-    (let* ((buf-name vc-shell-output)
-	   (buf (get-buffer-create buf-name))
-	   (diffs (if diff "-p" ""))
-	   (type (if diff 'with-diff 'log-search))
-	   (resize-mini-windows nil))
-      (shell-command (format "git log %s --grep=%s -i -E --" diffs pattern) buf)
-      (with-current-buffer buf
-	(setq-local vc-log-view-type type)
-	(setq-local revert-buffer-function nil)
-	(vc-git-region-history-mode)))))
 
 (use-package magit
   :straight t
@@ -414,32 +224,14 @@
   :hook
   ((dired-mode-hook . diredfl-mode)))
 
-(use-package time
-  :init
-  (display-time-mode)
-  :custom
-  (display-time-format "%a, %b %d %H:%M")
-  (display-time-default-load-average nil))
-
-(use-package time
-  :custom
-  (world-clock-list
-   '(("America/Los_Angeles" "Seattle")
-     ("America/New_York" "New York")
-     ("America/Sao_Paulo" "São Paulo")
-     ("Europe/London" "London")
-     ("Europe/Paris" "Paris")
-     ("Africa/Cairo" "Cairo")
-     ("Asia/Baghdad" "Baghdad")
-     ("Asia/Dushanbe" "Malé")
-     ("Asia/Beijing" "Beijing"))))
-
 (use-package ibuffer-project
   :straight t
   :hook
   (ibuffer-mode-hook . (lambda ()
 			 (setq ibuffer-filter-groups
 			       (ibuffer-project-generate-filter-groups)))))
+
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (global-set-key (kbd "M-o") 'other-window)
 
@@ -500,11 +292,6 @@
   :config
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
-
-(use-package evil-escape
-  :straight t
-  :custom
-  (evil-escape-key-sequence "jk"))
 
 (use-package general
   :straight t)
