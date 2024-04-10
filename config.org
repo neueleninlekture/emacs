@@ -21,3 +21,21 @@ In line with the GNU philosophy, this configuration is entirely Free
 Software. See the [[file:LICENSE][LICENSE]] file in this repository for more
 information.
 
+* Text editing features
+** Auto-fill text
+
+I like my text to wrap nicely in plain text files. =auto-fill-mode=
+does that for me automatically.
+
+#+begin_src emacs-lisp
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+#+end_src
+
+* Appearance
+
+Here we set up fonts, themes, and anything visual.
+
+#+begin_src emacs-lisp
+  (load-theme 'modus-operandi)
+#+end_src
