@@ -1,9 +1,9 @@
 ;;; early-init.el --- Emacs early configuration file
-;; Copyright © 2019-2022 Aabm <aabm@disroot.org>
+;; Copyright © 2019-2024 abe <aabm@disroot.org>
 
-;; Author: Aabm <aabm@disroot.org>
+;; Author: abe <aabm@disroot.org>
 ;; Keywords: Emacs configuration, literate programming
-;; Homepage: https://github.com/abenatim/emacs
+;; Homepage: https://github.com/neueleninlekture/emacs
 
 ;;; License:
 ;; This file is NOT part of GNU Emacs.
@@ -25,9 +25,9 @@
 ;; MA 02110-1301, USA.
 
 ;;; Commentary:
-;; Aabm's early-init settings for Emacs.
+;; abe's early-init settings for Emacs.
 
-;; Faster startup hack
+;; Faster startup by skipping garbage collection
 (defvar startup-file-name-handler-alist file-name-handler-alist)
 
 (setq gc-cons-threshold most-positive-fixnum
@@ -42,8 +42,8 @@
 (add-hook 'emacs-startup-hook #'startup-reset-defaults)
 
 ;; Disable package.el
-(setq package-enable-at-startup nil
-      package--init-file-ensured t)
+;; (setq package-enable-at-startup nil
+;;       package--init-file-ensured t)
 
 ;; Return startup information
 (add-hook 'emacs-startup-hook
