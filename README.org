@@ -1,23 +1,17 @@
-#+title: Aabm's literate configuration for GNU Emacs
-#+author: aabm
+#+title: abe's literate configuration for GNU Emacs
+#+author: abe
+
+2024 refix edition!
 
 This is my personal configuration for GNU Emacs. It is written in a
 literate style, combining code snippets and documentation in the same
 file.
 
-I use Emacs as my primary computing interface. I write personal notes
-and documents with it, and it is central my academic work. This
-configuration is where I set all of that up.
+These days I use Emacs a lot less than I used to when this
+configuration was originally written. This means a lot of big features
+I used to have are now disabled, and a lot of complexity has been
+stripped down. 
 
 In line with the GNU philosophy, this configuration is entirely Free
 Software. See the [[file:LICENSE][LICENSE]] file in this repository for more
 information.
-
-Some of the major features and characteristics of this configuration
-are:
-
-- Declarative package management with ~straight.el~
-- Powerful writing workflows with ~org-mode~
-- Notetaking according to the /zettelkasten/ method
-- Mail, RSS feeds and more!
-  
