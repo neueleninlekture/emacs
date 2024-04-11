@@ -2,6 +2,7 @@
 #+author: abe
 #+email: aabm@disroot.org
 #+startup: overview
+#+property: header-args :mkdirp yes
 
 * About
 
@@ -136,15 +137,6 @@ Emacs has started.
 		       gcs-done)))
 #+end_src
 
-** Start the package manager
-
-I have reverted to using the built-in =package.el= for package
-management. This sets it up during startup.
-
-#+begin_src emacs-lisp :tangle early-init.el
-  (setq package-enable-at-startup t)
-#+end_src
-
 ** Check Emacs version
 
 I generally run the latest release of Emacs available on Arch
@@ -206,29 +198,66 @@ Here we disable UI elements such as tool and menu bars.
   (setq ring-bell-function 'ignore)
 #+end_src
 
-** Load configuration files
+** Start the package manager
 
-This loads the main config file.
+I have reverted to using the built-in =package.el= for package
+management. This sets it up to use the MELPA repos and starts it up.
 
 #+begin_src emacs-lisp :tangle init.el
-    (load-file (expand-file-name "config.el" user-emacs-directory))
+  (require 'package)
+  (add-to-list 'package-archives
+	       '("melpa" . "https://melpa.org/packages/") t)
+  (package-initialize)
 #+end_src
 
-* Text editing features
+** Load configuration files
+
+By adding the [[file:modules/][modules]] directory to the =load-path=, we can load
+individual code files as if they were packages using =require=.
+
+#+begin_src emacs-lisp :tangle init.el
+  (add-to-list 'load-path "~/.emacs.d/modules/")
+#+end_src
+
+* Text editing
+** Provide and require package
+
+This sets up the following section as a loadable package module.
+
+#+begin_src emacs-lisp :tangle modules/abe-text.el
+  (provide 'abe-text)
+#+end_src
+
+#+begin_src emacs-lisp :tangle init.el
+  (require 'abe-text)
+#+end_src
+
 ** Auto-fill text
 
 I like my text to wrap nicely in plain text files. =auto-fill-mode=
 does that for me automatically.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle modules/abe-text.el 
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
 #+end_src
 
 * Appearance
+** Provide and require package
 
+This sets up the following section as a loadable package module.
+
+#+begin_src emacs-lisp :tangle modules/abe-theme.el
+  (provide 'abe-theme)
+#+end_src
+
+#+begin_src emacs-lisp :tangle init.el
+  (require 'abe-theme)
+#+end_src
+
+** Theme
 Here we set up fonts, themes, and anything visual.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle modules/abe-theme.el
   (load-theme 'modus-operandi)
 #+end_src
