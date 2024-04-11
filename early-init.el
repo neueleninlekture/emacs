@@ -27,7 +27,6 @@
 ;;; Commentary:
 ;; abe's early-init settings for Emacs.
 
-;; Faster startup by skipping garbage collection
 (defvar startup-file-name-handler-alist file-name-handler-alist)
 
 (setq gc-cons-threshold most-positive-fixnum
@@ -36,22 +35,17 @@
 
 (defun startup-reset-defaults ()
   (setq gc-cons-threshold 16777216
-        gc-cons-percentage 0.1
-        file-name-handler-alist startup-file-name-handler-alist))
+	gc-cons-percentage 0.1
+	file-name-handler-alist startup-file-name-handler-alist))
 
 (add-hook 'emacs-startup-hook #'startup-reset-defaults)
 
-;; Disable package.el
-;; (setq package-enable-at-startup nil
-;;       package--init-file-ensured t)
-
-;; Return startup information
 (add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "Emacs ready in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time
-                              (time-subtract
-                               after-init-time
-                               before-init-time)))
-                     gcs-done)))
+	  (lambda ()
+	    (message "Emacs ready in %s with %d garbage collections."
+		     (format "%.2f seconds"
+			     (float-time
+			      (time-subtract
+			       after-init-time
+			       before-init-time)))
+		     gcs-done)))

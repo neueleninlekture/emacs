@@ -99,6 +99,9 @@ information and brief descriptions of their contents.
 #+end_src
 
 * Initialization
+
+Settings that are loaded early during Emacs' startup process.
+
 ** Tweaks for faster startup
 
 With some simple tweaking of garbage collection settings we can make
@@ -197,6 +200,12 @@ Here we disable UI elements such as tool and menu bars.
   (setq use-dialog-box nil)
   (setq ring-bell-function 'ignore)
 #+end_src
+
+* Package management
+
+This configuration uses the built-in =package-el= for package
+management. It also configures its own modules that are loaded as
+packages.
 
 ** Start the package manager
 

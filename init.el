@@ -1,4 +1,4 @@
-;;; init.el --- Main Emacs configuration file
+;;; init.el --- Main Emacs startup file
 ;; Copyright © 2019-2024 abe <aabm@disroot.org>
 
 ;; Author: abe <aabm@disroot.org>
@@ -32,23 +32,22 @@
 (when (version< emacs-version "29.3")
   (error "This configuration requires Emacs 29.3 and above!"))
 
-;; Prefer compiled files
+;; Load newest file versions
 (setq load-prefer-newer t)
 
-;;; Quality of life changes
-;; Disable backup files that litter your directories
-(setq make-backup-files nil)
-(setq auto-save-default nil)
-
-;; Automatically reload when a file changes on disk
+;; Reload buffers when their respective files change on disk
 (global-auto-revert-mode t)
 (setq global-auto-revert-non-file-buffers t)
 
+;; DO NOT LITTER
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+
+;; Do not generate custom.el file
+(setq custom-file "/dev/null")
+
 ;; Enable all disabled commands (stuff emacs hides from you)
 (setq disabled-command-function nil)
-
-;; Disable default startup screen
-;; (setq inhibit-startup-screen t)
 
 ;; Disable some UI elements
 (menu-bar-mode -1)
@@ -58,12 +57,13 @@
 (setq use-dialog-box nil)
 (setq ring-bell-function 'ignore)
 
-;; Better 'yes or no' prompts
-;; (defalias 'yes-or-no-p 'y-or-n-p)
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
 
-;;; User files
-;; Do not produce a custom.el file
-(setq custom-file "/dev/null")
+(add-to-list 'load-path "~/.emacs.d/modules/")
 
-;; Load main config file
-(load-file (expand-file-name "config.el" user-emacs-directory))
+(require 'abe-text)
+
+(require 'abe-theme)
