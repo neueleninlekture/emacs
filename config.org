@@ -2,7 +2,6 @@
 #+author: abe
 #+email: aabm@disroot.org
 #+startup: overview
-#+property: header-args :tangle config.el
 
 * About
 
@@ -17,9 +16,203 @@ configuration was originally written. This means a lot of big features
 I used to have are now disabled, and a lot of complexity has been
 stripped down. 
 
+This document serves as the single point of entry into this Emacs
+setup. Here, all the code is defined and then extracted ("tangled")
+out into respective code files.
+
+When I want to modify my Emacs setup, I edit this file and then
+run =org-babel-tangle= or press =C-c C-v C-t=. All files will
+be updated accordingly.
+
 In line with the GNU philosophy, this configuration is entirely Free
 Software. See the [[file:LICENSE][LICENSE]] file in this repository for more
 information.
+
+** Providing headers for init files
+
+This provides my init files with headers containing LICENSE
+information and brief descriptions of their contents.
+
+#+begin_src emacs-lisp :tangle early-init.el
+  ;;; early-init.el --- Emacs early configuration file
+  ;; Copyright © 2019-2024 abe <aabm@disroot.org>
+
+  ;; Author: abe <aabm@disroot.org>
+  ;; Keywords: Emacs configuration, literate programming
+  ;; Homepage: https://github.com/neueleninlekture/emacs
+
+  ;;; License:
+  ;; This file is NOT part of GNU Emacs.
+
+  ;; This program is free software; you can redistribute it and/or
+  ;; modify it under the terms of the GNU General Public License as
+  ;; published by the Free Software Foundation; either version 3, or (at
+  ;; your option) any later version.
+
+  ;; This program is distributed in the hope that it will be useful, but
+  ;; WITHOUT ANY WARRANTY; without even the implied warranty of
+  ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  ;; General Public License for more details.
+
+  ;; You should have received a copy of the GNU General Public License
+  ;; along with GNU Emacs; see the file LICENSE.  If not, you can visit
+  ;; https://www.gnu.org/licenses/gpl-3.0.html or write to the Free
+  ;; Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ;; MA 02110-1301, USA.
+
+  ;;; Commentary:
+  ;; abe's early-init settings for Emacs.
+
+#+end_src
+
+#+begin_src emacs-lisp :tangle init.el
+  ;;; init.el --- Main Emacs startup file
+  ;; Copyright © 2019-2024 abe <aabm@disroot.org>
+
+  ;; Author: abe <aabm@disroot.org>
+  ;; Keywords: literate programming, Emacs configuration
+  ;; Homepage: https://github.com/neueleninlekture/emacs
+
+  ;;; License:
+  ;; This file is NOT part of GNU Emacs.
+
+  ;; This program is free software; you can redistribute it and/or
+  ;; modify it under the terms of the GNU General Public License as
+  ;; published by the Free Software Foundation; either version 3, or (at
+  ;; your option) any later version.
+
+  ;; This program is distributed in the hope that it will be useful, but
+  ;; WITHOUT ANY WARRANTY; without even the implied warranty of
+  ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  ;; General Public License for more details.
+
+  ;; You should have received a copy of the GNU General Public License
+  ;; along with GNU Emacs; see the file LICENSE.  If not, you can visit
+  ;; https://www.gnu.org/licenses/gpl-3.0.html or write to the Free
+  ;; Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+  ;; MA 02110-1301, USA.
+
+  ;;; Commentary:
+  ;; abe's init settings for Emacs.
+  
+#+end_src
+
+* Initialization
+** Tweaks for faster startup
+
+With some simple tweaking of garbage collection settings we can make
+Emacs start up faster. We then make it so that these settings revert
+back to normal after Emacs has started.
+
+#+begin_src emacs-lisp :tangle early-init.el
+  (defvar startup-file-name-handler-alist file-name-handler-alist)
+
+  (setq gc-cons-threshold most-positive-fixnum
+	gc-cons-percentage 0.6
+	file-name-handler-alist nil)
+
+  (defun startup-reset-defaults ()
+    (setq gc-cons-threshold 16777216
+	  gc-cons-percentage 0.1
+	  file-name-handler-alist startup-file-name-handler-alist))
+
+  (add-hook 'emacs-startup-hook #'startup-reset-defaults)
+#+end_src
+
+** Information on startup
+
+This displays a brief message with information on startup time after
+Emacs has started.
+
+#+begin_src emacs-lisp :tangle early-init.el
+  (add-hook 'emacs-startup-hook
+	    (lambda ()
+	      (message "Emacs ready in %s with %d garbage collections."
+		       (format "%.2f seconds"
+			       (float-time
+				(time-subtract
+				 after-init-time
+				 before-init-time)))
+		       gcs-done)))
+#+end_src
+
+** Start the package manager
+
+I have reverted to using the built-in =package.el= for package
+management. This sets it up during startup.
+
+#+begin_src emacs-lisp :tangle early-init.el
+  (setq package-enable-at-startup t)
+#+end_src
+
+** Check Emacs version
+
+I generally run the latest release of Emacs available on Arch
+Linux. My configuration might be relatively simple, but it is still
+possible that it breaks compatibility with older versions of Emacs.
+
+This snippet checks the currently installed Emacs version and ensures
+I am running the intended one.
+
+#+begin_src emacs-lisp :tangle init.el
+  ;;; Startup
+  ;; Check version
+  (when (version< emacs-version "29.3")
+    (error "This configuration requires Emacs 29.3 and above!"))
+#+end_src
+
+** Load files and directory littering
+
+Here we make sure Emacs is loading the newest file versions and also
+not littering our directories with backup and autosave files.
+
+#+begin_src emacs-lisp :tangle init.el
+  ;; Load newest file versions
+  (setq load-prefer-newer t)
+
+  ;; Reload buffers when their respective files change on disk
+  (global-auto-revert-mode t)
+  (setq global-auto-revert-non-file-buffers t)
+
+  ;; DO NOT LITTER
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
+
+  ;; Do not generate custom.el file
+  (setq custom-file "/dev/null") 
+#+end_src
+
+** Enable disabled commands
+
+By default, Emacs hides some commands away from the user. Here we
+enable them again.
+
+#+begin_src emacs-lisp :tangle init.el
+  ;; Enable all disabled commands (stuff emacs hides from you)
+  (setq disabled-command-function nil)
+#+end_src
+
+** Tweak UI elements
+
+Here we disable UI elements such as tool and menu bars.
+
+#+begin_src emacs-lisp :tangle init.el
+  ;; Disable some UI elements
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tooltip-mode -1)
+  (setq use-dialog-box nil)
+  (setq ring-bell-function 'ignore)
+#+end_src
+
+** Load configuration files
+
+This loads the main config file.
+
+#+begin_src emacs-lisp :tangle init.el
+    (load-file (expand-file-name "config.el" user-emacs-directory))
+#+end_src
 
 * Text editing features
 ** Auto-fill text
