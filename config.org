@@ -228,6 +228,34 @@ individual code files as if they were packages using =require=.
   (add-to-list 'load-path "~/.emacs.d/modules/")
 #+end_src
 
+** Use-package
+
+Use-package is a handy tool for managing package installation and
+loading. We make sure that it is installed and writing use-package
+declarations is clear.
+
+#+begin_src emacs-lisp :tangle init.el
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (setq use-package-always-ensure nil)
+  (setq use-package-always-defer t)
+  (setq use-package-hook-name-suffix nil)
+  (require 'use-package)
+#+end_src
+
+** Diminish
+
+Diminish allows hiding minor modes from the modeline display. It also
+integrates with use-package, and can be called from use-package
+declarations.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package diminish
+    :ensure t)
+#+end_src
+
 * Text editing
 ** Provide and require package
 
@@ -249,6 +277,20 @@ does that for me automatically.
 #+begin_src emacs-lisp :tangle modules/abe-text.el 
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
+  (diminish 'auto-fill-function)
+#+end_src
+
+** Rainbow delimiters
+
+This package colors parentheses so that they are prettier and more
+readable.
+
+#+begin_src emacs-lisp :tangle modules/abe-text.el
+  (use-package rainbow-delimiters
+    :ensure t
+    :hook
+    ((text-mode-hook . rainbow-delimiters-mode)
+     (prog-mode-hook . rainbow-delimiters-mode)))
 #+end_src
 
 * Appearance
