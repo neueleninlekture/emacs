@@ -291,10 +291,12 @@ does that for me automatically.
   (diminish 'auto-fill-function)
 #+end_src
 
-** Rainbow delimiters
+** Handling parens and bracket pairs
 
-This package colors parentheses so that they are prettier and more
-readable.
+The following minor-modes help when dealing with parentheses, quotes
+and other paired brackets. =rainbow-delimiters= colors them for
+readability of Lisp code. =electric-pair-mode= automatically inserts
+pairs when typing. =electric-quote-mode= inserts fancy quotes.
 
 #+begin_src emacs-lisp :tangle modules/abe-text.el
   (use-package rainbow-delimiters
@@ -302,6 +304,18 @@ readable.
     :hook
     ((text-mode-hook . rainbow-delimiters-mode)
      (prog-mode-hook . rainbow-delimiters-mode)))
+
+  (setq electric-pair-pairs '((?\{ . ?\})
+			      (?\( . ?\))
+			      (?\[ . ?\])
+			      (?\" . ?\")
+			      (?\“ . ?\”)))
+  (electric-pair-mode t)
+
+  (show-paren-mode t)
+
+  (setq electric-quote-replace-double t)
+  (electric-quote-mode t)
 #+end_src
 
 * Appearance
