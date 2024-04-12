@@ -269,6 +269,17 @@ This sets up the following section as a loadable package module.
   (require 'abe-text)
 #+end_src
 
+** Navigation and browsing
+
+Highlight current line and display current line and column in the
+modeline.
+
+#+begin_src emacs-lisp :tangle modules/abe-text.el
+  (global-hl-line-mode t)
+  (line-number-mode t)
+  (column-number-mode t)
+#+end_src
+
 ** Auto-fill text
 
 I like my text to wrap nicely in plain text files. =auto-fill-mode=
