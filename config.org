@@ -269,15 +269,31 @@ This sets up the following section as a loadable package module.
   (require 'abe-text)
 #+end_src
 
-** Navigation and browsing
+** Point position
 
-Highlight current line and display current line and column in the
-modeline.
+Enabling the following minor modes makes it so that the position of
+point is always displayed in the modeline and highlighted in the
+buffer. Also enables display of the line numbers on the left side of
+the frame.
 
 #+begin_src emacs-lisp :tangle modules/abe-text.el
   (global-hl-line-mode t)
   (line-number-mode t)
   (column-number-mode t)
+
+  (add-hook 'text-mode-hook 'display-line-numbers-mode)
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+#+end_src
+
+** Sentence navigation
+
+A nice tweak to sentence navigation commands that makes them more
+usable. We change the definition of a sentence to a more reasonable
+“something that ends in a single space after punctuation”, instead of
+the normal double space. 
+
+#+begin_src emacs-lisp :tangle modules/abe-text.el
+  (setq sentence-end-double-space nil)
 #+end_src
 
 ** Auto-fill text
