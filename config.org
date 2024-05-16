@@ -201,6 +201,12 @@ Here we disable UI elements such as tool and menu bars.
   (setq ring-bell-function 'ignore)
 #+end_src
 
+* Buffers
+#+begin_src emacs-lisp :tangle init.el
+  (use-package ibuffer
+    :bind
+    ("C-x C-b" . ibuffer-other-window))
+#+end_src
 * Package management
 
 This configuration uses the built-in =package-el= for package
@@ -338,7 +344,7 @@ pairs when typing. =electric-quote-mode= inserts fancy quotes.
 
 =dired= is Emacs’ own built-in file manager. It is quite powerful.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle init.el
   (use-package dired
     :config
     (defun dired-xdg-open ()
