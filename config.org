@@ -356,6 +356,9 @@ pairs when typing. =electric-quote-mode= inserts fancy quotes.
 	   (let ((process-connection-type nil))
 	     (start-process "" nil "xdg-open" file-path)))
 	 file-list)))
+    :custom
+    (dired-listing-switches "-alh --group-directories-first")
+    (dired-dwim-target t)
     :bind
     (:map dired-mode-map
 	  (("v" . dired-xdg-open))))
