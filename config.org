@@ -6,16 +6,11 @@
 
 * About
 
-2024 refix edition!
+2025 refix edition!
 
 This is my personal configuration for GNU Emacs. It is written in a
 literate style, combining code snippets and documentation in the same
 file.
-
-These days I use Emacs a lot less than I used to when this
-configuration was originally written. This means a lot of big features
-I used to have are now disabled, and a lot of complexity has been
-stripped down. 
 
 This document serves as the single point of entry into this Emacs
 setup. Here, all the code is defined and then extracted ("tangled")
@@ -36,7 +31,7 @@ information and brief descriptions of their contents.
 
 #+begin_src emacs-lisp :tangle early-init.el
   ;;; early-init.el --- Emacs early configuration file
-  ;; Copyright © 2019-2024 abe <aabm@disroot.org>
+  ;; Copyright © 2019-2025 abe <aabm@disroot.org>
 
   ;; Author: abe <aabm@disroot.org>
   ;; Keywords: Emacs configuration, literate programming
@@ -68,7 +63,7 @@ information and brief descriptions of their contents.
 
 #+begin_src emacs-lisp :tangle init.el
   ;;; init.el --- Main Emacs startup file
-  ;; Copyright © 2019-2024 abe <aabm@disroot.org>
+  ;; Copyright © 2019-2025 abe <aabm@disroot.org>
 
   ;; Author: abe <aabm@disroot.org>
   ;; Keywords: literate programming, Emacs configuration
