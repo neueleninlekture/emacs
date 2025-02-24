@@ -428,7 +428,10 @@ pairs when typing. =electric-quote-mode= inserts fancy quotes.
     :config
     (add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
     (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
-    (dashboard-setup-startup-hook))
+    (dashboard-setup-startup-hook)
+    :custom
+    (dashboard-center-content t)
+    (dashboard-vertically-center-content t))
 #+end_src
 
 ** Theme
