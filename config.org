@@ -272,7 +272,7 @@ declarations.
     :ensure t)
 #+end_src
 
-* Minibuffer completion
+* Minibuffer
 ** Which Key
 
 The =which-key= package uses the minibuffer to display all active
