@@ -273,6 +273,23 @@ declarations.
 #+end_src
 
 * Minibuffer completion
+** Which Key
+
+The =which-key= package uses the minibuffer to display all active
+keybindings in the currently typed prefix. It allows you to navigate
+your keybindings via prefixes. Nice for when you forget those
+cryptically long keychord sequences.
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :diminish which-key-mode
+    :init
+    (which-key-mode)
+    :custom
+    (which-key-idle-delay 0.4))
+#+end_src
+
+** Completion
 
 For minibuffer completion, I use =vertico=.
 
