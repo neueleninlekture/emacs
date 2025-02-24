@@ -280,7 +280,7 @@ keybindings in the currently typed prefix. It allows you to navigate
 your keybindings via prefixes. Nice for when you forget those
 cryptically long keychord sequences.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle init.el
   (use-package which-key
     :diminish which-key-mode
     :init
