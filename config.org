@@ -272,6 +272,17 @@ declarations.
     :ensure t)
 #+end_src
 
+* Minibuffer completion
+
+For minibuffer completion, I use =vertico=.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package vertico
+    :ensure t
+    :config
+    (vertico-mode))
+#+end_src
+
 * Buffers
 
 #+begin_src emacs-lisp :tangle init.el
