@@ -282,7 +282,8 @@ cryptically long keychord sequences.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package which-key
-    :diminish which-key-mode
+    :diminish
+    (which-key-mode)
     :init
     (which-key-mode)
     :custom
