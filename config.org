@@ -416,6 +416,7 @@ pairs when typing. =electric-quote-mode= inserts fancy quotes.
     :custom
     (dired-listing-switches "-alh --group-directories-first")
     (dired-dwim-target t)
+    (wdired-allow-to-change-permissions t)
     :bind
     (:map dired-mode-map
   	(("v" . dired-xdg-open))))
