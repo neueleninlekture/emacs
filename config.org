@@ -456,5 +456,5 @@ Here we set up fonts, themes, and anything visual.
   (add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font 11"))
   (set-frame-font "Iosevka Nerd Font 11" nil t)
 
-  (load-theme 'modus-operandi)
+  (load-theme 'modus-vivendi)
 #+end_src
