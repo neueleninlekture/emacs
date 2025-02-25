@@ -254,11 +254,15 @@ packages.
   (elpaca `(,@elpaca-order))
 #+end_src
 
-** Install use-package
+** Use-package
+
+We ensure =elpaca= loads up =use-package= and pass some options to it.
 
 #+begin_src emacs-lisp :tangle init.el
   (elpaca elpaca-use-package
     (elpaca-use-package-mode))
+
+  (setq use-package-hook-name-suffix nil)
 #+end_src
 
 ** Diminish
@@ -282,10 +286,9 @@ cryptically long keychord sequences.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package which-key
-    :diminish
-    (which-key-mode)
     :init
     (which-key-mode)
+    :diminish which-key-mode
     :custom
     (which-key-idle-delay 0.4))
 #+end_src
