@@ -445,6 +445,8 @@ improve its interface and allow it to open files externally.
 
 ** xdg-open
 
+This allows us to open any file from =find-file= externally using =xdg-open=.
+
 #+begin_src emacs-lisp :tangle init.el
   (defun xdg-open (&optional filename)
     (interactive)
