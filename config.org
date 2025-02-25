@@ -292,7 +292,8 @@ cryptically long keychord sequences.
 
 ** Completion
 
-For minibuffer completion, I use =vertico= along with =orderless= completion.
+For minibuffer completion, I use =vertico= along with =orderless=
+completion.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package orderless
