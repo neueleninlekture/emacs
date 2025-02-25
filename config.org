@@ -400,9 +400,12 @@ pairs when typing. =electric-quote-mode= inserts fancy quotes.
   (electric-quote-mode t)
 #+end_src
 
-* Dired
+* File management
 
-=dired= is Emacs’ own built-in file manager. It is quite powerful.
+** Dired
+
+=dired= is Emacs’ own built-in file manager. It is quite powerful. We
+improve its interface and allow it to open files externally.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package dired
@@ -413,8 +416,8 @@ pairs when typing. =electric-quote-mode= inserts fancy quotes.
       (let ((file-list (dired-get-marked-files)))
         (mapc
          (lambda (file-path)
-  	 (let ((process-connection-type nil))
-  	   (start-process "" nil "xdg-open" file-path)))
+    	 (let ((process-connection-type nil))
+    	   (start-process "" nil "xdg-open" file-path)))
          file-list)))
     :custom
     (dired-listing-switches "-alh --group-directories-first")
@@ -422,12 +425,46 @@ pairs when typing. =electric-quote-mode= inserts fancy quotes.
     (wdired-allow-to-change-permissions t)
     :bind
     (:map dired-mode-map
-  	(("v" . dired-xdg-open))))
+    	(("v" . dired-xdg-open))))
+
+  (use-package dired-hide-dotfiles
+    :ensure t
+    :hook
+    (dired-mode-hook . dired-hide-dotfiles-mode)
+    :diminish dired-hide-dotfiles-mode
+    :bind
+    (:map dired-mode-map
+  	(("H" . dired-hide-dotfiles-mode))))
 
   (use-package diredfl
     :ensure t
-    :config
-    (diredfl-global-mode))
+    :hook
+    (dired-mode-hook . diredfl-mode))
+
+#+end_src
+
+** xdg-open
+
+#+begin_src emacs-lisp :tangle init.el
+  (defun xdg-open (&optional filename)
+    (interactive)
+    (let ((process-connection-type))
+      (start-process
+       "" nil (cond ((eq system-type 'gnu/linux) "xdg-open")
+                    ((eq system-type 'darwin) "open")
+                    ((eq system-type 'windows-nt) "start")
+                    (t "")) (expand-file-name
+                    (or filename (dired-file-name-at-point))))))
+
+  (defun find-file-auto (orig-fun &rest args)
+    (let ((filename (car args)))
+      (if (cl-find-if
+           (lambda (regexp) (string-match regexp filename))
+           '("\\.pdf\\'" "\\.mp4\\'" "\\.wav\\'" "\\.avi\\'" "\\.gif\\'" "\\.docx?\\'" "\\.jpg\\'" "\\.png\\'" "\\.webm\\'" "\\.flac\\'"))
+          (xdg-open filename)
+        (apply orig-fun args))))
+
+  (advice-add 'find-file :around 'find-file-auto)
 #+end_src
 
 * Appearance
