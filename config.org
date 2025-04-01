@@ -425,7 +425,8 @@ improve its interface and allow it to open files externally.
     (wdired-allow-to-change-permissions t)
     :bind
     (:map dired-mode-map
-    	(("v" . dired-xdg-open))))
+    	(("v" . dired-xdg-open)
+  	 ("s" . eshell))))
 
   (use-package dired-hide-dotfiles
     :ensure t
