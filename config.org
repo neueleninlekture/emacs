@@ -374,7 +374,9 @@ declarations.
      :states 'normal
      :keymaps 'dired-mode-map
      "o" 'dired-xdg-open
-     "s" 'eshell))
+     "h" 'dired-hide-details-mode
+     "H" 'dired-hide-dotfiles-mode
+  s" 'eshell))
 #+end_src
 
 * Minibuffer
