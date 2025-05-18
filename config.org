@@ -532,6 +532,16 @@ more flexible useful ~dwim~ counterparts.
   (global-set-key (kbd "M-l") 'downcase-dwim)
 #+end_src
 
+* Org mode
+** Editing code blocks
+
+Here we make it so that editing a code block is done in the current
+window.
+
+#+begin_src emacs-lisp
+  (setq org-src-window-setup 'current-window)
+#+end_src
+
 * File management
 
 ** Dired
