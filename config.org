@@ -2,7 +2,7 @@
 #+author: abe
 #+email: aabm@disroot.org
 #+startup: overview
-#+property: header-args :mkdirp yes
+#+property: header-args :mkdirp yes 
 
 * About
 
@@ -522,7 +522,7 @@ pairs when typing. =electric-quote-mode= inserts fancy quotes.
 This handy package allows simultaneous editing of multiple lines. It's
 particularly useful for batch-renaming files in Dired.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle init.el
   (use-package multiple-cursors
     :ensure t)
 #+end_src
@@ -532,10 +532,21 @@ particularly useful for batch-renaming files in Dired.
 Here we replace the normal capitalization functions with their
 more flexible useful ~dwim~ counterparts.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle init.el
   (global-set-key (kbd "M-c") 'capitalize-dwim)
   (global-set-key (kbd "M-u") 'upcase-dwim)
   (global-set-key (kbd "M-l") 'downcase-dwim)
+#+end_src
+
+** Olivetti
+
+=olivetti-mode= is a minor mode which centers text on the screen.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package olivetti
+    :ensure t
+    :custom
+    (olivetti-body-width 0.72))
 #+end_src
 
 * Org mode
@@ -544,7 +555,7 @@ more flexible useful ~dwim~ counterparts.
 Here we make it so that editing a code block is done in the current
 window.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle init.el
   (setq org-src-window-setup 'current-window)
 #+end_src
 
