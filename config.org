@@ -349,6 +349,7 @@ declarations.
      "ti" 'indent-region
      "ty" 'consult-yank-from-kill-ring
      "to" 'olivetti-mode
+     "tO" 'olivetti-set-width
      ;; windows
      "wo" 'other-window
      "wd" 'delete-other-windows
