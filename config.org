@@ -276,6 +276,99 @@ declarations.
     :ensure t)
 #+end_src
 
+* Evil Mode
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package evil
+    :ensure t
+    :init
+    (setq evil-want-keybinding nil)
+    (evil-mode)
+    :custom
+    (evil-undo-system 'undo-redo)
+    :hook
+    (with-editor-mode-hook . evil-insert-state)
+    (org-src-mode-hook . evil-insert-state))
+
+  (use-package evil-collection
+    :ensure t
+    :init
+    (evil-collection-init))
+
+  (use-package evil-surround
+    :ensure t
+    :config
+    (global-evil-surround-mode t))
+
+  ;; (use-package org-evil
+  ;;   :ensure t)
+
+  (use-package evil-org
+    :ensure t
+    :hook
+    ((org-mode-hook . evil-org-mode))
+    :config
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
+
+  (use-package general
+    :ensure t
+    :init
+    (general-evil-setup)
+    (general-nmap
+     :states 'normal
+     :keymaps 'override
+     :prefix "SPC"
+     :prefix-map 'leader-map
+     ;; files
+     "ff" 'find-file
+     "fd" 'dired
+     "fj" 'dired-jump
+     "fb" 'consult-bookmark
+     ;; dired
+     "dd" 'dired-jump
+     "df" 'dired
+     ;; buffers
+     "bb" 'consult-buffer
+     "bk" 'kill-this-buffer+
+     "bK" 'kill-buffer
+     "bi" 'ibuffer
+     "bo" 'aabm/other-buffer
+     ;; git
+     "gg" 'magit-status
+     "gc" 'magit-commit-all
+     "gp" 'magit-push-current-to-pushremote
+     "gs" 'vc-git-log-grep
+     ;; search
+     "sg" 'consult-grep
+     "so" 'consult-outline
+     "sm" 'consult-mark
+     "ss" 'consult-line
+     "sl" 'consult-goto-line
+     ;; text editing
+     "ti" 'indent-region
+     "ty" 'consult-yank-from-kill-ring
+     "to" 'olivetti-mode
+     ;; windows
+     "wo" 'other-window
+     "wd" 'delete-other-windows
+     "wk" 'delete-window
+     "wj" 'split-window-below-and-switch
+     "wl" 'split-window-right-and-switch
+     ;; major modes
+     "xs" 'eshell)
+
+    (general-nmap
+     :states 'normal
+     :keymaps 'eshell-mode-map
+     :prefix ","
+     :prefix-map 'local-leader-map
+     "y" 'eshell-copy-file-path-at-point
+     "f" 'eshell-find-file-at-point
+     "o" 'eshell-cat-file-at-point
+     "b" 'eshell-put-last-output-to-buffer))
+#+end_src
+
 * Minibuffer
 ** Which Key
 
@@ -312,6 +405,9 @@ completion.
     (read-file-name-completion-ignore-case t)
     (read-buffer-completion-ignore-case t)
     (enable-recursive-minibuffers t))
+
+  (use-package consult
+    :ensure t)
 #+end_src
 
 * Buffers
@@ -320,6 +416,11 @@ completion.
   (use-package ibuffer
     :bind
     ("C-x C-b" . ibuffer-other-window))
+
+  (defun kill-this-buffer+ ()
+    "Kill the current buffer. More reliable alternative to `kill-this-buffer'"
+    (interactive)
+    (kill-buffer))
 #+end_src
 
 * Version control
