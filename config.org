@@ -356,7 +356,9 @@ declarations.
      "wj" 'split-window-below-and-switch
      "wl" 'split-window-right-and-switch
      ;; major modes
-     "xs" 'eshell)
+     "xs" 'eshell
+     ;; kill stuff (redundant)
+     "kk" 'kill-this-buffer+)
 
     (general-nmap
      :states 'normal
