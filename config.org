@@ -386,6 +386,19 @@ cryptically long keychord sequences.
     (which-key-idle-delay 0.4))
 #+end_src
 
+** Isearch editing
+
+This package allows one to edit the contents of an =Isearch= as if it
+were a normal minibuffer.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package isearch-mb
+    :ensure t
+    :diminish isearch-mb-mode
+    :init
+    (isearch-mb-mode))
+#+end_src
+
 ** Completion
 
 For minibuffer completion, I use =vertico= along with =orderless=
