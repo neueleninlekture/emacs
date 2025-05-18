@@ -423,7 +423,7 @@ completion.
     :ensure t)
 #+end_src
 
-* Buffers
+* Windows and buffers
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package ibuffer
@@ -434,6 +434,8 @@ completion.
     "Kill the current buffer. More reliable alternative to `kill-this-buffer'"
     (interactive)
     (kill-buffer))
+
+  (global-set-key (kbd "M-o") 'other-window)
 #+end_src
 
 * Version control
@@ -445,6 +447,8 @@ completion.
   (use-package magit
     :ensure t
     :after transient
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
     :bind
     ("C-x g" . magit-status))
 #+end_src
