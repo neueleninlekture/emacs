@@ -502,16 +502,13 @@ pairs when typing. =electric-quote-mode= inserts fancy quotes.
      (prog-mode-hook . rainbow-delimiters-mode)))
 
   (setq electric-pair-pairs '((?\{ . ?\})
-			      (?\( . ?\))
-			      (?\[ . ?\])
-			      (?\" . ?\")
-			      (?\“ . ?\”)))
+  			      (?\( . ?\))
+  			      (?\[ . ?\])
+  			      (?\" . ?\")
+  			      (?\“ . ?\”)))
   (electric-pair-mode t)
 
   (show-paren-mode t)
-
-  (setq electric-quote-replace-double t)
-  (electric-quote-mode t)
 #+end_src
 
 * File management
