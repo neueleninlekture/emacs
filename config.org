@@ -511,6 +511,27 @@ pairs when typing. =electric-quote-mode= inserts fancy quotes.
   (show-paren-mode t)
 #+end_src
 
+** Multiple cursors
+
+This handy package allows simultaneous editing of multiple lines. It's
+particularly useful for batch-renaming files in Dired.
+
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :ensure t)
+#+end_src
+
+** Casing and capitalization
+
+Here we replace the normal capitalization functions with their
+more flexible useful ~dwim~ counterparts.
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-c") 'capitalize-dwim)
+  (global-set-key (kbd "M-u") 'upcase-dwim)
+  (global-set-key (kbd "M-l") 'downcase-dwim)
+#+end_src
+
 * File management
 
 ** Dired
