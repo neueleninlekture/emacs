@@ -643,7 +643,7 @@ This allows us to open any file from =find-file= externally using =xdg-open=.
     :custom
     (dashboard-center-content t)
     (dashboard-vertically-center-content t)
-    (dashboard-startup-banner 'logo)
+    (dashboard-startup-banner "/home/abe/.emacs.d/gnu.txt")
     (dashboard-items '((recents . 5)
   		     (bookmarks . 5)
   		     (projects . 5))))
@@ -656,7 +656,7 @@ Here we set up fonts, themes, and anything visual.
   (add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font 11"))
   (set-frame-font "Iosevka Nerd Font 11" nil t)
 
-  (load-theme 'modus-vivendi)
+  (load-theme 'modus-vivendi-tinted)
 
   (set-frame-parameter nil 'alpha-background 75) 
   (add-to-list 'default-frame-alist '(alpha-background . 75))
