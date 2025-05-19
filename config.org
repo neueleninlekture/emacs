@@ -376,7 +376,7 @@ declarations.
      "o" 'dired-xdg-open
      "h" 'dired-hide-details-mode
      "H" 'dired-hide-dotfiles-mode
-  s" 'eshell))
+     "s" 'eshell))
 #+end_src
 
 * Minibuffer
