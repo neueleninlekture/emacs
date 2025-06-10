@@ -569,6 +569,15 @@ more flexible useful ~dwim~ counterparts.
     (olivetti-body-width 0.72))
 #+end_src
 
+* HTML editing
+
+=simple-httpd= allows one to serve a directory as a local webserver.
+Useful for editing HTML files and seeing them in the browser.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package simple-httpd
+    :ensure t)
+#+end_src
 * Org mode
 ** Editing code blocks
 
