@@ -550,7 +550,7 @@ particularly useful for batch-renaming files in Dired.
 ** Casing and capitalization
 
 Here we replace the normal capitalization functions with their
-more flexible useful ~dwim~ counterparts.
+more flexible useful =dwim= counterparts.
 
 #+begin_src emacs-lisp :tangle init.el
   (global-set-key (kbd "M-c") 'capitalize-dwim)
