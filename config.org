@@ -431,6 +431,17 @@ completion.
 
   (use-package consult
     :ensure t)
+
+  (use-package embark
+    :ensure t
+    :bind
+    (("C-," . embark-act))
+    :custom
+    (embark-action-indicator
+     (lambda (map &optional _target)
+       (which-key--show-keymap "Embark" map nil nil 'no-paging)
+       #'which-key--hide-popup-ignore-command)
+     embark-become-indicator embark-action-indicator))
 #+end_src
 
 * Windows and buffers
