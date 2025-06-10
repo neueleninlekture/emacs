@@ -499,6 +499,7 @@ does that for me automatically.
 #+begin_src emacs-lisp :tangle init.el
   (add-hook 'text-mode-hook 'turn-on-auto-fill)
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
+  (add-hook 'html-mode-hook 'turn-off-auto-fill)
 #+end_src
 
 ** Handling parens and bracket pairs
