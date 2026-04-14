@@ -303,6 +303,18 @@ packages without committing to a full install.
 I'm sure installing a whole new package manager is far from the
 cleanest solution to package management, but it is easy to work with.
 
+** Clear native compilation
+
+Emacs tends to give rather verbose error reports when native-compiling
+Elisp. These clog up the ~*Messages*~ buffer and become more annoying
+the more packages you have. We thus tell native-compilation to be less
+verbose.
+
+#+begin_src emacs-lisp :tangle init.el
+(when (native-comp-available-p)
+  (setq native-comp-async-report-warnings-errors 'silent))
+#+end_src
+
 ** Install =elpaca=
 
 This little script bootstraps =elpaca= by pulling from the official
