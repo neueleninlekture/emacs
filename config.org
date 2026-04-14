@@ -155,12 +155,12 @@ general information.
 
 #+end_src
 
-** Garbage collection tweak for faster startup
+** Tweaks for faster startup
 
-With some simple tweaking of garbage collection settings we can make
-Emacs start up faster. We then make it so that these settings revert
-back to normal after Emacs has started, as they are not optimal for
-continued use, only for startup.
+With some simple tweaking of garbage collection and file settings we
+can make Emacs start up faster. We then make it so that these settings
+revert back to normal after Emacs has started, as they are not optimal
+for continued use, only for startup.
 
 #+begin_src emacs-lisp :tangle early-init.el
   (defvar startup-file-name-handler-alist file-name-handler-alist)
@@ -283,6 +283,18 @@ configuration clean.
   (setq custom-file "/dev/null") 
 #+end_src
 
+** Clear native compilation
+
+Emacs tends to give rather verbose error reports when native-compiling
+Elisp. These clog up the ~*Messages*~ buffer and become more annoying
+the more packages you have. We thus tell native-compilation to be less
+verbose.
+
+#+begin_src emacs-lisp :tangle early-init.el
+(when (native-comp-available-p)
+  (setq native-comp-async-report-warnings-errors 'silent))
+#+end_src
+
 ** Enable disabled commands
 
 By default, Emacs hides some commands away from the user. Here we
@@ -302,18 +314,6 @@ packages without committing to a full install.
 
 I'm sure installing a whole new package manager is far from the
 cleanest solution to package management, but it is easy to work with.
-
-** Clear native compilation
-
-Emacs tends to give rather verbose error reports when native-compiling
-Elisp. These clog up the ~*Messages*~ buffer and become more annoying
-the more packages you have. We thus tell native-compilation to be less
-verbose.
-
-#+begin_src emacs-lisp :tangle init.el
-(when (native-comp-available-p)
-  (setq native-comp-async-report-warnings-errors 'silent))
-#+end_src
 
 ** Install =elpaca=
 
@@ -391,7 +391,23 @@ wil be needed for ~use-package~ declarations ahead.
 
 * Evil Mode
 
-#+begin_src emacs-lisp :tangle init.el
+=evil-mode= is my primary keybinding system. Basically it provides a
+full emulation of Vim keys in Emacs, with added extensibility. I also
+use the =general= package for setting up special evil-mode
+keybindings.
+
+As is usual in my sorta-annual config refixes though, I have chosen to
+temporarily disable =evil-mode= from my config. I can never quite make
+up my mind between Vim and Emacs keys. While I like the complex
+leader-prefix setup I've come up with here, I have to say I do not
+particularly care for Vim editing motions, especially given that I
+mostly edit prose and Lisp code, which Emacs does about as well as
+Vim, in my opinion. The main reason I keep =evil-mode= around is the
+leader-prefix, frankly, which is quite an elegant way to allow for
+quick access to packages and utilities in Emacs (see the ever popular
+configuration frameworks like Spacemacs or Doom Emacs).
+
+#+begin_src emacs-lisp
   (use-package evil
     :ensure t
     :init
