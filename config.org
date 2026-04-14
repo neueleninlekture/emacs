@@ -386,10 +386,12 @@ wil be needed for ~use-package~ declarations ahead.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package diminish
-    :ensure t)
+    :ensure t
+    :config
+    (diminish 'which-key-mode))
 #+end_src
 
-* Evil Mode
+* Keybinding system
 
 =evil-mode= is my primary keybinding system. Basically it provides a
 full emulation of Vim keys in Emacs, with added extensibility. I also
