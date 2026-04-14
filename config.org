@@ -409,6 +409,8 @@ leader-prefix, frankly, which is quite an elegant way to allow for
 quick access to packages and utilities in Emacs (see the ever popular
 configuration frameworks like Spacemacs or Doom Emacs).
 
+** =evil-mode= and =general.el=
+
 #+begin_src emacs-lisp
   (use-package evil
     :ensure t
@@ -429,9 +431,6 @@ configuration frameworks like Spacemacs or Doom Emacs).
     :ensure t
     :config
     (global-evil-surround-mode t))
-
-  ;; (use-package org-evil
-  ;;   :ensure t)
 
   (use-package evil-org
     :ensure t
