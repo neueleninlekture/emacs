@@ -177,7 +177,7 @@ continued use, only for startup.
   (add-hook 'emacs-startup-hook #'startup-reset-defaults)
 #+end_src
 
-** Disable package.el
+** Disable =package.el=
 
 We disable =package.el= early, because we do not use it.
 
@@ -237,18 +237,15 @@ Emacs has started.
 
 ** Check Emacs version
 
-I generally run the latest release of Emacs available on Arch
-Linux. My configuration might be relatively simple, but it is still
-possible that it breaks compatibility with older versions of Emacs.
-
 This snippet checks the currently installed Emacs version and ensures
-I am running the intended one.
+I am running the intended one. I try to keep this value updated to
+whatever version I am currently on.
 
 #+begin_src emacs-lisp :tangle init.el
   ;;; Startup
   ;; Check version
-  (when (version< emacs-version "29.3")
-    (error "This configuration requires Emacs 29.3 and above!"))
+  (when (version< emacs-version "30.2")
+    (error "This configuration requires Emacs 30.2 and above!"))
 #+end_src
 
 ** Load files and directory littering
@@ -264,11 +261,25 @@ not littering our directories with backup and autosave files.
   (global-auto-revert-mode t)
   (setq global-auto-revert-non-file-buffers t)
 
-  ;; DO NOT LITTER
+  ;; Do not lock down files
+  (setq create-lockfiles nil)
+
+  ;; DO NOT LITTER FOR THE LOVE OF GOD
   (setq make-backup-files nil)
   (setq auto-save-default nil)
+#+end_src
 
-  ;; Do not generate custom.el file
+** Send =custom.el= to the void
+
+By default, Emacs maintains a file called =custom.el=, which contains
+settings applied by the user during the execution of Emacs. I never
+want this to be a thing, preferring Emacs to exclusively load my
+explicitly declared configuration files. Since there is no way to
+block Emacs from producing =custom.el= (too many interfaces access and
+write to it by default) we thus write it into oblivion. This keeps
+configuration clean.
+
+#+begin_src emacs-lisp :tangle init.el
   (setq custom-file "/dev/null") 
 #+end_src
 
@@ -278,17 +289,26 @@ By default, Emacs hides some commands away from the user. Here we
 enable them again.
 
 #+begin_src emacs-lisp :tangle init.el
-  ;; Enable all disabled commands (stuff emacs hides from you)
   (setq disabled-command-function nil)
 #+end_src
 
 * Package management
 
-This configuration uses the built-in =elpaca= for package
-management. It also configures its own modules that are loaded as
-packages.
+This configuration uses =elpaca= for package management. I use
+=elpaca= because I like it's declarative approach to package
+management. This means Emacs can only load packages which are
+explicitly declared in the config, making it easier to test new
+packages without committing to a full install.
 
-** Install elpaca
+I'm sure installing a whole new package manager is far from the
+cleanest solution to package management, but it is easy to work with.
+
+** Install =elpaca=
+
+This little script bootstraps =elpaca= by pulling from the official
+git repository. This piece of code is the default install method for
+=elpaca=, available in its own documentation. It suffers minor changes
+occasionally, as the packages gets updated.
 
 #+begin_src emacs-lisp :tangle init.el
   (defvar elpaca-installer-version 0.12)
@@ -331,9 +351,12 @@ packages.
   (elpaca `(,@elpaca-order))
 #+end_src
 
-** Use-package
+** Enable =use-package=
 
-We ensure =elpaca= loads up =use-package= and pass some options to it.
+=use-package= is a useful macro for handling package installation and
+loading. We use it for pretty much all of our package management
+needs. Since it is now part of Emacs core, we do not have to
+explicitly install it, so instead we just tell =elpaca= to enable it.
 
 #+begin_src emacs-lisp :tangle init.el
   (elpaca elpaca-use-package
@@ -342,11 +365,12 @@ We ensure =elpaca= loads up =use-package= and pass some options to it.
   (setq use-package-hook-name-suffix nil)
 #+end_src
 
-** Diminish
+** Manage minor modes with =diminish=
 
-Diminish allows hiding minor modes from the modeline display. It also
-integrates with use-package, and can be called from use-package
-declarations.
+=diminish= allows hiding minor modes from the modeline display. It
+also integrates with =use-package=, and can be called from
+~use-package~ declarations. We set it up it at this point because it
+wil be needed for ~use-package~ declarations ahead.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package diminish
