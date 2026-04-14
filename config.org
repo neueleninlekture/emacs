@@ -4,34 +4,93 @@
 #+startup: overview
 #+property: header-args :mkdirp yes 
 
-* About
+* About this Emacs setup
 
-2025 refix edition!
+2026 refix edition!
 
-This is my personal configuration for GNU Emacs. It is written in a
-literate style, combining code snippets and documentation in the same
-file.
+This is my personal configuration file for GNU Emacs. It is written in
+a literate style, combining code snippets and documentation in the
+same file.
 
-This document serves as the single point of entry into this Emacs
-setup. Here, all the code is defined and then extracted ("tangled")
-out into respective code files.
+** A literate configuration file
+
+This document serves as the single point of entry into my Emacs setup.
+Here all the code is defined and documented, before being extracted
+("tangled") out to the Elisp files that are actually loaded by Emacs.
 
 When I want to modify my Emacs setup, I edit this file and then
-run =org-babel-tangle= or press =C-c C-v C-t=. All files will
-be updated accordingly.
+evaluate the following code block or do =C-c C-v t=. All files are
+thus updated accordingly.
+
+#+begin_src emacs-lisp :tangle no :results none
+(org-babel-tangle)
+#+end_src
+
+This configuration is written in the literate style primarily for
+self-clarification. I originally adopted this approach because I used
+to share and post bits and pieces of my setup online, and including
+documentation was useful for others. I rarely do that nowadays so I
+mainly keep this file for myself: I tend to forget exactly how or why
+I set something up, so reading back through my own notes is useful in
+understanding what is going on in my Emacs.
+
+If you're a stranger reading this, welcome! I hope you get something
+useful out of this.
+
+** Use cases for this configuration
+
+Emacs is my general purpose text editor. I use it to read, write and
+take notes for both academic and personal purposes. I occasionally use
+it for programming. I also use it for all sorts of everyday computing
+tasks such as managing files, editing system configs, and reading
+email.
+
+** Software and hardware assumptions
+
+I usually run the latest stable build of Emacs available on the Arch
+Linux repositories, no compiling Emacs from source. Compatibility with
+versions of Emacs other than stable is not accounted for.
+
+I have two computers, both running Arch Linux. One is a reasonably
+performant desktop (a so-called "gaming PC"), the other a second-hand
+Thinkpad T490. This config is not hardware-dependent at all, as it is
+designed to run smoothly across both machines.
+
+On both of these systems, I use a customized but fairly standard
+tiling window manager setup. As such, no options specific to desktop
+environment suites are provided.
+
+** Licensing 
 
 In line with the GNU philosophy, this configuration is entirely Free
-Software. See the [[file:LICENSE][LICENSE]] file in this repository for more
-information.
+Software. It basically means that you may share and copy the contents
+of this file under certain terms. See the [[file:LICENSE][LICENSE]] file in this
+repository for more information.
 
-** Providing headers for init files
+* Initialization and setting up configuration files
 
-This provides my init files with headers containing LICENSE
-information and brief descriptions of their contents.
+What you are now reading is the =config.org= file. It is the document
+that generates -- and thus controls -- every other file that underpins
+my Emacs configuration.
+
+This org file is not loaded directly. Instead, it is used to produce
+the files which contain the actual code. Currently, these files are:
+
+- The standard =early-init.el= :: includes optimisations for starting
+  up Emacs and sets some basics in place.
+  
+- The standard =init.el= :: contains the remainder of the
+  configuration.
+  
+** Headers for init files
+
+Before we get to configuring Emacs, we must produce the init files. I
+like to start them off with a header containing license and other
+general information.
 
 #+begin_src emacs-lisp :tangle early-init.el
   ;;; early-init.el --- Emacs early configuration file
-  ;; Copyright © 2019-2025 abe <aabm@disroot.org>
+  ;; Copyright © 2019-2026 abe <aabm@disroot.org>
 
   ;; Author: abe <aabm@disroot.org>
   ;; Keywords: Emacs configuration, literate programming
@@ -57,16 +116,17 @@ information and brief descriptions of their contents.
   ;; MA 02110-1301, USA.
 
   ;;; Commentary:
-  ;; abe's early-init settings for Emacs.
+  ;; abe's early-init settings for Emacs. Mainly controls startup. For
+  ;; more details, see the config.org file.
 
 #+end_src
 
 #+begin_src emacs-lisp :tangle init.el
   ;;; init.el --- Main Emacs startup file
-  ;; Copyright © 2019-2025 abe <aabm@disroot.org>
+  ;; Copyright © 2019-2026 abe <aabm@disroot.org>
 
   ;; Author: abe <aabm@disroot.org>
-  ;; Keywords: literate programming, Emacs configuration
+  ;; Keywords: Emacs configuration, literate programming
   ;; Homepage: https://github.com/neueleninlekture/emacs
 
   ;;; License:
@@ -89,19 +149,18 @@ information and brief descriptions of their contents.
   ;; MA 02110-1301, USA.
 
   ;;; Commentary:
-  ;; abe's init settings for Emacs.
-  
+  ;; abe's init settings for Emacs. Contains most configuration options.
+  ;; Do not edit this directly. See the config.org file for more
+  ;; information.
+
 #+end_src
 
-* Initialization
-
-Settings that are loaded early during Emacs' startup process.
-
-** Tweaks for faster startup
+** Garbage collection tweak for faster startup
 
 With some simple tweaking of garbage collection settings we can make
 Emacs start up faster. We then make it so that these settings revert
-back to normal after Emacs has started.
+back to normal after Emacs has started, as they are not optimal for
+continued use, only for startup.
 
 #+begin_src emacs-lisp :tangle early-init.el
   (defvar startup-file-name-handler-alist file-name-handler-alist)
@@ -126,6 +185,39 @@ We disable =package.el= early, because we do not use it.
   (setq package-enable-at-startup nil)
 #+end_src
 
+** Tweak UI elements
+
+Here we disable UI elements such as tool and menu bars.
+
+These are settings for how Emacs sets up its frames. We allow more
+flexible and less annoying resizing of frames, as well as better frame
+titles. We also disable some UI initialization elements like the
+default startup screen.
+
+#+begin_src emacs-lisp :tangle early-init.el
+  (setq frame-resize-pixelwise t
+        frame-inhibit-implied-resize 'force
+        frame-title-format '("Emacs: %b")
+        ring-bell-function 'ignore
+        use-dialog-box t ; only for mouse events, which I seldom use
+        use-file-dialog nil
+        inhibit-splash-screen t
+        inhibit-startup-screen t
+        inhibit-x-resources t
+        inhibit-startup-echo-area-message user-login-name ; read the docstring
+        inhibit-startup-buffer-menu t)
+#+end_src
+
+Next up, we disable the menu, tool and scroll bars. I see little point
+in using these.
+
+#+begin_src emacs-lisp :tangle early-init.el
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tooltip-mode -1)
+#+end_src
+
 ** Information on startup
 
 This displays a brief message with information on startup time after
@@ -133,14 +225,14 @@ Emacs has started.
 
 #+begin_src emacs-lisp :tangle early-init.el
   (add-hook 'emacs-startup-hook
-	    (lambda ()
-	      (message "Emacs ready in %s with %d garbage collections."
-		       (format "%.2f seconds"
-			       (float-time
-				(time-subtract
-				 after-init-time
-				 before-init-time)))
-		       gcs-done)))
+  	    (lambda ()
+  	      (message "Welcome, abe! Emacs ready in %s with %d garbage collections."
+  		       (format "%.2f seconds"
+  			       (float-time
+  				(time-subtract
+  				 after-init-time
+  				 before-init-time)))
+  		       gcs-done)))
 #+end_src
 
 ** Check Emacs version
@@ -188,21 +280,6 @@ enable them again.
 #+begin_src emacs-lisp :tangle init.el
   ;; Enable all disabled commands (stuff emacs hides from you)
   (setq disabled-command-function nil)
-#+end_src
-
-** Tweak UI elements
-
-Here we disable UI elements such as tool and menu bars.
-
-#+begin_src emacs-lisp :tangle init.el
-  ;; Disable some UI elements
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (tooltip-mode -1)
-  (setq use-dialog-box nil)
-  (setq ring-bell-function 'ignore)
-  (setq inhibit-startup-screen t)
 #+end_src
 
 * Package management
