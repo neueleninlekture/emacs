@@ -826,35 +826,35 @@ library. =nerd-icons= provides icons from Nerd Fonts, which I use.
     (dashboard-navigator-buttons
      `(;; line1
        (("  "
-         "Agenda"
+         "Agenda (a)"
          "Open Org agenda"
          (lambda (&rest _) (org-agenda-list))
          'default
          ""
          ""))
        (("  "
-         "Config"
+         "Config (c)"
          "Open Emacs configuration"
          (lambda (&rest _) (find-file "~/.emacs.d/config.org"))
          'default
          ""
          ""))
-       (("  "
-         "Mail"
+       (("    "
+         "Mail (m)"
          "Read email in Notmuch"
          (lambda (&rest _) (find-file "~/.emacs.d/emacs.org"))
          'default
          ""
          ""))
-       (("  "
-         "Notes"
+       (("   "
+         "Notes (n)"
          "Browse org-mode notes"
          (lambda (&rest _) (find-file "~/org"))
          'default
          ""
          ""))
-       (("  "
-         "Projects"
+       ((" "
+         "Projects (p)"
          "Browse known projects"
          (lambda (&rest _) (project-switch-project))
          'default
