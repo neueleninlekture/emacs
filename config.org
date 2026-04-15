@@ -792,6 +792,9 @@ This allows us to open any file from =find-file= externally using =xdg-open=.
 * Appearance
 ** =nerd-icons=
 
+To add visual icons to various parts of the interface, we need an icon
+library. =nerd-icons= provides icons from Nerd Fonts, which I use.
+
 #+begin_src emacs-lisp :tangle init.el
   (use-package nerd-icons
     :ensure t)
