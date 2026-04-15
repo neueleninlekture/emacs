@@ -790,6 +790,13 @@ This allows us to open any file from =find-file= externally using =xdg-open=.
 #+end_src
 
 * Appearance
+** =nerd-icons=
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package nerd-icons
+    :ensure t)
+#+end_src
+
 ** Dashboard
 
 #+begin_src emacs-lisp :tangle init.el
@@ -802,10 +809,54 @@ This allows us to open any file from =find-file= externally using =xdg-open=.
     :custom
     (dashboard-center-content t)
     (dashboard-vertically-center-content t)
-    (dashboard-startup-banner 'official)
+    (dashboard-startup-banner 'logo)
+    (dashboard-banner-logo-title "Welcome to GNU Emacs!")
     (dashboard-items '((recents . 5)
   		     (bookmarks . 5)
-  		     (projects . 5))))
+  		     (projects . 5)))
+    (dashboard-startupify-list '(dashboard-insert-banner
+                                 dashboard-insert-newline
+                                 dashboard-insert-banner-title
+                                 dashboard-insert-newline
+                                 dashboard-insert-navigator
+                                 dashboard-insert-newline))
+    (dashboard-navigator-buttons
+     `(;; line1
+       (("  "
+         "Agenda"
+         "Open Org agenda"
+         (lambda (&rest _) (org-agenda-list))
+         'default
+         ""
+         ""))
+       (("  "
+         "Config"
+         "Open Emacs configuration"
+         (lambda (&rest _) (find-file "~/.emacs.d/config.org"))
+         'default
+         ""
+         ""))
+       (("  "
+         "Mail"
+         "Read email in Notmuch"
+         (lambda (&rest _) (find-file "~/.emacs.d/emacs.org"))
+         'default
+         ""
+         ""))
+       (("  "
+         "Notes"
+         "Browse org-mode notes"
+         (lambda (&rest _) (find-file "~/org"))
+         'default
+         ""
+         ""))
+       (("  "
+         "Projects"
+         "Browse known projects"
+         (lambda (&rest _) (project-switch-project))
+         'default
+         ""
+         "")))))
 #+end_src
 
 ** Theme
@@ -815,7 +866,7 @@ Here we set up fonts, themes, and anything visual.
   (add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font 12"))
   (set-frame-font "Iosevka Nerd Font 12" nil t)
 
-  (load-theme 'modus-vivendi)
+  (load-theme 'modus-operandi)
 
   (set-frame-parameter nil 'alpha-background 100) 
   (add-to-list 'default-frame-alist '(alpha-background . 100))
