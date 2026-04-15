@@ -509,22 +509,25 @@ configuration frameworks like Spacemacs or Doom Emacs).
      "s" 'eshell))
 #+end_src
 
-* Minibuffer
-** Which Key
+** =which-key=
 
 The =which-key= package uses the minibuffer to display all active
 keybindings in the currently typed prefix. It allows you to navigate
-your keybindings via prefixes. Nice for when you forget those
-cryptically long keychord sequences.
+your keybindings via prefixes. This is pretty much a basic necessity
+for Emacs, especially nice when you forget those cryptically long
+keychord sequences.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package which-key
     :init
     (which-key-mode)
-    :diminish which-key-mode
     :custom
     (which-key-idle-delay 0.4))
 #+end_src
+
+* Minibuffer
+
+The /minibuffer/ is one of Emacs' most powerful tools. 
 
 ** Isearch editing
 
