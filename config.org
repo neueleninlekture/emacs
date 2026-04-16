@@ -801,15 +801,17 @@ nice for focused reading and writing.
     (olivetti-body-width 0.6))
 #+end_src
 
-* HTML editing
+* Programming and markup modes
+** Shell scripting
 
-=simple-httpd= allows one to serve a directory as a local webserver.
-Useful for editing HTML files and seeing them in the browser.
+This little hook automatically runs ~chmod +x~ on newly-created shell
+scripts.
 
 #+begin_src emacs-lisp :tangle init.el
-  (use-package simple-httpd
-    :ensure t)
+  (add-hook 'after-save-hook
+            #'executable-make-buffer-file-executable-if-script-p)
 #+end_src
+
 * Org mode
 ** Editing code blocks
 
@@ -821,7 +823,6 @@ window.
 #+end_src
 
 * File management
-
 ** Dired
 
 =dired= is Emacs’ own built-in file manager. It is quite powerful. We
