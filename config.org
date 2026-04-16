@@ -633,12 +633,13 @@ convenient key.
 #+begin_src emacs-lisp :tangle init.el
   (use-package ibuffer
     :bind
-    ("C-x C-b" . ibuffer-other-window))
+    ("C-x C-b" . ibuffer))
 
   (defun kill-this-buffer+ ()
     "Kill the current buffer. More reliable alternative to `kill-this-buffer'"
     (interactive)
     (kill-buffer))
+#+end_src
 
   (global-set-key (kbd "M-o") 'other-window)
 #+end_src
