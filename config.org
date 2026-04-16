@@ -70,15 +70,15 @@ inspiration (and code!) from other Emacs-related projects, such as:
 ** Licensing 
 
 In line with the GNU philosophy, this configuration is entirely Free
-Software. It basically means that you may share and copy the contents
-of this file under certain terms. See the [[file:LICENSE][LICENSE]] file in this
-repository for more information.
+Software. It basically means that you may copy, share and modify the
+contents of this file under certain terms. See the [[file:LICENSE][LICENSE]] file in
+this repository for more information.
 
-* Initialization and setting up configuration files
+* Initialization, performance and config structure
 
 What you are now reading is the =config.org= file. It is the document
-that generates -- and thus controls -- every other file that underpins
-my Emacs configuration.
+that generates and controls every other file that underpins my Emacs
+configuration.
 
 This org file is not loaded directly. Instead, it is used to produce
 the files which contain the actual code. Currently, these files are:
