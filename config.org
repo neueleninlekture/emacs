@@ -23,7 +23,7 @@ evaluate the following code block or do =C-c C-v t=. All files are
 thus updated accordingly.
 
 #+begin_src emacs-lisp :tangle no :results none
-(org-babel-tangle)
+  (org-babel-tangle)
 #+end_src
 
 This configuration is written in the literate style primarily for
