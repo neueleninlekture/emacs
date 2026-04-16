@@ -651,8 +651,8 @@ completion.
     ("C-x g" . magit-status))
 #+end_src
 
-* Text editing
-** Point position
+* Text editing features
+** Display point position and line numbers
 
 Enabling the following minor modes makes it so that the position of
 point is always displayed in the modeline and highlighted in the
@@ -727,7 +727,8 @@ particularly useful for batch-renaming files in Dired.
 ** Casing and capitalization
 
 Here we replace the normal capitalization functions with their
-more flexible useful =dwim= counterparts.
+more flexible useful =dwim= counterparts, which capitalize either the
+word on point or the selected region, depending on context.
 
 #+begin_src emacs-lisp :tangle init.el
   (global-set-key (kbd "M-c") 'capitalize-dwim)
@@ -737,7 +738,8 @@ more flexible useful =dwim= counterparts.
 
 ** Olivetti
 
-=olivetti-mode= is a minor mode which centers text on the screen.
+=olivetti-mode= is a minor mode which centers text on the screen. It's
+nice for focused reading and writing.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package olivetti
