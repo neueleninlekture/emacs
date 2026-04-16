@@ -702,6 +702,24 @@ the frame.
   (add-hook 'text-mode-hook 'display-line-numbers-mode)
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+end_src
+** Kill ring
+
+The kill ring is Emacs' clipboard history. It can integrate with the
+system clipboard.
+
+This setting makes Emacs save the whatever content exists on the
+clipboard into the kill ring before overwriting it with new
+information. Integrates well with web browsers.
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq save-interprogram-paste-before-kill t)
+#+end_src
+
+This setting avoids duplicates in kill ring entries.
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq kill-do-not-save-duplicates t)
+#+end_src
 
 ** Sentence navigation
 
