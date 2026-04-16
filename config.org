@@ -184,9 +184,46 @@ for continued use, only for startup.
   (add-hook 'emacs-startup-hook #'startup-reset-defaults)
 #+end_src
 
+** Assorted performance tweaks
+
+Emacs often does a lot of things at once under the hood, which can
+lead to slowdowns. We disable and tweak certain settings to speed up
+general usage.
+
+*** Disable bidirectional text scanning
+
+If you don’t edit right-to-left languages (Arabic, Hebrew, etc.),
+Emacs is doing a bunch of work on every redisplay cycle for nothing.
+These settings tell Emacs to assume left-to-right text everywhere and
+skip the bidirectional parenthesis algorithm. This makes a difference
+in larger files especially.
+
+#+begin_src emacs-lisp :tangle.el
+  (setq-default bidi-display-reordering 'left-to-right
+                bidi-paragraph-direction 'left-to-right)
+
+  (setq bidi-inhibit-bpa t)
+#+end_src
+
+*** Skip fontification during input
+
+Emacs normally fontifies (syntax-highlights) text even while you’re
+actively typing. This can cause micro-stutters, especially in
+tree-sitter modes or large buffers. With this setting, Emacs will
+defer fontification until you stop typing. In practice you never
+notice the delay – the highlighting catches up instantly – but
+scrolling and typing may feel smoother.
+
+#+begin_src emacs-lisp :tangle.el
+  (setq redisplay-skip-fontification-on-input 
+#+end_src
+
+*** Don’t render cursors in non-focused windows
+
 ** Disable =package.el=
 
-We disable =package.el= early, because we do not use it.
+We disable the built-in package manager =package.el= early, because we
+do not use it.
 
 #+begin_src emacs-lisp :tangle early-init.el
   (setq package-enable-at-startup nil)
