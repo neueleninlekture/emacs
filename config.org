@@ -672,6 +672,15 @@ restore the previous layout. Wonderful!
   (global-set-key (kbd "C-x 1") #'toggle-delete-other-windows)
 #+end_src
 
+** Auto-select help windows
+
+With this setting on, Emacs automatically switches to help windows
+when they are opened.
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq help-window-select t)
+#+end_src
+
 * Version control
 
 #+begin_src emacs-lisp :tangle init.el
