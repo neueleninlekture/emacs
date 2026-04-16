@@ -573,9 +573,9 @@ keychord sequences.
 
 The /minibuffer/ is one of Emacs' most powerful tools. 
 
-** Isearch editing
+** =Isearch= editing
 
-This package allows one to edit the contents of an =Isearch= as if it
+This package allows one to edit the contents of an =isearch= as if it
 were a normal minibuffer.
 
 #+begin_src emacs-lisp :tangle init.el
@@ -584,6 +584,15 @@ were a normal minibuffer.
     :diminish isearch-mb-mode
     :init
     (isearch-mb-mode))
+#+end_src
+
+** Display =isearch= matches
+
+This setting displays the number of =isearch= matches in the buffer as
+you search.
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq isearch-lazy-count t)
 #+end_src
 
 ** Completion
@@ -711,6 +720,7 @@ the frame.
   (add-hook 'text-mode-hook 'display-line-numbers-mode)
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+end_src
+
 ** Kill ring
 
 The kill ring is Emacs' clipboard history. It can integrate with the
