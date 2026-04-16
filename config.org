@@ -841,6 +841,15 @@ window.
   (setq org-src-window-setup 'current-window)
 #+end_src
 
+** Cycle headlines globally
+
+This setting allows you to cycle the entire org file by pressing =TAB=
+at the beginning of the buffer.
+
+#+begin_src emacs-lisp :tangle init.el
+  (setq org-cycle-global-at-bob t)
+#+end_src
+
 * File management
 ** Dired
 
