@@ -60,6 +60,13 @@ On both of these systems, I use a customized but fairly standard
 tiling window manager setup. As such, no options specific to desktop
 environment suites are provided.
 
+** Inspirations for this configuration
+
+This configuration is not maintained in a vacuum. I liberally take
+inspiration (and code!) from other Emacs-related projects, such as:
+
+- [[https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/][Stealing from the Best Emacs Configs]] at the Emacs Redux blog
+
 ** Licensing 
 
 In line with the GNU philosophy, this configuration is entirely Free
