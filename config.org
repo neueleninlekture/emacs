@@ -223,7 +223,7 @@ scrolling and typing may feel smoother.
 ** Disable =package.el=
 
 We disable the built-in package manager =package.el= early, because we
-do not use it.
+do not use it. See [[Package management][Package management]] for more information.
 
 #+begin_src emacs-lisp :tangle early-init.el
   (setq package-enable-at-startup nil)
@@ -280,12 +280,10 @@ Emacs has started.
 ** Check Emacs version
 
 This snippet checks the currently installed Emacs version and ensures
-I am running the intended one. I try to keep this value updated to
+we are running the intended one. I try to keep this value updated to
 whatever version I am currently on.
 
 #+begin_src emacs-lisp :tangle init.el
-  ;;; Startup
-  ;; Check version
   (when (version< emacs-version "30.2")
     (error "This configuration requires Emacs 30.2 and above!"))
 #+end_src
@@ -329,8 +327,8 @@ configuration clean.
 
 Emacs tends to give rather verbose error reports when native-compiling
 Elisp. These clog up the ~*Messages*~ buffer and become more annoying
-the more packages you have. We thus tell native-compilation to be less
-verbose.
+the more packages you have. We therefore tell native-compilation to be
+less verbose.
 
 #+begin_src emacs-lisp :tangle early-init.el
 (when (native-comp-available-p)
@@ -355,7 +353,11 @@ explicitly declared in the config, making it easier to test new
 packages without committing to a full install.
 
 I'm sure installing a whole new package manager is far from the
-cleanest solution to package management, but it is easy to work with.
+cleanest solution to package management, but =elpaca= sure is easy to
+work with.
+
+We also use the =use-package= macro to simplify declaration and
+management of packages in the config.
 
 ** Install =elpaca=
 
@@ -567,7 +569,7 @@ keychord sequences.
     (which-key-idle-delay 0.4))
 #+end_src
 
-* Minibuffer
+* Minibuffer completion and search features
 
 The /minibuffer/ is one of Emacs' most powerful tools. 
 
@@ -622,7 +624,11 @@ completion.
     :ensure t)
 #+end_src
 
-* Windows and buffers
+* Window and buffer management
+** Managing buffers with =ibuffer=
+
+=ibuffer= is a nice little menu for handling buffers. We bind it to a
+convenient key.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package ibuffer
@@ -833,8 +839,8 @@ This allows us to open any file from =find-file= externally using =xdg-open=.
   (advice-add 'find-file :around 'find-file-auto)
 #+end_src
 
-* Appearance
-** =nerd-icons=
+* Appearance, colors and theming
+** Icons
 
 To add visual icons to various parts of the interface, we need an icon
 library. =nerd-icons= provides icons from Nerd Fonts, which I use.
@@ -906,7 +912,8 @@ library. =nerd-icons= provides icons from Nerd Fonts, which I use.
          "")))))
 #+end_src
 
-** Theme
+** Fonts and theme 
+
 Here we set up fonts, themes, and anything visual.
 
 #+begin_src emacs-lisp :tangle init.el
