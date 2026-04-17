@@ -700,7 +700,7 @@ extensible, so you can do all sorts of cool things with it.
 The custom function =abe/vc-git-log-grep= allows searching through git
 logs using =git grep=.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle init.el
   (use-package vc
     :config
     (defvar abe/vc-shell-output "*vc-output*")
@@ -754,7 +754,7 @@ reviewing diffs or changes like =vc= and =magit= force you to do. This
 simple function allows one to do that. We bind it to a key in the vc
 map.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle init.el
   (defun git-commit-all ()
     (interactive)
     (start-process-shell-command
