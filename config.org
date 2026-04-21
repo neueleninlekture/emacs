@@ -263,18 +263,21 @@ in using these.
 ** Information on startup
 
 This displays a brief message with information on startup time after
-Emacs has started.
+Emacs has started. We set the startup message as a variable in case we
+want to modify it conditionally during startup.
 
 #+begin_src emacs-lisp :tangle early-init.el
+  (setq abe/startup-message "Welcome, abe! Emacs ready in %s with %d garbage collections.")
+
   (add-hook 'emacs-startup-hook
-  	    (lambda ()
-  	      (message "Welcome, abe! Emacs ready in %s with %d garbage collections."
-  		       (format "%.2f seconds"
-  			       (float-time
-  				(time-subtract
-  				 after-init-time
-  				 before-init-time)))
-  		       gcs-done)))
+  	  (lambda ()
+  	    (message abe/startup-message
+  		     (format "%.2f seconds"
+  			     (float-time
+  			      (time-subtract
+  			       after-init-time
+  			       before-init-time)))
+  		     gcs-done)))
 #+end_src
 
 ** Check Emacs version
@@ -342,6 +345,43 @@ enable them again.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq disabled-command-function nil)
+#+end_src
+
+* User credentials
+
+I like setting up some basic user credentials during startup. These
+are variables I expect Emacs to recall during regular usage, such as
+my name, email address and location. For portability and privacy, I'd
+rather not declare these openly in the configuration file, so instead
+Emacs attempts to load a ~creds.el~ file.
+
+If the credentials file is not set, we display an error in the startup
+message set previously.
+
+#+begin_src emacs-lisp :tangle init.el
+  (defun abe/load-credentials ()
+    "Load user credentials file, if it exists. Else pass a message. Can also
+  be used to reload the file interactively in case it is modified."
+    (interactive)
+    (let ((cred-file (concat user-emacs-directory "creds.el")))
+      (if (file-exists-p cred-file)
+  	(load-file cred-file)
+      (setq abe/startup-message
+  	  (concat abe/startup-message
+  		  " ERROR: User credentials not found! Set them at creds.el")))))
+
+  (abe/load-credentials)
+#+end_src
+
+A credentials file should look like the example below. Latitude and
+longitude can be determined with a website such as [[https://www.latlong.net/][latlong.net]].
+
+#+begin_src emacs-lisp
+  (setq user-full-name "Your Name Here"
+        user-mail-address "your@email.here"
+        calendar-latitude 00.00
+        calendar-longitude 000.00
+        calendar-location-name "City, State")
 #+end_src
 
 * Package management
