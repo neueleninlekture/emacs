@@ -713,7 +713,7 @@ logs using =git grep=.
       (interactive
        (list (read-regexp "Search git log for PATTERN: ")
   	     current-prefix-arg))
-      (let* ((buf-name vc-shell-output)
+      (let* ((buf-name abe/vc-shell-output)
   	     (buf (get-buffer-create buf-name))
   	     (diffs (if diff "-p" ""))
   	     (type (if diff 'with-diff 'log-search))
