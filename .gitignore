@@ -13,3 +13,5 @@
 /recentf
 /eshell/
 /.mc-lists.el
+/creds.el
+/org-roam.db
