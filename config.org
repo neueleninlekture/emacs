@@ -996,7 +996,10 @@ improve its interface and allow it to open files externally.
     :custom
     (dired-listing-switches "-alh --group-directories-first")
     (dired-dwim-target t)
-    (wdired-allow-to-change-permissions t))
+    (wdired-allow-to-change-permissions t)
+    :bind
+    (:map dired-mode-map
+  	(("o" . dired-xdg-open))))
 
   (use-package dired-hide-dotfiles
     :ensure t
@@ -1011,7 +1014,6 @@ improve its interface and allow it to open files externally.
     :ensure t
     :hook
     (dired-mode-hook . diredfl-mode))
-
 #+end_src
 
 ** xdg-open
