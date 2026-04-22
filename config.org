@@ -469,10 +469,11 @@ also integrates with =use-package=, and can be called from
 wil be needed for ~use-package~ declarations ahead.
 
 #+begin_src emacs-lisp :tangle init.el
-  (use-package diminish
-    :ensure t
-    :config
-    (diminish 'which-key-mode))
+    (use-package diminish
+      :ensure t
+      :config
+      (diminish 'which-key-mode)
+      (diminish 'auto-fill-function))
 #+end_src
 
 * Keybinding system
