@@ -1115,6 +1115,27 @@ library. =nerd-icons= provides icons from Nerd Fonts, which I use.
          "")))))
 #+end_src
 
+** Modeline
+
+I use the =simple-modeline= package for my modeline. It's a pretty
+clean solution.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package simple-modeline
+    :ensure t
+    :config
+    (simple-modeline-mode)
+    :custom
+    (simple-modeline-segments '((simple-modeline-segment-modified
+  			      simple-modeline-segment-buffer-name
+  			      simple-modeline-segment-position)
+  			      (simple-modeline-segment-minor-modes
+  			       simple-modeline-segment-vc
+  			       simple-modeline-segment-misc-info
+  			       simple-modeline-segment-process
+  			       simple-modeline-segment-major-mode))))
+#+end_src
+
 ** Fonts and theme 
 
 Using the =circadian= package along with the coordinates we set up in
