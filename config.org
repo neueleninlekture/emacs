@@ -667,7 +667,9 @@ completion.
      ("M-g o" . consult-outline)
      ("M-g g" . consult-goto-line)
      ("M-g s" . consult-line)
-     ("C-x r b". consult-bookmark)))
+     ("C-x r b". consult-bookmark)
+     ("M-y" . consult-yank-pop)
+     ("M-s g" . consult-ripgrep)))
 #+end_src
 
 #+begin_src emacs-lisp :tangle init.el
