@@ -989,6 +989,54 @@ at the beginning of the buffer.
     (("C-c n g" . org-roam-ui-open)))
 #+end_src
 
+
+* Email client
+
+I like using Emacs to read and write email, and =mu4e= is my preferred
+client. It's quite simple with its hierarchical organization and quick
+search.
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package mu4e
+    :commands mu4e mu4e-compose-new
+    :custom
+    (mail-user-agent 'mu4e-user-agent)
+    (mu4e-maildir "~/.mail/aabm@disroot.org/")
+    (mu4e-get-mail-command "/usr/bin/mbsync -a")
+    (mu4e-update-mail-and-index t)
+    (mu4e-update-interval 300)
+    (mu4e-view-show-images t)
+    (mu4e-view-show-addresses t)
+    (mu4e-use-fancy-chars nil)
+    (mu4e-drafts-folder "/Drafts")
+    (mu4e-sent-folder "/Sent")
+    (mu4e-trash-folder "/Trash")
+    (message-send-mail-function 'message-send-mail-with-sendmail)
+    (sendmail-program "/usr/bin/msmtp")
+    (message-sendmail-extra-arguments '("--read-envelope-from"))
+    (message-sendmail-f-is-evil t)
+    (mu4e-completing-read-function 'completing-read)
+    (mu4e-confirm-quit nil)
+    (message-kill-buffer-on-exit t)
+    (mu4e-attachment-dir "~/")
+    (mu4e-compose-signature
+     '(user-full-name))
+    (mu4e-maildir-shortcuts
+     '(("/Inbox" . ?i)
+       ("/Drafts" . ?d)
+       ("/Sent" . ?s)
+       ("/Trash" . ?t)
+       ("/Archive" . ?a)))
+    :hook
+    (message-send-hook .
+  		     (lambda ()
+  		       (unless (yes-or-no-p "Sure you want to send this?")
+  			 (signal 'quit nil))))
+    :bind
+    ((("C-x m" . mu4e)
+      ("C-c m" . mu4e-compose-new))))
+#+end_src
+
 * File management
 ** Dired
 
