@@ -521,8 +521,8 @@ keychord sequences.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package which-key
-    :init
-    (which-key-mode)
+    :hook
+    (after-init-hook . which-key-mode)
     :custom
     (which-key-idle-delay 0.4))
 #+end_src
@@ -602,7 +602,8 @@ completion.
      embark-become-indicator embark-action-indicator))
 
   (use-package embark-consult
-    :ensure t)
+    :ensure t
+    :defer t)
 #+end_src
 
 * Window and buffer management
@@ -707,9 +708,6 @@ is indeed very powerful, but sometimes I find its UI gets in the way a
 bit. I keep it for those times when =vc= simply won't do.
 
 #+begin_src emacs-lisp :tangle init.el
-  (use-package transient
-    :ensure t)
-
   (use-package magit
     :ensure t
     :custom
@@ -825,7 +823,8 @@ particularly useful for batch-renaming files in Dired.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package multiple-cursors
-    :ensure t)
+    :ensure t
+    :defer t)
 #+end_src
 
 ** Casing and capitalization
@@ -914,7 +913,6 @@ is a must.
 #+begin_src emacs-lisp :tangle init.el
   (use-package citar
     :ensure t
-    :no-require
     :custom
     (org-cite-global-bibliography '("~/doc/bib/references.bib"))
     (org-cite-insert-processor 'citar)
@@ -1056,7 +1054,8 @@ library. =nerd-icons= provides icons from Nerd Fonts, which I use.
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package nerd-icons
-    :ensure t)
+    :ensure t
+    :defer t)
 #+end_src
 
 ** Dashboard
@@ -1064,9 +1063,10 @@ library. =nerd-icons= provides icons from Nerd Fonts, which I use.
 #+begin_src emacs-lisp :tangle init.el
   (use-package dashboard
     :ensure t
+    :hook
+    (elpaca-after-init-hook . dashboard-insert-startupify-lists)
+    (elpaca-after-init-hook . dashboard-initialize)
     :config
-    (add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
-    (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
     (dashboard-setup-startup-hook)
     :custom
     (dashboard-center-content t)
@@ -1170,7 +1170,7 @@ I like using the Iosevka font. Here we set it up.
 Occasionally I give Emacs a transparent background. These settings are
 here for that purpose.
 
-#+begin_src emacs-lisp :init.el
+#+begin_src :emacs-lisp :tangle init.el
   (set-frame-parameter nil 'alpha-background 100) 
   (add-to-list 'default-frame-alist '(alpha-background . 100))
 #+end_src
