@@ -19,7 +19,7 @@ Here all the code is defined and documented, before being extracted
 ("tangled") out to the Elisp files that are actually loaded by Emacs.
 
 When I want to modify my Emacs setup, I edit this file and then
-evaluate the following code block or do =C-c C-v t=. All files are
+evaluate the following code block or press =C-c C-v t=. All files are
 thus updated accordingly.
 
 #+begin_src emacs-lisp :tangle no :results none
@@ -29,27 +29,34 @@ thus updated accordingly.
 This configuration is written in the literate style primarily for
 self-clarification. I originally adopted this approach because I used
 to share and post bits and pieces of my setup online, and including
-documentation was useful for others. I rarely do that nowadays so I
-mainly keep this file for myself: I tend to forget exactly how or why
-I set something up, so reading back through my own notes is useful in
-understanding what is going on in my Emacs.
+documentation was useful for others. These days there are many better
+literate Emacs configurations out there, so I rarely bother sharing
+mine. Thus, I mainly keep this file for myself: I tend to forget
+exactly how or why I set something up and reading back through my own
+notes is useful in understanding what is going on in my Emacs.
 
 If you're a stranger reading this, welcome! I hope you get something
-useful out of this.
+useful out of my configuration.
 
 ** Use cases for this configuration
 
-Emacs is my general purpose text editor. I use it to read, write and
-take notes for both academic and personal purposes. I occasionally use
-it for programming. I also use it for all sorts of everyday computing
-tasks such as managing files, editing system configs, and reading
-email.
+Emacs is my general purpose text editor as a student in social
+science. I use it to read, write and take notes for both academic and
+personal purposes. I occasionally use it for programming. I also use
+it for all sorts of everyday computing tasks such as managing files,
+editing system configs, and reading email.
+
+I am /not/ a programmer by trade, so you won't see many options for
+programming in this configuration.
 
 ** Software and hardware assumptions
 
 I usually run the latest stable build of Emacs available on the Arch
 Linux repositories, no compiling Emacs from source. Compatibility with
 versions of Emacs other than stable is not accounted for.
+
+UPDATE: I am currently experimenting with compiling Emacs from source.
+We'll see how it goes.
 
 I have two computers, both running Arch Linux. One is a reasonably
 performant desktop (a so-called "gaming PC"), the other a second-hand
@@ -66,6 +73,7 @@ This configuration is not maintained in a vacuum. I liberally take
 inspiration (and code!) from other Emacs-related projects, such as:
 
 - [[https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/][Stealing from the Best Emacs Configs]] at the Emacs Redux blog
+- Protesilaos Stavrou's [[https://protesilaos.com/emacs/][Dotemacs]]
 
 ** Licensing 
 
@@ -96,15 +104,16 @@ like to start them off with a header containing license and other
 general information.
 
 #+begin_src emacs-lisp :tangle early-init.el
-  ;; -*- lexical-binding: t; -*-
-  ;;; early-init.el --- Emacs early configuration file
+  ;;; early-init.el --- abe's early init file -*- lexical-binding: t; -*-
   ;; Copyright © 2019-2026 abe <aabm@disroot.org>
 
   ;; Author: abe <aabm@disroot.org>
   ;; Keywords: Emacs configuration, literate programming
   ;; Homepage: https://github.com/neueleninlekture/emacs
+  ;; SPDX-License-Identifier: GPL-3.0-or-later
+  ;; Package-Requires: ((emacs "30.2"))
 
-  ;;; License:
+    ;;; License:
   ;; This file is NOT part of GNU Emacs.
 
   ;; This program is free software; you can redistribute it and/or
@@ -125,19 +134,20 @@ general information.
 
   ;;; Commentary:
   ;; abe's early-init settings for Emacs. Mainly controls startup. For
-  ;; more details, see the config.org file.
+  ;; more details, see the config.org file in this directory.
 #+end_src
 
 #+begin_src emacs-lisp :tangle init.el
-  ;; -*- lexical-binding: t; -*-
-  ;;; init.el --- Main Emacs startup file
+  ;;; init.el --- abe's main init file -*- lexical-binding: t; -*-
   ;; Copyright © 2019-2026 abe <aabm@disroot.org>
 
   ;; Author: abe <aabm@disroot.org>
   ;; Keywords: Emacs configuration, literate programming
   ;; Homepage: https://github.com/neueleninlekture/emacs
+  ;; SPDX-License-Identifier: GPL-3.0-or-later
+  ;; Package-Requires: ((emacs "30.2"))
 
-  ;;; License:
+    ;;; License:
   ;; This file is NOT part of GNU Emacs.
 
   ;; This program is free software; you can redistribute it and/or
@@ -169,10 +179,12 @@ prunes the cache and loads new files. We also enable lexical binding
 for performance.
 
 #+begin_src emacs-lisp :tangle early-init.el
-  (setq native-comp-jit-compilation t
-        native-compile-prune-cache t
-        native-comp-speed 3
-        load-prefer-newer t)
+  (when (native-comp-available-p)
+    (setq native-comp-async-report-warnings-errors 'silent
+  	native-comp-jit-compilation t
+  	native-compile-prune-cache t
+  	native-comp-speed 3))
+  (setq load-prefer-newer t)
 
   (setq elisp-enable-lexical-binding t)
 #+end_src
@@ -183,8 +195,6 @@ the more packages you have. We therefore tell native-compilation to be
 less verbose.
 
 #+begin_src emacs-lisp :tangle early-init.el
-(when (native-comp-available-p)
-  (setq native-comp-async-report-warnings-errors 'silent))
 #+end_src
 
 ** Tweaks for faster startup
@@ -896,13 +906,13 @@ detailed info.
     ("\\.org\\'" . org-mode)
     :custom
     (org-hide-leading-stars t)
-    (org-edit-src-content-indentation 0)
+    (org-edit-src-content-indentation 2)
     (org-src-window-setup 'current-window)
     (org-cycle-global-at-bob t)
     (org-fontify-quote-and-verse-blocks t))
 #+end_src
 
-** =org-roam=
+** Zettelkasten notes with =org-roam=
 
 #+begin_src emacs-lisp :tangle init.el
   (use-package org-roam
