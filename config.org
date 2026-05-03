@@ -884,22 +884,22 @@ Flavored Markdown (GFM).
 #+end_src
 
 * Org mode
-** Editing code blocks
 
-Here we make it so that editing a code block is done in the current
-window.
-
-#+begin_src emacs-lisp :tangle init.el
-  (setq org-src-window-setup 'current-window)
-#+end_src
-
-** Cycle headlines globally
-
-This setting allows you to cycle the entire org file by pressing =TAB=
-at the beginning of the buffer.
+Needing no introduction, Org is my primary writing interface. Here we
+set some basic variables for it. Check the variable docstrings for
+detailed info.
 
 #+begin_src emacs-lisp :tangle init.el
-  (setq org-cycle-global-at-bob t)
+  (use-package org
+    :commands (org-mode org-version)
+    :mode
+    ("\\.org\\'" . org-mode)
+    :custom
+    (org-hide-leading-stars t)
+    (org-edit-src-content-indentation 0)
+    (org-src-window-setup 'current-window)
+    (org-cycle-global-at-bob t)
+    (org-fontify-quote-and-verse-blocks t))
 #+end_src
 
 ** =org-roam=
