@@ -1172,12 +1172,6 @@ theme automatically chosen based on the time of day. We tell
 based on this.
 
 #+begin_src emacs-lisp :tangle init.el
-  ;; (use-package circadian
-  ;;   :ensure t
-  ;;   :config
-  ;;   (setq circadian-themes '((:sunrise . modus-operandi)
-  ;;                            (:sunset  . modus-vivendi)))
-  ;;   (circadian-setup))
   (load-theme 'modus-vivendi)
 #+end_src
 
