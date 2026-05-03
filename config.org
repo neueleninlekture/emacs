@@ -96,6 +96,7 @@ like to start them off with a header containing license and other
 general information.
 
 #+begin_src emacs-lisp :tangle early-init.el
+  ;; -*- lexical-binding: t; -*-
   ;;; early-init.el --- Emacs early configuration file
   ;; Copyright © 2019-2026 abe <aabm@disroot.org>
 
@@ -125,10 +126,10 @@ general information.
   ;;; Commentary:
   ;; abe's early-init settings for Emacs. Mainly controls startup. For
   ;; more details, see the config.org file.
-
 #+end_src
 
 #+begin_src emacs-lisp :tangle init.el
+  ;; -*- lexical-binding: t; -*-
   ;;; init.el --- Main Emacs startup file
   ;; Copyright © 2019-2026 abe <aabm@disroot.org>
 
@@ -159,7 +160,30 @@ general information.
   ;; abe's init settings for Emacs. Contains most configuration options.
   ;; Do not edit this directly. See the config.org file for more
   ;; information.
+#+end_src
 
+** Native compilation
+
+We explicitly enable native compilation of code and ensure Emacs
+prunes the cache and loads new files. We also enable lexical binding
+for performance.
+
+#+begin_src emacs-lisp :tangle early-init.el
+  (setq native-comp-jit-compilation t
+        native-compile-prune-cache t
+        load-prefer-newer t)
+
+  (setq elisp-enable-lexical-binding t)
+#+end_src
+
+Emacs tends to give rather verbose error reports when native-compiling
+Elisp. These clog up the ~*Messages*~ buffer and become more annoying
+the more packages you have. We therefore tell native-compilation to be
+less verbose.
+
+#+begin_src emacs-lisp :tangle early-init.el
+(when (native-comp-available-p)
+  (setq native-comp-async-report-warnings-errors 'silent))
 #+end_src
 
 ** Tweaks for faster startup
@@ -297,9 +321,6 @@ Here we make sure Emacs is loading the newest file versions and also
 not littering our directories with backup and autosave files.
 
 #+begin_src emacs-lisp :tangle init.el
-  ;; Load newest file versions
-  (setq load-prefer-newer t)
-
   ;; Reload buffers when their respective files change on disk
   (global-auto-revert-mode t)
   (setq global-auto-revert-non-file-buffers t)
@@ -324,18 +345,6 @@ configuration clean.
 
 #+begin_src emacs-lisp :tangle init.el
   (setq custom-file "/dev/null") 
-#+end_src
-
-** Clear native compilation
-
-Emacs tends to give rather verbose error reports when native-compiling
-Elisp. These clog up the ~*Messages*~ buffer and become more annoying
-the more packages you have. We therefore tell native-compilation to be
-less verbose.
-
-#+begin_src emacs-lisp :tangle early-init.el
-(when (native-comp-available-p)
-  (setq native-comp-async-report-warnings-errors 'silent))
 #+end_src
 
 ** Enable disabled commands
@@ -377,6 +386,7 @@ A credentials file should look like the example below. Latitude and
 longitude can be determined with a website such as [[https://www.latlong.net/][latlong.net]].
 
 #+begin_src emacs-lisp
+  ;; -*- lexical-binding: t; -*-
   (setq user-full-name "Your Name Here"
         user-mail-address "your@email.here"
         calendar-latitude 00.00
