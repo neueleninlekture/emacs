@@ -823,6 +823,11 @@ pairs when typing. =electric-quote-mode= inserts fancy quotes.
   			      (?\“ . ?\”)))
   (electric-pair-mode t)
 
+  (setq show-paren-delay 0.1
+        show-paren-highlight-openparen t
+        show-paren-when-point-inside-paren t
+        show-paren-when-point-in-periphery t)
+
   (show-paren-mode t)
 #+end_src
 
