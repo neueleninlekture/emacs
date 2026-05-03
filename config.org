@@ -284,6 +284,21 @@ in using these.
   (tooltip-mode -1)
 #+end_src
 
+When Emacs starts, it flashes a white screen. This is painful when
+viewed in a dark environment, so we set the Emacs background to black
+in accordance with the dark theme loaded later.
+
+#+begin_src emacs-lisp :tangle early-init.el
+  (defun prot-emacs-avoid-initial-flash-of-light ()
+    "Avoid flash of light when starting Emacs, if needed.
+    New frames are instructed to call `prot-emacs-re-enable-frame-theme'."
+    (setq mode-line-format nil)
+    (set-face-attribute 'default nil :background "#000000" :foreground "#ffffff")
+    (set-face-attribute 'mode-line nil :background "#000000" :foreground "#ffffff" :box 'unspecified))
+
+  (prot-emacs-avoid-initial-flash-of-light)
+#+end_src
+
 ** Information on startup
 
 This displays a brief message with information on startup time after
@@ -1217,12 +1232,13 @@ theme automatically chosen based on the time of day. We tell
 based on this.
 
 #+begin_src emacs-lisp :tangle init.el
-  (use-package circadian
-    :ensure t
-    :config
-    (setq circadian-themes '((:sunrise . modus-operandi)
-                             (:sunset  . modus-vivendi)))
-    (circadian-setup))
+  ;; (use-package circadian
+  ;;   :ensure t
+  ;;   :config
+  ;;   (setq circadian-themes '((:sunrise . modus-operandi)
+  ;;                            (:sunset  . modus-vivendi)))
+  ;;   (circadian-setup))
+  (load-theme 'modus-vivendi)
 #+end_src
 
 I like using the Iosevka font. Here we set it up.
