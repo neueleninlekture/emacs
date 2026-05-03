@@ -861,6 +861,27 @@ scripts.
   (add-hook 'after-save-hook
             #'executable-make-buffer-file-executable-if-script-p)
 #+end_src
+** Markdown
+
+The =markdown-mode= package provides a major mode for syntax
+highlighting, editing commands, and preview support for Markdown
+documents. It supports core Markdown as well as extensions like GitHub
+Flavored Markdown (GFM).
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package markdown-mode
+    :ensure t
+    :commands (gfm-mode
+               gfm-view-mode
+               markdown-mode
+               markdown-view-mode)
+    :mode (("\\.markdown\\'" . markdown-mode)
+           ("\\.md\\'" . markdown-mode)
+           ("README\\.md\\'" . gfm-mode))
+    :bind
+    (:map markdown-mode-map
+          ("C-c C-e" . markdown-do)))
+#+end_src
 
 * Org mode
 ** Editing code blocks
