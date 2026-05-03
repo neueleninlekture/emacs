@@ -499,6 +499,8 @@ explicitly install it, so instead we just tell =elpaca= to enable it.
 We also tell =use-package= to compute statistics on loaded packages,
 so that we can diagnose Emacs startup speed with ~use-package-report~.
 
+For more information on how to use =use-package=, see [[https://batsov.com/articles/2025/04/17/using-use-package-the-right-way/][this post]].
+
 #+begin_src emacs-lisp :tangle init.el
   (elpaca elpaca-use-package
     (elpaca-use-package-mode))
