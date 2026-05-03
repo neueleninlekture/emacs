@@ -171,6 +171,7 @@ for performance.
 #+begin_src emacs-lisp :tangle early-init.el
   (setq native-comp-jit-compilation t
         native-compile-prune-cache t
+        native-comp-speed 3
         load-prefer-newer t)
 
   (setq elisp-enable-lexical-binding t)
@@ -479,11 +480,15 @@ loading. We use it for pretty much all of our package management
 needs. Since it is now part of Emacs core, we do not have to
 explicitly install it, so instead we just tell =elpaca= to enable it.
 
+We also tell =use-package= to compute statistics on loaded packages,
+so that we can diagnose Emacs startup speed with ~use-package-report~.
+
 #+begin_src emacs-lisp :tangle init.el
   (elpaca elpaca-use-package
     (elpaca-use-package-mode))
 
   (setq use-package-hook-name-suffix nil)
+  (setq use-package-compute-statistics t)
 #+end_src
 
 ** Manage minor modes with =diminish=
