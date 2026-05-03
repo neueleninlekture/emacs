@@ -499,130 +499,17 @@ also integrates with =use-package=, and can be called from
 wil be needed for ~use-package~ declarations ahead.
 
 #+begin_src emacs-lisp :tangle init.el
-    (use-package diminish
-      :ensure t
-      :config
-      (diminish 'which-key-mode)
-      (diminish 'auto-fill-function))
-#+end_src
-
-* Keybinding system
-
-=evil-mode= is my primary keybinding system. Basically it provides a
-full emulation of Vim keys in Emacs, with added extensibility. I also
-use the =general= package for setting up special evil-mode
-keybindings.
-
-As is usual in my sorta-annual config refixes though, I have chosen to
-temporarily disable =evil-mode= from my config. I can never quite make
-up my mind between Vim and Emacs keys. While I like the complex
-leader-prefix setup I've come up with here, I have to say I do not
-particularly care for Vim editing motions, especially given that I
-mostly edit prose and Lisp code, which Emacs does about as well as
-Vim, in my opinion. The main reason I keep =evil-mode= around is the
-leader-prefix, frankly, which is quite an elegant way to allow for
-quick access to packages and utilities in Emacs (see the ever popular
-configuration frameworks like Spacemacs or Doom Emacs).
-
-** =evil-mode= and =general.el=
-
-#+begin_src emacs-lisp
-  (use-package evil
-    :ensure t
-    :init
-    (setq evil-want-keybinding nil)
-    (evil-mode)
-    :custom
-    (evil-undo-system 'undo-redo)
-    :hook
-    (with-editor-mode-hook . evil-insert-state))
-
-  (use-package evil-collection
-    :ensure t
-    :init
-    (evil-collection-init))
-
-  (use-package evil-surround
+  (use-package diminish
     :ensure t
     :config
-    (global-evil-surround-mode t))
-
-  (use-package evil-org
-    :ensure t
-    :hook
-    ((org-mode-hook . evil-org-mode))
-    :config
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys))
-
-  (use-package general
-    :ensure t
-    :init
-    (general-evil-setup)
-    (general-nmap
-     :states 'normal
-     :keymaps 'override
-     :prefix "SPC"
-     :prefix-map 'leader-map
-     ;; files
-     "ff" 'find-file
-     "fd" 'dired
-     "fj" 'dired-jump
-     "fb" 'consult-bookmark
-     ;; dired
-     "dd" 'dired-jump
-     "df" 'dired
-     ;; buffers
-     "bb" 'consult-buffer
-     "bk" 'kill-this-buffer+
-     "bK" 'kill-buffer
-     "bi" 'ibuffer
-     "bo" 'aabm/other-buffer
-     ;; git
-     "gg" 'magit-status
-     "gc" 'magit-commit-all
-     "gp" 'magit-push-current-to-pushremote
-     "gs" 'vc-git-log-grep
-     ;; search
-     "sg" 'consult-grep
-     "so" 'consult-outline
-     "sm" 'consult-mark
-     "ss" 'consult-line
-     "sl" 'consult-goto-line
-     ;; text editing
-     "ti" 'indent-region
-     "ty" 'consult-yank-from-kill-ring
-     "to" 'olivetti-mode
-     "tO" 'olivetti-set-width
-     ;; windows
-     "wo" 'other-window
-     "wd" 'delete-other-windows
-     "wk" 'delete-window
-     "wj" 'split-window-below-and-switch
-     "wl" 'split-window-right-and-switch
-     ;; major modes
-     "xs" 'eshell
-     ;; kill stuff (redundant)
-     "kk" 'kill-this-buffer+)
-
-    (general-nmap
-     :states 'normal
-     :keymaps 'eshell-mode-map
-     :prefix ","
-     :prefix-map 'local-leader-map
-     "y" 'eshell-copy-file-path-at-point
-     "f" 'eshell-find-file-at-point
-     "o" 'eshell-cat-file-at-point
-     "b" 'eshell-put-last-output-to-buffer)
-
-    (general-nmap
-     :states 'normal
-     :keymaps 'dired-mode-map
-     "o" 'dired-xdg-open
-     "h" 'dired-hide-details-mode
-     "H" 'dired-hide-dotfiles-mode
-     "s" 'eshell))
+    (diminish 'which-key-mode)
+    (diminish 'auto-fill-function)
+    (diminish 'eldoc-mode))
 #+end_src
+
+* Minibuffer completion and search features
+
+The /minibuffer/ is one of Emacs' most powerful tools. 
 
 ** =which-key=
 
