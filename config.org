@@ -1014,6 +1014,29 @@ at the beginning of the buffer.
     (("C-c n g" . org-roam-ui-open)))
 #+end_src
 
+** Managing bibliography with =citar=
+
+Since I primarily use Emacs for academic writing, managing citations
+is a must.  
+
+#+begin_src emacs-lisp :tangle init.el
+  (use-package citar
+    :ensure t
+    :no-require
+    :custom
+    (org-cite-global-bibliography '("~/doc/bib/references.bib"))
+    (org-cite-insert-processor 'citar)
+    (org-cite-follow-processor 'citar)
+    (org-cite-activate-processor 'citar)
+    (citar-bibliography org-cite-global-bibliography)
+    (citar-library-paths '("~/doc/bib/"))
+    ;; optional: org-cite-insert is also bound to C-c C-x C-@
+    :bind
+    (:map org-mode-map
+  	:package org
+  	(("C-c b i" . org-cite-insert)
+  	 ("C-c b o" . citar-open-files))))
+#+end_src
 
 * Email client
 
