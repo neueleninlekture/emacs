@@ -1198,7 +1198,12 @@ theme automatically chosen based on the time of day. We tell
 based on this.
 
 #+begin_src emacs-lisp :tangle init.el
-  (load-theme 'modus-vivendi)
+  (use-package ef-themes
+    :ensure t
+    :custom
+    (custom-safe-themes t)
+    :config
+    (load-theme 'ef-frost))
 #+end_src
 
 I like using the Iosevka font. Here we set it up.
